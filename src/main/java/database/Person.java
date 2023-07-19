@@ -32,5 +32,13 @@ public class Person {
     }
 
     public Person(Person person) {
+        this.name = null;
+        this.secondName = null;
+        this.surname = null;
+        this.year = 0;
+        this.month = 0;
+        this.day = 0;
+        this.address = null;
+        this.pesel = 0;
     }
 }

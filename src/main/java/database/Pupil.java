@@ -1,5 +1,7 @@
 package database;
 
+import database.marks.Marks;
+
 public class Pupil extends Person{
 
     private final int grade;
@@ -17,7 +19,8 @@ public class Pupil extends Person{
         this.awardBar = awardBar;
     }
 
-    public Pupil(String name, String surname, int year, int month, int day, Address address, long pesel, int grade, Parents parents, String achievement, Marks marks, boolean awardBar) {
+    public Pupil(String name, String surname, int year, int month, int day, Address address, long pesel, int grade,
+                 Parents parents, String achievement, Marks marks, boolean awardBar) {
         super(name, surname, year, month, day, address, pesel);
         this.grade = grade;
         this.parents = parents;
