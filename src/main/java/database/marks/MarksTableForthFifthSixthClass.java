@@ -1,5 +1,7 @@
 package database.marks;
 
+import java.util.Arrays;
+
 public class MarksTableForthFifthSixthClass extends Marks {
 
     private int[] mathMark;
@@ -30,5 +32,92 @@ public class MarksTableForthFifthSixthClass extends Marks {
         this.religionMark = new int[] {religionI, religionII, religionIII, religionYearly};;
         this.natureMark = new int[] {natureI, natureII, natureIII, natureYearly};;
         this.behaviorMark = new int[] {behaviorI, behaviorII, behaviorIII, behaviorYearly};;
+    }
+
+    public int[] getMathMark() {
+        return mathMark;
+    }
+
+    public void setMathMark(int[] mathMark) {
+        this.mathMark = mathMark;
+    }
+
+    public int[] getPolishMark() {
+        return polishMark;
+    }
+
+    public void setPolishMark(int[] polishMark) {
+        this.polishMark = polishMark;
+    }
+
+    public int[] getEnglishMark() {
+        return englishMark;
+    }
+
+    public void setEnglishMark(int[] englishMark) {
+        this.englishMark = englishMark;
+    }
+
+    public int[] getInformaticsMark() {
+        return informaticsMark;
+    }
+
+    public void setInformaticsMark(int[] informaticsMark) {
+        this.informaticsMark = informaticsMark;
+    }
+
+    public int[] getPeMark() {
+        return peMark;
+    }
+
+    public void setPeMark(int[] peMark) {
+        this.peMark = peMark;
+    }
+
+    public int[] getMusicMark() {
+        return musicMark;
+    }
+
+    public void setMusicMark(int[] musicMark) {
+        this.musicMark = musicMark;
+    }
+
+    public int[] getReligionMark() {
+        return religionMark;
+    }
+
+    public void setReligionMark(int[] religionMark) {
+        this.religionMark = religionMark;
+    }
+
+    public int[] getNatureMark() {
+        return natureMark;
+    }
+
+    public void setNatureMark(int[] natureMark) {
+        this.natureMark = natureMark;
+    }
+
+    public int[] getBehaviorMark() {
+        return behaviorMark;
+    }
+
+    public void setBehaviorMark(int[] behaviorMark) {
+        this.behaviorMark = behaviorMark;
+    }
+
+    @Override
+    public String toString() {
+        return "Marks{" +
+                "mathMark=" + Arrays.toString(mathMark) +
+                ", polishMark=" + Arrays.toString(polishMark) +
+                ", englishMark=" + Arrays.toString(englishMark) +
+                ", informaticsMark=" + Arrays.toString(informaticsMark) +
+                ", peMark=" + Arrays.toString(peMark) +
+                ", musicMark=" + Arrays.toString(musicMark) +
+                ", religionMark=" + Arrays.toString(religionMark) +
+                ", natureMark=" + Arrays.toString(natureMark) +
+                ", behaviorMark=" + Arrays.toString(behaviorMark) +
+                '}';
     }
 }

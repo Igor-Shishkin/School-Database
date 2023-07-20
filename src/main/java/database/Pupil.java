@@ -4,6 +4,8 @@ import database.marks.Marks;
 
 public class Pupil extends Person{
 
+    private static int idNumber=0;
+    private final int id;
     private int grade;
     private Parents parents;
     private String achievement;
@@ -11,8 +13,10 @@ public class Pupil extends Person{
     private boolean awardBar;
     private boolean promotionToNextGrade;
 
-    public Pupil(Person person, int grade, Parents parents, String achievement, Marks marks, boolean awardBar, boolean promotionToNextGrade) {
+    public Pupil(Person person, int id, int grade, Parents parents, String achievement, Marks marks, boolean awardBar,
+                 boolean promotionToNextGrade) {
         super(person);
+        this.id = getIdNumber();
         this.grade = grade;
         this.parents = parents;
         this.achievement = achievement;
@@ -21,9 +25,10 @@ public class Pupil extends Person{
         this.promotionToNextGrade = promotionToNextGrade;
     }
 
-    public Pupil(String name, String surname, int year, int month, int day, Address address, long pesel, int grade,
+    public Pupil(String name, String surname, char gender, int year, int month, int day, Address address, String pesel, int id, int grade,
                  Parents parents, String achievement, Marks marks, boolean awardBar, boolean promotionToNextGrade) {
-        super(name, surname, year, month, day, address, pesel);
+        super(name, surname, gender, year, month, day, address, pesel);
+        this.id = getIdNumber();
         this.grade = grade;
         this.parents = parents;
         this.achievement = achievement;
@@ -32,8 +37,9 @@ public class Pupil extends Person{
         this.promotionToNextGrade = promotionToNextGrade;
     }
 
-    public Pupil(String name, String surname, long pesel, int grade, boolean promotionToNextGrade) {
-        super(name, surname, 0, 0, 0, null, pesel);
+    public Pupil(String name, String surname, char gender, String pesel, int id, int grade, boolean promotionToNextGrade) {
+        super(name, surname, gender, 0, 0, 0, null, pesel);
+        this.id = getIdNumber();
         this.grade = grade;
         this.parents = null;
         this.achievement = null;
@@ -88,5 +94,19 @@ public class Pupil extends Person{
 
     public void setPromotionToNextGrade(boolean promotionToNextGrade) {
         this.promotionToNextGrade = promotionToNextGrade;
+    }
+    public static int getIdNumber() {idNumber++; return idNumber;}
+
+    @Override
+    public String toString() {
+        return "Pupil{" +
+                "id=" + id +
+                ", grade=" + grade +
+                ", parents=" + parents +
+                ", achievement='" + achievement + '\'' +
+                ", marks=" + marks +
+                ", awardBar=" + awardBar +
+                ", promotionToNextGrade=" + promotionToNextGrade +
+                '}';
     }
 }

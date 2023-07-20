@@ -1,28 +1,33 @@
 package database;
 
 public class Person {
+
     private String name;
     private String secondName;
     private String surname;
+    private char gender;
     private int year;
     private int month;
     private int day;
     private Address address;
-    private long pesel;
+    private String pesel;
 
-    public Person(String name, String secondName, String surname, int year, int month, int day, Address address, long pesel) {
+    public Person(String name, String secondName, String surname, char gender, int year, int month, int day, Address address, String pesel) {
         this.name = name;
         this.secondName = secondName;
         this.surname = surname;
+        this.gender = gender;
         this.year = year;
         this.month = month;
         this.day = day;
         this.address = address;
         this.pesel = pesel;
     }
-    public Person(String name, String surname, int year, int month, int day, Address address, long pesel) {
+    public Person(String name, String surname, char gender, int year, int month, int day, Address address, String pesel) {
         this.name = name;
-        this.secondName = null;   this.surname = surname;
+        this.gender = gender;
+        this.secondName = null;
+        this.surname = surname;
         this.year = year;
         this.month = month;
         this.day = day;
@@ -31,6 +36,7 @@ public class Person {
     }
 
     public Person(Person person) {
+        this.gender = '-';
         this.name = null;
         this.secondName = null;
         this.surname = null;
@@ -38,7 +44,7 @@ public class Person {
         this.month = 0;
         this.day = 0;
         this.address = null;
-        this.pesel = 0;
+        this.pesel = null;
     }
 
     public String getName() {
@@ -97,11 +103,26 @@ public class Person {
         this.address = address;
     }
 
-    public long getPesel() {
+    public String getPesel() {
         return pesel;
     }
 
-    public void setPesel(long pesel) {
+    public void setPesel(String pesel) {
         this.pesel = pesel;
+    }
+
+    @Override
+    public String toString() {
+        return "Person{" +
+                "name='" + name + '\'' +
+                ", secondName='" + secondName + '\'' +
+                ", surname='" + surname + '\'' +
+                ", gender=" + gender +
+                ", year=" + year +
+                ", month=" + month +
+                ", day=" + day +
+                ", address=" + address +
+                ", pesel='" + pesel + '\'' +
+                '}';
     }
 }

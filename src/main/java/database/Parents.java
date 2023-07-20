@@ -28,4 +28,12 @@ public class Parents {
     public void setParent2(Person parent2) {
         this.parent2 = parent2;
     }
+
+    @Override
+    public String toString() {
+        return "Parents{" +
+                "parent1=" + parent1 +
+                ", parent2=" + parent2 +
+                '}';
+    }
 }
