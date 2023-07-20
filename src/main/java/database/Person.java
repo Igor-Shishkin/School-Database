@@ -1,14 +1,14 @@
 package database;
 
 public class Person {
-    private final String name;
-    private final String secondName;
-    private final String surname;
-    private final int year;
-    private final int month;
-    private final int day;
-    private final Address address;
-    private final long pesel;
+    private String name;
+    private String secondName;
+    private String surname;
+    private int year;
+    private int month;
+    private int day;
+    private Address address;
+    private long pesel;
 
     public Person(String name, String secondName, String surname, int year, int month, int day, Address address, long pesel) {
         this.name = name;
@@ -22,8 +22,7 @@ public class Person {
     }
     public Person(String name, String surname, int year, int month, int day, Address address, long pesel) {
         this.name = name;
-        this.secondName = null;
-        this.surname = surname;
+        this.secondName = null;   this.surname = surname;
         this.year = year;
         this.month = month;
         this.day = day;
@@ -40,5 +39,69 @@ public class Person {
         this.day = 0;
         this.address = null;
         this.pesel = 0;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getSecondName() {
+        return secondName;
+    }
+
+    public void setSecondName(String secondName) {
+        this.secondName = secondName;
+    }
+
+    public String getSurname() {
+        return surname;
+    }
+
+    public void setSurname(String surname) {
+        this.surname = surname;
+    }
+
+    public int getYear() {
+        return year;
+    }
+
+    public void setYear(int year) {
+        this.year = year;
+    }
+
+    public int getMonth() {
+        return month;
+    }
+
+    public void setMonth(int month) {
+        this.month = month;
+    }
+
+    public int getDay() {
+        return day;
+    }
+
+    public void setDay(int day) {
+        this.day = day;
+    }
+
+    public Address getAddress() {
+        return address;
+    }
+
+    public void setAddress(Address address) {
+        this.address = address;
+    }
+
+    public long getPesel() {
+        return pesel;
+    }
+
+    public void setPesel(long pesel) {
+        this.pesel = pesel;
     }
 }

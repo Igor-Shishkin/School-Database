@@ -2,15 +2,15 @@ package database.marks;
 
 public class MarksTableForthFifthSixthClass extends Marks {
 
-    private final int[] mathMark;
-    private final int[] polishMark;
-    private final int[] englishMark;
-    private final int[] informaticsMark;
-    private final int[] peMark;
-    private final int[] musicMark;
-    private final int[] religionMark;
-    private final int[] natureMark;
-    private final int[] behaviorMark;
+    private int[] mathMark;
+    private int[] polishMark;
+    private int[] englishMark;
+    private int[] informaticsMark;
+    private int[] peMark;
+    private int[] musicMark;
+    private int[] religionMark;
+    private int[] natureMark;
+    private int[] behaviorMark;
 
     public MarksTableForthFifthSixthClass(int mathI, int mathII, int mathIII, int mathYearly,
                                           int polishI, int polishII, int polishIII, int polishYearly,

@@ -1,17 +1,17 @@
 package database.marks;
 
 public class MarksTableForSeventhEighthClass extends Marks {
-    private final int[] mathMark;
-    private final int[] polishMark;
-    private final int[] englishMark;
-    private final int[] informaticsMark;
-    private final int[] peMark;
-    private final int[] musicMark;
-    private final int[] religionMark;
-    private final int[] biologyMark;
-    private final int[] physicsMark;
-    private final int[] geographyMark;
-    private final int[] behaviorMark;
+    private int[] mathMark;
+    private int[] polishMark;
+    private int[] englishMark;
+    private int[] informaticsMark;
+    private int[] peMark;
+    private int[] musicMark;
+    private int[] religionMark;
+    private int[] biologyMark;
+    private int[] physicsMark;
+    private int[] geographyMark;
+    private int[] behaviorMark;
 
     public MarksTableForSeventhEighthClass(int mathI, int mathII, int mathIII, int mathYearly,
                                           int polishI, int polishII, int polishIII, int polishYearly,
@@ -49,5 +49,93 @@ public class MarksTableForSeventhEighthClass extends Marks {
         this.physicsMark = new int[] {0,0,0,0};;
         this.geographyMark = new int[] {0,0,0,0};;
         this.behaviorMark = new int[] {0,0,0,0};
+    }
+
+    public int[] getMathMark() {
+        return mathMark;
+    }
+
+    public void setMathMark(int[] mathMark) {
+        this.mathMark = mathMark;
+    }
+
+    public int[] getPolishMark() {
+        return polishMark;
+    }
+
+    public void setPolishMark(int[] polishMark) {
+        this.polishMark = polishMark;
+    }
+
+    public int[] getEnglishMark() {
+        return englishMark;
+    }
+
+    public void setEnglishMark(int[] englishMark) {
+        this.englishMark = englishMark;
+    }
+
+    public int[] getInformaticsMark() {
+        return informaticsMark;
+    }
+
+    public void setInformaticsMark(int[] informaticsMark) {
+        this.informaticsMark = informaticsMark;
+    }
+
+    public int[] getPeMark() {
+        return peMark;
+    }
+
+    public void setPeMark(int[] peMark) {
+        this.peMark = peMark;
+    }
+
+    public int[] getMusicMark() {
+        return musicMark;
+    }
+
+    public void setMusicMark(int[] musicMark) {
+        this.musicMark = musicMark;
+    }
+
+    public int[] getReligionMark() {
+        return religionMark;
+    }
+
+    public void setReligionMark(int[] religionMark) {
+        this.religionMark = religionMark;
+    }
+
+    public int[] getBiologyMark() {
+        return biologyMark;
+    }
+
+    public void setBiologyMark(int[] biologyMark) {
+        this.biologyMark = biologyMark;
+    }
+
+    public int[] getPhysicsMark() {
+        return physicsMark;
+    }
+
+    public void setPhysicsMark(int[] physicsMark) {
+        this.physicsMark = physicsMark;
+    }
+
+    public int[] getGeographyMark() {
+        return geographyMark;
+    }
+
+    public void setGeographyMark(int[] geographyMark) {
+        this.geographyMark = geographyMark;
+    }
+
+    public int[] getBehaviorMark() {
+        return behaviorMark;
+    }
+
+    public void setBehaviorMark(int[] behaviorMark) {
+        this.behaviorMark = behaviorMark;
     }
 }
