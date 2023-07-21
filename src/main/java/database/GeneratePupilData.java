@@ -47,6 +47,7 @@ public class GeneratePupilData {
     public int generateYear() {
         return localDate.getYear() - random.nextInt(9) - 6;
     }
+    public int generateYearForParents() { return localDate.getYear() - random.nextInt(15) - 25; }
 
     public int generateMonth() {
         return random.nextInt(11) + 1;
@@ -83,17 +84,17 @@ public class GeneratePupilData {
 
     public MarksTableForthFifthSixthClass generateMarks456() {
      int isSenior = (random.nextBoolean())?2:0;
-     int m1=random.nextInt(2)+2+isSenior,m2=random.nextInt(2)+2+isSenior,m3=random.nextInt(2)+2+isSenior,mY = (m1+m2+m3)/3;
-     int p1=random.nextInt(2)+2+isSenior,p2=random.nextInt(2)+2+isSenior,p3=random.nextInt(2)+2+isSenior,pY = (p1+p2+p3)/3;
-     int e1=random.nextInt(2)+2+isSenior,e2=random.nextInt(2)+2+isSenior,e3=random.nextInt(2)+2+isSenior,eY = (e1+e2+e3)/3;
-     int i1=random.nextInt(2)+2+isSenior,i2=random.nextInt(2)+2+isSenior,i3=random.nextInt(2)+2+isSenior,iY = (i1+i2+i3)/3;
-     int pe1=random.nextInt(2)+2+isSenior,pe2=random.nextInt(2)+2+isSenior,pe3=random.nextInt(2)+2+isSenior,
+     int m1=random.nextInt(4)+2+isSenior,m2=random.nextInt(4)+2+isSenior,m3=random.nextInt(4)+2+isSenior,mY = (m1+m2+m3)/3;
+     int p1=random.nextInt(4)+2+isSenior,p2=random.nextInt(4)+2+isSenior,p3=random.nextInt(4)+2+isSenior,pY = (p1+p2+p3)/3;
+     int e1=random.nextInt(4)+2+isSenior,e2=random.nextInt(4)+2+isSenior,e3=random.nextInt(4)+2+isSenior,eY = (e1+e2+e3)/3;
+     int i1=random.nextInt(4)+2+isSenior,i2=random.nextInt(4)+2+isSenior,i3=random.nextInt(4)+2+isSenior,iY = (i1+i2+i3)/3;
+     int pe1=random.nextInt(4)+2+isSenior,pe2=random.nextInt(4)+2+isSenior,pe3=random.nextInt(4)+2+isSenior,
              peY = (pe1+pe2+pe3)/3;
-     int mus1=random.nextInt(2)+2+isSenior,mus2=random.nextInt(2)+2+isSenior,mus3=random.nextInt(2)+2+isSenior,
+     int mus1=random.nextInt(4)+2+isSenior,mus2=random.nextInt(4)+2+isSenior,mus3=random.nextInt(3)+2+isSenior,
              musY = (mus1+mus2+mus3)/3;
-     int r1=random.nextInt(2)+2+isSenior,r2=random.nextInt(2)+2+isSenior,r3=random.nextInt(2)+2+isSenior,rY = (r1+r2+r3)/3;
-     int n1=random.nextInt(2)+2+isSenior,n2=random.nextInt(2)+2+isSenior,n3=random.nextInt(2)+2+isSenior,nY = (n1+n2+n3)/3;
-     int b1=random.nextInt(2)+2+isSenior,b2=random.nextInt(2)+2+isSenior,b3=random.nextInt(2)+2+isSenior,bY = (b1+b2+b3)/3;
+     int r1=random.nextInt(4)+2+isSenior,r2=random.nextInt(4)+2+isSenior,r3=random.nextInt(4)+2+isSenior,rY = (r1+r2+r3)/3;
+     int n1=random.nextInt(4)+2+isSenior,n2=random.nextInt(4)+2+isSenior,n3=random.nextInt(4)+2+isSenior,nY = (n1+n2+n3)/3;
+     int b1=random.nextInt(4)+2+isSenior,b2=random.nextInt(4)+2+isSenior,b3=random.nextInt(4)+2+isSenior,bY = (b1+b2+b3)/3;
 
         return new MarksTableForthFifthSixthClass(m1,m2,m3,mY,
                 p1,p2,p3,pY,
@@ -157,6 +158,23 @@ public class GeneratePupilData {
 
         return new Person(name, generateSurname(), gender, year, month, day, address, pesel);
     }
+    public Person generatePersonForParents(String surname, Address address) {
+        int year = generateYearForParents();
+        int month = generateMonth();
+        int day = generateDay();
+        char gender = generateGender();
+        String name = (gender=='M')?generateMaleName():generateFemaleName();
+
+        int pesel1And2thDigits = year % 100;
+        int pesel3And4thDigits = month;
+        int pesel7And8And9thDigits = random.nextInt(999);
+        int pesel10thDigit = (gender=='F') ? random.nextInt(4) * 2 : (9 - random.nextInt(4) * 2);
+
+        String pesel = String.format("%d%d%02d%03d%d%d", pesel1And2thDigits, pesel3And4thDigits, day,
+                pesel7And8And9thDigits, pesel10thDigit, random.nextInt(10));
+
+        return new Person(name, surname, gender, year, month, day, address, pesel);
+    }
 
     public Person generatePerson(Address address, char gender) {
         int year = generateYear();
@@ -175,13 +193,30 @@ public class GeneratePupilData {
         return new Person(name, generateSurname(), gender, year, month, day, address, pesel);
     }
 
-    public Parents generateParents() {
-        Address address = generateAddress();
+    public Person generatePersonForParents(String surname, Address address, char gender) {
+        int year = generateYearForParents();
+        int month = generateMonth();
+        int day = generateDay();
+        String name = (gender=='M')?generateMaleName():generateFemaleName();
+
+        int pesel1And2thDigits = year % 100;
+        int pesel3And4thDigits = month;
+        int pesel7And8And9thDigits = random.nextInt(999);
+        int pesel10thDigit = (gender=='F') ? random.nextInt(4) * 2 : (9 - random.nextInt(4) * 2);
+
+        String pesel = String.format("%d%d%02d%03d%d%d", pesel1And2thDigits, pesel3And4thDigits, day,
+                pesel7And8And9thDigits, pesel10thDigit, random.nextInt(10));
+
+        return new Person(name, surname, gender, year, month, day, address, pesel);
+    }
+
+    public Parents generateParents(String surname, Address address) {
         int chance = random.nextInt(100);
         if (chance>95) {
-            return new Parents(generatePerson(address));
+            return new Parents(generatePersonForParents(surname, address));
         } else {
-            return new Parents(generatePerson(address,'M'), generatePerson(address,'F'));
+            return new Parents(generatePersonForParents(surname, address,'M'),
+                    generatePersonForParents(surname, address,'F'));
         }
 
     }
@@ -190,7 +225,7 @@ public class GeneratePupilData {
         Person person = generatePerson();
         int grade = localDate.getYear() - person.getYear()-6;
 
-        return new Pupil(person, Pupil.getIdNumber(), grade, generateParents(), generateAchievement(),
+        return new Pupil(person, grade, generateParents(person.getSurname(), person.getAddress()), generateAchievement(),
                  generateMarks456(), false, false);
     }
 

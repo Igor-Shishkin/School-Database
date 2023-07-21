@@ -21,11 +21,5 @@ public class Main {
         System.out.println(pupil5);
         System.out.println(pupil6);
 
-        System.out.println(generate.generateGender());
-        System.out.println(generate.generateGender());
-        System.out.println(generate.generateGender());
-        System.out.println(generate.generateGender());
-        System.out.println(generate.generateGender());
-        System.out.println(generate.generateGender());
     }
 }

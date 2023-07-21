@@ -13,9 +13,10 @@ public class Pupil extends Person{
     private boolean awardBar;
     private boolean promotionToNextGrade;
 
-    public Pupil(Person person, int id, int grade, Parents parents, String achievement, Marks marks, boolean awardBar,
+    public Pupil(Person person, int grade, Parents parents, String achievement, Marks marks, boolean awardBar,
                  boolean promotionToNextGrade) {
-        super(person);
+        super(person.getName(),person.getSecondName(), person.getSurname(), person.getGender(), person.getYear(),
+                person.getMonth(), person.getDay(), person.getAddress(), person.getPesel());
         this.id = getIdNumber();
         this.grade = grade;
         this.parents = parents;
@@ -96,17 +97,19 @@ public class Pupil extends Person{
         this.promotionToNextGrade = promotionToNextGrade;
     }
     public static int getIdNumber() {idNumber++; return idNumber;}
+    public int getId() {return this.id;}
 
     @Override
     public String toString() {
-        return "Pupil{" +
-                "id=" + id +
+        return "Pupil: " +
+                super.toString() +
+                "\nid=" + id +
                 ", grade=" + grade +
-                ", parents=" + parents +
+                "\nparents=" + parents +
                 ", achievement='" + achievement + '\'' +
-                ", marks=" + marks +
-                ", awardBar=" + awardBar +
+                "\nmarks=" + marks +
+                "\nawardBar=" + awardBar +
                 ", promotionToNextGrade=" + promotionToNextGrade +
-                '}';
+                "}\n\n";
     }
 }

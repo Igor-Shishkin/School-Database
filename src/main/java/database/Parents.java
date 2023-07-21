@@ -31,9 +31,8 @@ public class Parents {
 
     @Override
     public String toString() {
-        return "Parents{" +
+        return "Parents: \n" +
                 "parent1=" + parent1 +
-                ", parent2=" + parent2 +
-                '}';
+                "\nparent2=" + parent2;
     }
 }

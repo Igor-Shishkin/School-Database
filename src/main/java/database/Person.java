@@ -63,6 +63,14 @@ public class Person {
         this.secondName = secondName;
     }
 
+    public char getGender() {
+        return gender;
+    }
+
+    public void setGender(char gender) {
+        this.gender = gender;
+    }
+
     public String getSurname() {
         return surname;
     }
@@ -79,9 +87,7 @@ public class Person {
         this.year = year;
     }
 
-    public int getMonth() {
-        return month;
-    }
+    public int getMonth() {return month; }
 
     public void setMonth(int month) {
         this.month = month;
@@ -113,16 +119,16 @@ public class Person {
 
     @Override
     public String toString() {
-        return "Person{" +
+        return "Person: " +
                 "name='" + name + '\'' +
                 ", secondName='" + secondName + '\'' +
                 ", surname='" + surname + '\'' +
-                ", gender=" + gender +
+                "\ngender=" + gender +
                 ", year=" + year +
                 ", month=" + month +
                 ", day=" + day +
-                ", address=" + address +
-                ", pesel='" + pesel + '\'' +
+                "\naddress=" + address +
+                "\npesel='" + pesel + '\'' +
                 '}';
     }
 }
