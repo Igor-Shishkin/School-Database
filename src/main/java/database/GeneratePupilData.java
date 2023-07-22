@@ -37,8 +37,11 @@ public class GeneratePupilData {
     public String generateMaleName() {
         return MALE_NAMES[random.nextInt(MALE_NAMES.length - 1)];
     }
-    public String generateFemaleName() { return FEMALE_NAMES[random.nextInt(FEMALE_NAMES.length - 1)];
-    }
+    public String generateSecondMaleName() {
+        return (random.nextInt(100)>95)? MALE_NAMES[random.nextInt(MALE_NAMES.length - 1)] :null;  }
+    public String generateFemaleName() { return FEMALE_NAMES[random.nextInt(FEMALE_NAMES.length - 1)]; }
+    public String generateSecondFemaleName() {
+        return (random.nextInt(100)>95)? FEMALE_NAMES[random.nextInt(FEMALE_NAMES.length - 1)] :null;  }
 
     public String generateSurname() {
         return SURNAMES[random.nextInt(SURNAMES.length - 1)];
@@ -107,126 +110,73 @@ public class GeneratePupilData {
                 b1,b2,b3,bY);
     }
 
-
-    public Person generatePerson() {
-        int year = generateYear();
-        int month = generateMonth();
-        int day = generateDay();
-        char gender = generateGender();
-        String name = (gender=='M')?generateMaleName():generateFemaleName();
-
-        int pesel1And2thDigits = year % 100;
-        int pesel3And4thDigits = month + 20;
-        int pesel7And8And9thDigits = random.nextInt(999);
-        int pesel10thDigit = (gender=='F') ? random.nextInt(4) * 2 : (9 - random.nextInt(4) * 2);
-
-        String pesel = String.format("%d%d%02d%03d%d%d", pesel1And2thDigits, pesel3And4thDigits, day,
-                pesel7And8And9thDigits, pesel10thDigit, random.nextInt(10));
-
-        return new Person(name, generateSurname(), gender, year, month, day, generateAddress(), pesel);
-    }
-    public Person generatePerson(char gender) {
-        int year = generateYear();
-        int month = generateMonth();
-        int day = generateDay();
-        String name = (gender=='M')?generateMaleName():generateFemaleName();
-
-        int pesel1And2thDigits = year % 100;
-        int pesel3And4thDigits = month + 20;
-        int pesel7And8And9thDigits = random.nextInt(999);
-        int pesel10thDigit = (gender=='F') ? random.nextInt(4) * 2 : (9 - random.nextInt(4) * 2);
-
-        String pesel = String.format("%d%d%02d%03d%d%d", pesel1And2thDigits, pesel3And4thDigits, day,
-                pesel7And8And9thDigits, pesel10thDigit, random.nextInt(10));
-
-        return new Person(name, generateSurname(), gender, year, month, day, generateAddress(), pesel);
-    }
-    public Person generatePerson(Address address) {
-        int year = generateYear();
-        int month = generateMonth();
-        int day = generateDay();
-        char gender = generateGender();
-        String name = (gender=='M')?generateMaleName():generateFemaleName();
-
-        int pesel1And2thDigits = year % 100;
-        int pesel3And4thDigits = month + 20;
-        int pesel7And8And9thDigits = random.nextInt(999);
-        int pesel10thDigit = (gender=='F') ? random.nextInt(4) * 2 : (9 - random.nextInt(4) * 2);
-
-        String pesel = String.format("%d%d%02d%03d%d%d", pesel1And2thDigits, pesel3And4thDigits, day,
-                pesel7And8And9thDigits, pesel10thDigit, random.nextInt(10));
-
-        return new Person(name, generateSurname(), gender, year, month, day, address, pesel);
-    }
-    public Person generatePersonForParents(String surname, Address address) {
-        int year = generateYearForParents();
-        int month = generateMonth();
-        int day = generateDay();
-        char gender = generateGender();
-        String name = (gender=='M')?generateMaleName():generateFemaleName();
-
-        int pesel1And2thDigits = year % 100;
-        int pesel3And4thDigits = month;
-        int pesel7And8And9thDigits = random.nextInt(999);
-        int pesel10thDigit = (gender=='F') ? random.nextInt(4) * 2 : (9 - random.nextInt(4) * 2);
-
-        String pesel = String.format("%d%d%02d%03d%d%d", pesel1And2thDigits, pesel3And4thDigits, day,
-                pesel7And8And9thDigits, pesel10thDigit, random.nextInt(10));
-
-        return new Person(name, surname, gender, year, month, day, address, pesel);
+    public int generateTelephone () {
+        return 700000000 + random.nextInt(99999999);
     }
 
-    public Person generatePerson(Address address, char gender) {
-        int year = generateYear();
-        int month = generateMonth();
-        int day = generateDay();
-        String name = (gender=='M')?generateMaleName():generateFemaleName();
-
-        int pesel1And2thDigits = year % 100;
-        int pesel3And4thDigits = month + 20;
-        int pesel7And8And9thDigits = random.nextInt(999);
-        int pesel10thDigit = (gender=='F') ? random.nextInt(4) * 2 : (9 - random.nextInt(4) * 2);
-
-        String pesel = String.format("%d%d%02d%03d%d%d", pesel1And2thDigits, pesel3And4thDigits, day,
-                pesel7And8And9thDigits, pesel10thDigit, random.nextInt(10));
-
-        return new Person(name, generateSurname(), gender, year, month, day, address, pesel);
-    }
-
-    public Person generatePersonForParents(String surname, Address address, char gender) {
+    public Parent generateParent(String surname, char gender, Address address) {
         int year = generateYearForParents();
         int month = generateMonth();
         int day = generateDay();
         String name = (gender=='M')?generateMaleName():generateFemaleName();
+        String secondName = (gender=='M')?generateSecondMaleName():generateSecondFemaleName();
 
         int pesel1And2thDigits = year % 100;
-        int pesel3And4thDigits = month;
+        int pesel3And4thDigits = month + 20;
         int pesel7And8And9thDigits = random.nextInt(999);
         int pesel10thDigit = (gender=='F') ? random.nextInt(4) * 2 : (9 - random.nextInt(4) * 2);
-
         String pesel = String.format("%d%d%02d%03d%d%d", pesel1And2thDigits, pesel3And4thDigits, day,
                 pesel7And8And9thDigits, pesel10thDigit, random.nextInt(10));
+        String eMail = name.toLowerCase().concat(".").concat(surname.toLowerCase()).concat("@gmail.com");
 
-        return new Person(name, surname, gender, year, month, day, address, pesel);
+        return new Parent(name, secondName, surname, gender, year, month, day, address,
+                pesel, generateTelephone(), eMail);
     }
 
-    public Parents generateParents(String surname, Address address) {
-        int chance = random.nextInt(100);
-        if (chance>95) {
-            return new Parents(generatePersonForParents(surname, address));
-        } else {
-            return new Parents(generatePersonForParents(surname, address,'M'),
-                    generatePersonForParents(surname, address,'F'));
-        }
+    public Parent generateSecondParent(String surname, char gender, Address address) {
+        int year = generateYearForParents();
+        int month = generateMonth();
+        int day = generateDay();
+        String name = (gender=='M')?generateMaleName():generateFemaleName();
+        String secondName = (gender=='M')?generateSecondMaleName():generateSecondFemaleName();
 
+        int pesel1And2thDigits = year % 100;
+        int pesel3And4thDigits = month + 20;
+        int pesel7And8And9thDigits = random.nextInt(999);
+        int pesel10thDigit = (gender=='F') ? random.nextInt(4) * 2 : (9 - random.nextInt(4) * 2);
+        String pesel = String.format("%d%d%02d%03d%d%d", pesel1And2thDigits, pesel3And4thDigits, day,
+                pesel7And8And9thDigits, pesel10thDigit, random.nextInt(10));
+        String eMail = name.toLowerCase().concat(".").concat(surname.toLowerCase()).concat("@gmail.com");
+
+        return (random.nextInt(100)<95)? new Parent(name, secondName, surname, gender, year, month, day, address,
+                pesel, generateTelephone(), eMail) : null;
     }
 
     public Pupil generatePupil() {
-        Person person = generatePerson();
-        int grade = localDate.getYear() - person.getYear()-6;
+        int year = generateYear();
+        int month = generateMonth();
+        int day = generateDay();
+        char gender = generateGender();
+        String name = (gender=='M')?generateMaleName():generateFemaleName();
+        String secondName = (gender=='M')?generateSecondMaleName():generateSecondFemaleName();
+        String surname = generateSurname();
+        int grade = localDate.getYear() - year - 6;
+        char parentGender = generateGender();
+        char parentSecondGender = (parentGender=='M')?'F':'M';
+        Address address = generateAddress();
 
-        return new Pupil(person, grade, generateParents(person.getSurname(), person.getAddress()), generateAchievement(),
-                 generateMarks456(), false, false);
+        int pesel1And2thDigits = year % 100;
+        int pesel3And4thDigits = month + 20;
+        int pesel7And8And9thDigits = random.nextInt(999);
+        int pesel10thDigit = (gender=='F') ? random.nextInt(4) * 2 : (9 - random.nextInt(4) * 2);
+        String pesel = String.format("%d%d%02d%03d%d%d", pesel1And2thDigits, pesel3And4thDigits, day,
+                pesel7And8And9thDigits, pesel10thDigit, random.nextInt(10));
+
+
+        return new Pupil(name, secondName, surname, gender, year, month, day, address,
+                pesel, Pupil.getIdNumber(), grade, generateParent(surname, parentGender, address),
+                generateSecondParent(surname, parentSecondGender, address), generateAchievement(),
+                generateMarks456(), false, false);
     }
 
 

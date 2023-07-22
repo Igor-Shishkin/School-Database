@@ -1,11 +1,13 @@
 package database;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+
+import java.io.File;
+import java.io.IOException;
+
 public class Main {
     public static void main(String[] args) {
-//        Parents = new Parents(new Person("Małgorzata", id))
-//        Pupil pupil = new Pupil("Jan", "Kowalski", 2010, 4, 12,
-//                new Address("Polska", "Wielkopolskie","Poznań", "Dobra",
-//                        12,3,"34-345"), 10241244550, ;
+
         GeneratePupilData generate = new GeneratePupilData();
         Pupil pupil1 = generate.generatePupil();
         Pupil pupil2 = generate.generatePupil();
@@ -20,6 +22,18 @@ public class Main {
         System.out.println(pupil4);
         System.out.println(pupil5);
         System.out.println(pupil6);
+
+//        ObjectMapper mapper = new ObjectMapper();
+//
+//        try {
+//            mapper.writeValue(new File("test.txt"), pupil1);
+//            mapper.writeValue(new File("test.txt"), pupil2);
+//            mapper.writeValue(new File("test.txt"), pupil3);
+//            mapper.writeValue(new File("test.txt"), pupil4);
+//        } catch (IOException e) {
+//            throw new RuntimeException(e);
+//        }
+
 
     }
 }

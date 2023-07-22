@@ -1,6 +1,6 @@
 package database;
 
-public class Person {
+public abstract class Person {
 
     private String name;
     private String secondName;
@@ -12,7 +12,8 @@ public class Person {
     private Address address;
     private String pesel;
 
-    public Person(String name, String secondName, String surname, char gender, int year, int month, int day, Address address, String pesel) {
+    public Person(String name, String secondName, String surname, char gender, int year, int month, int day,
+                  Address address, String pesel) {
         this.name = name;
         this.secondName = secondName;
         this.surname = surname;
@@ -23,29 +24,41 @@ public class Person {
         this.address = address;
         this.pesel = pesel;
     }
-    public Person(String name, String surname, char gender, int year, int month, int day, Address address, String pesel) {
-        this.name = name;
-        this.gender = gender;
-        this.secondName = null;
-        this.surname = surname;
-        this.year = year;
-        this.month = month;
-        this.day = day;
-        this.address = address;
-        this.pesel = pesel;
-    }
 
-    public Person(Person person) {
-        this.gender = '-';
-        this.name = null;
-        this.secondName = null;
-        this.surname = null;
-        this.year = 0;
-        this.month = 0;
-        this.day = 0;
-        this.address = null;
-        this.pesel = null;
-    }
+    //    public Person(String name, String secondName, String surname, char gender, int year, int month, int day, Address address, String pesel) {
+//        this.name = name;
+//        this.secondName = secondName;
+//        this.surname = surname;
+//        this.gender = gender;
+//        this.year = year;
+//        this.month = month;
+//        this.day = day;
+//        this.address = address;
+//        this.pesel = pesel;
+//    }
+//    public Person(String name, String surname, char gender, int year, int month, int day, Address address, String pesel) {
+//        this.name = name;
+//        this.gender = gender;
+//        this.secondName = null;
+//        this.surname = surname;
+//        this.year = year;
+//        this.month = month;
+//        this.day = day;
+//        this.address = address;
+//        this.pesel = pesel;
+//    }
+//
+//    public Person(Person person) {
+//        this.gender = '-';
+//        this.name = null;
+//        this.secondName = null;
+//        this.surname = null;
+//        this.year = 0;
+//        this.month = 0;
+//        this.day = 0;
+//        this.address = null;
+//        this.pesel = null;
+//    }
 
     public String getName() {
         return name;
@@ -123,8 +136,8 @@ public class Person {
                 "name='" + name + '\'' +
                 ", secondName='" + secondName + '\'' +
                 ", surname='" + surname + '\'' +
-                "\ngender=" + gender +
-                ", year=" + year +
+                ", gender=" + gender +
+                "\nyear=" + year +
                 ", month=" + month +
                 ", day=" + day +
                 "\naddress=" + address +
