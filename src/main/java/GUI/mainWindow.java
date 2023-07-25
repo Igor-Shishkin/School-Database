@@ -1,4 +1,4 @@
-package database.GUI;
+package GUI;
 
 import javax.swing.*;
 import java.awt.*;
@@ -6,14 +6,14 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
 
-public class myFrame extends JFrame implements ActionListener {
+public class mainWindow extends JFrame implements ActionListener {
     JButton button;
     JButton button2;
     JPanel panel;
     JLabel label;
     JTextField textField;
 
-    myFrame(){
+    mainWindow(){
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         this.setLayout(new FlowLayout());
 
