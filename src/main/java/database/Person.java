@@ -25,6 +25,9 @@ public abstract class Person {
         this.pesel = pesel;
     }
 
+    public Person() {
+    }
+
     //    public Person(String name, String secondName, String surname, char gender, int year, int month, int day, Address address, String pesel) {
 //        this.name = name;
 //        this.secondName = secondName;
@@ -144,4 +147,5 @@ public abstract class Person {
                 "\npesel='" + pesel + '\'' +
                 '}';
     }
+
 }

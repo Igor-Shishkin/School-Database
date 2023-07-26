@@ -9,6 +9,8 @@ public class Address {
     private int local;
     private String postCode;
 
+    public Address() {};
+
     public Address(String country, String province, String town, String street, int house, int local, String postCode) {
         this.country = country;
         this.province = province;

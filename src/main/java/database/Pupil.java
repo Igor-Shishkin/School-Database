@@ -1,11 +1,9 @@
 package database;
 
-import database.marks.Marks;
-
 public class Pupil extends Person{
 
     private static int idNumber=0;
-    private final int id;
+    private int id;
     private int grade;
     private Parent parent1;
     private Parent parent2;
@@ -13,6 +11,20 @@ public class Pupil extends Person{
     private Marks marks;
     private boolean awardBar;
     private boolean promotionToNextGrade;
+
+
+
+    public Pupil() {
+        super("", "", "", '\0', 0, 0, 0, null, "");
+        this.id = -1;
+        this.grade = 0;
+        this.parent1 = null;
+        this.parent2 = null;
+        this.achievement = null;
+        this.marks = null;
+        this.awardBar = false;
+        this.promotionToNextGrade = false;
+    }
 
     public Pupil(String name, String secondName, String surname, char gender, int year, int month, int day,
                  Address address, String pesel, int id, int grade, Parent parent1, Parent parent2, String achievement,
@@ -99,6 +111,10 @@ public class Pupil extends Person{
 
     public static int getIdNumber() {idNumber++; return idNumber;}
     public int getId() {return this.id;}
+    public void setId(int newID) {this.id = newID;}
+    public static void setIdNumber(int idNumber) {
+        Pupil.idNumber = idNumber;
+    }
 
     @Override
     public String toString() {

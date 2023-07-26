@@ -1,20 +1,25 @@
 package database;
 
 public class Parent extends Person{
-    private int telephone;
+    private String telephone;
     private String eMail;
+    public Parent() {
+        super("", "", "", '\0', 0, 0, 0, null, "");
+        this.telephone = null;
+        this.eMail = null;
+    }
 
-    public Parent(String name, String secondName, String surname, char gender, int year, int month, int day, Address address, String pesel, int telephone, String eMail) {
+    public Parent(String name, String secondName, String surname, char gender, int year, int month, int day, Address address, String pesel, String telephone, String eMail) {
         super(name, secondName, surname, gender, year, month, day, address, pesel);
         this.telephone = telephone;
         this.eMail = eMail;
     }
 
-    public int getTelephone() {
+    public String getTelephone() {
         return telephone;
     }
 
-    public void setTelephone(int telephone) {
+    public void setTelephone(String telephone) {
         this.telephone = telephone;
     }
 

@@ -1,0 +1,133 @@
+package GUI;
+
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.io.File;
+
+public class MainWindow extends JFrame implements ActionListener {
+
+    JMenu fileMenu;
+    JMenu styleMenu;
+    JMenu helpMenu;
+    JMenuItem openFileItem;
+    JMenuItem newDatabaseItem;
+    JMenuItem saveItem;
+    JMenuItem closeItem;
+    JMenu userMenu;
+    JMenuItem logOutItem;
+    JMenuItem changeStyle;
+    JMenuItem changeAdmissionItem;
+    JMenuItem helpItem;
+
+
+    JButton button;
+    JButton button2;
+    JPanel panel;
+    JLabel label;
+    JTextField textField;
+
+    MainWindow(){
+        JMenuBar menuBar = new JMenuBar();
+        Font font = new Font("MV Boli", Font.PLAIN, 15);
+
+        fileMenu = new JMenu("File");
+        styleMenu = new JMenu("Style");
+        helpMenu = new JMenu("Help");
+        userMenu = new JMenu("User");
+
+        newDatabaseItem = new JMenuItem("New");
+        openFileItem = new JMenuItem("Open");
+        saveItem = new JMenuItem("Save");
+        closeItem = new JMenuItem("Close");
+        logOutItem = new JMenuItem("Log out");
+        changeStyle = new JMenuItem("Change style");
+        changeAdmissionItem = new JMenuItem("Change admission");
+        helpItem = new JMenuItem("Help");
+
+        fileMenu.add(newDatabaseItem);
+        fileMenu.setFont(font);
+        fileMenu.add(openFileItem);
+        fileMenu.add(saveItem);
+        fileMenu.add(closeItem);
+
+        styleMenu.add(changeStyle);
+        helpMenu.add(helpItem);
+        userMenu.add(changeAdmissionItem);
+        userMenu.add(logOutItem);
+
+        menuBar.setFont(font);
+        menuBar.add(fileMenu);
+        menuBar.add(userMenu);
+        menuBar.add(styleMenu);
+        menuBar.add(helpMenu);
+
+
+
+
+        this.setJMenuBar(menuBar);
+        this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        this.setLayout(null);
+        this.setSize(900,600);
+//        this.pack();
+        this.setVisible(true);
+
+
+
+
+
+
+
+
+
+
+
+//        button = new JButton("Submit");
+//        button.setBackground(Color.LIGHT_GRAY);
+//        button.addActionListener(this);
+//        button.setFont(new Font("Consolas", Font.PLAIN, 25));
+//
+//
+//        button2 = new JButton();
+//        button2.addActionListener(this);
+//        button2.setText("Open file");
+//        button2.setFont(new Font("Consolas", Font.PLAIN, 25));
+//
+//
+//        textField = new JTextField();
+//        textField.setPreferredSize(new Dimension(250,40));
+//        textField.setFont(new Font("Consolas", Font.PLAIN, 35));
+//        textField.setForeground(new Color(0x00FF00));
+//        textField.setBackground(Color.black);
+//
+//        textField.setText("username");
+//
+//        this.add(button);
+//        this.add(button2);
+//        this.add(textField);
+//        this.pack();
+//        this.setVisible(true);
+
+    }
+
+
+    @Override
+    public void actionPerformed(ActionEvent e) {
+        if (e.getSource()==button) {
+            System.out.println("Hello!: " + textField.getText());
+        }
+        if (e.getSource()==button2) {
+            JFileChooser fileChooser = new JFileChooser();
+//            fileChooser.showOpenDialog(null);
+            int response = fileChooser.showOpenDialog(null);
+
+            if(response==JFileChooser.APPROVE_OPTION) {
+                File file = new File(fileChooser.getSelectedFile().getAbsolutePath());
+                System.out.println(file);
+          }
+        }
+    }
+}
+
+

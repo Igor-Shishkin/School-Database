@@ -1,7 +1,5 @@
 package database;
 
-import database.marks.MarksTableForthFifthSixthClass;
-
 import java.time.LocalDate;
 import java.util.Random;
 
@@ -48,7 +46,7 @@ public class GeneratePupilData {
     }
 
     public int generateYear() {
-        return localDate.getYear() - random.nextInt(9) - 6;
+        return localDate.getYear() - random.nextInt(5) - 10;
     }
     public int generateYearForParents() { return localDate.getYear() - random.nextInt(15) - 25; }
 
@@ -85,21 +83,28 @@ public class GeneratePupilData {
         return (random.nextInt(100)>95)?ACHIEVEMENT[random.nextInt(ACHIEVEMENT.length - 1)]:null;
     }
 
-    public MarksTableForthFifthSixthClass generateMarks456() {
+    public Marks generateMarks456() {
      int isSenior = (random.nextBoolean())?2:0;
-     int m1=random.nextInt(4)+2+isSenior,m2=random.nextInt(4)+2+isSenior,m3=random.nextInt(4)+2+isSenior,mY = (m1+m2+m3)/3;
-     int p1=random.nextInt(4)+2+isSenior,p2=random.nextInt(4)+2+isSenior,p3=random.nextInt(4)+2+isSenior,pY = (p1+p2+p3)/3;
-     int e1=random.nextInt(4)+2+isSenior,e2=random.nextInt(4)+2+isSenior,e3=random.nextInt(4)+2+isSenior,eY = (e1+e2+e3)/3;
-     int i1=random.nextInt(4)+2+isSenior,i2=random.nextInt(4)+2+isSenior,i3=random.nextInt(4)+2+isSenior,iY = (i1+i2+i3)/3;
-     int pe1=random.nextInt(4)+2+isSenior,pe2=random.nextInt(4)+2+isSenior,pe3=random.nextInt(4)+2+isSenior,
-             peY = (pe1+pe2+pe3)/3;
-     int mus1=random.nextInt(4)+2+isSenior,mus2=random.nextInt(4)+2+isSenior,mus3=random.nextInt(3)+2+isSenior,
-             musY = (mus1+mus2+mus3)/3;
-     int r1=random.nextInt(4)+2+isSenior,r2=random.nextInt(4)+2+isSenior,r3=random.nextInt(4)+2+isSenior,rY = (r1+r2+r3)/3;
-     int n1=random.nextInt(4)+2+isSenior,n2=random.nextInt(4)+2+isSenior,n3=random.nextInt(4)+2+isSenior,nY = (n1+n2+n3)/3;
-     int b1=random.nextInt(4)+2+isSenior,b2=random.nextInt(4)+2+isSenior,b3=random.nextInt(4)+2+isSenior,bY = (b1+b2+b3)/3;
+     int m1=random.nextInt(4)+1+isSenior,m2=random.nextInt(4)+1+isSenior,
+             m3=random.nextInt(4)+1+isSenior,mY = getAverage(m1,m2,m3);
+     int p1=random.nextInt(4)+1+isSenior,p2=random.nextInt(4)+1+isSenior,
+             p3=random.nextInt(4)+1+isSenior,pY = getAverage(p1,p2,p3);
+     int e1=random.nextInt(4)+1+isSenior,e2=random.nextInt(4)+1+isSenior,
+             e3=random.nextInt(4)+1+isSenior,eY = getAverage(e1,e2,e3);
+     int i1=random.nextInt(4)+1+isSenior,i2=random.nextInt(4)+1+isSenior,
+             i3=random.nextInt(4)+1+isSenior,iY = getAverage(i1,i2,i3);
+     int pe1=random.nextInt(4)+1+isSenior,pe2=random.nextInt(4)+1+isSenior,
+             pe3=random.nextInt(4)+1+isSenior, peY = getAverage(pe1,pe2,pe3);
+     int mus1=random.nextInt(4)+1+isSenior,mus2=random.nextInt(4)+1+isSenior,
+             mus3=random.nextInt(3)+1+isSenior, musY = getAverage(mus1,mus2,mus3);
+     int r1=random.nextInt(4)+1+isSenior,r2=random.nextInt(4)+1+isSenior,
+             r3=random.nextInt(4)+1+isSenior,rY = getAverage(r1,r2,r3);
+     int n1=random.nextInt(4)+1+isSenior,n2=random.nextInt(4)+1+isSenior,
+             n3=random.nextInt(4)+1+isSenior,nY =getAverage (n1,n2,n3);
+     int b1=random.nextInt(4)+1+isSenior,b2=random.nextInt(4)+1+isSenior,
+             b3=random.nextInt(4)+1+isSenior,bY =getAverage (b1,b2,b3);
 
-        return new MarksTableForthFifthSixthClass(m1,m2,m3,mY,
+        return new Marks(m1,m2,m3,mY,
                 p1,p2,p3,pY,
                 e1,e2,e3,eY,
                 i1,i2,i3,iY,
@@ -107,11 +112,61 @@ public class GeneratePupilData {
                 mus1,mus2,mus3,musY,
                 r1,r2,r3,rY,
                 n1,n2,n3,nY,
+                0,0,0,0,
+                0,0,0,0,
+                0,0,0,0,
                 b1,b2,b3,bY);
     }
 
-    public int generateTelephone () {
-        return 700000000 + random.nextInt(99999999);
+    public Marks generateMarks7and8() {
+        int isSenior = (random.nextBoolean()) ? 2 : 0;
+        int m1 = random.nextInt(4) + 1 + isSenior, m2 = random.nextInt(4) + 1 + isSenior,
+                m3 = random.nextInt(4) + 1 + isSenior, mY = getAverage (m1, m2, m3);
+        int pol1 = random.nextInt(4) + 1 + isSenior, pol2 = random.nextInt(4) + 1 + isSenior,
+                pol3 = random.nextInt(4) + 2 + isSenior, polY = getAverage(pol1,pol2,pol3) ;
+        int e1 = random.nextInt(4) + 1 + isSenior, e2 = random.nextInt(4) + 1 + isSenior,
+                e3 = random.nextInt(4) + 1 + isSenior, eY = getAverage(e1,e2,e3) ;
+        int i1 = random.nextInt(4) + 1 + isSenior, i2 = random.nextInt(4) + 1 + isSenior,
+                i3 = random.nextInt(4) + 1 + isSenior, iY = getAverage(i1,i2,i3);
+        int pe1 = random.nextInt(4) + 1 + isSenior, pe2 = random.nextInt(4) + 1 + isSenior,
+                pe3 = random.nextInt(4) + 1 + isSenior,  peY = getAverage(pe1,pe2,pe3) ;
+        int mus1 = random.nextInt(4) + 1 + isSenior, mus2 = random.nextInt(4) + 1 + isSenior,
+                mus3 = random.nextInt(3) + 1 + isSenior, musY = getAverage(mus1, mus2, mus3);
+        int r1 = random.nextInt(4) + 1 + isSenior, r2 = random.nextInt(4) + 1 + isSenior,
+                r3 = random.nextInt(4) + 1 + isSenior, rY = getAverage(r1,r2,r3) ;
+        int n1 = random.nextInt(4) + 1 + isSenior, n2 = random.nextInt(4) + 1 + isSenior,
+                n3 = random.nextInt(4) + 1 + isSenior, nY = getAverage(n1,n2,n3) ;
+        int bl1 = random.nextInt(4) + 1 + isSenior, bl2 = random.nextInt(4) +12 + isSenior,
+                bl3 = random.nextInt(4) + 1 + isSenior, blY = getAverage(bl1,bl2,bl3) ;
+        int p1 = random.nextInt(4) + 2 + isSenior, p2 = random.nextInt(4) + 1 + isSenior,
+                p3 = random.nextInt(4) + 1 + isSenior, pY = getAverage(p1,p2,p3) ;
+        int g1 = random.nextInt(4) + 1 + isSenior, g2 = random.nextInt(4) + 1 + isSenior,
+                g3 = random.nextInt(4) + 1 + isSenior, gY = getAverage(g1,g2,g3) ;
+        int b1 = random.nextInt(4) + 1 + isSenior, b2 = random.nextInt(4) + 1 + isSenior,
+                b3 = random.nextInt(4) + 1 + isSenior, bY = getAverage(b1,b2,b3) ;
+
+        return new Marks(m1, m2, m3, mY,
+                pol1, pol2, pol3, polY,
+                e1, e2, e3, eY,
+                i1, i2, i3, iY,
+                pe1, pe2, pe3, peY,
+                mus1, mus2, mus3, musY,
+                r1, r2, r3, rY,
+                0, 0, 0, 0,
+                bl1, bl2, bl3, blY,
+                p1, p2, p3, pY,
+                g1, g2, g3, gY,
+                b1, b2, b3, bY);
+    }
+
+
+    public int getAverage(int a, int b, int c) {
+        float av = (a+b+c)/3f;
+        return Math.round(av);
+    }
+
+    public String generateTelephone () {
+        return  Integer.toString(700000000 + random.nextInt(99999999));
     }
 
     public Parent generateParent(String surname, char gender, Address address) {
@@ -172,11 +227,13 @@ public class GeneratePupilData {
         String pesel = String.format("%d%d%02d%03d%d%d", pesel1And2thDigits, pesel3And4thDigits, day,
                 pesel7And8And9thDigits, pesel10thDigit, random.nextInt(10));
 
+        Marks marks = (grade<=6) ? generateMarks456() : generateMarks7and8();
+
 
         return new Pupil(name, secondName, surname, gender, year, month, day, address,
                 pesel, Pupil.getIdNumber(), grade, generateParent(surname, parentGender, address),
                 generateSecondParent(surname, parentSecondGender, address), generateAchievement(),
-                generateMarks456(), false, false);
+                marks, false, false);
     }
 
 

@@ -75,7 +75,7 @@ public class LoginPage implements ActionListener {
                     messageLabel.setForeground(Color.green);
                     messageLabel.setText("Access confirmed :)");
 //                    Thread.currentThread().sleep(1300);
-                    mainWindow window = new mainWindow();
+                    MainWindow window = new MainWindow();
                     frame.dispose();
                 }else{
                     messageLabel.setForeground(Color.red);
