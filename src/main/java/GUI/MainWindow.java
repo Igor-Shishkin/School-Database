@@ -1,9 +1,11 @@
 package GUI;
 
 import javax.swing.*;
+import javax.swing.plaf.basic.BasicMenuItemUI;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
 import java.io.File;
 
 public class MainWindow extends JFrame implements ActionListener {
@@ -27,50 +29,23 @@ public class MainWindow extends JFrame implements ActionListener {
     JPanel panel;
     JLabel label;
     JTextField textField;
+    JMenuBar menuBar;
+    Font fontJMenuBar;
 
     MainWindow(){
-        JMenuBar menuBar = new JMenuBar();
-        Font font = new Font("MV Boli", Font.PLAIN, 15);
-
-        fileMenu = new JMenu("File");
-        styleMenu = new JMenu("Style");
-        helpMenu = new JMenu("Help");
-        userMenu = new JMenu("User");
-
-        newDatabaseItem = new JMenuItem("New");
-        openFileItem = new JMenuItem("Open");
-        saveItem = new JMenuItem("Save");
-        closeItem = new JMenuItem("Close");
-        logOutItem = new JMenuItem("Log out");
-        changeStyle = new JMenuItem("Change style");
-        changeAdmissionItem = new JMenuItem("Change admission");
-        helpItem = new JMenuItem("Help");
-
-        fileMenu.add(newDatabaseItem);
-        fileMenu.setFont(font);
-        fileMenu.add(openFileItem);
-        fileMenu.add(saveItem);
-        fileMenu.add(closeItem);
-
-        styleMenu.add(changeStyle);
-        helpMenu.add(helpItem);
-        userMenu.add(changeAdmissionItem);
-        userMenu.add(logOutItem);
-
-        menuBar.setFont(font);
-        menuBar.add(fileMenu);
-        menuBar.add(userMenu);
-        menuBar.add(styleMenu);
-        menuBar.add(helpMenu);
+        fontJMenuBar = new Font("Josefin Sans", Font.BOLD, 15);
 
 
 
+        menuBar = new JMenuBar();
+
+
+        setJMenuBar();
 
         this.setJMenuBar(menuBar);
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         this.setLayout(null);
         this.setSize(900,600);
-//        this.pack();
         this.setVisible(true);
 
 
@@ -128,6 +103,74 @@ public class MainWindow extends JFrame implements ActionListener {
           }
         }
     }
+
+//    public void setFonts (Component component, Font font) {
+//        component.setFont(font);
+//        if (component instanceof Container) {
+//            for (Component child : ((Container) component).getComponents()) {
+//                setFonts(child, font);
+//            }
+//        }
+//    }
+
+        public void setJMenuBar() {
+
+            SwingUtilities.invokeLater(() -> {
+                try {
+                    UIManager.setLookAndFeel(UIManager.getCrossPlatformLookAndFeelClassName());
+                } catch (ClassNotFoundException | InstantiationException | IllegalAccessException | UnsupportedLookAndFeelException e) {
+                    e.printStackTrace();
+                }});
+
+            fileMenu = new JMenu("File");
+            styleMenu = new JMenu("Style");
+            helpMenu = new JMenu("Help");
+            userMenu = new JMenu("User");
+
+            newDatabaseItem = new JMenuItem("New");
+            openFileItem = new JMenuItem("Open");
+            saveItem = new JMenuItem("Save");
+            closeItem = new JMenuItem("Close");
+            logOutItem = new JMenuItem("Log out");
+            changeStyle = new JMenuItem("Change style");
+            changeAdmissionItem = new JMenuItem("Change admission");
+            helpItem = new JMenuItem("Help");
+
+
+
+
+            fileMenu.add(newDatabaseItem);
+            fileMenu.add(openFileItem);
+            fileMenu.add(saveItem);
+            fileMenu.add(closeItem);
+
+
+            styleMenu.add(changeStyle);
+            helpMenu.add(helpItem);
+            userMenu.add(changeAdmissionItem);
+            userMenu.add(logOutItem);
+
+            menuBar.add(fileMenu);
+            menuBar.add(userMenu);
+            menuBar.add(styleMenu);
+            menuBar.add(helpMenu);
+
+            fileMenu.setMnemonic(KeyEvent.VK_F);
+            styleMenu.setMnemonic(KeyEvent.VK_S);
+            userMenu.setMnemonic(KeyEvent.VK_U);
+            helpMenu.setMnemonic(KeyEvent.VK_H);
+
+            openFileItem.addActionListener(this);
+            newDatabaseItem.addActionListener(this);
+            saveItem.addActionListener(this);
+            changeAdmissionItem.addActionListener(this);
+            helpItem.addActionListener(this);
+            logOutItem.addActionListener(this);
+            changeAdmissionItem.addActionListener(this);
+            closeItem.addActionListener(this);
+
+        }
+
 }
 
 
