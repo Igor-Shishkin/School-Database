@@ -17,10 +17,17 @@ public class LoginPage implements ActionListener {
     JLabel userPasswordLabel = new JLabel("password:");
     JLabel messageLabel = new JLabel();
     HashMap<String,String> logininfo = new HashMap<String,String>();
+    JLabel resultLabel;
     int INDENT_FROM_THE_TOP = -50;
 
     LoginPage (HashMap<String, String> originalLoginInfo) {
         logininfo = originalLoginInfo;
+        resultLabel = new JLabel("\t\tlogin successful");
+        resultLabel.setBounds(0,0,450,420);
+        resultLabel.setBackground(Color.CYAN);
+        resultLabel.setForeground(Color.green);
+        resultLabel.setFont(new Font("MV Boli", Font.BOLD, 40));
+        resultLabel.setVisible(true);
 
         userIDLabel.setBounds(20, 104+INDENT_FROM_THE_TOP, 130, 25);
         userIDLabel.setFont(new Font("MV Boli", Font.PLAIN, 27));
@@ -44,6 +51,7 @@ public class LoginPage implements ActionListener {
         resetButton.setFont(buttonFont);
         resetButton.addActionListener(this);
 
+        frame.add(resultLabel);
         frame.add(userIDField);
         frame.add(userPasswordField);
         frame.add(userIDLabel);
@@ -74,16 +82,40 @@ public class LoginPage implements ActionListener {
                 if (logininfo.get(id).equals(password)) {
                     messageLabel.setForeground(Color.green);
                     messageLabel.setText("Access confirmed :)");
-//                    Thread.currentThread().sleep(1300);
-                    MainWindow window = new MainWindow();
+                    resultLabel.setVisible(true);
+                    resultLabel.setText("Access confirmed :)");
+                    resultLabel.setBackground(Color.green);
+                    try {
+                        Main.sleep(1000);
+                    } catch (InterruptedException ex) {
+                        throw new RuntimeException(ex);
+                    }
                     frame.dispose();
                 }else{
                     messageLabel.setForeground(Color.red);
                     messageLabel.setText("Wrong password");
+                    resultLabel.setVisible(true);
+                    resultLabel.setText("Wrong password");
+                    resultLabel.setBackground(Color.red);
+                    try {
+                        Main.sleep(1000);
+                    } catch (InterruptedException ex) {
+                        throw new RuntimeException(ex);
+                    }
+                    resultLabel.setVisible(false);
                 }
             }else {
-                messageLabel.setForeground(Color.DARK_GRAY);
-                messageLabel.setText("Username is not found.");
+//                messageLabel.setForeground(Color.DARK_GRAY);
+//                messageLabel.setText("Username is not found.");
+//                resultLabel.setVisible(true);
+                resultLabel.setText("Username is not found.");
+                resultLabel.setBackground(Color.red);
+                try {
+                    Main.sleep(1000);
+                } catch (InterruptedException ex) {
+                    throw new RuntimeException(ex);
+                }
+                resultLabel.setVisible(false);
             }
         }
     }
