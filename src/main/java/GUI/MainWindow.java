@@ -53,6 +53,10 @@ public class MainWindow extends JFrame implements ActionListener {
     JMenuBar menuBar;
     JTextField currentStatusPanel;
     Border border;
+    JPanel leftPanel;
+    JPanel centerPanel;
+    JPanel rightPanel;
+    JPanel downPanel;
 
     MainWindow() throws IOException {
         fillColorsSets();
@@ -62,11 +66,10 @@ public class MainWindow extends JFrame implements ActionListener {
         properties = new Properties();
         properties.load(new FileInputStream("src/main/resources/jdbc.properties"));
 
-        currentStatusPanel = new JTextField("Logged in");
-        currentStatusPanel.setBounds(2, 609, 982, 25);
-        currentStatusPanel.setBackground(setOfColorsSoftRose.get(2));
-        currentStatusPanel.setForeground(setOfColorsSoftRose.get(4));
-        currentStatusPanel.setEditable(false);
+        leftPanel = new JPanel();
+        centerPanel = new JPanel();
+        rightPanel = new JPanel();
+        downPanel = new JPanel(new FlowLayout());
 
         menuBar = new JMenuBar();
         setJMenuBar();
@@ -74,7 +77,7 @@ public class MainWindow extends JFrame implements ActionListener {
         this.setJMenuBar(menuBar);
         this.add(currentStatusPanel);
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        this.setLayout(null);
+        this.setLayout(new BorderLayout());
         this.setSize(1000, 700);
         this.setLocationRelativeTo(null);
         this.setVisible(true);
@@ -148,6 +151,13 @@ public class MainWindow extends JFrame implements ActionListener {
 //        }
 //    }
 
+    public void setCurrentStatusPanel () {
+        currentStatusPanel = new JTextField("Logged in");
+        currentStatusPanel.setBounds(2, 609, 982, 25);
+        currentStatusPanel.setBackground(setOfColorsSoftRose.get(2));
+        currentStatusPanel.setForeground(setOfColorsSoftRose.get(4));
+        currentStatusPanel.setEditable(false);
+    }
     public void setJMenuBar() {
 
         Path iconsPath = Paths.get("src", "main", "resources", "icons");

@@ -17,25 +17,28 @@ public class LoginPage implements ActionListener {
     JLabel userPasswordLabel = new JLabel("password:");
     JLabel messageLabel = new JLabel();
     HashMap<String,String> logininfo = new HashMap<String,String>();
+    JPanel resultPanel;
     JLabel resultLabel;
-    int INDENT_FROM_THE_TOP = -50;
+    int INDENT_FROM_THE_TOP = -60;
+
 
     LoginPage (HashMap<String, String> originalLoginInfo) {
         logininfo = originalLoginInfo;
-        resultLabel = new JLabel("\t\tlogin successful");
-        resultLabel.setBounds(0,0,450,420);
-        resultLabel.setBackground(Color.CYAN);
-        resultLabel.setForeground(Color.green);
+        resultPanel = new JPanel();
+        resultPanel.setBounds(0,0,450,420);
+        resultLabel = new JLabel("   login successful");
         resultLabel.setFont(new Font("MV Boli", Font.BOLD, 40));
-        resultLabel.setVisible(true);
+        resultPanel.setLayout(new BorderLayout());
+        resultPanel.add(resultLabel, BorderLayout.CENTER);
+        resultPanel.setVisible(false);
 
         userIDLabel.setBounds(20, 104+INDENT_FROM_THE_TOP, 130, 25);
         userIDLabel.setFont(new Font("MV Boli", Font.PLAIN, 27));
         userPasswordLabel.setBounds(20, 154+INDENT_FROM_THE_TOP, 150,30);
         userPasswordLabel.setFont(new Font("MV Boli", Font.PLAIN, 27));
 
-        messageLabel.setBounds(125, 250+INDENT_FROM_THE_TOP, 250, 25);
-        messageLabel.setFont(new Font(null, Font.ITALIC, 25));
+        messageLabel.setBounds(100, 250+INDENT_FROM_THE_TOP, 300, 25);
+        messageLabel.setFont(new Font(null, Font.ITALIC, 20));
 
         userIDField.setBounds(155,100+INDENT_FROM_THE_TOP,250,35);
         userPasswordField.setBounds(155,150+INDENT_FROM_THE_TOP,250,35);
@@ -51,7 +54,8 @@ public class LoginPage implements ActionListener {
         resetButton.setFont(buttonFont);
         resetButton.addActionListener(this);
 
-        frame.add(resultLabel);
+        frame.setLocationRelativeTo(null);
+        frame.add(resultPanel);
         frame.add(userIDField);
         frame.add(userPasswordField);
         frame.add(userIDLabel);
@@ -60,7 +64,7 @@ public class LoginPage implements ActionListener {
         frame.add(loginButton);
         frame.add(resetButton);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.setSize(450,420);
+        frame.setSize(450,280);
         frame.setLayout(null);
         frame.setVisible(true);
 
@@ -81,43 +85,18 @@ public class LoginPage implements ActionListener {
             if (logininfo.containsKey(id)) {
                 if (logininfo.get(id).equals(password)) {
                     messageLabel.setForeground(Color.green);
-                    messageLabel.setText("Access confirmed :)");
-                    resultLabel.setVisible(true);
-                    resultLabel.setText("Access confirmed :)");
-                    resultLabel.setBackground(Color.green);
-                    try {
-                        Main.sleep(1000);
-                    } catch (InterruptedException ex) {
-                        throw new RuntimeException(ex);
-                    }
+                    messageLabel.setText("   Access confirmed :)");
                     frame.dispose();
                 }else{
                     messageLabel.setForeground(Color.red);
                     messageLabel.setText("Wrong password");
-                    resultLabel.setVisible(true);
-                    resultLabel.setText("Wrong password");
-                    resultLabel.setBackground(Color.red);
-                    try {
-                        Main.sleep(1000);
-                    } catch (InterruptedException ex) {
-                        throw new RuntimeException(ex);
-                    }
-                    resultLabel.setVisible(false);
                 }
             }else {
-//                messageLabel.setForeground(Color.DARK_GRAY);
-//                messageLabel.setText("Username is not found.");
-//                resultLabel.setVisible(true);
-                resultLabel.setText("Username is not found.");
-                resultLabel.setBackground(Color.red);
-                try {
-                    Main.sleep(1000);
-                } catch (InterruptedException ex) {
-                    throw new RuntimeException(ex);
-                }
-                resultLabel.setVisible(false);
+                messageLabel.setForeground(Color.red);
+                messageLabel.setText("Username is not found.");
             }
         }
     }
+
 
 }
