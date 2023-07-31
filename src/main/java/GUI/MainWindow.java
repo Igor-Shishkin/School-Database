@@ -53,31 +53,46 @@ public class MainWindow extends JFrame implements ActionListener {
     JMenuBar menuBar;
     JTextField currentStatusPanel;
     Border border;
-    JPanel leftPanel;
     JPanel centerPanel;
-    JPanel rightPanel;
+    JPanel gradesPanel;
+    JPanel pupilsPanel;
+    JPanel informationPanel;
     JPanel downPanel;
 
     MainWindow() throws IOException {
         fillColorsSets();
+        setCurrentStatusPanel();
         actualSetColor = setOfColorsSoftRose;
         border = BorderFactory.createLineBorder(actualSetColor.get(4));
 
         properties = new Properties();
         properties.load(new FileInputStream("src/main/resources/jdbc.properties"));
 
-        leftPanel = new JPanel();
+        border = BorderFactory.createSoftBevelBorder(0, Color.BLUE, Color.MAGENTA);
+
+//        JPanel topPanel = new JPanel();
+//        topPanel.setPreferredSize(new Dimension(10, 5));
+//        topPanel.setBorder(border);
+        downPanel = new JPanel(new BorderLayout());
+        downPanel.setPreferredSize(new Dimension(10, 35));
+        downPanel.setBorder(border);
+        downPanel.add(currentStatusPanel, BorderLayout.WEST);
         centerPanel = new JPanel();
-        rightPanel = new JPanel();
-        downPanel = new JPanel(new FlowLayout());
+        centerPanel.setLayout(new GridBagLayout());
+        fillCenterPanel();
+        centerPanel.setBackground(Color.gray);
+
 
         menuBar = new JMenuBar();
         setJMenuBar();
 
-        this.setJMenuBar(menuBar);
-        this.add(currentStatusPanel);
-        this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         this.setLayout(new BorderLayout());
+        this.setJMenuBar(menuBar);
+//        this.add(currentStatusPanel);
+//        this.add(topPanel, BorderLayout.NORTH);
+        this.add(centerPanel, BorderLayout.CENTER);
+        this.add(downPanel, BorderLayout.SOUTH);
+        this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         this.setSize(1000, 700);
         this.setLocationRelativeTo(null);
         this.setVisible(true);
@@ -153,7 +168,7 @@ public class MainWindow extends JFrame implements ActionListener {
 
     public void setCurrentStatusPanel () {
         currentStatusPanel = new JTextField("Logged in");
-        currentStatusPanel.setBounds(2, 609, 982, 25);
+        currentStatusPanel.setPreferredSize(new Dimension(982, 25));
         currentStatusPanel.setBackground(setOfColorsSoftRose.get(2));
         currentStatusPanel.setForeground(setOfColorsSoftRose.get(4));
         currentStatusPanel.setEditable(false);
@@ -347,6 +362,43 @@ public class MainWindow extends JFrame implements ActionListener {
         Font remRegular = Font.createFont(Font.TRUETYPE_FONT, fontFile);
 
         currentStatusPanel.setFont(remRegular);
+    }
+
+    public void fillCenterPanel() {
+        GridBagConstraints constraints = new GridBagConstraints();
+        gradesPanel = new JPanel();
+        gradesPanel.setBackground(Color.CYAN);
+        gradesPanel.setBorder(border);
+        pupilsPanel = new JPanel();
+        pupilsPanel.setBackground(Color.GRAY);
+        pupilsPanel.setBorder(border);
+        informationPanel = new JPanel();
+//        informationPanel.setPreferredSize(new Dimension(200,200));
+        informationPanel.setBackground(Color.GREEN);
+        informationPanel.setBorder(border);
+        centerPanel.setPreferredSize(new Dimension(1000, 640));
+
+
+
+        constraints.fill = GridBagConstraints.BOTH;
+
+        constraints.weightx = 0.5;
+        constraints.weighty = 0.5;
+        constraints.insets = new Insets(5,3,5,2);
+
+        constraints.gridx = 0;
+        constraints.gridy = 0;
+        centerPanel.add(gradesPanel, constraints);
+
+        constraints.weightx = 0.65;
+        constraints.gridx = 1;
+        constraints.gridy = 0;
+        centerPanel.add(pupilsPanel, constraints);
+
+        constraints.weightx = 1;
+        constraints.gridx = 2;
+        constraints.gridy = 0;
+        centerPanel.add(informationPanel, constraints);
     }
 
 

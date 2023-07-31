@@ -11,8 +11,8 @@ public class Main {
     public static void main(String[] args) throws IOException, FontFormatException {
 //        IDandPasswords logInfo = new IDandPasswords();
 //        new LoginPage(logInfo.getLoginInfo());
-        Path path = Paths.get("src", "main", "resources");
-        File fontFile = new File(path.resolve("REM-Regular.ttf").toUri());
+        Path workDir = Paths.get("src", "main", "resources");
+        File fontFile = new File(workDir.resolve("REM-Regular.ttf").toUri());
         Font remRegular = Font.createFont(Font.TRUETYPE_FONT, fontFile);
         Font menuFont = remRegular.deriveFont(Font.BOLD, 15);
         UIManager.put("Menu.font", menuFont);
@@ -27,7 +27,7 @@ public class Main {
     }
 
     public static void sleep (int time) throws InterruptedException {
-        Thread.currentThread().sleep(time);
+        Thread.sleep(time);
     }
 
 }
