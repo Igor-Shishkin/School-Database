@@ -4,15 +4,21 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import org.jasypt.encryption.pbe.StandardPBEStringEncryptor;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.nio.file.*;
 import java.util.ArrayList;
-import java.util.List;
+import java.util.Properties;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.jasypt.exceptions.EncryptionOperationNotPossibleException;
 
-public class WriteDataToFile {
+
+
+public class WriteReadDataToFile {
+    Properties properties;
 //    public static void main(String[] args) throws IOException {
 //        GeneratePupilData generate = new GeneratePupilData();
 //        ArrayList<Pupil> listOfPupils = new ArrayList<>(5);
@@ -35,9 +41,29 @@ public class WriteDataToFile {
 //        System.out.println(pupilFromFile);
 //    }
 
-    public WriteDataToFile() {
+    public WriteReadDataToFile() throws IOException {
+        properties = new Properties();
+        properties.load(new FileInputStream("src/main/resources/jdbc.properties"));
     }
 
+    public void writeListLoFile(ArrayList<Pupil> listOfPupils, File file) throws JsonProcessingException {
+        String serializedList = serializeToJSON(listOfPupils);
+        String encryptedData = encryptData(serializedList,
+                properties.getProperty("jdbc.encryptPassword"));
+        writeToFile(encryptedData, file.toPath());
+    }
+    public ArrayList<Pupil> readListFromFile (File file) throws IOException {
+        String textFromFile = readFromFile(file);
+        String decryptedData = decryptData(textFromFile, properties.getProperty("jdbc.encryptPassword"));
+        return deserializeFromJSON(decryptedData);
+    }
+
+
+
+    private static String serializeToJSON(ArrayList<Pupil> pupilsList) throws JsonProcessingException {
+        ObjectMapper mapper = new ObjectMapper();
+        return mapper.writeValueAsString(pupilsList);
+    }
     private String encryptData(String text, String password) {
         StandardPBEStringEncryptor encryptor = new StandardPBEStringEncryptor();
         encryptor.setPassword(password);
@@ -45,7 +71,11 @@ public class WriteDataToFile {
         return encryptor.encrypt(text);
     }
 
-    private void WriteToFile(String data, Path path) {
+    private static String serializePupilToJSON(Pupil pupil) throws JsonProcessingException {
+        ObjectMapper mapper = new ObjectMapper();
+        return mapper.writeValueAsString(pupil);
+    }
+    private void writeToFile(String data, Path path) {
 
         try {
             Files.write(path, data.getBytes());
@@ -54,21 +84,11 @@ public class WriteDataToFile {
         }
     }
 
-    private String serializeToJSON(ArrayList<Pupil> pupilsList) throws JsonProcessingException {
-        ObjectMapper mapper = new ObjectMapper();
-        return mapper.writeValueAsString(pupilsList);
+    private static String readFromFile(File file) throws IOException {
+        return new String(Files.readAllBytes(file.toPath()));
     }
 
-    private String serializePupilToJSON(Pupil pupil) throws JsonProcessingException {
-        ObjectMapper mapper = new ObjectMapper();
-        return mapper.writeValueAsString(pupil);
-    }
-
-    private String readFromFile(Path path) throws IOException {
-        return new String(Files.readAllBytes(path));
-    }
-
-    private String decryptData(String encryptedData, String password) {
+    private static String decryptData(String encryptedData, String password) {
         try {
             StandardPBEStringEncryptor encryptor = new StandardPBEStringEncryptor();
             encryptor.setPassword(password);
@@ -82,13 +102,13 @@ public class WriteDataToFile {
         }
     }
 
-    private List<Pupil> deserializeFromJSON(String jsonData) throws JsonProcessingException {
+    private static ArrayList<Pupil> deserializeFromJSON(String jsonData) throws JsonProcessingException {
         ObjectMapper mapper = new ObjectMapper();
         return mapper.readValue(jsonData, new TypeReference<ArrayList<Pupil>>() {
         });
     }
 
-    private Pupil deserializePupilFromJSON(String jsonData) throws JsonProcessingException {
+    private static Pupil deserializePupilFromJSON(String jsonData) throws JsonProcessingException {
         ObjectMapper mapper = new ObjectMapper();
         return mapper.readValue(jsonData, new TypeReference<Pupil>() {
         });

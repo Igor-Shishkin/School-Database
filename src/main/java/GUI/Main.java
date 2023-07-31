@@ -20,7 +20,7 @@ public class Main {
 
         UIManager.put("MenuItem.background", new Color (0xdee8d5));
         UIManager.put("MenuItem.foreground", Color.black);
-        UIManager.put("MenuBar.background", new Color (0xD5C7BC));
+        UIManager.put("MenuBar.background", new Color(0xac92a6));
 //        UIManager.put("Menu.foreground", Color.green);
         UIManager.put("MenuItem.opaque", true);
         new MainWindow();

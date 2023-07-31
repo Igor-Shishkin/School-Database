@@ -7,8 +7,8 @@ public class GeneratePupilData {
     private final String[] MALE_NAMES = new String[]{"Jan", "Jakub", "Mateusz" , "Adam", "Marcel", "Stanisław", "Michał",
             "Wiktor", "Leon", "Piotr", "Mark", "Ignacy", "Franek", "Kosma"};
     private final String[] FEMALE_NAMES = new String[]{"Zuzanna", "Julia", "Maja", "Zofia", "Hanna", "Lena", "Alicja",
-            "Maria", "Amelia", "Oliwia", "Anna", "Sofia", "Maria", "Katarzyna", "Małgorzata", "Agnieszka", "Barbara", "Ewa",
-            "Krystyna", "Elżbieta", "Magdalena."};
+            "Maria", "Amelia", "Oliwia", "Anna", "Sofia", "Maria", "Katarzyna", "Małgorzata", "Agnieszka", "Barbara",
+            "Ewa", "Krystyna", "Elżbieta", "Magdalena."};
     public final String[] SURNAMES = new String[]{"Nowak", "Wójcik", "Woźniak", "Mazur", "Kowalik", "Ławniczak",
             "Zając", "Wróbiel", "Wieczorek", "Pietrzak", "Wilk",
             "Ratajczak", "Lis", "Kołodziej", "Sobczak", "Szulc", "Mróz", "Duda",
@@ -23,7 +23,7 @@ public class GeneratePupilData {
             "Laureate of the historical competition \"Wise Owl\"",
             "Second place in the Mathematical Olympiad \"The Gold Frog\"",
             "Third place in the Mathematical Olympiad \"The Gold Frog\"",
-            "Winner of the chess tournament \"prancing pony\"",
+            "Winner of the chess tournament \"Prancing Pony\"",
             "First place in Physics Olympiad \"Unstable Isotope\"",
             "Second place in Physics Olympiad \"Unstable Isotope\"",
             "Third place in Physics Olympiad \"Unstable Isotope\"",
@@ -33,16 +33,16 @@ public class GeneratePupilData {
     public final LocalDate localDate = LocalDate.now();
 
     public String generateMaleName() {
-        return MALE_NAMES[random.nextInt(MALE_NAMES.length - 1)];
+        return MALE_NAMES[random.nextInt(MALE_NAMES.length)];
     }
     public String generateSecondMaleName() {
-        return (random.nextInt(100)>95)? MALE_NAMES[random.nextInt(MALE_NAMES.length - 1)] :null;  }
-    public String generateFemaleName() { return FEMALE_NAMES[random.nextInt(FEMALE_NAMES.length - 1)]; }
+        return (random.nextInt(100)>95)? MALE_NAMES[random.nextInt(MALE_NAMES.length)] :null;  }
+    public String generateFemaleName() { return FEMALE_NAMES[random.nextInt(FEMALE_NAMES.length)]; }
     public String generateSecondFemaleName() {
-        return (random.nextInt(100)>95)? FEMALE_NAMES[random.nextInt(FEMALE_NAMES.length - 1)] :null;  }
+        return (random.nextInt(100)>95)? FEMALE_NAMES[random.nextInt(FEMALE_NAMES.length)] :null;  }
 
     public String generateSurname() {
-        return SURNAMES[random.nextInt(SURNAMES.length - 1)];
+        return SURNAMES[random.nextInt(SURNAMES.length)];
     }
 
     public int generateYear() {
@@ -51,7 +51,7 @@ public class GeneratePupilData {
     public int generateYearForParents() { return localDate.getYear() - random.nextInt(15) - 25; }
 
     public int generateMonth() {
-        return random.nextInt(11) + 1;
+        return random.nextInt(12) + 1;
     }
 
     public int generateDay() {
@@ -59,10 +59,10 @@ public class GeneratePupilData {
     }
 
     public String generateTown() {
-        return TOWN[random.nextInt(TOWN.length - 1)];
+        return TOWN[random.nextInt(TOWN.length)];
     }
 
-    public String generateStreet() { return STREETS[random.nextInt(STREETS.length - 1)]; }
+    public String generateStreet() { return STREETS[random.nextInt(STREETS.length)]; }
 
     public int generateHouse() {  return random.nextInt(150) + 1; }
 
