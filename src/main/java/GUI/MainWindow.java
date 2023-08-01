@@ -4,6 +4,7 @@ import database.WriteReadDataToFile;
 
 import javax.swing.*;
 import javax.swing.border.Border;
+import javax.swing.border.SoftBevelBorder;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -38,7 +39,7 @@ public class MainWindow extends JFrame implements ActionListener {
         actualSetColor = colorsSets.setOfColorsSoftRose;
 
 
-        border = BorderFactory.createSoftBevelBorder(1, actualSetColor.get(4), actualSetColor.get(4));
+        border = BorderFactory.createSoftBevelBorder(SoftBevelBorder.RAISED, actualSetColor.get(0), actualSetColor.get(4));
 
 //        JPanel topPanel = new JPanel();
 //        topPanel.setPreferredSize(new Dimension(10, 5));
@@ -47,12 +48,6 @@ public class MainWindow extends JFrame implements ActionListener {
         setCurrentStatusPanel();
 
         centerPanel = new CentralPanel();
-//        centerPanel.setLayout(new GridBagLayout());
-//        fillCenterPanel();
-
-
-        //menuBar = new JMenuBar();
-        //setJMenuBar();
 
         this.setLayout(new BorderLayout());
         this.setJMenuBar(myMenuBar);
@@ -99,7 +94,7 @@ public class MainWindow extends JFrame implements ActionListener {
 
     public void setStatusPanel() throws IOException, FontFormatException {
         currentStatusField = new JTextField("Logged in");
-        currentStatusField.setBounds(2, 609, 982, 25);
+        currentStatusField.setBounds(2, 609, 977, 25);
         currentStatusField.setBackground(actualSetColor.get(2));
         currentStatusField.setForeground(actualSetColor.get(4));
         currentStatusField.setEditable(false);
@@ -110,44 +105,6 @@ public class MainWindow extends JFrame implements ActionListener {
 
         currentStatusField.setFont(remRegular);
     }
-
-//    public void fillCenterPanel() {
-//        GridBagConstraints constraints = new GridBagConstraints();
-//        gradesPanel = new JPanel();
-//        gradesPanel.setBackground(Color.CYAN);
-//        gradesPanel.setBorder(border);
-//        pupilsPanel = new JPanel();
-//        pupilsPanel.setBackground(Color.GRAY);
-//        pupilsPanel.setBorder(border);
-//        informationPanel = new JPanel();
-////        informationPanel.setPreferredSize(new Dimension(200,200));
-//        informationPanel.setBackground(Color.GREEN);
-//        informationPanel.setBorder(border);
-//        centerPanel.setPreferredSize(new Dimension(1000, 640));
-//
-//
-//
-//        constraints.fill = GridBagConstraints.BOTH;
-//
-//        constraints.weightx = 0.5;
-//        constraints.weighty = 0.5;
-//        constraints.insets = new Insets(5,3,5,2);
-//
-//        constraints.gridx = 0;
-//        constraints.gridy = 0;
-//        centerPanel.add(gradesPanel, constraints);
-//
-//        constraints.weightx = 0.65;
-//        constraints.gridx = 1;
-//        constraints.gridy = 0;
-//        centerPanel.add(pupilsPanel, constraints);
-//
-//        constraints.weightx = 1;
-//        constraints.gridx = 2;
-//        constraints.gridy = 0;
-//        centerPanel.add(informationPanel, constraints);
-//    }
-
 
 }
 

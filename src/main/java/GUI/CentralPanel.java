@@ -2,6 +2,8 @@ package GUI;
 
 import javax.swing.*;
 import javax.swing.border.Border;
+import javax.swing.tree.DefaultMutableTreeNode;
+import javax.swing.tree.DefaultTreeCellRenderer;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -11,30 +13,98 @@ public class CentralPanel extends JPanel implements ActionListener {
     JPanel pupilsPanel;
     JPanel informationPanel;
     Border border;
+    GridBagConstraints constraints;
+    DefaultMutableTreeNode root;
+    DefaultMutableTreeNode gradeZero;
+    DefaultMutableTreeNode gradeFirst;
+    DefaultMutableTreeNode gradeSecond;
+    DefaultMutableTreeNode gradeThird;
+    DefaultMutableTreeNode gradeFourth;
+    DefaultMutableTreeNode gradeFifth;
+    DefaultMutableTreeNode gradeSixth;
+    DefaultMutableTreeNode gradeSeventh;
+    DefaultMutableTreeNode gradeEighth;
+    JTree tree;
+    Font font;
     public CentralPanel() {
         this.setLayout(new GridBagLayout());
 
         border = BorderFactory.createLoweredBevelBorder();
-        GridBagConstraints constraints = new GridBagConstraints();
+        font = new Font("MV Boli",Font.PLAIN,16);
 
-        gradesPanel = new JPanel();
+
+        gradesPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
         gradesPanel.setBackground(MainWindow.actualSetColor.get(2));
         gradesPanel.setBorder(border);
         pupilsPanel = new JPanel();
         pupilsPanel.setBackground(MainWindow.actualSetColor.get(2));
         pupilsPanel.setBorder(border);
         informationPanel = new JPanel();
-//        informationPanel.setPreferredSize(new Dimension(200,200));
         informationPanel.setBackground(MainWindow.actualSetColor.get(2));
         informationPanel.setBorder(border);
-        this.setPreferredSize(new Dimension(1000, 640));
+
+        setTreeNode();
+        gradesPanel.setToolTipText("Grades");
+        gradesPanel.add(tree);
 
 
+        setGridBagConstraints();
+        this.setBackground(MainWindow.actualSetColor.get(0));
+    }
 
+    private void setTreeNode() {
+        root = new DefaultMutableTreeNode("School");
+
+        gradeZero = new DefaultMutableTreeNode("Zero class");
+        gradeFirst = new DefaultMutableTreeNode("First class");
+        gradeSecond = new DefaultMutableTreeNode("Second class");
+        gradeThird = new DefaultMutableTreeNode("Third class");
+        gradeFourth = new DefaultMutableTreeNode("Fourth class");
+        gradeFifth = new DefaultMutableTreeNode("Fifth class");
+        gradeSixth = new DefaultMutableTreeNode("Sixth class");
+        gradeSeventh = new DefaultMutableTreeNode("Seventh class");
+        gradeEighth = new DefaultMutableTreeNode("Eighth class");
+
+        root.add(gradeZero);
+        root.add(gradeFirst);
+        root.add(gradeSecond);
+        root.add(gradeThird);
+        root.add(gradeFourth);
+        root.add(gradeFifth);
+        root.add(gradeSixth);
+        root.add(gradeSeventh);
+        root.add(gradeEighth);
+
+        tree = new JTree(root);
+        tree.setFont(font);
+        tree.setBackground(MainWindow.actualSetColor.get(2));
+        tree.setCellRenderer(new CustomTreeCellRenderer());
+
+        JScrollPane pane = new JScrollPane(tree);
+        pane.setPreferredSize(new Dimension(250, 350));
+
+//        getContentPane().add(pane);
+//        setBackground(root, MainWindow.actualSetColor.get(2));
+
+    }
+
+//
+
+//        public void setBackground (DefaultMutableTreeNode node, Color color) {
+//        node.setParent(color);
+//        if (node instanceof Container) {
+//            for (Component child : ((Container) component).getComponents()) {
+//                setParent(child, color);
+//            }
+//        }
+//    }
+
+    private void setGridBagConstraints() {
+        GridBagConstraints constraints = new GridBagConstraints();
         constraints.fill = GridBagConstraints.BOTH;
 
-        constraints.weightx = 0.5;
-        constraints.weighty = 0.5;
+        constraints.weightx = 0.3;
+        constraints.weighty = 0.3;
         constraints.insets = new Insets(5,3,5,2);
 
         constraints.gridx = 0;
@@ -51,7 +121,6 @@ public class CentralPanel extends JPanel implements ActionListener {
         constraints.gridy = 0;
         this.add(informationPanel, constraints);
 
-        this.setBackground(MainWindow.actualSetColor.get(1));
     }
 
     @Override
