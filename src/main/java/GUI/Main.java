@@ -8,6 +8,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 
 public class Main {
+    static MainWindow mainWindow;
     public static void main(String[] args) throws IOException, FontFormatException {
 //        IDandPasswords logInfo = new IDandPasswords();
 //        new LoginPage(logInfo.getLoginInfo());
@@ -23,11 +24,17 @@ public class Main {
         UIManager.put("MenuBar.background", new Color(0xac92a6));
 //        UIManager.put("Menu.foreground", Color.green);
         UIManager.put("MenuItem.opaque", true);
-        new MainWindow();
+        mainWindow = new MainWindow();
     }
 
     public static void sleep (int time) throws InterruptedException {
         Thread.sleep(time);
+    }
+    static void setTitleForFrame(String text) {
+        mainWindow.setTitle(text);
+    }
+    static void refreshFrame(String text) {
+        mainWindow.repaint();
     }
 
 }

@@ -1,22 +1,31 @@
 package GUI;
 
 import javax.swing.*;
+import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeCellRenderer;
+import javax.swing.tree.TreePath;
 import java.awt.*;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 
 public class CustomTreeCellRenderer extends DefaultTreeCellRenderer {
+    Component component;
     @Override
     public Component getTreeCellRendererComponent(JTree tree, Object value, boolean selected, boolean expanded,
                                                   boolean leaf, int row, boolean hasFocus) {
-        Component component = super.getTreeCellRendererComponent(tree, value, selected, expanded, leaf, row, hasFocus);
+        component = super.getTreeCellRendererComponent(tree, value, selected, expanded, leaf, row, hasFocus);
 
-        // Set the background color for all nodes to Color.YELLOW
-        component.setBackground(Color.YELLOW);
-        component.setForeground(Color.red);
-        component.setCursor(new Cursor(Cursor.SW_RESIZE_CURSOR));
+        component.setBackground(MainWindow.actualSetColor.get(2));
+        component.setForeground(Color.black);
 
         ((JComponent) component).setOpaque(true);
 
         return component;
     }
+    public void setColorsForTree (Color background, Color foreground) {
+        component.setBackground(background);
+        component.setForeground(foreground);
+    }
 }
+
+

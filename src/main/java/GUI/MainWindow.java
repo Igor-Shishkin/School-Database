@@ -22,7 +22,7 @@ public class MainWindow extends JFrame implements ActionListener {
 
     static List<Color> actualSetColor;
     Properties properties;
-    JTextField currentStatusField;
+    static JTextField currentStatusField;
     Border border;
     JPanel centerPanel;
     JPanel gradesPanel;
@@ -51,16 +51,16 @@ public class MainWindow extends JFrame implements ActionListener {
 
         this.setLayout(new BorderLayout());
         this.setJMenuBar(myMenuBar);
-//        this.add(currentStatusPanel);
-//        this.add(topPanel, BorderLayout.NORTH);
         this.add(centerPanel, BorderLayout.CENTER);
         this.add(downPanel, BorderLayout.SOUTH);
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         this.setSize(1000, 700);
         this.setLocationRelativeTo(null);
+        this.setTitle("Nothing loaded");
         this.setVisible(true);
 
     }
+
 
 
     @Override
@@ -68,7 +68,12 @@ public class MainWindow extends JFrame implements ActionListener {
 
 
     }
-
+    void setTitleForFrame(String text) {
+        this.setTitle(text);
+    }
+    static void setTextForStatusPanel (String text) {
+        currentStatusField.setText(text);
+    }
 //    public void setFonts (Component component, Font font) {
 //        component.setFont(font);
 //        if (component instanceof Container) {
@@ -77,9 +82,8 @@ public class MainWindow extends JFrame implements ActionListener {
 //            }
 //        }
 //    }
-
     public void setCurrentStatusPanel () {
-        currentStatusField = new JTextField("Logged in");
+        currentStatusField = new JTextField("Logged in. No data has been loaded at the moment.");
         currentStatusField.setPreferredSize(new Dimension(982, 25));
         currentStatusField.setBackground(actualSetColor.get(2));
         currentStatusField.setForeground(Color.DARK_GRAY);
@@ -88,10 +92,6 @@ public class MainWindow extends JFrame implements ActionListener {
         downPanel.setBorder(border);
         downPanel.add(currentStatusField, BorderLayout.WEST);
     }
-
-
-
-
     public void setStatusPanel() throws IOException, FontFormatException {
         currentStatusField = new JTextField("Logged in");
         currentStatusField.setBounds(2, 609, 977, 25);

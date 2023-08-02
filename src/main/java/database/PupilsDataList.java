@@ -4,6 +4,7 @@ import com.sun.nio.sctp.MessageInfo;
 
 import java.util.ArrayList;
 import java.util.Objects;
+import java.util.stream.Collectors;
 
 public class PupilsDataList {
     static ArrayList<Pupil> pupilsDataList = new ArrayList<>();
@@ -25,6 +26,11 @@ public class PupilsDataList {
     }
     public static void removePupilFromList(int number) {
         pupilsDataList.remove(number);
+    }
+    public static ArrayList<Pupil> getListOfPupilsOfCertainGrade(int grade) {
+        return (ArrayList<Pupil>) pupilsDataList.stream()
+                .filter(pupil -> pupil.getGrade()==grade)
+                .collect(Collectors.toList());
     }
 
 }

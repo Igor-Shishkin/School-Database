@@ -118,10 +118,14 @@ public class MyMenuBar extends JMenuBar implements ActionListener {
                 File file = new File(fileChooser.getSelectedFile().getAbsolutePath());
                 try {
                     PupilsDataList.setPupilsDataList(writeReadDataToFile.readListFromFile(file));
+                    MainWindow.setTextForStatusPanel("Database loaded successfully");
+                    String nameOfFile = file.getName();
+                    Main.setTitleForFrame(nameOfFile);
                 } catch (Exception ex) {
                     JOptionPane.showMessageDialog(null,
                             "\t\tI can't read this file!\nCALL TECH SUPPORT OR ELSE!", "title",
                             JOptionPane.ERROR_MESSAGE);
+                    MainWindow.setTextForStatusPanel("Error. No data has been loaded at the moment.");
                     throw new RuntimeException(ex);
                 }
             }
@@ -138,10 +142,12 @@ public class MyMenuBar extends JMenuBar implements ActionListener {
                     File file = new File(fileChooser.getSelectedFile().getAbsolutePath());
                     try {
                         writeReadDataToFile.writeListLoFile(PupilsDataList.getPupilsDataList(), file);
+                        MainWindow.setTextForStatusPanel("Database saved successfully");
                     } catch (JsonProcessingException ex) {
                         JOptionPane.showMessageDialog(null,
                                 "\t\tI can't write this file!\nCALL TECH SUPPORT OR ELSE!", "title",
                                 JOptionPane.ERROR_MESSAGE);
+                        MainWindow.setTextForStatusPanel("Error. I can't save this data");
                         throw new RuntimeException(ex);
                     }
                 }

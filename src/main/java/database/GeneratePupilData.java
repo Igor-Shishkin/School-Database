@@ -46,7 +46,7 @@ public class GeneratePupilData {
     }
 
     public int generateYear() {
-        return localDate.getYear() - random.nextInt(5) - 10;
+        return localDate.getYear() - random.nextInt(9) - 6;
     }
     public int generateYearForParents() { return localDate.getYear() - random.nextInt(15) - 25; }
 
@@ -227,8 +227,7 @@ public class GeneratePupilData {
         String pesel = String.format("%d%d%02d%03d%d%d", pesel1And2thDigits, pesel3And4thDigits, day,
                 pesel7And8And9thDigits, pesel10thDigit, random.nextInt(10));
 
-        Marks marks = (grade<=6) ? generateMarks456() : generateMarks7and8();
-
+        Marks marks = (grade>6) ? generateMarks7and8() : (grade>3) ? generateMarks456() : null;
 
         return new Pupil(name, secondName, surname, gender, year, month, day, address,
                 pesel, Pupil.getIdNumber(), grade, generateParent(surname, parentGender, address),

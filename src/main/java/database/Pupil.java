@@ -130,4 +130,11 @@ public class Pupil extends Person{
                 ", promotionToNextGrade=" + promotionToNextGrade +
                 "\n\n";
     }
+    public String getIdNamesSurname () {
+        if (this.getSecondName()==null) {
+            return String.format("%d. %s %s", getId(), getName(), getSurname());
+        } else {
+            return String.format("%d. %s %s %s", getId(), getName(), getSecondName(), getSurname());
+        }
+    }
 }

@@ -24,14 +24,18 @@ public class GenerateListOfPupils {
         for (int i = 0; i < 100; i++) {
             listOfPupils.add(generatePupilData.generatePupil());
         }
-        Properties properties = new Properties();
-        properties.load(new FileInputStream("src/main/resources/jdbc.properties"));
+//        Properties properties = new Properties();
+//        properties.load(new FileInputStream("src/main/resources/jdbc.properties"));
+//
+//        GenerateListOfPupils generate = new GenerateListOfPupils();
+//
+//        String serializedList = generate.serializeToJSON(listOfPupils);
+//        String encryptedData = generate.encryptData(serializedList, properties.getProperty("jdbc.encryptPassword"));
+//        generate.WriteToFile(encryptedData, Paths.get("ProtectedDataWithBeginGrades.txt"));
 
-        GenerateListOfPupils generate = new GenerateListOfPupils();
-
-        String serializedList = generate.serializeToJSON(listOfPupils);
-        String encryptedData = generate.encryptData(serializedList, properties.getProperty("jdbc.encryptPassword"));
-        generate.WriteToFile(encryptedData, Paths.get("ProtectedData.txt"));
+        listOfPupils.stream()
+                .sorted(Comparator.comparingInt(Pupil::getId))
+                .forEach(p -> System.out.println(p.getId()));
 
 
     }
