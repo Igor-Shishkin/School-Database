@@ -32,6 +32,14 @@ public class PupilsDataList {
                 .filter(pupil -> pupil.getGrade()==grade)
                 .collect(Collectors.toList());
     }
+        public static String getIdNamesSurname (Pupil pupil){
+        if (pupil.getSecondName()==null) {
+            return String.format("%d. %s %s", pupil.getId(), pupil.getName(), pupil.getSurname());
+        } else {
+            return String.format("%d. %s %s %s", pupil.getId(), pupil.getName(), pupil.getSecondName()
+                    , pupil.getSurname());
+        }
+    }
 
 }
 

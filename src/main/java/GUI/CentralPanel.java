@@ -13,6 +13,10 @@ import javax.swing.tree.TreeSelectionModel;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 
 public class CentralPanel extends JPanel implements ActionListener, TreeSelectionListener {
@@ -39,11 +43,15 @@ public class CentralPanel extends JPanel implements ActionListener, TreeSelectio
     Font font;
     static DefaultMutableTreeNode rootForPupilsTree;
     static DefaultTreeModel pupilsTreeModel;
-    public CentralPanel() {
+    public CentralPanel() throws IOException, FontFormatException {
         this.setLayout(new GridBagLayout());
 
         border = BorderFactory.createLoweredBevelBorder();
-        font = new Font("MV Boli",Font.BOLD,16);
+//        font = new Font("MV Boli",Font.BOLD,16);
+        Path workDir = Paths.get("src", "main", "resources");
+        File fontFile = new File(workDir.resolve("REM-Regular.ttf").toUri());
+        Font remRegular = Font.createFont(Font.TRUETYPE_FONT, fontFile);
+        Font font = remRegular.deriveFont(Font.BOLD, 15);
         nodesForPupilsPanel = new DefaultMutableTreeNode[30];
         rootForPupilsPanel = new DefaultMutableTreeNode();
 
@@ -55,7 +63,7 @@ public class CentralPanel extends JPanel implements ActionListener, TreeSelectio
         gradesPanel.add(treeForGradePanel, BorderLayout.NORTH);
 
 
-        pupilsPanel = new JPanel(new FlowLayout());
+        pupilsPanel = new JPanel(new BorderLayout());
         pupilsPanel.setBackground(MainWindow.actualSetColor.get(2));
         pupilsPanel.setBorder(border);
         rootForPupilsTree = new DefaultMutableTreeNode("root");
@@ -64,7 +72,10 @@ public class CentralPanel extends JPanel implements ActionListener, TreeSelectio
         treeForPupilsPanel.setCellRenderer(new CustomTreeCellRenderer());
         treeForPupilsPanel.setFont(font);
         treeForPupilsPanel.setRootVisible(false);
-        pupilsPanel.add(treeForPupilsPanel, BorderLayout.NORTH);
+        treeForPupilsPanel.setBackground(MainWindow.actualSetColor.get(2));
+//        pupilsPanel.add(treeForPupilsPanel);
+        JScrollPane scrollPane = new JScrollPane(treeForPupilsPanel);
+        pupilsPanel.add(scrollPane);
 
         informationPanel = new JPanel();
         informationPanel.setBackground(MainWindow.actualSetColor.get(2));
@@ -102,10 +113,10 @@ public class CentralPanel extends JPanel implements ActionListener, TreeSelectio
         treeForGradePanel.addTreeSelectionListener(this);
 
         treeForGradePanel.putClientProperty("JTree.lineStyle", "Angled");
-        treeForGradePanel.setFont(font);
+        treeForGradePanel.setFont(new Font("MV Boli",Font.BOLD,16));
         treeForGradePanel.setBackground(MainWindow.actualSetColor.get(2));
 //        treeForGradePanel.setCellRenderer(new CustomTreeCellRenderer());
-        treeForGradePanel.setCellRenderer(new TextTreeCellRenderer());
+        treeForGradePanel.setCellRenderer(new CustomTreeCellRenderer());
         treeForGradePanel.addMouseListener(new TextTreeNodeMouseListener(treeForGradePanel));
         treeForGradePanel.addMouseMotionListener(new HandCursorForMouseMotionAdapter(treeForGradePanel));
 
@@ -162,7 +173,8 @@ public class CentralPanel extends JPanel implements ActionListener, TreeSelectio
     public static void showPupilsOfCertainGrade (ArrayList<Pupil> list) {
         rootForPupilsTree.removeAllChildren();
         for (int i = 0; i < list.size(); i++) {
-            nodesForPupilsPanel[i] = new DefaultMutableTreeNode(list.get(i).getIdNamesSurname());
+            nodesForPupilsPanel[i] = new DefaultMutableTreeNode
+                    (PupilsDataList.getIdNamesSurname(list.get(i)));
             rootForPupilsTree.add(nodesForPupilsPanel[i]);
         }
         pupilsTreeModel.nodeStructureChanged(rootForPupilsTree);

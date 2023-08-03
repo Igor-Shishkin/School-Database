@@ -6,12 +6,14 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import org.jasypt.encryption.pbe.StandardPBEStringEncryptor;
 import org.jasypt.exceptions.EncryptionOperationNotPossibleException;
 
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileReader;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.nio.file.StandardOpenOption;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
@@ -21,21 +23,27 @@ public class GenerateListOfPupils {
     public static void main(String[] args) throws IOException {
         GeneratePupilData generatePupilData = new GeneratePupilData();
         ArrayList<Pupil> listOfPupils = new ArrayList<>(200);
-        for (int i = 0; i < 100; i++) {
+        for (int i = 0; i < 150; i++) {
             listOfPupils.add(generatePupilData.generatePupil());
         }
+        WriteReadDataToFile writer = new WriteReadDataToFile();
+        writer.writeListLoFile(listOfPupils, new File("NeewData"));
 //        Properties properties = new Properties();
 //        properties.load(new FileInputStream("src/main/resources/jdbc.properties"));
 //
 //        GenerateListOfPupils generate = new GenerateListOfPupils();
-//
+
 //        String serializedList = generate.serializeToJSON(listOfPupils);
 //        String encryptedData = generate.encryptData(serializedList, properties.getProperty("jdbc.encryptPassword"));
-//        generate.WriteToFile(encryptedData, Paths.get("ProtectedDataWithBeginGrades.txt"));
+//        generate.WriteToFile(encryptedData, Paths.get("NewProtectedData.txt"));
 
-        listOfPupils.stream()
-                .sorted(Comparator.comparingInt(Pupil::getId))
-                .forEach(p -> System.out.println(p.getId()));
+//        listOfPupils.stream()
+//                .sorted(Comparator.comparingInt(Pupil::getId))
+//                .forEach(p -> System.out.println(p.getId()));
+//
+//        for (Pupil p : listOfPupils) {
+//            System.out.println(p);
+//        }
 
 
     }
@@ -48,9 +56,8 @@ public class GenerateListOfPupils {
     }
 
     private void WriteToFile(String data, Path path) {
-
         try {
-            Files.write(path, data.getBytes());
+            Files.write(path, data.getBytes(), StandardOpenOption.CREATE);
         } catch (IOException e) {
             throw new RuntimeException(e);
         }

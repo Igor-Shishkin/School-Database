@@ -33,7 +33,7 @@ public class MainWindow extends JFrame implements ActionListener {
     MyMenuBar myMenuBar;
     ColorsSets colorsSets = new ColorsSets();
 
-    MainWindow() throws IOException {
+    MainWindow() throws IOException, FontFormatException {
         writeReadDataToFile = new WriteReadDataToFile();
         myMenuBar = new MyMenuBar();
         actualSetColor = colorsSets.setOfColorsSoftRose;

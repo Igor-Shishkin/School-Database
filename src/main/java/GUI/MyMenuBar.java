@@ -1,6 +1,7 @@
 package GUI;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import database.Pupil;
 import database.PupilsDataList;
 import database.WriteReadDataToFile;
 

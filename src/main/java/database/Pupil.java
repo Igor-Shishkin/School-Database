@@ -16,7 +16,7 @@ public class Pupil extends Person{
 
     public Pupil() {
         super("", "", "", '\0', 0, 0, 0, null, "");
-        this.id = -1;
+        this.id = 0;
         this.grade = 0;
         this.parent1 = null;
         this.parent2 = null;
@@ -30,7 +30,7 @@ public class Pupil extends Person{
                  Address address, String pesel, int id, int grade, Parent parent1, Parent parent2, String achievement,
                  Marks marks, boolean awardBar, boolean promotionToNextGrade) {
         super(name, secondName, surname, gender, year, month, day, address, pesel);
-        this.id = getIdNumber();
+        this.id = id;
         this.grade = grade;
         this.parent1 = parent1;
         this.parent2 = parent2;
@@ -43,7 +43,7 @@ public class Pupil extends Person{
     public Pupil(String name, String secondName, String surname, char gender, String pesel, int id, int grade,
                  boolean promotionToNextGrade) {
         super(name, secondName, surname, gender, 0, 0, 0, null, pesel);
-        this.id = getIdNumber();
+        this.id = id;
         this.grade = grade;
         this.parent1 = null;
         this.parent2 = null;
@@ -129,12 +129,5 @@ public class Pupil extends Person{
                 "\nawardBar=" + awardBar +
                 ", promotionToNextGrade=" + promotionToNextGrade +
                 "\n\n";
-    }
-    public String getIdNamesSurname () {
-        if (this.getSecondName()==null) {
-            return String.format("%d. %s %s", getId(), getName(), getSurname());
-        } else {
-            return String.format("%d. %s %s %s", getId(), getName(), getSecondName(), getSurname());
-        }
     }
 }

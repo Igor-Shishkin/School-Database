@@ -57,9 +57,6 @@ public class WriteReadDataToFile {
         String decryptedData = decryptData(textFromFile, properties.getProperty("jdbc.encryptPassword"));
         return deserializeFromJSON(decryptedData);
     }
-
-
-
     private static String serializeToJSON(ArrayList<Pupil> pupilsList) throws JsonProcessingException {
         ObjectMapper mapper = new ObjectMapper();
         return mapper.writeValueAsString(pupilsList);
@@ -70,13 +67,11 @@ public class WriteReadDataToFile {
         encryptor.setAlgorithm("PBEWithMD5AndDES");
         return encryptor.encrypt(text);
     }
-
     private static String serializePupilToJSON(Pupil pupil) throws JsonProcessingException {
         ObjectMapper mapper = new ObjectMapper();
         return mapper.writeValueAsString(pupil);
     }
     private void writeToFile(String data, Path path) {
-
         try {
             Files.write(path, data.getBytes());
         } catch (IOException e) {
@@ -87,7 +82,6 @@ public class WriteReadDataToFile {
     private static String readFromFile(File file) throws IOException {
         return new String(Files.readAllBytes(file.toPath()));
     }
-
     private static String decryptData(String encryptedData, String password) {
         try {
             StandardPBEStringEncryptor encryptor = new StandardPBEStringEncryptor();
