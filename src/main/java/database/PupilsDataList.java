@@ -34,12 +34,55 @@ public class PupilsDataList {
     }
         public static String getIdNamesSurname (Pupil pupil){
         if (pupil.getSecondName()==null) {
-            return String.format("%d. %s %s", pupil.getId(), pupil.getName(), pupil.getSurname());
+            return String.format("%s %s.    ID: %d", pupil.getName(), pupil.getSurname(), pupil.getId());
         } else {
-            return String.format("%d. %s %s %s", pupil.getId(), pupil.getName(), pupil.getSecondName()
-                    , pupil.getSurname());
+            return String.format("%s %s %s.    ID: %d", pupil.getName(), pupil.getSecondName()
+                    , pupil.getSurname(), pupil.getId());
         }
     }
-
+    public static Pupil getPupilWithCertainID (int id) {
+        for (Pupil pupil : pupilsDataList) {
+            if (pupil.getId()==id) {
+                return pupil;
+            }
+        }
+        return null;
+    }
+    public static String getPupilInformation (Pupil p) {
+        if (p.getSecondName()==null) {
+            return String.format("<html>%s %s<br>" +
+                            "Date of birth: %d.%d.%d  <br>" +
+                            "Grade: %d<br>" +
+                            "Pesel: %s<br>" +
+                            "Parents:<br>" +
+                            "    %s %s. <br>    Telephone: %s\teMail: %s <br>" +
+                            "    %s %s. <br>    Telephone: %s\teMail: %s <br><br></html>",
+                    p.getName(), p.getSurname(),
+                    p.getDay(), p.getMonth(), p.getYear(),
+                    p.getGrade(),
+                    p.getPesel(),
+                    p.getParent1().getName(), p.getParent1().getSurname(), p.getParent1().getTelephone(),
+                                                                                    p.getParent1().geteMail(),
+                    p.getParent2().getName(), p.getParent2().getSurname(), p.getParent2().getTelephone(),
+                                                                                    p.getParent2().geteMail()
+                    );
+        }
+        return String.format("<html>%s %s %s<br>" +
+                        "Date of birth: %d.%d.%d  <br>" +
+                        "Grade: %d<br>" +
+                        "Pesel: %s<br>" +
+                        "Parents:<br>" +
+                        "\t%s %s. <br>Telephone: %s\teMail: %s <br>" +
+                        "\t%s %s. <br>Telephone: %s\teMail: %s <br><br></html>",
+                p.getName(), p.getSecondName(), p.getSurname(),
+                p.getDay(), p.getMonth(), p.getYear(),
+                p.getGrade(),
+                p.getPesel(),
+                p.getParent1().getName(), p.getParent1().getSurname(), p.getParent1().getTelephone(),
+                                                                                    p.getParent1().geteMail(),
+                p.getParent2().getName(), p.getParent2().getSurname(), p.getParent2().getTelephone(),
+                                                                                    p.getParent2().geteMail()
+        );
+    }
 }
 

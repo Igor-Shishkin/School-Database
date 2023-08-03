@@ -9,10 +9,10 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.Objects;
 
-class TextTreeNodeMouseListener extends MouseAdapter {
+class GradesTreeNodeMouseListener extends MouseAdapter {
     private final JTree tree;
 
-    public TextTreeNodeMouseListener(JTree tree) {
+    public GradesTreeNodeMouseListener(JTree tree) {
         this.tree = tree;
     }
 
@@ -34,7 +34,7 @@ class TextTreeNodeMouseListener extends MouseAdapter {
                     (Objects.equals(node.toString(), "Eighth class")) ? 8 : 9;
             System.out.println(grade);
 
-            CentralPanel.showPupilsOfCertainGrade(PupilsDataList.getListOfPupilsOfCertainGrade(grade));
+            CentralPanel.showPupilsOfCertainGrade(PupilsDataList.getListOfPupilsOfCertainGrade(grade), node);
 
         }
     }
