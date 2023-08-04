@@ -47,8 +47,11 @@ public class CentralPanel extends JPanel implements ActionListener, TreeSelectio
     static JLabel informationLabelForPupilPanel;
     static JLabel pupilInformationLabel;
     Font remRegular;
+    static JScrollPane scrollPaneForInformationLabel;
+    static JTextField textField;
     public CentralPanel() throws IOException, FontFormatException {
         this.setLayout(new GridBagLayout());
+//        this.setLayout(new GridBagLayout());
 
         border = BorderFactory.createLoweredBevelBorder();
 //        font = new Font("MV Boli",Font.BOLD,16);
@@ -64,19 +67,27 @@ public class CentralPanel extends JPanel implements ActionListener, TreeSelectio
         gradesPanel.setBorder(border);
         setTreeNode();
         gradesPanel.setToolTipText("Grades");
-        gradesPanel.add(treeForGradePanel, BorderLayout.NORTH);
+//        gradesPanel.add(treeForGradePanel, BorderLayout.NORTH);
 
 
         setPupilPanel();
 
 
         pupilInformationLabel = new JLabel();
+        pupilInformationLabel.setFont(font);
+        pupilInformationLabel.setText("No student selected");
+        pupilInformationLabel.setBackground(MainWindow.actualSetColor.get(2));
+//        pupilInformationLabel.setPreferredSize(new Dimension (10, 200));
+        pupilsPanel.setFont(font);
         informationPanel = new JPanel();
+//        scrollPaneForInformationLabel = new JScrollPane(pupilInformationLabel);
+//        scrollPaneForInformationLabel.setBackground(MainWindow.actualSetColor.get(2));
         informationPanel.setLayout(new BorderLayout());
-        informationPanel.add(pupilInformationLabel, BorderLayout.WEST);
+//        scrollPaneForInformationLabel.setPreferredSize(new Dimension (400, 300));
+        informationPanel.add(pupilInformationLabel, BorderLayout.NORTH);
         informationPanel.setBackground(MainWindow.actualSetColor.get(2));
         informationPanel.setBorder(border);
-        informationPanel.setMaximumSize(new Dimension(350, 900));
+//        informationPanel.setMaximumSize(new Dimension(350, 900));
 
         setGridBagConstraints();
         this.setBackground(MainWindow.actualSetColor.get(0));
@@ -87,7 +98,7 @@ public class CentralPanel extends JPanel implements ActionListener, TreeSelectio
         pupilsPanel.setBackground(MainWindow.actualSetColor.get(2));
         pupilsPanel.setBorder(border);
 
-        informationLabelForPupilPanel = new JLabel();
+        informationLabelForPupilPanel = new JLabel("List of pupils");
         informationLabelForPupilPanel.setFont(remRegular.deriveFont(Font.BOLD, 18));
         pupilsPanel.add(informationLabelForPupilPanel, BorderLayout.NORTH);
 
@@ -101,8 +112,8 @@ public class CentralPanel extends JPanel implements ActionListener, TreeSelectio
         treeForPupilsPanel.addMouseMotionListener(new HandCursorForMouseMotionAdapter(treeForPupilsPanel));
         treeForPupilsPanel.addMouseListener(new PupilsTreeNodeMouseListener(treeForPupilsPanel));
 //        pupilsPanel.add(treeForPupilsPanel);
-        JScrollPane scrollPane = new JScrollPane(treeForPupilsPanel);
-        pupilsPanel.add(scrollPane);
+        JScrollPane scrollPaneForPupilTree = new JScrollPane(treeForPupilsPanel);
+        pupilsPanel.add(scrollPaneForPupilTree);
     }
 
     private void setTreeNode() {
@@ -140,9 +151,8 @@ public class CentralPanel extends JPanel implements ActionListener, TreeSelectio
         treeForGradePanel.addMouseListener(new GradesTreeNodeMouseListener(treeForGradePanel));
         treeForGradePanel.addMouseMotionListener(new HandCursorForMouseMotionAdapter(treeForGradePanel));
 
-        JScrollPane pane = new JScrollPane(treeForGradePanel);
-        pane.setPreferredSize(new Dimension(250, 350));
-
+        JScrollPane paneForGradesTree = new JScrollPane(treeForGradePanel);
+        gradesPanel.add(paneForGradesTree);
     }
 
 //
@@ -160,7 +170,7 @@ public class CentralPanel extends JPanel implements ActionListener, TreeSelectio
         GridBagConstraints constraints = new GridBagConstraints();
         constraints.fill = GridBagConstraints.BOTH;
 
-        constraints.weightx = 0.3;
+        constraints.weightx = 0.43;
         constraints.weighty = 0.3;
         constraints.insets = new Insets(5,3,5,2);
 
@@ -168,7 +178,7 @@ public class CentralPanel extends JPanel implements ActionListener, TreeSelectio
         constraints.gridy = 0;
         this.add(gradesPanel, constraints);
 
-        constraints.weightx = 0.6;
+        constraints.weightx = 0.5;
         constraints.gridx = 1;
         constraints.gridy = 0;
         this.add(pupilsPanel, constraints);
@@ -212,6 +222,10 @@ public class CentralPanel extends JPanel implements ActionListener, TreeSelectio
                 (Objects.requireNonNull(PupilsDataList.getPupilWithCertainID(id))));
         System.out.println(PupilsDataList.getPupilInformation
                 (Objects.requireNonNull(PupilsDataList.getPupilWithCertainID(id))));
+        pupilInformationLabel.repaint();
+//        scrollPaneForInformationLabel.repaint();
         informationPanel.repaint();
+
+
     }
 }

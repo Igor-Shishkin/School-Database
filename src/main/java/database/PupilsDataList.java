@@ -53,10 +53,10 @@ public class PupilsDataList {
             return String.format("<html>%s %s<br>" +
                             "Date of birth: %d.%d.%d  <br>" +
                             "Grade: %d<br>" +
-                            "Pesel: %s<br>" +
+                            "Pesel: %s<br>\n" +
                             "Parents:<br>" +
-                            "    %s %s. <br>    Telephone: %s\teMail: %s <br>" +
-                            "    %s %s. <br>    Telephone: %s\teMail: %s <br><br></html>",
+                            "    %s %s. <br>    Telephone: %s<br>eMail: %s <br>" +
+                            "    %s %s. <br>    Telephone: %s<br>eMail: %s <br><br></html>",
                     p.getName(), p.getSurname(),
                     p.getDay(), p.getMonth(), p.getYear(),
                     p.getGrade(),
@@ -72,8 +72,8 @@ public class PupilsDataList {
                         "Grade: %d<br>" +
                         "Pesel: %s<br>" +
                         "Parents:<br>" +
-                        "\t%s %s. <br>Telephone: %s\teMail: %s <br>" +
-                        "\t%s %s. <br>Telephone: %s\teMail: %s <br><br></html>",
+                        "\t%s %s. <br>Telephone: %s<br>eMail: %s <br>" +
+                        "\t%s %s. <br>Telephone: %s<br>eMail: %s <br><br></html>",
                 p.getName(), p.getSecondName(), p.getSurname(),
                 p.getDay(), p.getMonth(), p.getYear(),
                 p.getGrade(),
