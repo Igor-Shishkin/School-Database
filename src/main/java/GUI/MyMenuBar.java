@@ -121,7 +121,7 @@ public class MyMenuBar extends JMenuBar implements ActionListener {
                     PupilsDataList.setPupilsDataList(writeReadDataToFile.readListFromFile(file));
                     MainWindow.setTextForStatusPanel("Database loaded successfully");
                     String nameOfFile = file.getName();
-                    Main.setTitleForFrame(nameOfFile);
+//                    Main.setTitleForFrame(nameOfFile);
                 } catch (Exception ex) {
                     JOptionPane.showMessageDialog(null,
                             "\t\tI can't read this file!\nCALL TECH SUPPORT OR ELSE!", "title",

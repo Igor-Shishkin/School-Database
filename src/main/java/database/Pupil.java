@@ -15,7 +15,7 @@ public class Pupil extends Person{
 
 
     public Pupil() {
-        super("", "", "", '\0', 0, 0, 0, null, "");
+        super();
         this.id = 0;
         this.grade = 0;
         this.parent1 = null;
@@ -24,6 +24,7 @@ public class Pupil extends Person{
         this.marks = null;
         this.awardBar = false;
         this.promotionToNextGrade = false;
+
     }
 
     public Pupil(String name, String secondName, String surname, char gender, int year, int month, int day,

@@ -9,7 +9,7 @@ import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
-public class AddFirstParent extends JFrame implements ActionListener {
+public class AddFirstParent extends JDialog implements ActionListener {
     JLabel nameLabel, surnameLabel, secondNameLabel, eMailLabel, telephoneLabel, genderLabel, dateOfBirth, yearLabel,
             monthLabel, dayLabel, addressLabel, countryLabel, provinceLabel, townLabel,
             streetLabel, houseLabel, localLabel, postCodeLabel;
@@ -18,7 +18,7 @@ public class AddFirstParent extends JFrame implements ActionListener {
             localField, postCodeField;
     JComboBox<String> genderComboBox;
 
-    JButton makeAddressLikePupils, fatherDataButton, markButton, addButton, cancelButton;
+    JButton makeAddressLikePupils, addDataButton, cancel, addButton, cancelButton;
 
     Font remRegular;
     Font font;
@@ -26,8 +26,10 @@ public class AddFirstParent extends JFrame implements ActionListener {
     String country, province, town, street, postCode,house, local;
 
 
-    public AddFirstParent(String country, String province, String town, String street, String house, String local,
+    public AddFirstParent(JFrame parentFrame,String country, String province, String town, String street, String house, String local,
                           String postCode) throws IOException, FontFormatException {
+        super(parentFrame, "Add parent", true); // Make it modal
+        setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
         this.country = country;
         this.province = province;
         this.town = town;
@@ -48,10 +50,10 @@ public class AddFirstParent extends JFrame implements ActionListener {
         setStyleForWindow();
         setActionListener();
 
-        this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+//        this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         this.pack();
         this.setLocationRelativeTo(null);
-        this.setTitle("Write pupil's data");
+        this.setTitle("Write parent's data");
         this.setVisible(true);
 
     }
@@ -106,11 +108,10 @@ public class AddFirstParent extends JFrame implements ActionListener {
         genderComboBox = new JComboBox<>(new String[]{"Male", "Female"});
 
         makeAddressLikePupils = new JButton("Make an address like the pupil's");
-        fatherDataButton = new JButton("Enter father's data");
-        markButton = new JButton("Enter marks");
-        addButton = new JButton("Add pupil");
-        cancelButton = new JButton("Cancel");
-
+        addDataButton = new JButton("Add parent's data");
+        addDataButton.setFont(remRegular.deriveFont(Font.BOLD, 19));
+        addDataButton.setForeground(new Color(0x044B00));
+        cancel = new JButton("Cancel");
 
         GridBagConstraints c = new GridBagConstraints();
         c.insets = new Insets(10, 10, 10, 10);
@@ -266,24 +267,15 @@ public class AddFirstParent extends JFrame implements ActionListener {
         c.gridy = 4;
         this.add(makeAddressLikePupils, c);
 
+        c.insets = new Insets(2, 55, 0, 40);
+        c.gridwidth = 2;
         c.gridx = 0;
         c.gridy = 9;
-        this.add(fatherDataButton, c);
+        this.add(addDataButton, c);
 
         c.gridx = 0;
         c.gridy = 10;
-        this.add(markButton, c);
-
-        c.insets = new Insets(2, 40, 15, 10);
-        c.gridwidth = 1;
-        c.gridx = 1;
-        c.gridy = 12;
-        this.add(addButton, c);
-
-        c.insets = new Insets(2, 2, 15, 0);
-        c.gridx = 2;
-        c.gridy = 12;
-        this.add(cancelButton, c);
+        this.add(cancel, c);
     }
 
     private static void setFontForComponents(Container container, Font font) {

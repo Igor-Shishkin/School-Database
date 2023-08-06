@@ -51,11 +51,11 @@ public class GeneratePupilData {
     public int generateYearForParents() { return localDate.getYear() - random.nextInt(15) - 25; }
 
     public int generateMonth() {
-        return random.nextInt(12) + 1;
+        return random.nextInt(11) + 1;
     }
 
     public int generateDay() {
-        return random.nextInt(30) + 1;
+        return random.nextInt(28) + 1;
     }
 
     public String generateTown() {

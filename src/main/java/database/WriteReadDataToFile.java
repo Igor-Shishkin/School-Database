@@ -2,6 +2,8 @@ package database;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.SerializationFeature;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import org.jasypt.encryption.pbe.StandardPBEStringEncryptor;
 
 import java.io.File;
@@ -59,6 +61,8 @@ public class WriteReadDataToFile {
     }
     private static String serializeToJSON(ArrayList<Pupil> pupilsList) throws JsonProcessingException {
         ObjectMapper mapper = new ObjectMapper();
+        mapper.configure(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS, false);
+        mapper.registerModule(new JavaTimeModule());
         return mapper.writeValueAsString(pupilsList);
     }
     private String encryptData(String text, String password) {
@@ -98,6 +102,8 @@ public class WriteReadDataToFile {
 
     private static ArrayList<Pupil> deserializeFromJSON(String jsonData) throws JsonProcessingException {
         ObjectMapper mapper = new ObjectMapper();
+        mapper.configure(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS, false);
+        mapper.registerModule(new JavaTimeModule());
         return mapper.readValue(jsonData, new TypeReference<ArrayList<Pupil>>() {
         });
     }

@@ -4,7 +4,7 @@ public class Parent extends Person{
     private String telephone;
     private String eMail;
     public Parent() {
-        super("", "", "", '\0', 0, 0, 0, null, "");
+        super();
         this.telephone = null;
         this.eMail = null;
     }

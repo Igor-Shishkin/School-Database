@@ -1,14 +1,17 @@
 package database;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+
+import java.time.LocalDate;
+
 public abstract class Person {
 
     private String name;
     private String secondName;
     private String surname;
     private char gender;
-    private int year;
-    private int month;
-    private int day;
+    @JsonFormat(pattern = "yyyy-MM-dd")
+    private LocalDate dateOfBirth;
     private Address address;
     private String pesel;
 
@@ -18,9 +21,7 @@ public abstract class Person {
         this.secondName = secondName;
         this.surname = surname;
         this.gender = gender;
-        this.year = year;
-        this.month = month;
-        this.day = day;
+        this.dateOfBirth = LocalDate.of(year, month, day);
         this.address = address;
         this.pesel = pesel;
     }
@@ -95,26 +96,12 @@ public abstract class Person {
         this.surname = surname;
     }
 
-    public int getYear() {
-        return year;
+    public LocalDate getDateOfBirth() {
+        return dateOfBirth;
     }
 
-    public void setYear(int year) {
-        this.year = year;
-    }
-
-    public int getMonth() {return month; }
-
-    public void setMonth(int month) {
-        this.month = month;
-    }
-
-    public int getDay() {
-        return day;
-    }
-
-    public void setDay(int day) {
-        this.day = day;
+    public void setDateOfBirth(LocalDate dateOfBirth) {
+        this.dateOfBirth = dateOfBirth;
     }
 
     public Address getAddress() {
@@ -140,9 +127,9 @@ public abstract class Person {
                 ", secondName='" + secondName + '\'' +
                 ", surname='" + surname + '\'' +
                 ", gender=" + gender +
-                "\nyear=" + year +
-                ", month=" + month +
-                ", day=" + day +
+                "\nyear=" + dateOfBirth.getYear() +
+                ", month=" + dateOfBirth.getMonth() +
+                ", day=" + dateOfBirth.getDayOfMonth() +
                 "\naddress=" + address +
                 "\npesel='" + pesel + '\'' +
                 '}';

@@ -4,6 +4,7 @@ import javax.swing.*;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import java.awt.*;
+import java.time.LocalDate;
 
 public class IsRightYearDocumentListener implements DocumentListener {
     JTextField textField;
@@ -32,10 +33,12 @@ public class IsRightYearDocumentListener implements DocumentListener {
         } else {
             try {
                 int number = Integer.parseInt(this.textField.getText().trim());
-                if (number > LocalDateNow.date.getYear() - 20 && number <= LocalDateNow.date.getYear() - 5) {
-                    textField.setBackground(new Color(0xD2FFD2));
-                } else {
-                    textField.setBackground(new Color(0xEAD1DC));
+                if (number/1000>0) {
+                    if (number > LocalDate.now().getYear() - 20 && number <= LocalDate.now().getYear() - 5) {
+                        textField.setBackground(new Color(0xD2FFD2));
+                    } else {
+                        textField.setBackground(new Color(0xEAD1DC));
+                    }
                 }
             } catch (NumberFormatException ex) {
                 textField.setBackground(new Color(0xEAD1DC));

@@ -3,6 +3,7 @@ package database;
 import com.sun.nio.sctp.MessageInfo;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
@@ -49,40 +50,89 @@ public class PupilsDataList {
         return null;
     }
     public static String getPupilInformation (Pupil p) {
-        if (p.getSecondName()==null) {
+        if (p.getParent2()!=null) {
+            if (p.getSecondName() == null) {
+                return String.format("<html>%s %s<br>" +
+                                "Date of birth: %d.%d.%d  <br>" +
+                                "Grade: %d<br>" +
+                                "Pesel: %s<br>\n" +
+                                "Parents:<br>" +
+                                "    %s %s. <br>    Telephone: %s<br>eMail: %s <br>" +
+                                "    %s %s. <br>    Telephone: %s<br>eMail: %s <br><br></html>",
+                        p.getName(), p.getSurname(),
+                        p.getDateOfBirth().getDayOfMonth(), p.getDateOfBirth().getMonthValue(), p.getDateOfBirth().getYear(),
+                        p.getGrade(),
+                        p.getPesel(),
+                        p.getParent1().getName(), p.getParent1().getSurname(), p.getParent1().getTelephone(),
+                        p.getParent1().geteMail(),
+                        p.getParent2().getName(), p.getParent2().getSurname(), p.getParent2().getTelephone(),
+                        p.getParent2().geteMail()
+                );
+            }
+            return String.format("<html>%s %s %s<br>" +
+                            "Date of birth: %d.%d.%d  <br>" +
+                            "Grade: %d<br>" +
+                            "Pesel: %s<br>" +
+                            "Parents:<br>" +
+                            "\t%s %s. <br>Telephone: %s<br>eMail: %s <br>" +
+                            "\t%s %s. <br>Telephone: %s<br>eMail: %s <br><br></html>",
+                    p.getName(), p.getSecondName(), p.getSurname(),
+                    p.getDateOfBirth().getDayOfMonth(), p.getDateOfBirth().getMonthValue(), p.getDateOfBirth().getYear(),
+                    p.getGrade(),
+                    p.getPesel(),
+                    p.getParent1().getName(), p.getParent1().getSurname(), p.getParent1().getTelephone(),
+                    p.getParent1().geteMail(),
+                    p.getParent2().getName(), p.getParent2().getSurname(), p.getParent2().getTelephone(),
+                    p.getParent2().geteMail()
+            );
+        }
+        if (p.getSecondName() == null) {
             return String.format("<html>%s %s<br>" +
                             "Date of birth: %d.%d.%d  <br>" +
                             "Grade: %d<br>" +
                             "Pesel: %s<br>\n" +
                             "Parents:<br>" +
-                            "    %s %s. <br>    Telephone: %s<br>eMail: %s <br>" +
-                            "    %s %s. <br>    Telephone: %s<br>eMail: %s <br><br></html>",
+                            "    %s %s. <br>    Telephone: %s<br>eMail: %s <br>",
                     p.getName(), p.getSurname(),
-                    p.getDay(), p.getMonth(), p.getYear(),
+                    p.getDateOfBirth().getDayOfMonth(), p.getDateOfBirth().getMonthValue(), p.getDateOfBirth().getYear(),
                     p.getGrade(),
                     p.getPesel(),
                     p.getParent1().getName(), p.getParent1().getSurname(), p.getParent1().getTelephone(),
-                                                                                    p.getParent1().geteMail(),
-                    p.getParent2().getName(), p.getParent2().getSurname(), p.getParent2().getTelephone(),
-                                                                                    p.getParent2().geteMail()
-                    );
+                    p.getParent1().geteMail()
+            );
         }
         return String.format("<html>%s %s %s<br>" +
                         "Date of birth: %d.%d.%d  <br>" +
                         "Grade: %d<br>" +
                         "Pesel: %s<br>" +
                         "Parents:<br>" +
-                        "\t%s %s. <br>Telephone: %s<br>eMail: %s <br>" +
-                        "\t%s %s. <br>Telephone: %s<br>eMail: %s <br><br></html>",
+                        "\t%s %s. <br>Telephone: %s<br>eMail: %s <br>",
                 p.getName(), p.getSecondName(), p.getSurname(),
-                p.getDay(), p.getMonth(), p.getYear(),
+                p.getDateOfBirth().getDayOfMonth(), p.getDateOfBirth().getMonthValue(), p.getDateOfBirth().getYear(),
                 p.getGrade(),
                 p.getPesel(),
                 p.getParent1().getName(), p.getParent1().getSurname(), p.getParent1().getTelephone(),
-                                                                                    p.getParent1().geteMail(),
-                p.getParent2().getName(), p.getParent2().getSurname(), p.getParent2().getTelephone(),
-                                                                                    p.getParent2().geteMail()
+                p.getParent1().geteMail()
         );
+    }
+    public static int getMinPossibleID(){
+        if (!pupilsDataList.isEmpty()) {
+            int maxID = pupilsDataList.stream()
+                    .max(Comparator.comparingInt(Pupil::getId))
+                    .get().getId();
+            for (int i = 1;
+                 i < pupilsDataList.stream()
+                         .max(Comparator.comparingInt(Pupil::getId))
+                         .get().getId();
+                 i++) {
+                int finalI = i;
+                if (pupilsDataList.stream()
+                        .noneMatch(pupil -> pupil.getId()== finalI)) {
+                    return finalI;
+                }
+            }
+        }
+        return -1;
     }
 }
 

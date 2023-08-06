@@ -1,12 +1,16 @@
 package GUI.addPupil;
 
 import GUI.listeners.*;
+import database.PupilsDataList;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.File;
 import java.io.IOException;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 
 public class AddPupil extends JFrame implements ActionListener {
     JLabel nameLabel, surnameLabel, secondNameLabel, peselLabel, idLabel, genderLabel, dateOfBirth, yearLabel, monthLabel, dayLabel,
@@ -16,19 +20,28 @@ public class AddPupil extends JFrame implements ActionListener {
             parent1Field, parent2Field, addressField, countryField, provinceField, townField, streetField, houseField,
             localField, postCodeField, marksField, achievementField;
     JComboBox<String> genderComboBox;
-
     JButton addFirstParentButton, addSecondParentButton, markButton, addButton, cancelButton;
+    Font remRegular;
+    Font font;
 
 
 
-    public AddPupil() {
+    public AddPupil() throws IOException, FontFormatException {
         this.setLayout(new GridBagLayout());
         this.setFont(new Font(null, Font.BOLD, 20));
 
+        Path workDir = Paths.get("src", "main", "resources");
+        File fontFile = new File(workDir.resolve("REM-Regular.ttf").toUri());
+        remRegular = Font.createFont(Font.TRUETYPE_FONT, fontFile);
+        font = remRegular.deriveFont(Font.PLAIN, 19);
+
         setItemsToFrame();
-        setFontForComponents(this, new Font("Arial", Font.PLAIN, 19));
+        setFontForComponents(this, font);
         setStyleForWindow();
         setListeners();
+
+        requiredLabel.setFont(remRegular.deriveFont(Font.PLAIN, 13));
+        requiredLabel.setForeground(new Color(0x5C0101));
 
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         this.pack();
@@ -81,8 +94,9 @@ public class AddPupil extends JFrame implements ActionListener {
         houseField = new JTextField(13);
         localField = new JTextField(13);
         postCodeField = new JTextField(13);
+        idField.setText(Integer.toString(PupilsDataList.getMinPossibleID()));
 
-        JComboBox<String> genderComboBox = new JComboBox<>(new String[]{"", "Male", "Female"});
+        genderComboBox = new JComboBox<>(new String[]{"", "Male", "Female"});
 
         addFirstParentButton =new JButton("*Enter parent's data");
         addSecondParentButton = new JButton("Enter father's data");
@@ -92,7 +106,7 @@ public class AddPupil extends JFrame implements ActionListener {
 
 
         GridBagConstraints c = new GridBagConstraints();
-        c.insets = new Insets(10,10,10,10);
+        c.insets = new Insets(5,3,5,3);
         c.fill = GridBagConstraints.HORIZONTAL;
 
         c.gridx=0;
@@ -120,6 +134,7 @@ public class AddPupil extends JFrame implements ActionListener {
         c.gridy=2;
         this.add(surnameField, c);
 
+        c.insets = new Insets(5,10,5,3);
         c.gridx=2;
         c.gridy=0;
         this.add(idLabel, c);
@@ -145,6 +160,7 @@ public class AddPupil extends JFrame implements ActionListener {
         c.gridy=2;
         this.add(genderComboBox, c);
 
+        c.insets = new Insets(5,3,5,3);
         c.gridwidth = 4;
         c.gridx = 0;
         c.gridy = 3;
@@ -179,6 +195,7 @@ public class AddPupil extends JFrame implements ActionListener {
         c.gridy=7;
         this.add(dayField, c);
 
+        c.insets = new Insets(5,10,5,3);
         c.gridx=2;
         c.gridy=4;
         this.add(addressLabel, c);
@@ -289,7 +306,7 @@ public class AddPupil extends JFrame implements ActionListener {
         if (e.getSource() == addFirstParentButton) {
             addFirstParentButton.setBackground(Color.CYAN);
             try {
-                new AddFirstParent(countryField.getText(), provinceField.getText(), townField.getText(),
+                new AddFirstParent(this, countryField.getText(), provinceField.getText(), townField.getText(),
                         streetField.getText(),
                         houseField.getText().trim(),
                         localField.getText().trim(),
@@ -314,6 +331,8 @@ public class AddPupil extends JFrame implements ActionListener {
         yearField.getDocument().addDocumentListener(new IsRightYearDocumentListener(yearField));
         monthField.getDocument().addDocumentListener(new IsRightMonthDocumentListener(monthField));
         dayField.getDocument().addDocumentListener(new IsRightDayDocumentListener(dayField));
+        peselField.getDocument().addDocumentListener(new IsRightPeselDocumentListener(yearField, monthField, dayField,
+                peselField, genderComboBox));
     }
     private boolean isInt (String number) {
         try {
