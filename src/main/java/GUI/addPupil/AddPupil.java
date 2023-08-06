@@ -1,6 +1,7 @@
 package GUI.addPupil;
 
 import GUI.listeners.*;
+import GUI.styleStorage.ConstantsOfColors;
 import database.PupilsDataList;
 
 import javax.swing.*;
@@ -95,14 +96,20 @@ public class AddPupil extends JFrame implements ActionListener {
         localField = new JTextField(13);
         postCodeField = new JTextField(13);
         idField.setText(Integer.toString(PupilsDataList.getMinPossibleID()));
+        nameField.setBackground(ConstantsOfColors.COLOR_FOR_WRONG_FORMAT);
+        surnameField.setBackground(ConstantsOfColors.COLOR_FOR_WRONG_FORMAT);
+        nameField.setBackground(ConstantsOfColors.COLOR_FOR_WRONG_FORMAT);
+        peselField.setBackground(ConstantsOfColors.COLOR_FOR_WRONG_FORMAT);
 
         genderComboBox = new JComboBox<>(new String[]{"", "Male", "Female"});
+        genderComboBox.setBackground(ConstantsOfColors.COLOR_FOR_WRONG_FORMAT);
 
         addFirstParentButton =new JButton("*Enter parent's data");
         addSecondParentButton = new JButton("Enter father's data");
         markButton = new JButton("Enter marks");
         addButton = new JButton("Add pupil");
         cancelButton = new JButton("Cancel");
+
 
 
         GridBagConstraints c = new GridBagConstraints();
@@ -324,15 +331,21 @@ public class AddPupil extends JFrame implements ActionListener {
     private void setListeners() {
         addFirstParentButton.addActionListener(this);
         cancelButton.addActionListener(this);
-        houseField.getDocument().addDocumentListener(new IsNumberDocumentListener(houseField));
-        localField.getDocument().addDocumentListener(new IsNumberDocumentListener(localField));
+        houseField.getDocument().addDocumentListener(new CheckStreetAndLocalDocumentListener(houseField));
+        localField.getDocument().addDocumentListener(new CheckStreetAndLocalDocumentListener(localField));
         nameField.getDocument().addDocumentListener(new IsEmptyDocumentListener(nameField));
         surnameField.getDocument().addDocumentListener(new IsEmptyDocumentListener(surnameField));
-        yearField.getDocument().addDocumentListener(new IsRightYearDocumentListener(yearField));
-        monthField.getDocument().addDocumentListener(new IsRightMonthDocumentListener(monthField));
-        dayField.getDocument().addDocumentListener(new IsRightDayDocumentListener(dayField));
+        yearField.getDocument().addDocumentListener(new IsRightYearDocumentListener(yearField, monthField, dayField,
+                peselField, genderComboBox));
+        monthField.getDocument().addDocumentListener(new IsRightMonthDocumentListener(yearField, monthField, dayField,
+                peselField, genderComboBox));
+        dayField.getDocument().addDocumentListener(new IsRightDayDocumentListener(yearField, monthField, dayField,
+                peselField, genderComboBox));
         peselField.getDocument().addDocumentListener(new IsRightPeselDocumentListener(yearField, monthField, dayField,
                 peselField, genderComboBox));
+        genderComboBox.addActionListener(new GenderComboBoxListener(yearField, monthField, dayField,
+                peselField, genderComboBox));
+
     }
     private boolean isInt (String number) {
         try {

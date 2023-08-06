@@ -1,5 +1,7 @@
 package GUI.listeners;
 
+import GUI.styleStorage.ConstantsOfColors;
+
 import javax.swing.*;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
@@ -29,9 +31,9 @@ public class IsEmptyDocumentListener implements DocumentListener {
     private void isEmpty(){
         String text = textField.getText().replaceAll("\\s+", "");
         if (text.isEmpty()) {
-            textField.setBackground(new Color(0xEAD1DC));
+            textField.setBackground(ConstantsOfColors.COLOR_FOR_WRONG_FORMAT);
         } else {
-            textField.setBackground(new Color(0xD2FFD2));
+            textField.setBackground(ConstantsOfColors.COLOR_FOR_RIGHT_FORMAT);
         }
     }
 

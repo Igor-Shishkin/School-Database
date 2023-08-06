@@ -1,5 +1,6 @@
 package GUI;
 
+import GUI.styleStorage.ColorsSets;
 import database.WriteReadDataToFile;
 
 import javax.swing.*;
@@ -12,6 +13,7 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
 
@@ -20,7 +22,6 @@ public class MainWindow extends JFrame implements ActionListener {
 
 //    static ArrayList<Pupil> listOfPupils;
 
-    static List<Color> actualSetColor;
     Properties properties;
     static JTextField currentStatusField;
     Border border;
@@ -35,10 +36,11 @@ public class MainWindow extends JFrame implements ActionListener {
 
     MainWindow() throws IOException, FontFormatException {
         myMenuBar = new MyMenuBar();
-        actualSetColor = colorsSets.setOfColorsSoftRose;
+        setActualSetOfColors(ColorsSets.SET_OF_COLORS_SOFT_ROSE);
 
 
-        border = BorderFactory.createSoftBevelBorder(SoftBevelBorder.RAISED, actualSetColor.get(0), actualSetColor.get(4));
+        border = BorderFactory.createSoftBevelBorder(SoftBevelBorder.RAISED, ColorsSets.ACTUAL_SET_OF_COLORS.get(0),
+                ColorsSets.ACTUAL_SET_OF_COLORS.get(4));
 
 //        JPanel topPanel = new JPanel();
 //        topPanel.setPreferredSize(new Dimension(10, 5));
@@ -84,7 +86,7 @@ public class MainWindow extends JFrame implements ActionListener {
     public void setCurrentStatusPanel () {
         currentStatusField = new JTextField("Logged in. No data has been loaded at the moment.");
         currentStatusField.setPreferredSize(new Dimension(982, 25));
-        currentStatusField.setBackground(actualSetColor.get(2));
+        currentStatusField.setBackground(ColorsSets.ACTUAL_SET_OF_COLORS.get(2));
         currentStatusField.setForeground(Color.DARK_GRAY);
         currentStatusField.setEditable(false);
         downPanel.setPreferredSize(new Dimension(10, 35));
@@ -94,8 +96,8 @@ public class MainWindow extends JFrame implements ActionListener {
     public void setStatusPanel() throws IOException, FontFormatException {
         currentStatusField = new JTextField("Logged in");
         currentStatusField.setBounds(2, 609, 977, 25);
-        currentStatusField.setBackground(actualSetColor.get(2));
-        currentStatusField.setForeground(actualSetColor.get(4));
+        currentStatusField.setBackground(ColorsSets.ACTUAL_SET_OF_COLORS.get(2));
+        currentStatusField.setForeground(ColorsSets.ACTUAL_SET_OF_COLORS.get(4));
         currentStatusField.setEditable(false);
 
         Path path = Paths.get("src", "main", "resources");
@@ -103,6 +105,11 @@ public class MainWindow extends JFrame implements ActionListener {
         Font remRegular = Font.createFont(Font.TRUETYPE_FONT, fontFile);
 
         currentStatusField.setFont(remRegular);
+    }
+    public void setActualSetOfColors(ArrayList<Color> listOfColors) {
+        for (int i = 0; i < listOfColors.size(); i++) {
+            ColorsSets.ACTUAL_SET_OF_COLORS.set(i, listOfColors.get(i));
+        }
     }
 
 }

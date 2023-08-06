@@ -1,5 +1,7 @@
 package GUI;
 
+import GUI.styleStorage.ColorsSets;
+
 import javax.swing.*;
 import javax.swing.tree.DefaultTreeCellRenderer;
 import java.awt.*;
@@ -15,7 +17,7 @@ class TextTreeCellRenderer extends DefaultTreeCellRenderer {
             setText(node.getUserObject().toString() + " - " + node.getText());
         }
 
-        component.setBackground(MainWindow.actualSetColor.get(2));
+        component.setBackground(ColorsSets.ACTUAL_SET_OF_COLORS.get(2));
         component.setForeground(Color.black);
         ((JComponent) component).setOpaque(true);
 

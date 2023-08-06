@@ -1,5 +1,6 @@
 package GUI;
 
+import GUI.styleStorage.ColorsSets;
 import database.Pupil;
 import database.PupilsDataList;
 
@@ -63,7 +64,7 @@ public class CentralPanel extends JPanel implements ActionListener, TreeSelectio
         rootForPupilsPanel = new DefaultMutableTreeNode();
 
         gradesPanel = new JPanel(new BorderLayout());
-        gradesPanel.setBackground(MainWindow.actualSetColor.get(2));
+        gradesPanel.setBackground(ColorsSets.ACTUAL_SET_OF_COLORS.get(2));
         gradesPanel.setBorder(border);
         setTreeNode();
         gradesPanel.setToolTipText("Grades");
@@ -76,7 +77,7 @@ public class CentralPanel extends JPanel implements ActionListener, TreeSelectio
         pupilInformationLabel = new JLabel();
         pupilInformationLabel.setFont(font);
         pupilInformationLabel.setText("No student selected");
-        pupilInformationLabel.setBackground(MainWindow.actualSetColor.get(2));
+        pupilInformationLabel.setBackground(ColorsSets.ACTUAL_SET_OF_COLORS.get(2));
 //        pupilInformationLabel.setPreferredSize(new Dimension (10, 200));
         pupilsPanel.setFont(font);
         informationPanel = new JPanel();
@@ -85,17 +86,17 @@ public class CentralPanel extends JPanel implements ActionListener, TreeSelectio
         informationPanel.setLayout(new BorderLayout());
 //        scrollPaneForInformationLabel.setPreferredSize(new Dimension (400, 300));
         informationPanel.add(pupilInformationLabel, BorderLayout.NORTH);
-        informationPanel.setBackground(MainWindow.actualSetColor.get(2));
+        informationPanel.setBackground(ColorsSets.ACTUAL_SET_OF_COLORS.get(2));
         informationPanel.setBorder(border);
 //        informationPanel.setMaximumSize(new Dimension(350, 900));
 
         setGridBagConstraints();
-        this.setBackground(MainWindow.actualSetColor.get(0));
+        this.setBackground(ColorsSets.ACTUAL_SET_OF_COLORS.get(0));
     }
 
     private void setPupilPanel() {
         pupilsPanel = new JPanel(new BorderLayout());
-        pupilsPanel.setBackground(MainWindow.actualSetColor.get(2));
+        pupilsPanel.setBackground(ColorsSets.ACTUAL_SET_OF_COLORS.get(2));
         pupilsPanel.setBorder(border);
 
         informationLabelForPupilPanel = new JLabel("List of pupils");
@@ -108,7 +109,7 @@ public class CentralPanel extends JPanel implements ActionListener, TreeSelectio
         treeForPupilsPanel.setCellRenderer(new CustomTreeCellRenderer());
         treeForPupilsPanel.setFont(font);
         treeForPupilsPanel.setRootVisible(false);
-        treeForPupilsPanel.setBackground(MainWindow.actualSetColor.get(2));
+        treeForPupilsPanel.setBackground(ColorsSets.ACTUAL_SET_OF_COLORS.get(2));
         treeForPupilsPanel.addMouseMotionListener(new HandCursorForMouseMotionAdapter(treeForPupilsPanel));
         treeForPupilsPanel.addMouseListener(new PupilsTreeNodeMouseListener(treeForPupilsPanel));
 //        pupilsPanel.add(treeForPupilsPanel);
@@ -145,7 +146,7 @@ public class CentralPanel extends JPanel implements ActionListener, TreeSelectio
 
         treeForGradePanel.putClientProperty("JTree.lineStyle", "Angled");
         treeForGradePanel.setFont(new Font("MV Boli",Font.BOLD,16));
-        treeForGradePanel.setBackground(MainWindow.actualSetColor.get(2));
+        treeForGradePanel.setBackground(ColorsSets.ACTUAL_SET_OF_COLORS.get(2));
 //        treeForGradePanel.setCellRenderer(new CustomTreeCellRenderer());
         treeForGradePanel.setCellRenderer(new CustomTreeCellRenderer());
         treeForGradePanel.addMouseListener(new GradesTreeNodeMouseListener(treeForGradePanel));

@@ -1,14 +1,16 @@
 package GUI.listeners;
 
+import GUI.styleStorage.ConstantsOfColors;
+
 import javax.swing.*;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import java.awt.*;
 
-public class IsNumberDocumentListener implements DocumentListener {
+public class CheckStreetAndLocalDocumentListener implements DocumentListener {
     JTextField textField;
 
-    public IsNumberDocumentListener(JTextField textField) {
+    public CheckStreetAndLocalDocumentListener(JTextField textField) {
         this.textField = textField;
     }
 
@@ -28,10 +30,14 @@ public class IsNumberDocumentListener implements DocumentListener {
     }
     private void isInt () {
         try {
-            Integer.parseInt(this.textField.getText());
-            textField.setBackground(new Color(0xD2FFD2));
+            int number = Integer.parseInt(this.textField.getText());
+            if (number<500) {
+                textField.setBackground(ConstantsOfColors.COLOR_FOR_RIGHT_FORMAT);
+            } else {
+                textField.setBackground(ConstantsOfColors.COLOR_FOR_WRONG_FORMAT);
+            }
         } catch (NumberFormatException ex) {
-            textField.setBackground(new Color(0xEAD1DC));
+            textField.setBackground(ConstantsOfColors.COLOR_FOR_WRONG_FORMAT);
         }
     }
 }

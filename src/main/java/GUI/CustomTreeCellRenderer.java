@@ -1,5 +1,7 @@
 package GUI;
 
+import GUI.styleStorage.ColorsSets;
+
 import javax.swing.*;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeCellRenderer;
@@ -15,7 +17,7 @@ public class CustomTreeCellRenderer extends DefaultTreeCellRenderer {
                                                   boolean leaf, int row, boolean hasFocus) {
         component = super.getTreeCellRendererComponent(tree, value, selected, expanded, leaf, row, hasFocus);
 
-        component.setBackground(MainWindow.actualSetColor.get(2));
+        component.setBackground(ColorsSets.ACTUAL_SET_OF_COLORS.get(2));
         component.setForeground(Color.black);
 
         ((JComponent) component).setOpaque(true);

@@ -3,40 +3,25 @@ package GUI.listeners;
 import GUI.styleStorage.ConstantsOfColors;
 
 import javax.swing.*;
-import javax.swing.event.DocumentEvent;
-import javax.swing.event.DocumentListener;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.Objects;
 
-public class IsRightPeselDocumentListener implements DocumentListener {
+public class GenderComboBoxListener implements ActionListener {
     JTextField yearTextField, monthTextField, dayTextField, peselTextField;
     JComboBox<String> comboBox;
 
-    public IsRightPeselDocumentListener(JTextField yearField, JTextField monthField, JTextField dayField,
-                                        JTextField thisJField, JComboBox<String> comboBox) {
-        this.yearTextField = yearField;
-        this.monthTextField = monthField;
-        this.dayTextField = dayField;
-        this.peselTextField = thisJField;
+    public GenderComboBoxListener(JTextField yearTextField, JTextField monthTextField, JTextField dayTextField,
+                                  JTextField peselTextField, JComboBox<String> comboBox) {
+        this.yearTextField = yearTextField;
+        this.monthTextField = monthTextField;
+        this.dayTextField = dayTextField;
+        this.peselTextField = peselTextField;
         this.comboBox = comboBox;
     }
 
     @Override
-    public void insertUpdate(DocumentEvent e) {
-        isPeselRight();
-    }
-
-    @Override
-    public void removeUpdate(DocumentEvent e) {
-        isPeselRight();
-    }
-
-    @Override
-    public void changedUpdate(DocumentEvent e) {
-        isPeselRight();
-    }
-
-    private void isPeselRight() {
-
+    public void actionPerformed(ActionEvent e) {
         boolean isNumber = true;
         for (char c : peselTextField.getText().toCharArray()) {
             if (!Character.isDigit(c)) {
@@ -86,8 +71,9 @@ public class IsRightPeselDocumentListener implements DocumentListener {
                 } else {
                     peselTextField.setBackground(ConstantsOfColors.COLOR_FOR_WRONG_FORMAT);
                 }
+            }else {
+                peselTextField.setBackground(ConstantsOfColors.COLOR_NEUTRAL_FORMAT);
             }
         }
     }
-
 }
