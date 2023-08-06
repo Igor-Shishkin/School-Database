@@ -1,7 +1,6 @@
 package GUI;
 
 import GUI.addPupil.AddPupil;
-import GUI.addPupil.AddMothersDate;
 
 import javax.swing.*;
 import java.awt.*;
@@ -28,7 +27,7 @@ public class Main {
 //        UIManager.put("Menu.foreground", Color.green);
         UIManager.put("MenuItem.opaque", true);
 //        mainWindow = new MainWindow();
-        new AddMothersDate();
+        new AddPupil();
     }
 
     public static void sleep (int time) throws InterruptedException {

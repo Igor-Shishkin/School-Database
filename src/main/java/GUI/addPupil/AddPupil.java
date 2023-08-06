@@ -1,20 +1,23 @@
 package GUI.addPupil;
 
+import GUI.listeners.*;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.IOException;
 
 public class AddPupil extends JFrame implements ActionListener {
     JLabel nameLabel, surnameLabel, secondNameLabel, peselLabel, idLabel, genderLabel, dateOfBirth, yearLabel, monthLabel, dayLabel,
             parent1Label, parent2Label, addressLabel, countryLabel, provinceLabel, townLabel, streetLabel, houseLabel,
-            localLabel, postCodeLabel, marksLabel, achievementLabel;
+            localLabel, postCodeLabel, requiredLabel, achievementLabel;
     JTextField nameField,surnameField,secondNameField, peselField, idField, genderField, yearField, monthField, dayField,
             parent1Field, parent2Field, addressField, countryField, provinceField, townField, streetField, houseField,
             localField, postCodeField, marksField, achievementField;
     JComboBox<String> genderComboBox;
 
-    JButton motherDataButton, fatherDataButton, markButton, addButton, cancelButton;
+    JButton addFirstParentButton, addSecondParentButton, markButton, addButton, cancelButton;
 
 
 
@@ -25,7 +28,7 @@ public class AddPupil extends JFrame implements ActionListener {
         setItemsToFrame();
         setFontForComponents(this, new Font("Arial", Font.PLAIN, 19));
         setStyleForWindow();
-        setActionListener();
+        setListeners();
 
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         this.pack();
@@ -33,10 +36,6 @@ public class AddPupil extends JFrame implements ActionListener {
         this.setTitle("Write pupil's data");
         this.setVisible(true);
 
-    }
-
-    private void setActionListener() {
-        motherDataButton.addActionListener(this);
     }
 
     private void setStyleForWindow() {
@@ -67,6 +66,7 @@ public class AddPupil extends JFrame implements ActionListener {
         postCodeLabel = new JLabel("Postcode: ");
         dateOfBirth = new JLabel("Date of birth: ");
         addressLabel = new JLabel("Address: ");
+        requiredLabel = new JLabel("Fields with an asterisk are required");
 
         peselField = new JTextField(13);
         idField = new JTextField(13);
@@ -82,10 +82,10 @@ public class AddPupil extends JFrame implements ActionListener {
         localField = new JTextField(13);
         postCodeField = new JTextField(13);
 
-        JComboBox<String> genderComboBox = new JComboBox<>(new String[]{"Male", "Female"});
+        JComboBox<String> genderComboBox = new JComboBox<>(new String[]{"", "Male", "Female"});
 
-        motherDataButton  =new JButton("Enter mother's data");
-        fatherDataButton = new JButton("Enter father's data");
+        addFirstParentButton =new JButton("*Enter parent's data");
+        addSecondParentButton = new JButton("Enter father's data");
         markButton = new JButton("Enter marks");
         addButton = new JButton("Add pupil");
         cancelButton = new JButton("Cancel");
@@ -239,15 +239,20 @@ public class AddPupil extends JFrame implements ActionListener {
         c.gridy=11;
         this.add(postCodeField, c);
 
-        c.insets = new Insets(2,40,2,40);
+        c.gridx=0;
+        c.gridy=11;
         c.gridwidth = 2;
+        this.add(requiredLabel, c);
+
+        c.insets = new Insets(2,40,2,40);
+
         c.gridx=0;
         c.gridy=8;
-        this.add(motherDataButton, c);
+        this.add(addFirstParentButton, c);
 
         c.gridx=0;
         c.gridy=9;
-        this.add(fatherDataButton, c);
+        this.add(addSecondParentButton, c);
 
         c.gridx=0;
         c.gridy=10;
@@ -278,8 +283,45 @@ public class AddPupil extends JFrame implements ActionListener {
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        if (e.getSource() == motherDataButton) {
-            motherDataButton.setBackground(Color.CYAN);
+        if (e.getSource()==cancelButton) {
+            System.exit(1);
+        }
+        if (e.getSource() == addFirstParentButton) {
+            addFirstParentButton.setBackground(Color.CYAN);
+            try {
+                new AddFirstParent(countryField.getText(), provinceField.getText(), townField.getText(),
+                        streetField.getText(),
+                        houseField.getText().trim(),
+                        localField.getText().trim(),
+                        postCodeField.getText());
+                System.out.println( countryField.getText() + provinceField.getText()+ townField.getText() +
+                        streetField.getText() +
+//                        (isInt(localField.getText().trim()))?Integer.parseInt(localField.getText().trim()):0 +
+                        postCodeField.getText());
+            } catch (IOException | FontFormatException ex) {
+                throw new RuntimeException(ex);
+            }
+        }
+
+    }
+    private void setListeners() {
+        addFirstParentButton.addActionListener(this);
+        cancelButton.addActionListener(this);
+        houseField.getDocument().addDocumentListener(new IsNumberDocumentListener(houseField));
+        localField.getDocument().addDocumentListener(new IsNumberDocumentListener(localField));
+        nameField.getDocument().addDocumentListener(new IsEmptyDocumentListener(nameField));
+        surnameField.getDocument().addDocumentListener(new IsEmptyDocumentListener(surnameField));
+        yearField.getDocument().addDocumentListener(new IsRightYearDocumentListener(yearField));
+        monthField.getDocument().addDocumentListener(new IsRightMonthDocumentListener(monthField));
+        dayField.getDocument().addDocumentListener(new IsRightDayDocumentListener(dayField));
+    }
+    private boolean isInt (String number) {
+        try {
+            Integer.parseInt(number.trim());
+            return true;
+        } catch (NumberFormatException e) {
+            return false;
         }
     }
 }
+

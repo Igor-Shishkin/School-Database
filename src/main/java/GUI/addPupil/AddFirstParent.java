@@ -9,22 +9,32 @@ import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
-public class AddMothersDate extends JFrame implements ActionListener {
-    JLabel nameLabel, surnameLabel, secondNameLabel, eMailLabel, telephoneLabel, genderLabel, dateOfBirth, yearLabel, monthLabel, dayLabel,
-            parent1Label, parent2Label, addressLabel, countryLabel, provinceLabel, townLabel, streetLabel, houseLabel,
-            localLabel, postCodeLabel, marksLabel, achievementLabel;
+public class AddFirstParent extends JFrame implements ActionListener {
+    JLabel nameLabel, surnameLabel, secondNameLabel, eMailLabel, telephoneLabel, genderLabel, dateOfBirth, yearLabel,
+            monthLabel, dayLabel, addressLabel, countryLabel, provinceLabel, townLabel,
+            streetLabel, houseLabel, localLabel, postCodeLabel;
     JTextField nameField, surnameField, secondNameField, eMailField, telephoneField, genderField, yearField, monthField, dayField,
-            parent1Field, parent2Field, addressField, countryField, provinceField, townField, streetField, houseField,
-            localField, postCodeField, marksField, achievementField;
+            countryField, provinceField, townField, streetField, houseField,
+            localField, postCodeField;
     JComboBox<String> genderComboBox;
 
-    JButton motherDataButton, fatherDataButton, markButton, addButton, cancelButton;
+    JButton makeAddressLikePupils, fatherDataButton, markButton, addButton, cancelButton;
 
     Font remRegular;
     Font font;
 
+    String country, province, town, street, postCode,house, local;
 
-    public AddMothersDate() throws IOException, FontFormatException {
+
+    public AddFirstParent(String country, String province, String town, String street, String house, String local,
+                          String postCode) throws IOException, FontFormatException {
+        this.country = country;
+        this.province = province;
+        this.town = town;
+        this.street = street;
+        this.house = house;
+        this.local = local;
+        this.postCode = postCode;
         Path workDir = Paths.get("src", "main", "resources");
         File fontFile = new File(workDir.resolve("REM-Regular.ttf").toUri());
         remRegular = Font.createFont(Font.TRUETYPE_FONT, fontFile);
@@ -47,7 +57,7 @@ public class AddMothersDate extends JFrame implements ActionListener {
     }
 
     private void setActionListener() {
-        motherDataButton.addActionListener(this);
+        makeAddressLikePupils.addActionListener(this);
     }
 
     private void setStyleForWindow() {
@@ -93,9 +103,9 @@ public class AddMothersDate extends JFrame implements ActionListener {
         localField = new JTextField(13);
         postCodeField = new JTextField(13);
 
-        JComboBox<String> genderComboBox = new JComboBox<>(new String[]{"Male", "Female"});
+        genderComboBox = new JComboBox<>(new String[]{"Male", "Female"});
 
-        motherDataButton = new JButton("Enter mother's data");
+        makeAddressLikePupils = new JButton("Make an address like the pupil's");
         fatherDataButton = new JButton("Enter father's data");
         markButton = new JButton("Enter marks");
         addButton = new JButton("Add pupil");
@@ -250,11 +260,11 @@ public class AddMothersDate extends JFrame implements ActionListener {
         c.gridy = 11;
         this.add(postCodeField, c);
 
-        c.insets = new Insets(2, 40, 2, 40);
-        c.gridwidth = 2;
-        c.gridx = 0;
-        c.gridy = 8;
-        this.add(motherDataButton, c);
+//        c.insets = new Insets(2, 3, 2, 3);
+        c.gridwidth = 1;
+        c.gridx = 3;
+        c.gridy = 4;
+        this.add(makeAddressLikePupils, c);
 
         c.gridx = 0;
         c.gridy = 9;
@@ -288,6 +298,14 @@ public class AddMothersDate extends JFrame implements ActionListener {
     }
     @Override
     public void actionPerformed(ActionEvent e) {
-
+        if(e.getSource()==makeAddressLikePupils) {
+            countryField.setText(country);
+            provinceField.setText(province);
+            townField.setText(town);
+            streetField.setText(street);
+            houseField.setText(house);
+            localField.setText(local);
+            postCodeField.setText(postCode);
+        }
     }
 }
