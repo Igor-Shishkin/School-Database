@@ -22,6 +22,11 @@ public class GenderComboBoxListener implements ActionListener {
 
     @Override
     public void actionPerformed(ActionEvent e) {
+        if (Objects.equals(comboBox.getSelectedItem(), "")){
+            comboBox.setBackground(ConstantsOfColors.COLOR_FOR_WRONG_FORMAT);
+        } else {
+            comboBox.setBackground(ConstantsOfColors.COLOR_FOR_RIGHT_FORMAT);
+        }
         boolean isNumber = true;
         for (char c : peselTextField.getText().toCharArray()) {
             if (!Character.isDigit(c)) {

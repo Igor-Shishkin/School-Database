@@ -2,7 +2,7 @@ package GUI.addPupil;
 
 import GUI.listeners.*;
 import GUI.styleStorage.ConstantsOfColors;
-import database.PupilsDataList;
+import database.*;
 
 import javax.swing.*;
 import java.awt.*;
@@ -12,16 +12,22 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.Objects;
 
 public class AddPupil extends JFrame implements ActionListener {
+    Parent parent1=null, parent2=null;
+    String achievement;
+    boolean awardBar, promotionToNextGrade;
+    Marks marks;
     JLabel nameLabel, surnameLabel, secondNameLabel, peselLabel, idLabel, genderLabel, dateOfBirth, yearLabel, monthLabel, dayLabel,
             parent1Label, parent2Label, addressLabel, countryLabel, provinceLabel, townLabel, streetLabel, houseLabel,
-            localLabel, postCodeLabel, requiredLabel, achievementLabel;
+            localLabel, postCodeLabel, requiredLabel, achievementLabel, gradeLabel;
     JTextField nameField,surnameField,secondNameField, peselField, idField, genderField, yearField, monthField, dayField,
             parent1Field, parent2Field, addressField, countryField, provinceField, townField, streetField, houseField,
             localField, postCodeField, marksField, achievementField;
     JComboBox<String> genderComboBox;
-    JButton addFirstParentButton, addSecondParentButton, markButton, addButton, cancelButton;
+    JComboBox<Integer> gradeComboBox;
+    JButton addFirstParentButton, addSecondParentButton, markButton, addButton, cancelButton, achievementButton;
     Font remRegular;
     Font font;
 
@@ -40,9 +46,6 @@ public class AddPupil extends JFrame implements ActionListener {
         setFontForComponents(this, font);
         setStyleForWindow();
         setListeners();
-
-        requiredLabel.setFont(remRegular.deriveFont(Font.PLAIN, 13));
-        requiredLabel.setForeground(new Color(0x5C0101));
 
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         this.pack();
@@ -78,9 +81,9 @@ public class AddPupil extends JFrame implements ActionListener {
         houseLabel = new JLabel("House: ");
         localLabel = new JLabel("Local: ");
         postCodeLabel = new JLabel("Postcode: ");
-        dateOfBirth = new JLabel("Date of birth: ");
-        addressLabel = new JLabel("Address: ");
-        requiredLabel = new JLabel("Fields with an asterisk are required");
+        dateOfBirth = new JLabel("Date of birth ");
+        addressLabel = new JLabel("Address ");
+        gradeLabel = new JLabel("*Grade: ");
 
         peselField = new JTextField(13);
         idField = new JTextField(13);
@@ -100,15 +103,24 @@ public class AddPupil extends JFrame implements ActionListener {
         surnameField.setBackground(ConstantsOfColors.COLOR_FOR_WRONG_FORMAT);
         nameField.setBackground(ConstantsOfColors.COLOR_FOR_WRONG_FORMAT);
         peselField.setBackground(ConstantsOfColors.COLOR_FOR_WRONG_FORMAT);
+        yearField.setBackground(ConstantsOfColors.COLOR_FOR_WRONG_FORMAT);
+        monthField.setBackground(ConstantsOfColors.COLOR_FOR_WRONG_FORMAT);
+        dayField.setBackground(ConstantsOfColors.COLOR_FOR_WRONG_FORMAT);
 
         genderComboBox = new JComboBox<>(new String[]{"", "Male", "Female"});
+        gradeComboBox = new JComboBox<>(new Integer[]{null,0,1,2,3,4,5,6,7,8});
         genderComboBox.setBackground(ConstantsOfColors.COLOR_FOR_WRONG_FORMAT);
+        gradeComboBox.setBackground(ConstantsOfColors.COLOR_FOR_WRONG_FORMAT);
+        gradeComboBox.addActionListener(this);
 
         addFirstParentButton =new JButton("*Enter parent's data");
         addSecondParentButton = new JButton("Enter father's data");
         markButton = new JButton("Enter marks");
         addButton = new JButton("Add pupil");
         cancelButton = new JButton("Cancel");
+        achievementButton = new JButton("Add achievement");
+        addFirstParentButton.setBackground(ConstantsOfColors.COLOR_FOR_WRONG_FORMAT);
+
 
 
 
@@ -167,130 +179,145 @@ public class AddPupil extends JFrame implements ActionListener {
         c.gridy=2;
         this.add(genderComboBox, c);
 
-        c.insets = new Insets(5,3,5,3);
+        c.gridx=2;
+        c.gridy=3;
+        this.add(gradeLabel, c);
+
+        c.gridx=3;
+        c.gridy=3;
+        this.add(gradeComboBox, c);
+
+        c.insets = new Insets(2,3,2,3);
         c.gridwidth = 4;
         c.gridx = 0;
-        c.gridy = 3;
+        c.gridy = 4;
         this.add(new JSeparator(), c);
 
+        c.insets = new Insets(5,3,5,3);
         c.gridwidth = 1;
         c.gridx = 0;
-        c.gridy = 4;
+        c.gridy = 5;
         this.add(dateOfBirth, c);
 
         c.gridx=0;
-        c.gridy=5;
+        c.gridy=6;
         this.add(yearLabel, c);
 
         c.gridx=1;
-        c.gridy=5;
+        c.gridy=6;
         this.add(yearField, c);
 
         c.gridx=0;
-        c.gridy=6;
+        c.gridy=7;
         this.add(monthLabel, c);
 
         c.gridx=1;
-        c.gridy=6;
+        c.gridy=7;
         this.add(monthField, c);
 
         c.gridx=0;
-        c.gridy=7;
+        c.gridy=8;
         this.add(dayLabel, c);
 
         c.gridx=1;
-        c.gridy=7;
+        c.gridy=8;
         this.add(dayField, c);
 
         c.insets = new Insets(5,10,5,3);
         c.gridx=2;
-        c.gridy=4;
+        c.gridy=5;
         this.add(addressLabel, c);
 
         c.gridx=2;
-        c.gridy=5;
+        c.gridy=6;
         this.add(countryLabel, c);
 
         c.gridx=3;
-        c.gridy=5;
+        c.gridy=6;
         this.add(countryField, c);
 
         c.gridx=2;
-        c.gridy=6;
+        c.gridy=7;
         this.add(provinceLabel, c);
 
         c.gridx=3;
-        c.gridy=6;
+        c.gridy=7;
         this.add(provinceField, c);
 
         c.gridx=2;
-        c.gridy=7;
+        c.gridy=8;
         this.add(townLabel, c);
 
         c.gridx=3;
-        c.gridy=7;
+        c.gridy=8;
         this.add(townField, c);
 
         c.gridx=2;
-        c.gridy=8;
+        c.gridy=9;
         this.add(streetLabel, c);
 
         c.gridx=3;
-        c.gridy=8;
+        c.gridy=9;
         this.add(streetField, c);
 
         c.gridx=2;
-        c.gridy=9;
+        c.gridy=10;
         this.add(houseLabel, c);
 
         c.gridx=3;
-        c.gridy=9;
+        c.gridy=10;
         this.add(houseField, c);
 
         c.gridx=2;
-        c.gridy=10;
+        c.gridy=11;
         this.add(localLabel, c);
 
         c.gridx=3;
-        c.gridy=10;
+        c.gridy=11;
         this.add(localField, c);
 
         c.gridx=2;
-        c.gridy=11;
+        c.gridy=12;
         this.add(postCodeLabel, c);
 
         c.gridx=3;
-        c.gridy=11;
+        c.gridy=12;
         this.add(postCodeField, c);
-
-        c.gridx=0;
-        c.gridy=11;
-        c.gridwidth = 2;
-        this.add(requiredLabel, c);
 
         c.insets = new Insets(2,40,2,40);
 
         c.gridx=0;
-        c.gridy=8;
+        c.gridy=9;
+        c.gridwidth = 2;
         this.add(addFirstParentButton, c);
 
         c.gridx=0;
-        c.gridy=9;
+        c.gridy=10;
         this.add(addSecondParentButton, c);
 
         c.gridx=0;
-        c.gridy=10;
+        c.gridy=11;
         this.add(markButton, c);
+
+        c.gridx=0;
+        c.gridy=12;
+        this.add(achievementButton, c);
+
+        c.insets = new Insets(6,10,6,10);
+        c.gridwidth = 4;
+        c.gridx = 0;
+        c.gridy = 13;
+        this.add(new JSeparator(), c);
 
         c.insets = new Insets(2,40,15,10);
         c.gridwidth = 1;
         c.gridx=1;
-        c.gridy=12;
+        c.gridy=14;
         this.add(addButton, c);
 
         c.insets = new Insets(2,2,15,0);
         c.gridx=2;
-        c.gridy=12;
+        c.gridy=14;
         this.add(cancelButton, c);
     }
 
@@ -311,7 +338,6 @@ public class AddPupil extends JFrame implements ActionListener {
             System.exit(1);
         }
         if (e.getSource() == addFirstParentButton) {
-            addFirstParentButton.setBackground(Color.CYAN);
             try {
                 new AddFirstParent(this, countryField.getText(), provinceField.getText(), townField.getText(),
                         streetField.getText(),
@@ -326,11 +352,34 @@ public class AddPupil extends JFrame implements ActionListener {
                 throw new RuntimeException(ex);
             }
         }
+        if (e.getSource()==addButton){
+            String secondName = (secondNameField.getText().trim().equals(""))?null:secondNameField.getText().trim();
+            char gender = (Objects.equals(genderComboBox.getSelectedItem(), "Male")) ? 'M' : 'F';
+
+            if (PupilsDataList.addPupilToList
+                    (new Pupil(nameField.getText(), secondName, surnameField.getText(), gender,
+                            Integer.parseInt(yearField.getText()), Integer.parseInt(monthField.getText()),
+                            Integer.parseInt(dayField.getText()), new Address(countryField.getText(),
+                            provinceField.getText(), townField.getText(), streetField.getText(),
+                            Integer.parseInt(houseField.getText()), Integer.parseInt(localField.getText()),
+                            postCodeField.getText()), peselField.getText(), Integer.parseInt(idField.getText()),
+                            Integer.parseInt((String) Objects.requireNonNull(gradeComboBox.getSelectedItem())),
+                            parent1, parent2, achievement, marks, awardBar, promotionToNextGrade))) {
+                        JOptionPane.showMessageDialog(null, "Pupil is added to database :)",
+                                "Success!", JOptionPane.PLAIN_MESSAGE);
+                        System.exit(1);
+                    } else {
+                JOptionPane.showMessageDialog(null,
+                        "\t\tI can't write this pupil!\nSome data was entered incorrectly", "ERROR",
+                        JOptionPane.ERROR_MESSAGE);
+            }
+        }
 
     }
     private void setListeners() {
         addFirstParentButton.addActionListener(this);
         cancelButton.addActionListener(this);
+        addButton.addActionListener(this);
         houseField.getDocument().addDocumentListener(new CheckStreetAndLocalDocumentListener(houseField));
         localField.getDocument().addDocumentListener(new CheckStreetAndLocalDocumentListener(localField));
         nameField.getDocument().addDocumentListener(new IsEmptyDocumentListener(nameField));

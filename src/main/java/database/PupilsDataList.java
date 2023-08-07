@@ -17,12 +17,13 @@ public class PupilsDataList {
     public static void setPupilsDataList(ArrayList<Pupil> pupilsDataList) {
         PupilsDataList.pupilsDataList = pupilsDataList;
     }
-    public static void addPupilToList(Pupil p) {
+    public static Boolean addPupilToList(Pupil p) {
         if (pupilsDataList.stream().noneMatch(pupil -> pupil.getId()==p.getId()) &&
                 pupilsDataList.stream().noneMatch(pupil -> Objects.equals(pupil.getPesel(), p.getPesel()))){
             pupilsDataList.add(p);
+            return true;
         } else {
-            System.out.println("There is already such a student in the list");
+            return false;
         }
     }
     public static void removePupilFromList(int number) {
@@ -117,9 +118,6 @@ public class PupilsDataList {
     }
     public static int getMinPossibleID(){
         if (!pupilsDataList.isEmpty()) {
-            int maxID = pupilsDataList.stream()
-                    .max(Comparator.comparingInt(Pupil::getId))
-                    .get().getId();
             for (int i = 1;
                  i < pupilsDataList.stream()
                          .max(Comparator.comparingInt(Pupil::getId))
@@ -132,7 +130,7 @@ public class PupilsDataList {
                 }
             }
         }
-        return -1;
+        return 1;
     }
 }
 
