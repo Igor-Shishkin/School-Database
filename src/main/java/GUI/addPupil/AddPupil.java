@@ -16,7 +16,7 @@ import java.util.Objects;
 
 public class AddPupil extends JFrame implements ActionListener {
     Parent parent1=null, parent2=null;
-    String achievement;
+    String achievement = "assax";
     boolean awardBar, promotionToNextGrade;
     Marks marks;
     JLabel nameLabel, surnameLabel, secondNameLabel, peselLabel, idLabel, genderLabel, dateOfBirth, yearLabel, monthLabel, dayLabel,
@@ -47,7 +47,7 @@ public class AddPupil extends JFrame implements ActionListener {
         setStyleForWindow();
         setListeners();
 
-        this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        this.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         this.pack();
         this.setLocationRelativeTo(null);
         this.setTitle("Write pupil's data");
@@ -119,8 +119,8 @@ public class AddPupil extends JFrame implements ActionListener {
         addButton = new JButton("Add pupil");
         cancelButton = new JButton("Cancel");
         achievementButton = new JButton("Add achievement");
+        achievementButton.addActionListener(this);
         addFirstParentButton.setBackground(ConstantsOfColors.COLOR_FOR_WRONG_FORMAT);
-
 
 
 
@@ -334,6 +334,11 @@ public class AddPupil extends JFrame implements ActionListener {
 
     @Override
     public void actionPerformed(ActionEvent e) {
+        if (e.getSource()==achievementButton) {
+            AddAchievement addAchievement = new AddAchievement(this, achievement);
+            achievement = addAchievement.showDialogAndGetInput();
+            System.out.println(achievement);
+        }
         if (e.getSource()==cancelButton) {
             System.exit(1);
         }
@@ -346,7 +351,6 @@ public class AddPupil extends JFrame implements ActionListener {
                         postCodeField.getText());
                 System.out.println( countryField.getText() + provinceField.getText()+ townField.getText() +
                         streetField.getText() +
-//                        (isInt(localField.getText().trim()))?Integer.parseInt(localField.getText().trim()):0 +
                         postCodeField.getText());
             } catch (IOException | FontFormatException ex) {
                 throw new RuntimeException(ex);
@@ -355,29 +359,38 @@ public class AddPupil extends JFrame implements ActionListener {
         if (e.getSource()==addButton){
             String secondName = (secondNameField.getText().trim().equals(""))?null:secondNameField.getText().trim();
             char gender = (Objects.equals(genderComboBox.getSelectedItem(), "Male")) ? 'M' : 'F';
-
-            if (PupilsDataList.addPupilToList
-                    (new Pupil(nameField.getText(), secondName, surnameField.getText(), gender,
-                            Integer.parseInt(yearField.getText()), Integer.parseInt(monthField.getText()),
-                            Integer.parseInt(dayField.getText()), new Address(countryField.getText(),
-                            provinceField.getText(), townField.getText(), streetField.getText(),
-                            Integer.parseInt(houseField.getText()), Integer.parseInt(localField.getText()),
-                            postCodeField.getText()), peselField.getText(), Integer.parseInt(idField.getText()),
-                            Integer.parseInt((String) Objects.requireNonNull(gradeComboBox.getSelectedItem())),
-                            parent1, parent2, achievement, marks, awardBar, promotionToNextGrade))) {
-                        JOptionPane.showMessageDialog(null, "Pupil is added to database :)",
-                                "Success!", JOptionPane.PLAIN_MESSAGE);
-                        System.exit(1);
-                    } else {
+            try {
+                if (PupilsDataList.addPupilToList
+                        (new Pupil(nameField.getText().trim(), secondName, surnameField.getText().trim(), gender,
+                                Integer.parseInt(yearField.getText().trim()), Integer.parseInt(monthField.getText().trim()),
+                                Integer.parseInt(dayField.getText().trim()), new Address(countryField.getText().trim(),
+                                provinceField.getText().trim(), townField.getText().trim(), streetField.getText().trim(),
+                                Integer.parseInt(houseField.getText().trim()), Integer.parseInt(localField.getText().trim()),
+                                postCodeField.getText().trim()), peselField.getText().trim(),
+                                Integer.parseInt(idField.getText().trim()),
+                                Integer.parseInt((String) Objects.requireNonNull(gradeComboBox.getSelectedItem())),
+                                parent1, parent2, achievement, marks, awardBar, promotionToNextGrade))) {
+                    JOptionPane.showMessageDialog(null, "Pupil is added to database :)",
+                            "Success!", JOptionPane.PLAIN_MESSAGE);
+                    System.exit(1);
+                } else {
+                    JOptionPane.showMessageDialog(null,
+                            "\t\tI can't write this pupil!\nSome data was entered incorrectly", "ERROR",
+                            JOptionPane.ERROR_MESSAGE);
+                }
+            } catch (Exception exception) {
                 JOptionPane.showMessageDialog(null,
                         "\t\tI can't write this pupil!\nSome data was entered incorrectly", "ERROR",
                         JOptionPane.ERROR_MESSAGE);
             }
         }
-
+        if (e.getSource()==addSecondParentButton) {
+            System.out.println(achievement);
+        }
     }
     private void setListeners() {
         addFirstParentButton.addActionListener(this);
+        addSecondParentButton.addActionListener(this);
         cancelButton.addActionListener(this);
         addButton.addActionListener(this);
         houseField.getDocument().addDocumentListener(new CheckStreetAndLocalDocumentListener(houseField));

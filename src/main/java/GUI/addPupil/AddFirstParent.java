@@ -39,6 +39,8 @@ public class AddFirstParent extends JDialog implements ActionListener {
         this.house = house;
         this.local = local;
         this.postCode = postCode;
+
+
         Path workDir = Paths.get("src", "main", "resources");
         File fontFile = new File(workDir.resolve("REM-Regular.ttf").toUri());
         remRegular = Font.createFont(Font.TRUETYPE_FONT, fontFile);
