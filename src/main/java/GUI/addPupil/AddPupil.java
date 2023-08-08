@@ -156,6 +156,7 @@ public class AddPupil extends JFrame implements ActionListener {
         achievementButton = new JButton("Add achievement");
         achievementButton.addActionListener(this);
         addFirstParentButton.setBackground(ConstantsOfColors.COLOR_FOR_WRONG_FORMAT);
+        markButton.addActionListener(this);
 
 
         GridBagConstraints c = new GridBagConstraints();
@@ -422,8 +423,12 @@ public class AddPupil extends JFrame implements ActionListener {
 
             }
         }
+        if (e.getSource() == markButton) {
+            new AddMarks(this, pupil.getMarks(), false, false, 8);
+        }
         if (e.getSource() == addSecondParentButton) {
-            new AddMarks(this, pupil.getMarks(), false, false, 5);
+//            int a = 10+ Integer.toString(gradeComboBox.getSelectedItem());
+            System.out.println(gradeComboBox.getSelectedItem());
         }
     }
 

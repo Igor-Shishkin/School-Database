@@ -1,5 +1,6 @@
 package GUI.addPupil;
 
+import GUI.listeners.IsMarkEnteredListener;
 import GUI.styleStorage.ConstantsOfColors;
 import database.Marks;
 
@@ -9,27 +10,18 @@ import java.awt.*;
 import java.awt.event.*;
 
 
-
 public class AddMarks extends JDialog implements ActionListener {
+    int QUANTITY_OF_MARK_COMBOBOX;
     Marks marks;
     boolean awardBar, promotionToNextGrade;
     int grade;
     JLabel mathLabel, polishLabel, englishLabel, informationLabel, peLabel, musicLabel, religionLabel, natureLabel,
-            biologyLabel, physicsLabel, geographyLabel, behaviorLabel;
-    JComboBox mathIComboBox, mathIIComboBox, mathIIIComboBox, mathYearComboBox,
-            polishIComboBox, polishIIComboBox, polishIIIComboBox, polishYearComboBox,
-            englishIComboBox, englishIIComboBox, englishIIIComboBox, englishYearComboBox,
-            informationIComboBox, informationIIComboBox, informationIIIComboBox, informationYearComboBox,
-            peIComboBox, peIIComboBox, peIIIComboBox, peYearComboBox,
-            musicIComboBox, musicIIComboBox, musicIIIComboBox, musicYearComboBox,
-            religionIComboBox, religionIIComboBox, religionIIIComboBox, religionYearComboBox,
-            natureIComboBox, natureIIComboBox, natureIIIComboBox, natureYearComboBox,
-            biologyIComboBox, biologyIIComboBox, biologyIIIComboBox, biologyYearComboBox,
-            physicsIComboBox, physicsIIComboBox, physicsIIIComboBox, physicsYearComboBox,
-            geographyIComboBox, geographyIIComboBox, geographyIIIComboBox, geographyYearComboBox,
-            behaviorIComboBox, behaviorIIComboBox, behaviorIIIComboBox, behaviorYearComboBox;
-    JPanel panel;
-    Font font;
+            biologyLabel, physicsLabel, geographyLabel, behaviorLabel, averageLabel;
+    JComboBox[] markComboBox = new JComboBox[44];
+    JPanel panelForComboBox, panelForLabels;
+    JLabel[] averageScoreLabel = new JLabel[4];
+    Font font, fontForAverage;
+    JButton addButton, cancelButton;
     AddMarks (JFrame parentFrame, Marks marks, Boolean awardBar, Boolean promotionToNextGrade, int grade) {
         super(parentFrame, "Marks", true);
         this.marks=marks;
@@ -38,29 +30,74 @@ public class AddMarks extends JDialog implements ActionListener {
         this.grade = grade;
 
         font = ConstantsOfColors.THE_MAIN_FONT.deriveFont(Font.PLAIN, 19);
+        fontForAverage = ConstantsOfColors.THE_MAIN_FONT.deriveFont(Font.BOLD, 20);
         setWindowCloseListener();
         this.setLayout(new BorderLayout());
 
-        setComboBoxesAndLabels();
-        addComponentsOfPanel();
-        setFontForComponents(panel, font);
-        panel.setBorder(new EmptyBorder(10,10,10,10));
+        addComponentsOfPanels();
+        setActionListenerForBackGroundOfCombobox();
+        panelForComboBox.setBorder(new EmptyBorder(10,10,10,10));
+        panelForComboBox.setPreferredSize(new Dimension(300,400));
+        panelForLabels.setBorder(new EmptyBorder(10,10,10,10));
+        panelForLabels.setPreferredSize(new Dimension(130,400));
 
 
+        addButton = new JButton("Done!");
+        cancelButton = new JButton("Cancel");
+        addButton.setPreferredSize(new Dimension(10, 30));
+        cancelButton.setPreferredSize(new Dimension(10, 30));
 
-        this.add(panel, BorderLayout.NORTH);
+        setEnabledForYearMarks();
 
-        this.setResizable(false);
+
+        this.add(panelForComboBox, BorderLayout.EAST);
+        this.add(panelForLabels, BorderLayout.WEST);
+        this.add(addButton, BorderLayout.PAGE_START);
+        this.add(cancelButton, BorderLayout.AFTER_LAST_LINE);
+        setFontForComponents(this, font);
+        setHorizontalAlignment(this);
+
+
+//        this.setResizable(false);
         this.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
         this.pack();
         this.setLocationRelativeTo(null);
-        this.setTitle("Write pupil's data");
+        this.setTitle("Enter marks");
         this.setVisible(true);
+    }
+
+    private void setHorizontalAlignment(Container container) {
+        for (Component component : container.getComponents()) {
+            if (component instanceof JLabel) {
+                ((JLabel) component).setHorizontalAlignment(SwingConstants.RIGHT);
+                ((JLabel) component).setHorizontalTextPosition(SwingConstants.RIGHT);
+            }
+            if (component instanceof Container) {
+                setHorizontalAlignment((Container) component);
+            }
+        }
+    }
+
+    private void setEnabledForYearMarks() {
+        for (int i = 0; i < QUANTITY_OF_MARK_COMBOBOX; i++) {
+            markComboBox[i+3].setEnabled(markComboBox[i].getSelectedItem() != null &&
+                    markComboBox[i + 1].getSelectedItem() != null && markComboBox[i + 2].getSelectedItem() != null);
+            i+=3;
+        }
+
+    }
+
+    private void setActionListenerForBackGroundOfCombobox() {
+            for (int i = 0; i < QUANTITY_OF_MARK_COMBOBOX; i++) {
+                markComboBox[i].addActionListener(new IsMarkEnteredListener(markComboBox, i, QUANTITY_OF_MARK_COMBOBOX,
+                        averageScoreLabel, this.getBackground()));
+            }
     }
 
     private void setFontForComponents(Container container, Font font) {
         for (Component component : container.getComponents()) {
-            if (component instanceof JLabel || component instanceof JComboBox || component instanceof JButton) {
+            if (component instanceof JLabel || component instanceof JComboBox || component instanceof JButton ||
+                    component instanceof JPanel) {
                 component.setFont(font);
             }
             if (component instanceof Container) {
@@ -69,197 +106,65 @@ public class AddMarks extends JDialog implements ActionListener {
         }
     }
 
-    private void addComponentsOfPanel() {
+    private void addComponentsOfPanels() {
         if (grade>3 && grade<7) {
-            panel = new JPanel(new GridLayout(9,5,10,10));
+            QUANTITY_OF_MARK_COMBOBOX = 36;
+            panelForComboBox = new JPanel(new GridLayout(10,4,10,10));
+            panelForLabels = new JPanel(new GridLayout(10,1,10,10));
 
-            panel.add(mathLabel);
-            panel.add(mathIComboBox);
-            panel.add(mathIIComboBox);
-            panel.add(mathIIIComboBox);
-            panel.add(mathYearComboBox);
+            panelForLabels.add(mathLabel = new JLabel("Math"));
+            panelForLabels.add(polishLabel = new JLabel("Polish"));
+            panelForLabels.add(englishLabel = new JLabel("English"));
+            panelForLabels.add(informationLabel  = new JLabel("Information"));
+            panelForLabels.add(peLabel  = new JLabel("PE"));
+            panelForLabels.add(musicLabel = new JLabel("Music"));
+            panelForLabels.add(religionLabel = new JLabel("Religion"));
+            panelForLabels.add(natureLabel = new JLabel("Nature"));
+            panelForLabels.add(behaviorLabel = new JLabel("Behavior"));
+            panelForLabels.add(averageLabel = new JLabel("AVERAGE"));
 
-            panel.add(polishLabel);
-            panel.add(polishIComboBox);
-            panel.add(polishIIComboBox);
-            panel.add(polishIIIComboBox);
-            panel.add(polishYearComboBox);
+            for (int i = 0; i < QUANTITY_OF_MARK_COMBOBOX; i++) {
+                panelForComboBox.add(markComboBox[i] = new JComboBox<>(new String[]{null,"1","2","3","4","5","6"}));
+            }
+            for (int i = 0; i < 4; i++) {
+                averageScoreLabel[i] = new JLabel();
+                panelForComboBox.add(averageScoreLabel[i]);
+                averageScoreLabel[i].setOpaque(true);
 
-            panel.add(englishLabel);
-            panel.add(englishIComboBox);
-            panel.add(englishIIComboBox);
-            panel.add(englishIIIComboBox);
-            panel.add(englishYearComboBox);
-
-            panel.add(informationLabel);
-            panel.add(informationIComboBox);
-            panel.add(informationIIComboBox);
-            panel.add(informationIIIComboBox);
-            panel.add(informationYearComboBox);
-
-            panel.add(peLabel);
-            panel.add(peIComboBox);
-            panel.add(peIIComboBox);
-            panel.add(peIIIComboBox);
-            panel.add(peYearComboBox);
-
-            panel.add(musicLabel);
-            panel.add(musicIComboBox);
-            panel.add(musicIIComboBox);
-            panel.add(musicIIIComboBox);
-            panel.add(musicYearComboBox);
-
-            panel.add(religionLabel);
-            panel.add(religionIComboBox);
-            panel.add(religionIIComboBox);
-            panel.add(religionIIIComboBox);
-            panel.add(religionYearComboBox);
-
-            panel.add(natureLabel);
-            panel.add(natureIComboBox);
-            panel.add(natureIIComboBox);
-            panel.add(natureIIIComboBox);
-            panel.add(natureYearComboBox);
-
-            panel.add(behaviorLabel);
-            panel.add(behaviorIComboBox);
-            panel.add(behaviorIIComboBox);
-            panel.add(behaviorIIIComboBox);
-            panel.add(behaviorYearComboBox);
+//                averageScoreLabel[i].setEnabled(false);
+                averageScoreLabel[i].setFont(fontForAverage);
+//                averageScoreLabel[i].setForeground(new Color(0x7B0000));
+            }
         } else {
-            panel = new JPanel(new GridLayout(11,5,10,10));
+            QUANTITY_OF_MARK_COMBOBOX = 44;
+            panelForComboBox = new JPanel(new GridLayout(12, 4, 10, 10));
+            panelForLabels = new JPanel(new GridLayout(12, 1, 10, 10));
+            panelForLabels.add(mathLabel = new JLabel("Math"));
+            panelForLabels.add(polishLabel = new JLabel("Polish"));
+            panelForLabels.add(englishLabel = new JLabel("English"));
+            panelForLabels.add(informationLabel = new JLabel("Information"));
+            panelForLabels.add(peLabel = new JLabel("PE"));
+            panelForLabels.add(musicLabel = new JLabel("Music"));
+            panelForLabels.add(religionLabel = new JLabel("Religion"));
+            panelForLabels.add(biologyLabel = new JLabel("Biology"));
+            panelForLabels.add(physicsLabel = new JLabel("Physics"));
+            panelForLabels.add(geographyLabel = new JLabel("Geography"));
+            panelForLabels.add(behaviorLabel = new JLabel("Behavior"));
+            panelForLabels.add(averageLabel = new JLabel("AVERAGE"));
 
-            panel.add(mathLabel);
-            panel.add(mathIComboBox);
-            panel.add(mathIIComboBox);
-            panel.add(mathIIIComboBox);
-            panel.add(mathYearComboBox);
+            for (int i = 0; i < QUANTITY_OF_MARK_COMBOBOX; i++) {
+                panelForComboBox.add(markComboBox[i] = new JComboBox<>(new String[]{null,"1","2","3","4","5","6"}));
+            }
 
-            panel.add(polishLabel);
-            panel.add(polishIComboBox);
-            panel.add(polishIIComboBox);
-            panel.add(polishIIIComboBox);
-            panel.add(polishYearComboBox);
-
-            panel.add(englishLabel);
-            panel.add(englishIComboBox);
-            panel.add(englishIIComboBox);
-            panel.add(englishIIIComboBox);
-            panel.add(englishYearComboBox);
-
-            panel.add(informationLabel);
-            panel.add(informationIComboBox);
-            panel.add(informationIIComboBox);
-            panel.add(informationIIIComboBox);
-            panel.add(informationYearComboBox);
-
-            panel.add(peLabel);
-            panel.add(peIComboBox);
-            panel.add(peIIComboBox);
-            panel.add(peIIIComboBox);
-            panel.add(peYearComboBox);
-
-            panel.add(musicLabel);
-            panel.add(musicIComboBox);
-            panel.add(musicIIComboBox);
-            panel.add(musicIIIComboBox);
-            panel.add(musicYearComboBox);
-
-            panel.add(religionLabel);
-            panel.add(religionIComboBox);
-            panel.add(religionIIComboBox);
-            panel.add(religionIIIComboBox);
-            panel.add(religionYearComboBox);
-
-            panel.add(biologyLabel);
-            panel.add(biologyIComboBox);
-            panel.add(biologyIIComboBox);
-            panel.add(biologyIIIComboBox);
-            panel.add(biologyYearComboBox);
-
-            panel.add(physicsLabel);
-            panel.add(physicsIComboBox);
-            panel.add(physicsIIComboBox);
-            panel.add(physicsIIIComboBox);
-            panel.add(physicsYearComboBox);
-
-            panel.add(geographyLabel);
-            panel.add(geographyIComboBox);
-            panel.add(geographyIIComboBox);
-            panel.add(geographyIIIComboBox);
-            panel.add(geographyYearComboBox);
-
-            panel.add(behaviorLabel);
-            panel.add(behaviorIComboBox);
-            panel.add(behaviorIIComboBox);
-            panel.add(behaviorIIIComboBox);
-            panel.add(behaviorYearComboBox);
+            for (int i = 0; i < 4; i++) {
+                averageScoreLabel[i] = new JLabel();
+                panelForComboBox.add(averageScoreLabel[i]);
+                averageScoreLabel[i].setOpaque(true);
+//                averageScoreLabel[i].setEnabled(false);
+                averageScoreLabel[i].setFont(fontForAverage);
+//                averageScoreLabel[i].setForeground(new Color(0x7B0000));
+            }
         }
-
-    }
-
-    private void setComboBoxesAndLabels() {
-        mathLabel = new JLabel("Math");
-        polishLabel = new JLabel("Polish");
-        englishLabel = new JLabel("English");
-        informationLabel = new JLabel("Information");
-        peLabel = new JLabel("PE");
-        musicLabel = new JLabel("Music");
-        religionLabel = new JLabel("Religion");
-        natureLabel = new JLabel("Nature");
-        biologyLabel = new JLabel("Biology");
-        physicsLabel = new JLabel("Physics");
-        geographyLabel = new JLabel("Geography");
-        behaviorLabel = new JLabel("Behavior");
-
-        mathIComboBox = new JComboBox<>(new Integer[]{null,1,2,3,4,5,6});
-        mathIIComboBox = new JComboBox<>(new Integer[]{null,1,2,3,4,5,6});
-        mathIIIComboBox = new JComboBox<>(new Integer[]{null,1,2,3,4,5,6});
-        mathYearComboBox = new JComboBox<>(new Integer[]{null,1,2,3,4,5,6});
-        polishIComboBox = new JComboBox<>(new Integer[]{null,1,2,3,4,5,6});
-        polishIIComboBox = new JComboBox<>(new Integer[]{null,1,2,3,4,5,6});
-        polishIIIComboBox = new JComboBox<>(new Integer[]{null,1,2,3,4,5,6});
-        polishYearComboBox = new JComboBox<>(new Integer[]{null,1,2,3,4,5,6});
-        englishIComboBox = new JComboBox<>(new Integer[]{null,1,2,3,4,5,6});
-        englishIIComboBox = new JComboBox<>(new Integer[]{null,1,2,3,4,5,6});
-        englishIIIComboBox = new JComboBox<>(new Integer[]{null,1,2,3,4,5,6});
-        englishYearComboBox = new JComboBox<>(new Integer[]{null,1,2,3,4,5,6});
-        informationIComboBox = new JComboBox<>(new Integer[]{null,1,2,3,4,5,6});
-        informationIIComboBox = new JComboBox<>(new Integer[]{null,1,2,3,4,5,6});
-        informationIIIComboBox = new JComboBox<>(new Integer[]{null,1,2,3,4,5,6});
-        informationYearComboBox = new JComboBox<>(new Integer[]{null,1,2,3,4,5,6});
-        peIComboBox = new JComboBox<>(new Integer[]{null,1,2,3,4,5,6});
-        peIIComboBox = new JComboBox<>(new Integer[]{null,1,2,3,4,5,6});
-        peIIIComboBox = new JComboBox<>(new Integer[]{null,1,2,3,4,5,6});
-        peYearComboBox = new JComboBox<>(new Integer[]{null,1,2,3,4,5,6});
-        musicIComboBox = new JComboBox<>(new Integer[]{null,1,2,3,4,5,6});
-        musicIIComboBox = new JComboBox<>(new Integer[]{null,1,2,3,4,5,6});
-        musicIIIComboBox = new JComboBox<>(new Integer[]{null,1,2,3,4,5,6});
-        musicYearComboBox = new JComboBox<>(new Integer[]{null,1,2,3,4,5,6});
-        religionIComboBox = new JComboBox<>(new Integer[]{null,1,2,3,4,5,6});
-        religionIIComboBox = new JComboBox<>(new Integer[]{null,1,2,3,4,5,6});
-        religionIIIComboBox = new JComboBox<>(new Integer[]{null,1,2,3,4,5,6});
-        religionYearComboBox = new JComboBox<>(new Integer[]{null,1,2,3,4,5,6});
-        natureIComboBox = new JComboBox<>(new Integer[]{null,1,2,3,4,5,6});
-        natureIIComboBox = new JComboBox<>(new Integer[]{null,1,2,3,4,5,6});
-        natureIIIComboBox = new JComboBox<>(new Integer[]{null,1,2,3,4,5,6});
-        natureYearComboBox = new JComboBox<>(new Integer[]{null,1,2,3,4,5,6});
-        biologyIComboBox = new JComboBox<>(new Integer[]{null,1,2,3,4,5,6});
-        biologyIIComboBox = new JComboBox<>(new Integer[]{null,1,2,3,4,5,6});
-        biologyIIIComboBox = new JComboBox<>(new Integer[]{null,1,2,3,4,5,6});
-        biologyYearComboBox = new JComboBox<>(new Integer[]{null,1,2,3,4,5,6});
-        physicsIComboBox = new JComboBox<>(new Integer[]{null,1,2,3,4,5,6});
-        physicsIIComboBox = new JComboBox<>(new Integer[]{null,1,2,3,4,5,6});
-        physicsIIIComboBox = new JComboBox<>(new Integer[]{null,1,2,3,4,5,6});
-        physicsYearComboBox = new JComboBox<>(new Integer[]{null,1,2,3,4,5,6});
-        geographyIComboBox = new JComboBox<>(new Integer[]{null,1,2,3,4,5,6});
-        geographyIIComboBox = new JComboBox<>(new Integer[]{null,1,2,3,4,5,6});
-        geographyIIIComboBox = new JComboBox<>(new Integer[]{null,1,2,3,4,5,6});
-        geographyYearComboBox = new JComboBox<>(new Integer[]{null,1,2,3,4,5,6});
-        behaviorIComboBox = new JComboBox<>(new Integer[]{null,1,2,3,4,5,6});
-        behaviorIIComboBox = new JComboBox<>(new Integer[]{null,1,2,3,4,5,6});
-        behaviorIIIComboBox = new JComboBox<>(new Integer[]{null,1,2,3,4,5,6});
-        behaviorYearComboBox = new JComboBox<>(new Integer[]{null,1,2,3,4,5,6});
     }
 
     private void setWindowCloseListener() {
