@@ -1,6 +1,5 @@
 package GUI.addPupil;
 
-import GUI.styleStorage.ColorsSets;
 import GUI.styleStorage.ConstantsOfColors;
 
 import javax.swing.*;
@@ -14,14 +13,14 @@ public class AddAchievement extends JDialog implements ActionListener {
     JTextArea textArea;
 
     AddAchievement(JFrame parentFrame, String achievements) {
-        super(parentFrame, "title", true);
+        super(parentFrame, "Achievement", true);
         this.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
         this.setLayout(new GridBagLayout());
 
         textArea = new JTextArea(achievements);
         textArea.setLineWrap(true);
         textArea.setWrapStyleWord(true);
-        textArea.setFont(ConstantsOfColors.remRegular.deriveFont(Font.PLAIN,16));
+        textArea.setFont(ConstantsOfColors.THE_MAIN_FONT.deriveFont(Font.PLAIN,16));
 
         addButton = new JButton("OK");
         cancelButton = new JButton("Cancel");

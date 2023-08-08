@@ -33,15 +33,15 @@ public class Marks {
         this.mathMark = new int[] {mathI,mathII,mathIII,mathYearly};
         this.polishMark = new int[] {polishI, polishII, polishIII, polishYearly};
         this.englishMark = new int[] {englishI, englishII, englishIII, englishYearly};
-        this.informaticsMark = new int[] {informaticsI, informaticsII, informaticsIII, informaticsYearly};;
-        this.peMark = new int[] {peI, peII, peIII, peYearly};;
-        this.musicMark = new int[] {musicI, musicII, musicIII, musicYearly};;
-        this.religionMark = new int[] {religionI, religionII, religionIII, religionYearly};;
+        this.informaticsMark = new int[] {informaticsI, informaticsII, informaticsIII, informaticsYearly};
+        this.peMark = new int[] {peI, peII, peIII, peYearly};
+        this.musicMark = new int[] {musicI, musicII, musicIII, musicYearly};
+        this.religionMark = new int[] {religionI, religionII, religionIII, religionYearly};
         this.natureMark = new int[] {natureI, natureII, natureIII, natureYearly};
-        this.biologyMark = new int[] {biologyI, biologyII, biologyIII, biologyYearly};;
-        this.physicsMark = new int[] {physicsI, physicsII, physicsIII, physicsYearly};;
-        this.geographyMark = new int[] {geographyI, geographyII, geographyIII, geographyYearly};;
-        this.behaviorMark = new int[] {behaviorI, behaviorII, behaviorIII, behaviorYearly};;
+        this.biologyMark = new int[] {biologyI, biologyII, biologyIII, biologyYearly};
+        this.physicsMark = new int[] {physicsI, physicsII, physicsIII, physicsYearly};
+        this.geographyMark = new int[] {geographyI, geographyII, geographyIII, geographyYearly};
+        this.behaviorMark = new int[] {behaviorI, behaviorII, behaviorIII, behaviorYearly};
     }
 
     public int[] getMathMark() {
@@ -106,6 +106,30 @@ public class Marks {
 
     public void setNatureMark(int[] natureMark) {
         this.natureMark = natureMark;
+    }
+
+    public int[] getBiologyMark() {
+        return biologyMark;
+    }
+
+    public void setBiologyMark(int[] biologyMark) {
+        this.biologyMark = biologyMark;
+    }
+
+    public int[] getPhysicsMark() {
+        return physicsMark;
+    }
+
+    public void setPhysicsMark(int[] physicsMark) {
+        this.physicsMark = physicsMark;
+    }
+
+    public int[] getGeographyMark() {
+        return geographyMark;
+    }
+
+    public void setGeographyMark(int[] geographyMark) {
+        this.geographyMark = geographyMark;
     }
 
     public int[] getBehaviorMark() {

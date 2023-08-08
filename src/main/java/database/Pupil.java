@@ -16,8 +16,8 @@ public class Pupil extends Person{
 
     public Pupil() {
         super();
-        this.id = 0;
-        this.grade = 0;
+        this.id = -1;
+        this.grade = -1;
         this.parent1 = null;
         this.parent2 = null;
         this.achievement = null;
