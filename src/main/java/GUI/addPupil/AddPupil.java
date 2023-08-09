@@ -8,6 +8,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.Objects;
 
 public class AddPupil extends JFrame implements ActionListener {
@@ -374,6 +375,12 @@ public class AddPupil extends JFrame implements ActionListener {
             pupil.setAchievement(addAchievement.showDialogAndGetInput());
             System.out.println(pupil.getAchievement());
         }
+        if (e.getSource() == markButton) {
+            GeneratePupilData generator = new GeneratePupilData();
+            AddMarks addMarks =  new AddMarks(this, pupil.getMarks(), pupil.isAwardBar(),
+                    pupil.isPromotionToNextGrade(), 6);
+            System.out.println(addMarks.showDialogAndGetInput());
+        }
         if (e.getSource() == cancelButton) {
             System.exit(1);
         }
@@ -423,12 +430,10 @@ public class AddPupil extends JFrame implements ActionListener {
 
             }
         }
-        if (e.getSource() == markButton) {
-            new AddMarks(this, pupil.getMarks(), false, false, 8);
-        }
+
         if (e.getSource() == addSecondParentButton) {
 //            int a = 10+ Integer.toString(gradeComboBox.getSelectedItem());
-            System.out.println(gradeComboBox.getSelectedItem());
+            System.out.println(pupil.getMarks());
         }
     }
 

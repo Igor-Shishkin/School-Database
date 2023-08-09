@@ -117,6 +117,7 @@ public class Pupil extends Person{
         Pupil.idNumber = idNumber;
     }
 
+
     @Override
     public String toString() {
         return "Pupil:\n" +

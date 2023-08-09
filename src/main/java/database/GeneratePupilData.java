@@ -96,7 +96,7 @@ public class GeneratePupilData {
      int pe1=random.nextInt(4)+1+isSenior,pe2=random.nextInt(4)+1+isSenior,
              pe3=random.nextInt(4)+1+isSenior, peY = getAverage(pe1,pe2,pe3);
      int mus1=random.nextInt(4)+1+isSenior,mus2=random.nextInt(4)+1+isSenior,
-             mus3=random.nextInt(3)+1+isSenior, musY = getAverage(mus1,mus2,mus3);
+             mus3=random.nextInt(4)+1+isSenior, musY = getAverage(mus1,mus2,mus3);
      int r1=random.nextInt(4)+1+isSenior,r2=random.nextInt(4)+1+isSenior,
              r3=random.nextInt(4)+1+isSenior,rY = getAverage(r1,r2,r3);
      int n1=random.nextInt(4)+1+isSenior,n2=random.nextInt(4)+1+isSenior,
@@ -112,9 +112,9 @@ public class GeneratePupilData {
                 mus1,mus2,mus3,musY,
                 r1,r2,r3,rY,
                 n1,n2,n3,nY,
-                0,0,0,0,
-                0,0,0,0,
-                0,0,0,0,
+                -1,-1,-1,-1,
+                -1,-1,-1,-1,
+                -1,-1,-1,-1,
                 b1,b2,b3,bY);
     }
 
@@ -123,7 +123,7 @@ public class GeneratePupilData {
         int m1 = random.nextInt(4) + 1 + isSenior, m2 = random.nextInt(4) + 1 + isSenior,
                 m3 = random.nextInt(4) + 1 + isSenior, mY = getAverage (m1, m2, m3);
         int pol1 = random.nextInt(4) + 1 + isSenior, pol2 = random.nextInt(4) + 1 + isSenior,
-                pol3 = random.nextInt(4) + 2 + isSenior, polY = getAverage(pol1,pol2,pol3) ;
+                pol3 = random.nextInt(4) + 1 + isSenior, polY = getAverage(pol1,pol2,pol3) ;
         int e1 = random.nextInt(4) + 1 + isSenior, e2 = random.nextInt(4) + 1 + isSenior,
                 e3 = random.nextInt(4) + 1 + isSenior, eY = getAverage(e1,e2,e3) ;
         int i1 = random.nextInt(4) + 1 + isSenior, i2 = random.nextInt(4) + 1 + isSenior,
@@ -131,14 +131,14 @@ public class GeneratePupilData {
         int pe1 = random.nextInt(4) + 1 + isSenior, pe2 = random.nextInt(4) + 1 + isSenior,
                 pe3 = random.nextInt(4) + 1 + isSenior,  peY = getAverage(pe1,pe2,pe3) ;
         int mus1 = random.nextInt(4) + 1 + isSenior, mus2 = random.nextInt(4) + 1 + isSenior,
-                mus3 = random.nextInt(3) + 1 + isSenior, musY = getAverage(mus1, mus2, mus3);
+                mus3 = random.nextInt(4) + 1 + isSenior, musY = getAverage(mus1, mus2, mus3);
         int r1 = random.nextInt(4) + 1 + isSenior, r2 = random.nextInt(4) + 1 + isSenior,
                 r3 = random.nextInt(4) + 1 + isSenior, rY = getAverage(r1,r2,r3) ;
         int n1 = random.nextInt(4) + 1 + isSenior, n2 = random.nextInt(4) + 1 + isSenior,
                 n3 = random.nextInt(4) + 1 + isSenior, nY = getAverage(n1,n2,n3) ;
-        int bl1 = random.nextInt(4) + 1 + isSenior, bl2 = random.nextInt(4) +12 + isSenior,
+        int bl1 = random.nextInt(4) + 1 + isSenior, bl2 = random.nextInt(4) +1 + isSenior,
                 bl3 = random.nextInt(4) + 1 + isSenior, blY = getAverage(bl1,bl2,bl3) ;
-        int p1 = random.nextInt(4) + 2 + isSenior, p2 = random.nextInt(4) + 1 + isSenior,
+        int p1 = random.nextInt(4) + 1 + isSenior, p2 = random.nextInt(4) + 1 + isSenior,
                 p3 = random.nextInt(4) + 1 + isSenior, pY = getAverage(p1,p2,p3) ;
         int g1 = random.nextInt(4) + 1 + isSenior, g2 = random.nextInt(4) + 1 + isSenior,
                 g3 = random.nextInt(4) + 1 + isSenior, gY = getAverage(g1,g2,g3) ;
@@ -152,7 +152,7 @@ public class GeneratePupilData {
                 pe1, pe2, pe3, peY,
                 mus1, mus2, mus3, musY,
                 r1, r2, r3, rY,
-                0, 0, 0, 0,
+                -1, -1, -1, -1,
                 bl1, bl2, bl3, blY,
                 p1, p2, p3, pY,
                 g1, g2, g3, gY,

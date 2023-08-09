@@ -33,7 +33,7 @@ public class IsMarkEnteredListener implements ActionListener {
         double sum = 0;
         int quantityEntered = 0;
         for (int j = i%4; j < quantity; j+=4) {
-            if (comboBox[j].getSelectedItem()!=null) {
+            if (comboBox[j].getSelectedItem()!=null && comboBox[j].isEnabled()) {
                 String value = (String) comboBox[j].getSelectedItem();
                 assert value != null;
                 sum += Integer.parseInt(value);
@@ -42,10 +42,31 @@ public class IsMarkEnteredListener implements ActionListener {
                 isAllMarksInColumn = false;
             }
         }
-        System.out.println(i%4);
-        averageLabel[i%4].setText(String.format("%02.1f", (quantity!=0&&sum!=0)?sum/quantityEntered:0f));
+        averageLabel[i%4].setText(String.format("%02.1f", (quantityEntered!=0&&sum!=0)?sum/quantityEntered:0f));
         averageLabel[i%4].setBackground((isAllMarksInColumn)?ConstantsOfColors.COLOR_FOR_RIGHT_FORMAT:
                 backgroundColor);
+        int firstInLine = (i/4)*4;
+        comboBox[firstInLine+3].setEnabled(comboBox[firstInLine].getSelectedItem()!=null &&
+                comboBox[firstInLine + 1].getSelectedItem()!=null && comboBox[firstInLine + 2].getSelectedItem()!=null);
+        if (i%4!=3) {
+            isAllMarksInColumn = true;
+            sum = 0;
+            quantityEntered = 0;
+            for (int j = 3; j < quantity; j+=4) {
+                if (comboBox[j].getSelectedItem()!=null && comboBox[j].isEnabled()) {
+                    String value = (String) comboBox[j].getSelectedItem();
+                    assert value != null;
+                    sum += Integer.parseInt(value);
+                    quantityEntered++;
+                } else {
+                    isAllMarksInColumn = false;
+                }
+            }
+            averageLabel[3].setText(String.format("%02.1f", (quantityEntered!=0&&sum!=0)?sum/quantityEntered:0f));
+            averageLabel[3].setBackground((isAllMarksInColumn)?ConstantsOfColors.COLOR_FOR_RIGHT_FORMAT:
+                    backgroundColor);
+        }
     }
+
 
 }

@@ -2,12 +2,14 @@ package GUI.addPupil;
 
 import GUI.listeners.IsMarkEnteredListener;
 import GUI.styleStorage.ConstantsOfColors;
+import database.GeneratePupilData;
 import database.Marks;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import java.awt.*;
 import java.awt.event.*;
+import java.util.Arrays;
 
 
 public class AddMarks extends JDialog implements ActionListener {
@@ -22,9 +24,12 @@ public class AddMarks extends JDialog implements ActionListener {
     JLabel[] averageScoreLabel = new JLabel[4];
     Font font, fontForAverage;
     JButton addButton, cancelButton;
-    AddMarks (JFrame parentFrame, Marks marks, Boolean awardBar, Boolean promotionToNextGrade, int grade) {
+
+    AddMarks(JFrame parentFrame, Marks marks, Boolean awardBar, Boolean promotionToNextGrade, int grade) {
         super(parentFrame, "Marks", true);
-        this.marks=marks;
+        GeneratePupilData generate = new GeneratePupilData();
+        marks = generate.generateMarks456();
+        this.marks = marks;
         this.awardBar = awardBar;
         this.promotionToNextGrade = promotionToNextGrade;
         this.grade = grade;
@@ -35,17 +40,20 @@ public class AddMarks extends JDialog implements ActionListener {
         this.setLayout(new BorderLayout());
 
         addComponentsOfPanels();
+        setMarksInComboBox();
         setActionListenerForBackGroundOfCombobox();
-        panelForComboBox.setBorder(new EmptyBorder(10,10,10,10));
-        panelForComboBox.setPreferredSize(new Dimension(300,400));
-        panelForLabels.setBorder(new EmptyBorder(10,10,10,10));
-        panelForLabels.setPreferredSize(new Dimension(130,400));
+        panelForComboBox.setBorder(new EmptyBorder(10, 10, 10, 10));
+        panelForComboBox.setPreferredSize(new Dimension(300, 400));
+        panelForLabels.setBorder(new EmptyBorder(10, 10, 10, 10));
+        panelForLabels.setPreferredSize(new Dimension(130, 400));
 
 
         addButton = new JButton("Done!");
         cancelButton = new JButton("Cancel");
         addButton.setPreferredSize(new Dimension(10, 30));
         cancelButton.setPreferredSize(new Dimension(10, 30));
+        cancelButton.addActionListener(this);
+        addButton.addActionListener(this);
 
         setEnabledForYearMarks();
 
@@ -63,7 +71,56 @@ public class AddMarks extends JDialog implements ActionListener {
         this.pack();
         this.setLocationRelativeTo(null);
         this.setTitle("Enter marks");
+//        this.setVisible(true);
+    }
+    public Marks showDialogAndGetInput() {
         this.setVisible(true);
+        return marks;
+    }
+
+    private void setMarksInComboBox() {
+        if (marks != null) {
+            int[] arrayOfMarks = marks.getArrayOfMarks();
+            arrayOfMarks[0] = -1;
+            arrayOfMarks[5] = -1;
+            arrayOfMarks[6] = -1;
+            System.out.println(Arrays.toString(arrayOfMarks));
+            int jumpIndex = (grade>6) ? 27 : 31;
+            for (int i = 0, j = 0; i < QUANTITY_OF_MARK_COMBOBOX; i++, j++) {
+                markComboBox[i].setSelectedIndex(arrayOfMarks[j]);
+                if (j==jumpIndex) {
+                    if (grade>6) {
+                        j+=4;
+                    } else {
+                        j+=12;
+                    }
+                }
+            }
+            setEnabledForYearMarks();
+            System.out.println(marks.toString());
+            for (int i = 0; i < 4; i++) {
+                boolean isAllMarksInColumn = true;
+                double sum = 0;
+                int quantityEntered = 0;
+                for (int j = i; j < QUANTITY_OF_MARK_COMBOBOX; j+=4) {
+                    markComboBox[j].setBackground(
+                            (markComboBox[j].getSelectedItem()!=null)?ConstantsOfColors.COLOR_FOR_RIGHT_FORMAT:
+                            this.getBackground());
+                    if (markComboBox[j].getSelectedItem()==null || !markComboBox[j].isEnabled()) {
+                        isAllMarksInColumn = false;
+                    } else {
+                        sum += markComboBox[j].getSelectedIndex();
+                        quantityEntered++;
+                    }
+                    averageScoreLabel[i%4].setText(String.format("%02.1f",
+                            (quantityEntered!=0&&sum!=0)?sum/quantityEntered:0f));
+                    averageScoreLabel[i].setBackground((isAllMarksInColumn)?ConstantsOfColors.COLOR_FOR_RIGHT_FORMAT:
+                            this.getBackground());
+                }
+            }
+        }
+
+
     }
 
     private void setHorizontalAlignment(Container container) {
@@ -80,18 +137,18 @@ public class AddMarks extends JDialog implements ActionListener {
 
     private void setEnabledForYearMarks() {
         for (int i = 0; i < QUANTITY_OF_MARK_COMBOBOX; i++) {
-            markComboBox[i+3].setEnabled(markComboBox[i].getSelectedItem() != null &&
+            markComboBox[i + 3].setEnabled(markComboBox[i].getSelectedItem() != null &&
                     markComboBox[i + 1].getSelectedItem() != null && markComboBox[i + 2].getSelectedItem() != null);
-            i+=3;
+            i += 3;
         }
 
     }
 
     private void setActionListenerForBackGroundOfCombobox() {
-            for (int i = 0; i < QUANTITY_OF_MARK_COMBOBOX; i++) {
-                markComboBox[i].addActionListener(new IsMarkEnteredListener(markComboBox, i, QUANTITY_OF_MARK_COMBOBOX,
-                        averageScoreLabel, this.getBackground()));
-            }
+        for (int i = 0; i < QUANTITY_OF_MARK_COMBOBOX; i++) {
+            markComboBox[i].addActionListener(new IsMarkEnteredListener(markComboBox, i, QUANTITY_OF_MARK_COMBOBOX,
+                    averageScoreLabel, this.getBackground()));
+        }
     }
 
     private void setFontForComponents(Container container, Font font) {
@@ -107,16 +164,16 @@ public class AddMarks extends JDialog implements ActionListener {
     }
 
     private void addComponentsOfPanels() {
-        if (grade>3 && grade<7) {
+        if (grade > 3 && grade < 7) {
             QUANTITY_OF_MARK_COMBOBOX = 36;
-            panelForComboBox = new JPanel(new GridLayout(10,4,10,10));
-            panelForLabels = new JPanel(new GridLayout(10,1,10,10));
+            panelForComboBox = new JPanel(new GridLayout(10, 4, 10, 10));
+            panelForLabels = new JPanel(new GridLayout(10, 1, 10, 10));
 
             panelForLabels.add(mathLabel = new JLabel("Math"));
             panelForLabels.add(polishLabel = new JLabel("Polish"));
             panelForLabels.add(englishLabel = new JLabel("English"));
-            panelForLabels.add(informationLabel  = new JLabel("Information"));
-            panelForLabels.add(peLabel  = new JLabel("PE"));
+            panelForLabels.add(informationLabel = new JLabel("Information"));
+            panelForLabels.add(peLabel = new JLabel("PE"));
             panelForLabels.add(musicLabel = new JLabel("Music"));
             panelForLabels.add(religionLabel = new JLabel("Religion"));
             panelForLabels.add(natureLabel = new JLabel("Nature"));
@@ -124,7 +181,7 @@ public class AddMarks extends JDialog implements ActionListener {
             panelForLabels.add(averageLabel = new JLabel("AVERAGE"));
 
             for (int i = 0; i < QUANTITY_OF_MARK_COMBOBOX; i++) {
-                panelForComboBox.add(markComboBox[i] = new JComboBox<>(new String[]{null,"1","2","3","4","5","6"}));
+                panelForComboBox.add(markComboBox[i] = new JComboBox<>(new String[]{null, "1", "2", "3", "4", "5", "6"}));
             }
             for (int i = 0; i < 4; i++) {
                 averageScoreLabel[i] = new JLabel();
@@ -153,7 +210,7 @@ public class AddMarks extends JDialog implements ActionListener {
             panelForLabels.add(averageLabel = new JLabel("AVERAGE"));
 
             for (int i = 0; i < QUANTITY_OF_MARK_COMBOBOX; i++) {
-                panelForComboBox.add(markComboBox[i] = new JComboBox<>(new String[]{null,"1","2","3","4","5","6"}));
+                panelForComboBox.add(markComboBox[i] = new JComboBox<>(new String[]{null, "1", "2", "3", "4", "5", "6"}));
             }
 
             for (int i = 0; i < 4; i++) {
@@ -186,6 +243,29 @@ public class AddMarks extends JDialog implements ActionListener {
 
     @Override
     public void actionPerformed(ActionEvent e) {
+        if (e.getSource() == cancelButton) {
+            dispose();
+        }
+        if (e.getSource() == addButton) {
+            int[] arrayOfMarks = new int[48];
+            int min, max;
+            if (grade>6) {
+                min = 27; max = 32;
+            } else {
+                min = 31; max = 44;
+            }
+            for (int i = 0, k = 0; i < 48; i++) {
+                if (i>min && i<max) {
+                    arrayOfMarks[i] = -1;
+                } else {
+                    arrayOfMarks[i] = markComboBox[k].getSelectedIndex();
+                    k++;
+                }
+            }
+            marks = new Marks(arrayOfMarks);
 
+            dispose();
+
+        }
     }
 }

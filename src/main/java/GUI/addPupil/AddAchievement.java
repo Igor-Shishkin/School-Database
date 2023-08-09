@@ -74,7 +74,6 @@ public class AddAchievement extends JDialog implements ActionListener {
         if (e.getSource()==addButton) {
             achievements = textArea.getText();
             dispose();
-
         }
         if (e.getSource()==addButton){
             dispose();
