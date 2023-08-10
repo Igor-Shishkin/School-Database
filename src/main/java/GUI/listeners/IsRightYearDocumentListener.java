@@ -1,6 +1,6 @@
 package GUI.listeners;
 
-import GUI.styleStorage.ConstantsOfColors;
+import GUI.styleStorage.ConstantsOfStyle;
 
 import javax.swing.*;
 import javax.swing.event.DocumentEvent;
@@ -44,17 +44,17 @@ public class IsRightYearDocumentListener implements DocumentListener {
                 int yearNumber = Integer.parseInt(this.yearTextField.getText().trim());
                 if (yearNumber>2000) {
                     if (yearNumber > LocalDate.now().getYear() - 20 && yearNumber <= LocalDate.now().getYear() - 5) {
-                        yearTextField.setBackground(ConstantsOfColors.COLOR_FOR_RIGHT_FORMAT);
+                        yearTextField.setBackground(ConstantsOfStyle.COLOR_FOR_RIGHT_FORMAT);
                         String endOfYear = String.format("%02d", yearNumber%100);
                         String pesel = peselTextField.getText().trim();
                     } else {
-                        yearTextField.setBackground(ConstantsOfColors.COLOR_FOR_WRONG_FORMAT);
+                        yearTextField.setBackground(ConstantsOfStyle.COLOR_FOR_WRONG_FORMAT);
                     }
                 } else {
-                    yearTextField.setBackground(ConstantsOfColors.COLOR_NEUTRAL_FORMAT);
+                    yearTextField.setBackground(ConstantsOfStyle.COLOR_NEUTRAL_FORMAT);
                 }
             } catch (NumberFormatException ex) {
-                yearTextField.setBackground(ConstantsOfColors.COLOR_FOR_WRONG_FORMAT);
+                yearTextField.setBackground(ConstantsOfStyle.COLOR_FOR_WRONG_FORMAT);
             }
         }
         boolean isNumber = true;
@@ -70,17 +70,17 @@ public class IsRightYearDocumentListener implements DocumentListener {
 //            peselTextField.setBackground(ConstantsOfColors.COLOR_NEUTRAL_FORMAT);
 //        }
         if (peselTextField.getText().trim().isEmpty()) {
-            peselTextField.setBackground(ConstantsOfColors.COLOR_NEUTRAL_FORMAT);
+            peselTextField.setBackground(ConstantsOfStyle.COLOR_NEUTRAL_FORMAT);
         } else if (!isNumber|| peselTextField.getText().length()>11) {
-            peselTextField.setBackground(ConstantsOfColors.COLOR_FOR_WRONG_FORMAT);
+            peselTextField.setBackground(ConstantsOfStyle.COLOR_FOR_WRONG_FORMAT);
         }else if (peselTextField.getText().length() < 11) {
-            peselTextField.setBackground(ConstantsOfColors.COLOR_NEUTRAL_FORMAT);
+            peselTextField.setBackground(ConstantsOfStyle.COLOR_NEUTRAL_FORMAT);
         }
         if (peselTextField.getText().length() == 11) {
-            if (Objects.equals(yearTextField.getBackground(), ConstantsOfColors.COLOR_FOR_RIGHT_FORMAT) &&
-                    Objects.equals(yearTextField.getBackground(), ConstantsOfColors.COLOR_FOR_RIGHT_FORMAT) &&
-                    Objects.equals(monthTextField.getBackground(), ConstantsOfColors.COLOR_FOR_RIGHT_FORMAT) &&
-                    Objects.equals(dayTextField.getBackground(), ConstantsOfColors.COLOR_FOR_RIGHT_FORMAT) &&
+            if (Objects.equals(yearTextField.getBackground(), ConstantsOfStyle.COLOR_FOR_RIGHT_FORMAT) &&
+                    Objects.equals(yearTextField.getBackground(), ConstantsOfStyle.COLOR_FOR_RIGHT_FORMAT) &&
+                    Objects.equals(monthTextField.getBackground(), ConstantsOfStyle.COLOR_FOR_RIGHT_FORMAT) &&
+                    Objects.equals(dayTextField.getBackground(), ConstantsOfStyle.COLOR_FOR_RIGHT_FORMAT) &&
                     !Objects.equals(comboBox.getSelectedItem(), "")) {
                 int yearNumber = Integer.parseInt(yearTextField.getText().trim());
                 int monthNumber = Integer.parseInt(monthTextField.getText().trim());
@@ -108,12 +108,12 @@ public class IsRightYearDocumentListener implements DocumentListener {
                                                 pesel.charAt(9) == '8')
                         )
                 ) {
-                    peselTextField.setBackground(ConstantsOfColors.COLOR_FOR_RIGHT_FORMAT);
+                    peselTextField.setBackground(ConstantsOfStyle.COLOR_FOR_RIGHT_FORMAT);
                 } else {
-                    peselTextField.setBackground(ConstantsOfColors.COLOR_FOR_WRONG_FORMAT);
+                    peselTextField.setBackground(ConstantsOfStyle.COLOR_FOR_WRONG_FORMAT);
                 }
             } else {
-                peselTextField.setBackground(ConstantsOfColors.COLOR_NEUTRAL_FORMAT);
+                peselTextField.setBackground(ConstantsOfStyle.COLOR_NEUTRAL_FORMAT);
             }
         }
     }

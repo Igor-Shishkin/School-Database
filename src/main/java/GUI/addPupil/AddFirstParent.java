@@ -1,6 +1,6 @@
 package GUI.addPupil;
 
-import GUI.styleStorage.ConstantsOfColors;
+import GUI.styleStorage.ConstantsOfStyle;
 
 import javax.swing.*;
 import java.awt.*;
@@ -108,9 +108,9 @@ public class AddFirstParent extends JDialog implements ActionListener {
         houseField = new JTextField(13);
         localField = new JTextField(13);
         postCodeField = new JTextField(13);
-        nameField.setBackground(ConstantsOfColors.COLOR_FOR_WRONG_FORMAT);
-        surnameField.setBackground(ConstantsOfColors.COLOR_FOR_WRONG_FORMAT);
-        nameField.setBackground(ConstantsOfColors.COLOR_FOR_WRONG_FORMAT);
+        nameField.setBackground(ConstantsOfStyle.COLOR_FOR_WRONG_FORMAT);
+        surnameField.setBackground(ConstantsOfStyle.COLOR_FOR_WRONG_FORMAT);
+        nameField.setBackground(ConstantsOfStyle.COLOR_FOR_WRONG_FORMAT);
 
         genderComboBox = new JComboBox<>(new String[]{"Male", "Female"});
 

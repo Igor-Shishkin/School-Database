@@ -1,14 +1,19 @@
 package GUI.addPupil;
 
 import GUI.listeners.IsMarkEnteredListener;
-import GUI.styleStorage.ConstantsOfColors;
+import GUI.styleStorage.ConstantsOfStyle;
 import database.GeneratePupilData;
 import database.Marks;
 
+import javax.imageio.ImageIO;
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import java.awt.*;
 import java.awt.event.*;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Paths;
 import java.util.Arrays;
 
 
@@ -18,14 +23,15 @@ public class AddMarks extends JDialog implements ActionListener {
     boolean awardBar, promotionToNextGrade;
     int grade;
     JLabel mathLabel, polishLabel, englishLabel, informationLabel, peLabel, musicLabel, religionLabel, natureLabel,
-            biologyLabel, physicsLabel, geographyLabel, behaviorLabel, averageLabel;
+            biologyLabel, physicsLabel, geographyLabel, behaviorLabel, averageLabel, flagLabel, promotionLabel;
     JComboBox[] markComboBox = new JComboBox[44];
-    JPanel panelForComboBox, panelForLabels;
+    JPanel panelForComboBox, panelForLabels,  centralPanel;
+    JLayeredPane promotionLayeredPane;
     JLabel[] averageScoreLabel = new JLabel[4];
     Font font, fontForAverage;
     JButton addButton, cancelButton;
 
-    AddMarks(JFrame parentFrame, Marks marks, Boolean awardBar, Boolean promotionToNextGrade, int grade) {
+    AddMarks(JFrame parentFrame, Marks marks, Boolean awardBar, Boolean promotionToNextGrade, int grade) throws IOException {
         super(parentFrame, "Marks", true);
         GeneratePupilData generate = new GeneratePupilData();
         marks = generate.generateMarks456();
@@ -34,10 +40,33 @@ public class AddMarks extends JDialog implements ActionListener {
         this.promotionToNextGrade = promotionToNextGrade;
         this.grade = grade;
 
-        font = ConstantsOfColors.THE_MAIN_FONT.deriveFont(Font.PLAIN, 19);
-        fontForAverage = ConstantsOfColors.THE_MAIN_FONT.deriveFont(Font.BOLD, 20);
+        font = ConstantsOfStyle.THE_MAIN_FONT.deriveFont(Font.PLAIN, 19);
+        fontForAverage = ConstantsOfStyle.THE_MAIN_FONT.deriveFont(Font.BOLD, 20);
         setWindowCloseListener();
         this.setLayout(new BorderLayout());
+
+
+        promotionLayeredPane = new JLayeredPane();
+        flagLabel = new JLabel();
+        try {
+            BufferedImage flagImage = ImageIO.read
+                    (new File(Paths.get("src","main", "resources", "Images", "FLAG_POLAND_HORIZONTAL.png")
+                            .toUri()));
+            flagLabel.setIcon(new ImageIcon(flagImage));
+        } catch (Exception e) {
+            e.printStackTrace();
+        };
+        flagLabel.setBounds(0,0,400,50);
+        flagLabel.setVisible(awardBar);
+        promotionLayeredPane.add(flagLabel);
+        promotionLabel = new JLabel("<html>The pupil has been promoted" +
+                "<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;to the next class</html>");
+        promotionLabel.setOpaque(false);
+        promotionLabel.setBounds(0,0,400,50);
+        promotionLayeredPane.add(promotionLabel,
+                Integer.valueOf(1));
+        promotionLayeredPane.setPreferredSize(new Dimension(10,50));
+        promotionLayeredPane.setVisible(promotionToNextGrade);
 
         addComponentsOfPanels();
         setMarksInComboBox();
@@ -46,6 +75,12 @@ public class AddMarks extends JDialog implements ActionListener {
         panelForComboBox.setPreferredSize(new Dimension(300, 400));
         panelForLabels.setBorder(new EmptyBorder(10, 10, 10, 10));
         panelForLabels.setPreferredSize(new Dimension(130, 400));
+
+
+        centralPanel = new JPanel(new BorderLayout());
+        centralPanel.add(panelForLabels, BorderLayout.WEST);
+        centralPanel.add(panelForComboBox, BorderLayout.EAST);
+        centralPanel.add(promotionLayeredPane, BorderLayout.SOUTH);
 
 
         addButton = new JButton("Done!");
@@ -58,12 +93,15 @@ public class AddMarks extends JDialog implements ActionListener {
         setEnabledForYearMarks();
 
 
-        this.add(panelForComboBox, BorderLayout.EAST);
-        this.add(panelForLabels, BorderLayout.WEST);
+//        this.add(panelForComboBox, BorderLayout.EAST);
+//        this.add(panelForLabels, BorderLayout.WEST);
         this.add(addButton, BorderLayout.PAGE_START);
+        this.add(centralPanel, BorderLayout.CENTER);
+//        this.add(promotionPanel, BorderLayout.AFTER_LAST_LINE);
         this.add(cancelButton, BorderLayout.AFTER_LAST_LINE);
         setFontForComponents(this, font);
         setHorizontalAlignment(this);
+        promotionLabel.setHorizontalAlignment(SwingConstants.CENTER);
 
 
 //        this.setResizable(false);
@@ -81,9 +119,6 @@ public class AddMarks extends JDialog implements ActionListener {
     private void setMarksInComboBox() {
         if (marks != null) {
             int[] arrayOfMarks = marks.getArrayOfMarks();
-            arrayOfMarks[0] = -1;
-            arrayOfMarks[5] = -1;
-            arrayOfMarks[6] = -1;
             System.out.println(Arrays.toString(arrayOfMarks));
             int jumpIndex = (grade>6) ? 27 : 31;
             for (int i = 0, j = 0; i < QUANTITY_OF_MARK_COMBOBOX; i++, j++) {
@@ -102,9 +137,9 @@ public class AddMarks extends JDialog implements ActionListener {
                 boolean isAllMarksInColumn = true;
                 double sum = 0;
                 int quantityEntered = 0;
-                for (int j = i; j < QUANTITY_OF_MARK_COMBOBOX; j+=4) {
+                for (int j = i; j < QUANTITY_OF_MARK_COMBOBOX-4; j+=4) {
                     markComboBox[j].setBackground(
-                            (markComboBox[j].getSelectedItem()!=null)?ConstantsOfColors.COLOR_FOR_RIGHT_FORMAT:
+                            (markComboBox[j].getSelectedItem()!=null)? ConstantsOfStyle.COLOR_FOR_RIGHT_FORMAT:
                             this.getBackground());
                     if (markComboBox[j].getSelectedItem()==null || !markComboBox[j].isEnabled()) {
                         isAllMarksInColumn = false;
@@ -112,11 +147,18 @@ public class AddMarks extends JDialog implements ActionListener {
                         sum += markComboBox[j].getSelectedIndex();
                         quantityEntered++;
                     }
-                    averageScoreLabel[i%4].setText(String.format("%02.1f",
+                    averageScoreLabel[i].setText(String.format("%02.1f",
                             (quantityEntered!=0&&sum!=0)?sum/quantityEntered:0f));
-                    averageScoreLabel[i].setBackground((isAllMarksInColumn)?ConstantsOfColors.COLOR_FOR_RIGHT_FORMAT:
-                            this.getBackground());
+                    averageScoreLabel[i].setBackground((isAllMarksInColumn &&
+                            markComboBox[QUANTITY_OF_MARK_COMBOBOX-7+(i)].getSelectedIndex()!=-1)
+                            ? ConstantsOfStyle.COLOR_FOR_RIGHT_FORMAT : this.getBackground());
                 }
+
+            }
+            for (int j = QUANTITY_OF_MARK_COMBOBOX-4; j < QUANTITY_OF_MARK_COMBOBOX; j++) {
+                markComboBox[j].setBackground(
+                        (markComboBox[j].getSelectedItem()!=null)? ConstantsOfStyle.COLOR_FOR_RIGHT_FORMAT:
+                                this.getBackground());
             }
         }
 
@@ -147,7 +189,7 @@ public class AddMarks extends JDialog implements ActionListener {
     private void setActionListenerForBackGroundOfCombobox() {
         for (int i = 0; i < QUANTITY_OF_MARK_COMBOBOX; i++) {
             markComboBox[i].addActionListener(new IsMarkEnteredListener(markComboBox, i, QUANTITY_OF_MARK_COMBOBOX,
-                    averageScoreLabel, this.getBackground()));
+                    averageScoreLabel, this.getBackground(), promotionLayeredPane, flagLabel));
         }
     }
 

@@ -181,9 +181,58 @@ public class Marks {
         }
         return arrayOfMarks;
     }
-    public Marks setMarksFromArray(int[] array) {
-
-        return null;
+    public boolean getPromotion(int grade) {
+        int[] arrayOfMarks = getArrayOfMarks();
+        int jumpIndex = (grade>6) ? 27 : 31;
+        boolean promotion = true;
+        for (int i = 0; i < 48; i++) {
+            if (i%4==3) {
+                if (!(arrayOfMarks[i]>1 && arrayOfMarks[i]<7)) {return false;}
+            } else {
+                if (!(arrayOfMarks[i]>0 && arrayOfMarks[i]<7)) {return false;}
+            }
+            if (i==jumpIndex) {
+                if (grade>6) {
+                    i+=4;
+                } else {
+                    i+=12;
+                }
+            }
+        }
+        return promotion;
+    }
+    public boolean isAwardBar (boolean promotion, int grade) {
+        if (promotion) {
+            boolean awardBar = true;
+            int quantityOfSubjects = (grade>6)?10:8;
+            double average;
+            if (grade>6) {
+                average = (double) (getMathMark()[3] +
+                        getPolishMark()[3] +
+                        getEnglishMark()[3] +
+                        getInformaticsMark()[3] +
+                        getPeMark()[3] +
+                        getMusicMark()[3] +
+                        getReligionMark()[3] +
+                        getBiologyMark()[3] +
+                        getPhysicsMark()[3] +
+                        getGeographyMark()[3]) /
+                quantityOfSubjects;
+            } else {
+                average = (double) (getMathMark()[3] +
+                        getPolishMark()[3] +
+                        getEnglishMark()[3] +
+                        getInformaticsMark()[3] +
+                        getPeMark()[3] +
+                        getMusicMark()[3] +
+                        getReligionMark()[3] +
+                        getNatureMark()[3]) /
+                        quantityOfSubjects;
+            }
+            return average > 4.65 && getBehaviorMark()[3] > 4;
+        } else {
+            return false;
+        }
     }
 
     @Override

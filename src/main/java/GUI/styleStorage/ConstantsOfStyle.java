@@ -6,7 +6,7 @@ import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
-public class ConstantsOfColors {
+public class ConstantsOfStyle {
     static Path workDir = Paths.get("src", "main", "resources");
     static File fontFile = new File(workDir.resolve("REM-Regular.ttf").toUri());
     public static Font THE_MAIN_FONT;

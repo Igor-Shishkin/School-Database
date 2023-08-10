@@ -1,6 +1,6 @@
 package GUI.listeners;
 
-import GUI.styleStorage.ConstantsOfColors;
+import GUI.styleStorage.ConstantsOfStyle;
 
 import javax.swing.*;
 import javax.swing.event.DocumentEvent;
@@ -38,7 +38,7 @@ public class IsRightDayDocumentListener implements DocumentListener {
     }
     void isRight () {
         if (dayTextField.getText().trim().isEmpty()) {
-            dayTextField.setBackground(ConstantsOfColors.COLOR_NEUTRAL_FORMAT);
+            dayTextField.setBackground(ConstantsOfStyle.COLOR_NEUTRAL_FORMAT);
         } else {
             try {
                 int number = Integer.parseInt(this.dayTextField.getText().trim());
@@ -59,17 +59,17 @@ public class IsRightDayDocumentListener implements DocumentListener {
         }
 
         if (peselTextField.getText().trim().isEmpty()) {
-            peselTextField.setBackground(ConstantsOfColors.COLOR_NEUTRAL_FORMAT);
+            peselTextField.setBackground(ConstantsOfStyle.COLOR_NEUTRAL_FORMAT);
         } else if (!isNumber|| peselTextField.getText().length()>11) {
-            peselTextField.setBackground(ConstantsOfColors.COLOR_FOR_WRONG_FORMAT);
+            peselTextField.setBackground(ConstantsOfStyle.COLOR_FOR_WRONG_FORMAT);
         }else if (peselTextField.getText().length() < 11) {
-            peselTextField.setBackground(ConstantsOfColors.COLOR_NEUTRAL_FORMAT);
+            peselTextField.setBackground(ConstantsOfStyle.COLOR_NEUTRAL_FORMAT);
         }
         if (peselTextField.getText().length() == 11) {
-            if (Objects.equals(yearTextField.getBackground(), ConstantsOfColors.COLOR_FOR_RIGHT_FORMAT) &&
-                    Objects.equals(yearTextField.getBackground(), ConstantsOfColors.COLOR_FOR_RIGHT_FORMAT) &&
-                    Objects.equals(monthTextField.getBackground(), ConstantsOfColors.COLOR_FOR_RIGHT_FORMAT) &&
-                    Objects.equals(dayTextField.getBackground(), ConstantsOfColors.COLOR_FOR_RIGHT_FORMAT) &&
+            if (Objects.equals(yearTextField.getBackground(), ConstantsOfStyle.COLOR_FOR_RIGHT_FORMAT) &&
+                    Objects.equals(yearTextField.getBackground(), ConstantsOfStyle.COLOR_FOR_RIGHT_FORMAT) &&
+                    Objects.equals(monthTextField.getBackground(), ConstantsOfStyle.COLOR_FOR_RIGHT_FORMAT) &&
+                    Objects.equals(dayTextField.getBackground(), ConstantsOfStyle.COLOR_FOR_RIGHT_FORMAT) &&
                     !Objects.equals(comboBox.getSelectedItem(), "")) {
                 int yearNumber = Integer.parseInt(yearTextField.getText().trim());
                 int monthNumber = Integer.parseInt(monthTextField.getText().trim());
@@ -97,12 +97,12 @@ public class IsRightDayDocumentListener implements DocumentListener {
                                                 pesel.charAt(9) == '8')
                         )
                 ) {
-                    peselTextField.setBackground(ConstantsOfColors.COLOR_FOR_RIGHT_FORMAT);
+                    peselTextField.setBackground(ConstantsOfStyle.COLOR_FOR_RIGHT_FORMAT);
                 } else {
-                    peselTextField.setBackground(ConstantsOfColors.COLOR_FOR_WRONG_FORMAT);
+                    peselTextField.setBackground(ConstantsOfStyle.COLOR_FOR_WRONG_FORMAT);
                 }
             }else {
-                peselTextField.setBackground(ConstantsOfColors.COLOR_NEUTRAL_FORMAT);
+                peselTextField.setBackground(ConstantsOfStyle.COLOR_NEUTRAL_FORMAT);
             }
         }
     }

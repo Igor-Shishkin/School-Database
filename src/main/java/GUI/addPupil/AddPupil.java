@@ -1,14 +1,13 @@
 package GUI.addPupil;
 
 import GUI.listeners.*;
-import GUI.styleStorage.ConstantsOfColors;
+import GUI.styleStorage.ConstantsOfStyle;
 import database.*;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
 import java.io.IOException;
-import java.util.Arrays;
 import java.util.Objects;
 
 public class AddPupil extends JFrame implements ActionListener {
@@ -41,7 +40,7 @@ public class AddPupil extends JFrame implements ActionListener {
         this.setLayout(new GridBagLayout());
         this.setFont(new Font(null, Font.BOLD, 20));
 
-        font = ConstantsOfColors.THE_MAIN_FONT.deriveFont(Font.PLAIN, 19);
+        font = ConstantsOfStyle.THE_MAIN_FONT.deriveFont(Font.PLAIN, 19);
 
         setWindowCloseListener();
         setItemsToFrame();
@@ -134,15 +133,15 @@ public class AddPupil extends JFrame implements ActionListener {
         gradeComboBox.addActionListener(this);
 
         if (NEW_PUPIL) {
-            nameField.setBackground(ConstantsOfColors.COLOR_FOR_WRONG_FORMAT);
-            surnameField.setBackground(ConstantsOfColors.COLOR_FOR_WRONG_FORMAT);
-            nameField.setBackground(ConstantsOfColors.COLOR_FOR_WRONG_FORMAT);
-            peselField.setBackground(ConstantsOfColors.COLOR_FOR_WRONG_FORMAT);
-            yearField.setBackground(ConstantsOfColors.COLOR_FOR_WRONG_FORMAT);
-            monthField.setBackground(ConstantsOfColors.COLOR_FOR_WRONG_FORMAT);
-            dayField.setBackground(ConstantsOfColors.COLOR_FOR_WRONG_FORMAT);
-            genderComboBox.setBackground(ConstantsOfColors.COLOR_FOR_WRONG_FORMAT);
-            gradeComboBox.setBackground(ConstantsOfColors.COLOR_FOR_WRONG_FORMAT);
+            nameField.setBackground(ConstantsOfStyle.COLOR_FOR_WRONG_FORMAT);
+            surnameField.setBackground(ConstantsOfStyle.COLOR_FOR_WRONG_FORMAT);
+            nameField.setBackground(ConstantsOfStyle.COLOR_FOR_WRONG_FORMAT);
+            peselField.setBackground(ConstantsOfStyle.COLOR_FOR_WRONG_FORMAT);
+            yearField.setBackground(ConstantsOfStyle.COLOR_FOR_WRONG_FORMAT);
+            monthField.setBackground(ConstantsOfStyle.COLOR_FOR_WRONG_FORMAT);
+            dayField.setBackground(ConstantsOfStyle.COLOR_FOR_WRONG_FORMAT);
+            genderComboBox.setBackground(ConstantsOfStyle.COLOR_FOR_WRONG_FORMAT);
+            gradeComboBox.setBackground(ConstantsOfStyle.COLOR_FOR_WRONG_FORMAT);
         } else {
             gradeComboBox.setSelectedItem(pupil.getGrade());
             genderComboBox.setSelectedItem((pupil.getGender()=='M')?genderComboBox.getItemAt(2)
@@ -156,7 +155,7 @@ public class AddPupil extends JFrame implements ActionListener {
         cancelButton = new JButton("Cancel");
         achievementButton = new JButton("Add achievement");
         achievementButton.addActionListener(this);
-        addFirstParentButton.setBackground(ConstantsOfColors.COLOR_FOR_WRONG_FORMAT);
+        addFirstParentButton.setBackground(ConstantsOfStyle.COLOR_FOR_WRONG_FORMAT);
         markButton.addActionListener(this);
 
 
@@ -377,8 +376,13 @@ public class AddPupil extends JFrame implements ActionListener {
         }
         if (e.getSource() == markButton) {
             GeneratePupilData generator = new GeneratePupilData();
-            AddMarks addMarks =  new AddMarks(this, pupil.getMarks(), pupil.isAwardBar(),
-                    pupil.isPromotionToNextGrade(), 6);
+            AddMarks addMarks = null;
+            try {
+                addMarks = new AddMarks(this, pupil.getMarks(), pupil.isAwardBar(),
+                        pupil.isPromotionToNextGrade(), 6);
+            } catch (IOException ex) {
+                throw new RuntimeException(ex);
+            }
             System.out.println(addMarks.showDialogAndGetInput());
         }
         if (e.getSource() == cancelButton) {

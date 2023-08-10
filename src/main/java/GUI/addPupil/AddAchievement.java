@@ -1,6 +1,6 @@
 package GUI.addPupil;
 
-import GUI.styleStorage.ConstantsOfColors;
+import GUI.styleStorage.ConstantsOfStyle;
 
 import javax.swing.*;
 import java.awt.*;
@@ -20,7 +20,7 @@ public class AddAchievement extends JDialog implements ActionListener {
         textArea = new JTextArea(achievements);
         textArea.setLineWrap(true);
         textArea.setWrapStyleWord(true);
-        textArea.setFont(ConstantsOfColors.THE_MAIN_FONT.deriveFont(Font.PLAIN,16));
+        textArea.setFont(ConstantsOfStyle.THE_MAIN_FONT.deriveFont(Font.PLAIN,16));
 
         addButton = new JButton("OK");
         cancelButton = new JButton("Cancel");
