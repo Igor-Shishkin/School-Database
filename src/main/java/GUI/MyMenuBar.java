@@ -17,7 +17,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Properties;
 
-public class MyMenuBar extends JMenuBar implements ActionListener {
+public class MyMenuBar  implements ActionListener {
     Properties properties;
     JMenu fileMenu;
     JMenu styleMenu;
@@ -34,10 +34,18 @@ public class MyMenuBar extends JMenuBar implements ActionListener {
     JMenuItem softRose;
     JMenuItem aggressive;
     JMenuItem contrast;
+    JMenuBar menuBar;
     WriteReadDataToFile writeReadDataToFile;
     PupilsDataList pupilsDataList = new PupilsDataList();
+    JFrame parentFrame;
+    JTextField statusTextField;
 
-    MyMenuBar() throws IOException {
+    MyMenuBar(JFrame parentFrame, JTextField statusTextField)  throws IOException {
+        this.parentFrame = parentFrame;
+        this.statusTextField = statusTextField;
+
+        menuBar = new JMenuBar();
+
         writeReadDataToFile = new WriteReadDataToFile();
 
         Path iconsPath = Paths.get("src", "main", "resources", "icons");
@@ -83,10 +91,10 @@ public class MyMenuBar extends JMenuBar implements ActionListener {
         userMenu.add(changeAdmissionItem);
         userMenu.add(logOutItem);
 
-        this.add(fileMenu);
-        this.add(userMenu);
-        this.add(styleMenu);
-        this.add(informationMenu);
+        menuBar.add(fileMenu);
+        menuBar.add(userMenu);
+        menuBar.add(styleMenu);
+        menuBar.add(informationMenu);
 
         fileMenu.setMnemonic(KeyEvent.VK_F);
         styleMenu.setMnemonic(KeyEvent.VK_S);
@@ -119,14 +127,14 @@ public class MyMenuBar extends JMenuBar implements ActionListener {
                 File file = new File(fileChooser.getSelectedFile().getAbsolutePath());
                 try {
                     PupilsDataList.setPupilsDataList(writeReadDataToFile.readListFromFile(file));
-                    MainWindow.setTextForStatusPanel("Database loaded successfully");
+                    statusTextField.setText("Database loaded successfully");
                     String nameOfFile = file.getName();
 //                    Main.setTitleForFrame(nameOfFile);
                 } catch (Exception ex) {
                     JOptionPane.showMessageDialog(null,
                             "\t\tI can't read this file!\nCALL TECH SUPPORT OR ELSE!", "title",
                             JOptionPane.ERROR_MESSAGE);
-                    MainWindow.setTextForStatusPanel("Error. No data has been loaded at the moment.");
+                    statusTextField.setText("Error. No data has been loaded at the moment.");
                     throw new RuntimeException(ex);
                 }
             }
@@ -143,12 +151,12 @@ public class MyMenuBar extends JMenuBar implements ActionListener {
                     File file = new File(fileChooser.getSelectedFile().getAbsolutePath());
                     try {
                         writeReadDataToFile.writeListLoFile(PupilsDataList.getPupilsDataList(), file);
-                        MainWindow.setTextForStatusPanel("Database saved successfully");
+                        statusTextField.setText("Database saved successfully");
                     } catch (JsonProcessingException ex) {
                         JOptionPane.showMessageDialog(null,
                                 "\t\tI can't write this file!\nCALL TECH SUPPORT OR ELSE!", "title",
                                 JOptionPane.ERROR_MESSAGE);
-                        MainWindow.setTextForStatusPanel("Error. I can't save this data");
+                        statusTextField.setText("Error. I can't save this data");
                         throw new RuntimeException(ex);
                     }
                 }
@@ -188,4 +196,8 @@ public class MyMenuBar extends JMenuBar implements ActionListener {
         changeAdmissionItem.setBackground(background);
         informationItem.setBackground(background);
     }
+    public JMenuBar getMenuBar () {
+        return menuBar;
+    }
+
 }

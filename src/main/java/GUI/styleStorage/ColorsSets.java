@@ -5,7 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ColorsSets {
-    public static List<Color> ACTUAL_SET_OF_COLORS;
+    public static List<Color> ACTUAL_SET_OF_COLORS = new ArrayList<>(10);
     public static ArrayList<Color> SET_OF_COLORS_SOFT_ROSE = new ArrayList<>(10);
     public static ArrayList<Color> SET_OF_COLORS_OCEAN = new ArrayList<>(10);
     public static ArrayList<Color> SET_OF_COLORS_CONTRAST = new ArrayList<>(10);

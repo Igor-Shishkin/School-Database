@@ -30,18 +30,15 @@ public class AddPupil extends JFrame implements ActionListener {
 
     public AddPupil(Pupil p) throws IOException, FontFormatException {
         this.pupil = p;
+
+        GeneratePupilData generatePupilData = new GeneratePupilData();
+        pupil = generatePupilData.generatePupil();
+
         if (pupil==null) {
             pupil=new Pupil();
             pupil.setId(PupilsDataList.getMinPossibleID());
             NEW_PUPIL = true;
         }
-
-
-
-        GeneratePupilData generatePupilData = new GeneratePupilData();
-        pupil = generatePupilData.generatePupil();
-
-
 
 
         this.setLayout(new GridBagLayout());
@@ -122,32 +119,28 @@ public class AddPupil extends JFrame implements ActionListener {
         localField = new JTextField(13);
         postCodeField = new JTextField(13);
 
-        nameField.setText((pupil.getName()==null)?"": pupil.getName());
-        secondNameField.setText((pupil.getSecondName()==null)?"": pupil.getSecondName());
-        surnameField.setText((pupil.getSurname()==null)?"": pupil.getSurname());
-        peselField.setText((pupil.getPesel()==null)?"":pupil.getPesel());
-        idField.setText(Integer.toString(pupil.getId()));
-        yearField.setText((pupil.getDateOfBirth()==null)?"":Integer.toString(pupil.getDateOfBirth().getYear()));
-        monthField.setText((pupil.getDateOfBirth()==null)?"":Integer.toString(pupil.getDateOfBirth().getMonthValue()));
-        dayField.setText((pupil.getDateOfBirth()==null)?"":Integer.toString(pupil.getDateOfBirth().getDayOfMonth()));
-        countryField.setText((pupil.getAddress()==null)?"":pupil.getAddress().getCountry());
-        provinceField.setText((pupil.getAddress()==null)?"":pupil.getAddress().getProvince());
-        townField.setText((pupil.getAddress()==null)?"":pupil.getAddress().getTown());
-        streetField.setText((pupil.getAddress()==null)?"":pupil.getAddress().getStreet());
-        houseField.setText((pupil.getAddress()==null)?"":Integer.toString(pupil.getAddress().getHouse()));
-        localField.setText((pupil.getAddress()==null)?"":Integer.toString(pupil.getAddress().getLocal()));
-        postCodeField.setText((pupil.getAddress()==null)?"":pupil.getAddress().getPostCode());
-
         genderComboBox = new JComboBox<>(new String[]{"", "Male", "Female"});
         gradeComboBox = new JComboBox<>(new Integer[]{null, 0, 1, 2, 3, 4, 5, 6, 7, 8});
-        gradeComboBox.addActionListener(this);
 
-        gradeComboBox.setSelectedIndex(pupil.getGrade()+1);
-        genderComboBox.setSelectedIndex((pupil.getGender()=='M')?1:(pupil.getGender()=='F')?2:0);
-        System.out.println(pupil.getGrade());
-        System.out.println(pupil.getGender());
-
-        if (NEW_PUPIL) {
+        if (!NEW_PUPIL) {
+            nameField.setText((pupil.getName() == null) ? "" : pupil.getName());
+            secondNameField.setText((pupil.getSecondName() == null) ? "" : pupil.getSecondName());
+            surnameField.setText((pupil.getSurname() == null) ? "" : pupil.getSurname());
+            peselField.setText((pupil.getPesel() == null) ? "" : pupil.getPesel());
+            idField.setText(Integer.toString(pupil.getId()));
+            yearField.setText((pupil.getDateOfBirth() == null) ? "" : Integer.toString(pupil.getDateOfBirth().getYear()));
+            monthField.setText((pupil.getDateOfBirth() == null) ? "" : Integer.toString(pupil.getDateOfBirth().getMonthValue()));
+            dayField.setText((pupil.getDateOfBirth() == null) ? "" : Integer.toString(pupil.getDateOfBirth().getDayOfMonth()));
+            countryField.setText((pupil.getAddress() == null) ? "" : pupil.getAddress().getCountry());
+            provinceField.setText((pupil.getAddress() == null) ? "" : pupil.getAddress().getProvince());
+            townField.setText((pupil.getAddress() == null) ? "" : pupil.getAddress().getTown());
+            streetField.setText((pupil.getAddress() == null) ? "" : pupil.getAddress().getStreet());
+            houseField.setText((pupil.getAddress() == null) ? "" : Integer.toString(pupil.getAddress().getHouse()));
+            localField.setText((pupil.getAddress() == null) ? "" : Integer.toString(pupil.getAddress().getLocal()));
+            postCodeField.setText((pupil.getAddress() == null) ? "" : pupil.getAddress().getPostCode());
+            gradeComboBox.setSelectedIndex(pupil.getGrade() + 1);
+            genderComboBox.setSelectedIndex((pupil.getGender() == 'M') ? 1 : (pupil.getGender() == 'F') ? 2 : 0);
+        } else {
             nameField.setBackground(ConstantsOfStyle.COLOR_FOR_WRONG_FORMAT);
             surnameField.setBackground(ConstantsOfStyle.COLOR_FOR_WRONG_FORMAT);
             nameField.setBackground(ConstantsOfStyle.COLOR_FOR_WRONG_FORMAT);
@@ -157,11 +150,30 @@ public class AddPupil extends JFrame implements ActionListener {
             dayField.setBackground(ConstantsOfStyle.COLOR_FOR_WRONG_FORMAT);
             genderComboBox.setBackground(ConstantsOfStyle.COLOR_FOR_WRONG_FORMAT);
             gradeComboBox.setBackground(ConstantsOfStyle.COLOR_FOR_WRONG_FORMAT);
-        } else {
-            gradeComboBox.setSelectedItem(pupil.getGrade());
-            genderComboBox.setSelectedItem((pupil.getGender()=='M')?genderComboBox.getItemAt(2)
-                    :genderComboBox.getItemAt(3));
         }
+
+
+        gradeComboBox.addActionListener(this);
+
+
+        System.out.println(pupil.getGrade());
+        System.out.println(pupil.getGender());
+
+//        if (NEW_PUPIL) {
+//            nameField.setBackground(ConstantsOfStyle.COLOR_FOR_WRONG_FORMAT);
+//            surnameField.setBackground(ConstantsOfStyle.COLOR_FOR_WRONG_FORMAT);
+//            nameField.setBackground(ConstantsOfStyle.COLOR_FOR_WRONG_FORMAT);
+//            peselField.setBackground(ConstantsOfStyle.COLOR_FOR_WRONG_FORMAT);
+//            yearField.setBackground(ConstantsOfStyle.COLOR_FOR_WRONG_FORMAT);
+//            monthField.setBackground(ConstantsOfStyle.COLOR_FOR_WRONG_FORMAT);
+//            dayField.setBackground(ConstantsOfStyle.COLOR_FOR_WRONG_FORMAT);
+//            genderComboBox.setBackground(ConstantsOfStyle.COLOR_FOR_WRONG_FORMAT);
+//            gradeComboBox.setBackground(ConstantsOfStyle.COLOR_FOR_WRONG_FORMAT);
+//        } else {
+//            gradeComboBox.setSelectedItem(pupil.getGrade());
+//            genderComboBox.setSelectedItem((pupil.getGender()=='M')?genderComboBox.getItemAt(2)
+//                    :genderComboBox.getItemAt(3));
+//        }
 
         addFirstParentButton = new JButton("*Enter parent's data");
         addSecondParentButton = new JButton("Enter father's data");
@@ -374,7 +386,8 @@ public class AddPupil extends JFrame implements ActionListener {
 
     private static void setFontForComponents(Container container, Font font) {
         for (Component component : container.getComponents()) {
-            if (component instanceof JLabel || component instanceof JTextField || component instanceof JButton) {
+            if (component instanceof JLabel || component instanceof JTextField || component instanceof JButton
+                            || component instanceof JCheckBox || component instanceof JComboBox) {
                 component.setFont(font);
             }
             if (component instanceof Container) {
@@ -407,7 +420,10 @@ public class AddPupil extends JFrame implements ActionListener {
         }
         if (e.getSource() == addFirstParentButton) {
             try {
-                new AddFirstParent(this, countryField.getText(), provinceField.getText(), townField.getText(),
+                new AddParent(this, pupil.getParent1(),
+                        countryField.getText(),
+                        provinceField.getText(),
+                        townField.getText(),
                         streetField.getText(),
                         houseField.getText().trim(),
                         localField.getText().trim(),

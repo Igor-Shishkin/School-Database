@@ -32,11 +32,11 @@ public class MainWindow extends JFrame implements ActionListener {
     JPanel downPanel;
     WriteReadDataToFile writeReadDataToFile;
     MyMenuBar myMenuBar;
-    ColorsSets colorsSets = new ColorsSets();
 
     MainWindow() throws IOException, FontFormatException {
-        myMenuBar = new MyMenuBar();
+        setColorsSet();
         setActualSetOfColors(ColorsSets.SET_OF_COLORS_SOFT_ROSE);
+        myMenuBar = new MyMenuBar(this, currentStatusField);
 
 
         border = BorderFactory.createSoftBevelBorder(SoftBevelBorder.RAISED, ColorsSets.ACTUAL_SET_OF_COLORS.get(0),
@@ -51,7 +51,7 @@ public class MainWindow extends JFrame implements ActionListener {
         centerPanel = new CentralPanel();
 
         this.setLayout(new BorderLayout());
-        this.setJMenuBar(myMenuBar);
+        this.setJMenuBar(myMenuBar.getMenuBar());
         this.add(centerPanel, BorderLayout.CENTER);
         this.add(downPanel, BorderLayout.SOUTH);
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -62,6 +62,13 @@ public class MainWindow extends JFrame implements ActionListener {
 
     }
 
+    private void setColorsSet() {
+        ColorsSets.SET_OF_COLORS_SOFT_ROSE.add(new Color(0xFFFFFF));
+        ColorsSets.SET_OF_COLORS_SOFT_ROSE.add(new Color(0xE9FAE3));
+        ColorsSets.SET_OF_COLORS_SOFT_ROSE.add(new Color(0xdee8d5));
+        ColorsSets.SET_OF_COLORS_SOFT_ROSE.add(new Color(0xd5c7bc));
+        ColorsSets.SET_OF_COLORS_SOFT_ROSE.add(new Color(0xac92a6));
+    }
 
 
     @Override
@@ -72,7 +79,7 @@ public class MainWindow extends JFrame implements ActionListener {
     void setTitleForFrame(String text) {
         this.setTitle(text);
     }
-    static void setTextForStatusPanel (String text) {
+    public void setTextForStatusPanel (String text) {
         currentStatusField.setText(text);
     }
 //    public void setFonts (Component component, Font font) {
@@ -107,10 +114,11 @@ public class MainWindow extends JFrame implements ActionListener {
         currentStatusField.setFont(remRegular);
     }
     public void setActualSetOfColors(ArrayList<Color> listOfColors) {
-        for (int i = 0; i < listOfColors.size(); i++) {
-            ColorsSets.ACTUAL_SET_OF_COLORS.set(i, listOfColors.get(i));
+        for (int i = 0; i < 5; i++) {
+            ColorsSets.ACTUAL_SET_OF_COLORS.add(i, listOfColors.get(i));
         }
     }
+
 
 }
 
