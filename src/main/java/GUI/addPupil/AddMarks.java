@@ -31,22 +31,44 @@ public class AddMarks extends JDialog implements ActionListener {
     Font font, fontForAverage;
     JButton addButton, cancelButton;
 
-    AddMarks(JFrame parentFrame, Marks marks, Boolean awardBar, Boolean promotionToNextGrade, int grade) throws IOException {
+    AddMarks(JFrame parentFrame, Marks marks, Boolean award, Boolean promotion, int grade) throws IOException {
         super(parentFrame, "Marks", true);
         GeneratePupilData generate = new GeneratePupilData();
         marks = generate.generateMarks456();
         this.marks = marks;
-        this.awardBar = awardBar;
-        this.promotionToNextGrade = promotionToNextGrade;
         this.grade = grade;
+        this.promotionToNextGrade = marks.getPromotion(grade);
+        this.awardBar = marks.isAwardBar(promotionToNextGrade, grade);
+        this.setLayout(new BorderLayout());
 
         font = ConstantsOfStyle.THE_MAIN_FONT.deriveFont(Font.PLAIN, 19);
         fontForAverage = ConstantsOfStyle.THE_MAIN_FONT.deriveFont(Font.BOLD, 20);
+
         setWindowCloseListener();
-        this.setLayout(new BorderLayout());
+        setPanels();
+        setButtons();
+        setEnabledForYearMarks();
 
 
+        this.add(addButton, BorderLayout.PAGE_START);
+        this.add(centralPanel, BorderLayout.CENTER);
+        this.add(cancelButton, BorderLayout.AFTER_LAST_LINE);
+
+        setFontForComponents(this, font);
+        setHorizontalAlignment(this);
+        promotionLabel.setHorizontalAlignment(SwingConstants.CENTER);
+
+        this.setResizable(false);
+        this.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
+        this.pack();
+        this.setLocationRelativeTo(null);
+        this.setTitle("Enter marks");
+//        this.setVisible(true);
+    }
+
+    private void setPanels() {
         promotionLayeredPane = new JLayeredPane();
+        promotionLayeredPane.setBorder(BorderFactory.createLoweredBevelBorder());
         flagLabel = new JLabel();
         try {
             BufferedImage flagImage = ImageIO.read
@@ -56,7 +78,7 @@ public class AddMarks extends JDialog implements ActionListener {
         } catch (Exception e) {
             e.printStackTrace();
         };
-        flagLabel.setBounds(0,0,400,50);
+        flagLabel.setBounds(0,0,500,50);
         flagLabel.setVisible(awardBar);
         promotionLayeredPane.add(flagLabel);
         promotionLabel = new JLabel("<html>The pupil has been promoted" +
@@ -81,36 +103,18 @@ public class AddMarks extends JDialog implements ActionListener {
         centralPanel.add(panelForLabels, BorderLayout.WEST);
         centralPanel.add(panelForComboBox, BorderLayout.EAST);
         centralPanel.add(promotionLayeredPane, BorderLayout.SOUTH);
+    }
 
-
+    private void setButtons() {
         addButton = new JButton("Done!");
         cancelButton = new JButton("Cancel");
         addButton.setPreferredSize(new Dimension(10, 30));
-        cancelButton.setPreferredSize(new Dimension(10, 30));
+        cancelButton.setPreferredSize(new Dimension(10, 40));
+        cancelButton.setBorder(BorderFactory.createLineBorder(this.getBackground(),10));
         cancelButton.addActionListener(this);
         addButton.addActionListener(this);
-
-        setEnabledForYearMarks();
-
-
-//        this.add(panelForComboBox, BorderLayout.EAST);
-//        this.add(panelForLabels, BorderLayout.WEST);
-        this.add(addButton, BorderLayout.PAGE_START);
-        this.add(centralPanel, BorderLayout.CENTER);
-//        this.add(promotionPanel, BorderLayout.AFTER_LAST_LINE);
-        this.add(cancelButton, BorderLayout.AFTER_LAST_LINE);
-        setFontForComponents(this, font);
-        setHorizontalAlignment(this);
-        promotionLabel.setHorizontalAlignment(SwingConstants.CENTER);
-
-
-//        this.setResizable(false);
-        this.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
-        this.pack();
-        this.setLocationRelativeTo(null);
-        this.setTitle("Enter marks");
-//        this.setVisible(true);
     }
+
     public Marks showDialogAndGetInput() {
         this.setVisible(true);
         return marks;
