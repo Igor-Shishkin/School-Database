@@ -7,7 +7,7 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-public class IsMarkEnteredListener implements ActionListener {
+public class MarkComboBoxListener implements ActionListener {
     JComboBox[] comboBox;
     JLabel[] averageLabel;
     JLabel flagLabel;
@@ -16,8 +16,8 @@ public class IsMarkEnteredListener implements ActionListener {
     Color backgroundColor;
 
 
-    public IsMarkEnteredListener(JComboBox[] comboBox, int i, int quantity, JLabel[] averageLabel,
-                                    Color backgroundColor, JLayeredPane promotionPane, JLabel flagLabel) {
+    public MarkComboBoxListener(JComboBox[] comboBox, int i, int quantity, JLabel[] averageLabel,
+                                Color backgroundColor, JLayeredPane promotionPane, JLabel flagLabel) {
         this.comboBox = comboBox;
         this.i = i;
         this.quantity = quantity;
@@ -85,11 +85,13 @@ public class IsMarkEnteredListener implements ActionListener {
 
         }
         isAllMarksInColumn = true;
-        if (i%4==3) {
+
             promotionPane.setVisible(promotion);
-            flagLabel.setVisible(sum/quantityEntered>4.65
-                    && averageLabel[3].getBackground()==ConstantsOfStyle.COLOR_FOR_RIGHT_FORMAT
-                    && comboBox[quantity-1].getSelectedIndex()>4);
-        }
+            if (promotion) {
+                flagLabel.setVisible(sum / quantityEntered > 4.65
+                        && averageLabel[3].getBackground() == ConstantsOfStyle.COLOR_FOR_RIGHT_FORMAT
+                        && comboBox[quantity - 1].getSelectedIndex() > 4);
+            }
+
     }
 }

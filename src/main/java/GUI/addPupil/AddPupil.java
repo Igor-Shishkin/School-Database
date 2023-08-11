@@ -13,7 +13,6 @@ import java.util.Objects;
 public class AddPupil extends JFrame implements ActionListener {
     Boolean NEW_PUPIL = false;
     Parent parent1 = null, parent2 = null;
-    String achievement = "assax";
     boolean awardBar, promotionToNextGrade;
     Marks marks;
     JLabel nameLabel, surnameLabel, secondNameLabel, peselLabel, idLabel, genderLabel, dateOfBirth, yearLabel, monthLabel, dayLabel,
@@ -36,6 +35,14 @@ public class AddPupil extends JFrame implements ActionListener {
             pupil.setId(PupilsDataList.getMinPossibleID());
             NEW_PUPIL = true;
         }
+
+
+
+        GeneratePupilData generatePupilData = new GeneratePupilData();
+        pupil = generatePupilData.generatePupil();
+
+
+
 
         this.setLayout(new GridBagLayout());
         this.setFont(new Font(null, Font.BOLD, 20));
@@ -115,6 +122,9 @@ public class AddPupil extends JFrame implements ActionListener {
         localField = new JTextField(13);
         postCodeField = new JTextField(13);
 
+        nameField.setText((pupil.getName()==null)?"": pupil.getName());
+        secondNameField.setText((pupil.getSecondName()==null)?"": pupil.getSecondName());
+        surnameField.setText((pupil.getSurname()==null)?"": pupil.getSurname());
         peselField.setText((pupil.getPesel()==null)?"":pupil.getPesel());
         idField.setText(Integer.toString(pupil.getId()));
         yearField.setText((pupil.getDateOfBirth()==null)?"":Integer.toString(pupil.getDateOfBirth().getYear()));
@@ -131,6 +141,11 @@ public class AddPupil extends JFrame implements ActionListener {
         genderComboBox = new JComboBox<>(new String[]{"", "Male", "Female"});
         gradeComboBox = new JComboBox<>(new Integer[]{null, 0, 1, 2, 3, 4, 5, 6, 7, 8});
         gradeComboBox.addActionListener(this);
+
+        gradeComboBox.setSelectedIndex(pupil.getGrade()+1);
+        genderComboBox.setSelectedIndex((pupil.getGender()=='M')?1:(pupil.getGender()=='F')?2:0);
+        System.out.println(pupil.getGrade());
+        System.out.println(pupil.getGender());
 
         if (NEW_PUPIL) {
             nameField.setBackground(ConstantsOfStyle.COLOR_FOR_WRONG_FORMAT);
@@ -157,6 +172,7 @@ public class AddPupil extends JFrame implements ActionListener {
         achievementButton.addActionListener(this);
         addFirstParentButton.setBackground(ConstantsOfStyle.COLOR_FOR_WRONG_FORMAT);
         markButton.addActionListener(this);
+        if(pupil.getGrade()<4){markButton.setEnabled(false);}
 
 
         GridBagConstraints c = new GridBagConstraints();
@@ -375,15 +391,16 @@ public class AddPupil extends JFrame implements ActionListener {
             System.out.println(pupil.getAchievement());
         }
         if (e.getSource() == markButton) {
-            GeneratePupilData generator = new GeneratePupilData();
             AddMarks addMarks = null;
             try {
                 addMarks = new AddMarks(this, pupil.getMarks(), pupil.isAwardBar(),
-                        pupil.isPromotionToNextGrade(), 6);
+                        pupil.isPromotionToNextGrade(), pupil.getGrade());
             } catch (IOException ex) {
                 throw new RuntimeException(ex);
             }
-            System.out.println(addMarks.showDialogAndGetInput());
+            pupil.setMarks(addMarks.showDialogAndGetInput());
+            pupil.setPromotionToNextGrade(pupil.getMarks().getPromotion(pupil.getGrade()));
+            pupil.setAwardBar(pupil.getMarks().isAwardBar(pupil.isPromotionToNextGrade(), pupil.getGrade()));
         }
         if (e.getSource() == cancelButton) {
             System.exit(1);
@@ -416,7 +433,7 @@ public class AddPupil extends JFrame implements ActionListener {
                                     postCodeField.getText().trim()), peselField.getText().trim(),
                                     Integer.parseInt(idField.getText().trim()),
                                     Integer.parseInt((String) Objects.requireNonNull(gradeComboBox.getSelectedItem())),
-                                    parent1, parent2, achievement, marks, awardBar, promotionToNextGrade))) {
+                                    parent1, parent2, pupil.getAchievement(), marks, awardBar, promotionToNextGrade))) {
                         JOptionPane.showMessageDialog(null, "Pupil is added to database :)",
                                 "Success!", JOptionPane.PLAIN_MESSAGE);
                         dispose();

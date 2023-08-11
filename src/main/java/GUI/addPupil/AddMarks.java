@@ -1,6 +1,6 @@
 package GUI.addPupil;
 
-import GUI.listeners.IsMarkEnteredListener;
+import GUI.listeners.MarkComboBoxListener;
 import GUI.styleStorage.ConstantsOfStyle;
 import database.GeneratePupilData;
 import database.Marks;
@@ -31,15 +31,17 @@ public class AddMarks extends JDialog implements ActionListener {
     Font font, fontForAverage;
     JButton addButton, cancelButton;
 
-    AddMarks(JFrame parentFrame, Marks marks, Boolean award, Boolean promotion, int grade) throws IOException {
+    AddMarks(JFrame parentFrame, Marks marks, Boolean awardBar, Boolean promotion, int grade) throws IOException {
         super(parentFrame, "Marks", true);
-        GeneratePupilData generate = new GeneratePupilData();
-        marks = generate.generateMarks456();
         this.marks = marks;
         this.grade = grade;
-        this.promotionToNextGrade = marks.getPromotion(grade);
-        this.awardBar = marks.isAwardBar(promotionToNextGrade, grade);
+        this.promotionToNextGrade = promotion;
+        this.awardBar = awardBar;
         this.setLayout(new BorderLayout());
+
+        if (marks==null) {
+            marks = new Marks();
+        }
 
         font = ConstantsOfStyle.THE_MAIN_FONT.deriveFont(Font.PLAIN, 19);
         fontForAverage = ConstantsOfStyle.THE_MAIN_FONT.deriveFont(Font.BOLD, 20);
@@ -109,7 +111,7 @@ public class AddMarks extends JDialog implements ActionListener {
         addButton = new JButton("Done!");
         cancelButton = new JButton("Cancel");
         addButton.setPreferredSize(new Dimension(10, 30));
-        cancelButton.setPreferredSize(new Dimension(10, 40));
+        cancelButton.setPreferredSize(new Dimension(10, 50));
         cancelButton.setBorder(BorderFactory.createLineBorder(this.getBackground(),10));
         cancelButton.addActionListener(this);
         addButton.addActionListener(this);
@@ -192,7 +194,7 @@ public class AddMarks extends JDialog implements ActionListener {
 
     private void setActionListenerForBackGroundOfCombobox() {
         for (int i = 0; i < QUANTITY_OF_MARK_COMBOBOX; i++) {
-            markComboBox[i].addActionListener(new IsMarkEnteredListener(markComboBox, i, QUANTITY_OF_MARK_COMBOBOX,
+            markComboBox[i].addActionListener(new MarkComboBoxListener(markComboBox, i, QUANTITY_OF_MARK_COMBOBOX,
                     averageScoreLabel, this.getBackground(), promotionLayeredPane, flagLabel));
         }
     }
