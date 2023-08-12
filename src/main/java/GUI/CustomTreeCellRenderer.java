@@ -1,6 +1,7 @@
 package GUI;
 
 import GUI.styleStorage.ColorsSets;
+import GUI.styleStorage.ConstantsOfStyle;
 
 import javax.swing.*;
 import javax.swing.tree.DefaultMutableTreeNode;
@@ -22,8 +23,9 @@ public class CustomTreeCellRenderer extends DefaultTreeCellRenderer {
 
         ((JComponent) component).setOpaque(true);
 
-        this.setTextSelectionColor(Color.BLUE);
-        this.setBackgroundSelectionColor(Color.YELLOW);
+        this.setTextSelectionColor(new Color(0x011DD3));
+//        this.setBorderSelectionColor(Color.blue);
+//        this.setBackgroundSelectionColor(ColorsSets.ACTUAL_SET_OF_COLORS.get(1));
         this.setBackgroundNonSelectionColor(ColorsSets.ACTUAL_SET_OF_COLORS.get(2));
 
         return component;

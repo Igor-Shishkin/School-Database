@@ -384,7 +384,7 @@ public class AddPupil extends JFrame implements ActionListener {
         this.add(cancelButton, c);
     }
 
-    private static void setFontForComponents(Container container, Font font) {
+    private void setFontForComponents(Container container, Font font) {
         for (Component component : container.getComponents()) {
             if (component instanceof JLabel || component instanceof JTextField || component instanceof JButton
                             || component instanceof JCheckBox || component instanceof JComboBox) {

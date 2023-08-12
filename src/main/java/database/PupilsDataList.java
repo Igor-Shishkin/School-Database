@@ -2,6 +2,7 @@ package database;
 
 import com.sun.nio.sctp.MessageInfo;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.Objects;
@@ -76,7 +77,7 @@ public class PupilsDataList {
         if (p.getParent2() != null) {
             if (p.getSecondName() == null) {
                 return String.format("<html>%s %s<br>" +
-                                "Date of birth: %d.%d.%d  <br>" +
+                                "Date of birth: %02d.%02d.%d  <br>" +
                                 "Grade: %d<br>" +
                                 "Parents:<br>" +
                                 "    %s %s. <br>    Telephone: %s<br>eMail: %s <br>" +
@@ -91,7 +92,7 @@ public class PupilsDataList {
                 );
             }
             return String.format("<html>%s %s %s<br>" +
-                            "Date of birth: %d.%d.%d  <br>" +
+                            "Date of birth: %02d.%02d.%d  <br>" +
                             "Grade: %d<br>" +
                             "Parents:<br>" +
                             "\t%s %s. <br>Telephone: %s<br>eMail: %s <br>" +
@@ -107,7 +108,7 @@ public class PupilsDataList {
         }
         if (p.getSecondName() == null) {
             return String.format("<html>%s %s<br>" +
-                            "Date of birth: %d.%d.%d  <br>" +
+                            "Date of birth: %02d.%02d.%d  <br>" +
                             "Grade: %d<br>" +
                             "Parents:<br>" +
                             "    %s %s. <br>    Telephone: %s<br>eMail: %s <br>",
@@ -119,7 +120,7 @@ public class PupilsDataList {
             );
         }
         return String.format("<html>%s %s %s<br>" +
-                        "Date of birth: %d.%d.%d  <br>" +
+                        "Date of birth: %02d.%02d.%d  <br>" +
                         "Grade: %d<br>" +
                         "Parents:<br>" +
                         "\t%s %s. <br>Telephone: %s<br>eMail: %s <br>",
@@ -146,6 +147,19 @@ public class PupilsDataList {
             }
         }
         return 1;
+    }
+    public static ArrayList<Pupil> getPupilsWithBirthdayInThisMonth (int grade) {
+        if (grade==-1) {
+            return (ArrayList<Pupil>) pupilsDataList.stream()
+                    .filter(pupil -> pupil.getDateOfBirth().getMonth().equals(LocalDate.now().getMonth()))
+                    .collect(Collectors.toList());
+        } else {
+            return (ArrayList<Pupil>) pupilsDataList.stream()
+                    .filter(pupil -> pupil.getGrade() == grade)
+                    .filter(pupil -> pupil.getDateOfBirth().getMonth().equals(LocalDate.now().getMonth()) )
+                    .collect(Collectors.toList());
+        }
+
     }
 }
 

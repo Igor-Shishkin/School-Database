@@ -4,6 +4,7 @@ import GUI.listeners.GradesTreeNodeMouseListener;
 import GUI.listeners.HandCursorForMouseMotionAdapter;
 import GUI.listeners.PupilsTreeNodeMouseListener;
 import GUI.styleStorage.ColorsSets;
+import GUI.styleStorage.ConstantsOfStyle;
 import database.Pupil;
 import database.PupilsDataList;
 
@@ -12,8 +13,8 @@ import javax.swing.border.Border;
 import javax.swing.event.TreeSelectionEvent;
 import javax.swing.event.TreeSelectionListener;
 import javax.swing.tree.DefaultMutableTreeNode;
-import javax.swing.tree.DefaultTreeCellRenderer;
 import javax.swing.tree.DefaultTreeModel;
+import javax.swing.tree.TreePath;
 import javax.swing.tree.TreeSelectionModel;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -26,20 +27,21 @@ import java.util.ArrayList;
 import java.util.Objects;
 
 public class CentralPanel extends JPanel implements ActionListener, TreeSelectionListener {
-    JPanel gradesPanel, pupilsPanel, informationPanel, rightPanel;
+    JPanel gradesPanel, pupilsPanel, informationPanel, panelForFilterRadioButtons;
     Border border;
-    GridBagConstraints constraints;
     DefaultMutableTreeNode rootForGradePanel, rootForPupilsTree;
     DefaultMutableTreeNode gradeZero, gradeFirst, gradeSecond, gradeThird, gradeFourth, gradeFifth, gradeSixth,
                  gradeSeventh, gradeEighth;
     ArrayList<DefaultMutableTreeNode> nodesForPupilsPanel;
-    ArrayList<Pupil> pupilsChosenGrades;
     JTree treeForGradePanel, treeForPupilsPanel;
     Font font;
     DefaultTreeModel pupilsTreeModel;
     JLabel informationLabelForPupilPanel, pupilInformationLabel;
     Font remRegular;
     JTextField  currentStatusField;
+    JRadioButton getAllPupilsRadioButton, getPupilsWithBirthdayInThisMonthRadioButton, getPupilsWithAwardBarRadioButton,
+            getNoPromotedPupilsAwardBarRadioButton, getPupilsWithAchievement;
+
     public CentralPanel(JTextField  currentStatusField) throws IOException, FontFormatException {
         this.currentStatusField = currentStatusField;
         this.setLayout(new BorderLayout());
@@ -77,12 +79,11 @@ public class CentralPanel extends JPanel implements ActionListener, TreeSelectio
     }
 
     private void setComponentsForGradePanel() {
-        gradesPanel = new JPanel(new BorderLayout());
+        gradesPanel = new JPanel(new GridBagLayout());
         gradesPanel.setBackground(ColorsSets.ACTUAL_SET_OF_COLORS.get(2));
         gradesPanel.setBorder(border);
         setTreeNode();
         gradesPanel.setToolTipText("Grades");
-//        gradesPanel.add(treeForGradePanel, BorderLayout.NORTH);
     }
 
     private void setComponentsForInformationPanel() {
@@ -90,13 +91,10 @@ public class CentralPanel extends JPanel implements ActionListener, TreeSelectio
         pupilInformationLabel.setFont(font);
         pupilInformationLabel.setText("No student selected");
         pupilInformationLabel.setBackground(ColorsSets.ACTUAL_SET_OF_COLORS.get(2));
-//        pupilInformationLabel.setPreferredSize(new Dimension (10, 200));
         pupilsPanel.setFont(font);
+
         informationPanel = new JPanel();
-//        scrollPaneForInformationLabel = new JScrollPane(pupilInformationLabel);
-//        scrollPaneForInformationLabel.setBackground(MainWindow.actualSetColor.get(2));
         informationPanel.setLayout(new BorderLayout());
-//        scrollPaneForInformationLabel.setPreferredSize(new Dimension (400, 300));
         informationPanel.add(pupilInformationLabel, BorderLayout.NORTH);
         informationPanel.setBackground(ColorsSets.ACTUAL_SET_OF_COLORS.get(2));
         informationPanel.setBorder(border);
@@ -119,7 +117,6 @@ public class CentralPanel extends JPanel implements ActionListener, TreeSelectio
         treeForPupilsPanel.setRootVisible(false);
         treeForPupilsPanel.setBackground(ColorsSets.ACTUAL_SET_OF_COLORS.get(2));
 
-//        pupilsPanel.add(treeForPupilsPanel);
         JScrollPane scrollPaneForPupilTree = new JScrollPane(treeForPupilsPanel);
         pupilsPanel.add(scrollPaneForPupilTree);
     }
@@ -152,39 +149,82 @@ public class CentralPanel extends JPanel implements ActionListener, TreeSelectio
         treeForGradePanel.addTreeSelectionListener(this);
 
         treeForGradePanel.putClientProperty("JTree.lineStyle", "Angled");
-        treeForGradePanel.setFont(new Font("MV Boli",Font.BOLD,16));
+        treeForGradePanel.setFont(new Font("MV Boli",Font.BOLD,20));
         treeForGradePanel.setBackground(ColorsSets.ACTUAL_SET_OF_COLORS.get(2));
-//        treeForGradePanel.setCellRenderer(new CustomTreeCellRenderer());
         treeForGradePanel.setBackground(ColorsSets.ACTUAL_SET_OF_COLORS.get(2));
         treeForGradePanel.setCellRenderer(new CustomTreeCellRenderer());
-//        treeForGradePanel.addMouseListener(new GradesTreeNodeMouseListener(treeForGradePanel, rootForPupilsTree,
-//                 nodesForPupilsPanel, pupilsTreeModel, informationLabelForPupilPanel, pupilsPanel));
+
         treeForGradePanel.addMouseMotionListener(new HandCursorForMouseMotionAdapter(treeForGradePanel));
+//        JScrollPane paneForGradesTree = new JScrollPane(treeForGradePanel);
 
-//        DefaultTreeCellRenderer renderer =
-//                (DefaultTreeCellRenderer) treeForGradePanel.getCellRenderer();
-//        renderer.setTextSelectionColor(Color.white);
-//        renderer.setBackgroundSelectionColor(Color.blue);
-//        renderer.setBorderSelectionColor(Color.red);
+        GridBagConstraints c = new GridBagConstraints();
+        c.fill = GridBagConstraints.HORIZONTAL;
 
-        JScrollPane paneForGradesTree = new JScrollPane(treeForGradePanel);
-        gradesPanel.add(paneForGradesTree);
+
+
+
+
+
+        panelForFilterRadioButtons = new JPanel(new GridLayout(5,1,4,4));
+        panelForFilterRadioButtons.setBorder(BorderFactory.createTitledBorder("Filters"));
+
+        setComponentsForFilterPanel();
+
+
+
+
+        setStyleForComponentsFilterPane
+                (panelForFilterRadioButtons, ConstantsOfStyle.THE_MAIN_FONT.deriveFont(Font.PLAIN, 15));
+        panelForFilterRadioButtons.setBackground(ColorsSets.ACTUAL_SET_OF_COLORS.get(2));
+
+        c.gridx = 0;
+        c.gridy = 0;
+        c.gridheight = 3;
+        gradesPanel.add(treeForGradePanel, c);
+
+        c.insets = new Insets(15,3,20,3);
+        c.gridx = 0;
+        c.gridy = 3;
+        c.gridheight = 1;
+        gradesPanel.add(new JSeparator(), c);
+
+        c.insets = new Insets(2,5,2,3);
+        c.gridx = 0;
+        c.gridy = 4;
+        gradesPanel.add(panelForFilterRadioButtons, c);
+
+
     }
 
-//
+    private void setComponentsForFilterPanel() {
+        getAllPupilsRadioButton = new JRadioButton("All pupils");
+        getPupilsWithBirthdayInThisMonthRadioButton = new JRadioButton("With birthday in this month");
+        getPupilsWithAwardBarRadioButton = new JRadioButton("With award bar");
+        getNoPromotedPupilsAwardBarRadioButton = new JRadioButton("Not promoted");
+        getPupilsWithAchievement = new JRadioButton("With achievement");
 
-//        public void setBackground (DefaultMutableTreeNode node, Color color) {
-//        node.setParent(color);
-//        if (node instanceof Container) {
-//            for (Component child : ((Container) component).getComponents()) {
-//                setParent(child, color);
-//            }
-//        }
-//    }
+        ButtonGroup radioFilterGroup = new ButtonGroup();
+        radioFilterGroup.add(getAllPupilsRadioButton);
+        radioFilterGroup.add(getPupilsWithBirthdayInThisMonthRadioButton);
+        radioFilterGroup.add(getPupilsWithAwardBarRadioButton);
+        radioFilterGroup.add(getNoPromotedPupilsAwardBarRadioButton);
+        radioFilterGroup.add(getPupilsWithAchievement);
+
+        panelForFilterRadioButtons.add(getAllPupilsRadioButton);
+        panelForFilterRadioButtons.add(getPupilsWithBirthdayInThisMonthRadioButton);
+        panelForFilterRadioButtons.add(getPupilsWithAwardBarRadioButton);
+        panelForFilterRadioButtons.add(getNoPromotedPupilsAwardBarRadioButton);
+        panelForFilterRadioButtons.add(getPupilsWithAchievement);
+
+        getAllPupilsRadioButton.addActionListener(this);
+        getPupilsWithBirthdayInThisMonthRadioButton.addActionListener(this);
+        getPupilsWithAwardBarRadioButton.addActionListener(this);
+        getNoPromotedPupilsAwardBarRadioButton.addActionListener(this);
+        getPupilsWithAchievement.addActionListener(this);
+    }
+
 
     private void setPanels() {
-        rightPanel = new JPanel(new BorderLayout());
-
         gradesPanel.setPreferredSize(new Dimension(250,10));
         pupilsPanel.setPreferredSize(new Dimension(350, 10));
         informationPanel.setPreferredSize(new Dimension(385,10));
@@ -197,7 +237,47 @@ public class CentralPanel extends JPanel implements ActionListener, TreeSelectio
 
     @Override
     public void actionPerformed(ActionEvent e) {
+        if (PupilsDataList.getPupilsDataList()!=null) {
+            if (e.getSource() == getAllPupilsRadioButton) {
+                int grade = getSelectedGrade(treeForGradePanel);
+                ArrayList<Pupil> list;
+                if (grade<0) {
+                    list = PupilsDataList.getListOfAllPupils();
+                } else {
+                    list = PupilsDataList.getListOfPupilsOfCertainGrade(grade);
+                }
+//                TreePath path = treeForGradePanel.getSelectionPath();
+//                assert path != null;
+//                DefaultMutableTreeNode node = (DefaultMutableTreeNode) path.getLastPathComponent();
+                buildPupilsTree(list);
+            }
+            if (e.getSource()==getPupilsWithBirthdayInThisMonthRadioButton) {
+                int grade = getSelectedGrade(treeForGradePanel);
+                ArrayList<Pupil> list = PupilsDataList.getPupilsWithBirthdayInThisMonth(grade);
 
+//                TreePath path = treeForGradePanel.getSelectionPath();
+//                assert path != null;
+//                DefaultMutableTreeNode node = (DefaultMutableTreeNode) path.getLastPathComponent();
+                buildPupilsTree(list);
+            }
+        }
+
+    }
+    public void buildPupilsTree(ArrayList<Pupil> list) {
+        rootForPupilsTree.removeAllChildren();
+        if (list.size() != 0) {
+            for (int i = 0; i < list.size(); i++) {
+                String nameNode = String.format("%d. %s", i + 1, PupilsDataList.getIdNamesSurname(list.get(i)));
+                nodesForPupilsPanel.add(i, new DefaultMutableTreeNode(nameNode));
+                rootForPupilsTree.add(nodesForPupilsPanel.get(i));
+            }
+//            informationLabelForPupilPanel.setText(node.toString().concat(":"));
+        } else {
+//            String textForLabel = String.format("<html>%s<br>there are no pupils in this class</html>", node.toString());
+//            informationLabelForPupilPanel.setText(textForLabel);
+        }
+        pupilsTreeModel.nodeStructureChanged(rootForPupilsTree);
+        pupilsPanel.repaint();
     }
 
     @Override
@@ -205,23 +285,6 @@ public class CentralPanel extends JPanel implements ActionListener, TreeSelectio
 
     }
 
-//    public void showPupilsOfCertainGrade (ArrayList<Pupil> list, DefaultMutableTreeNode node) {
-//        rootForPupilsTree.removeAllChildren();
-//        if (list.size()!=0) {
-//            for (int i = 0; i < list.size(); i++) {
-//                String nameNode = String.format("%d. %s", i+1, PupilsDataList.getIdNamesSurname(list.get(i)));
-//                nodesForPupilsPanel[i] = new DefaultMutableTreeNode
-//                        (nameNode);
-//                rootForPupilsTree.add(nodesForPupilsPanel[i]);
-//            }
-//            informationLabelForPupilPanel.setText(node.toString().concat(":"));
-//        } else {
-//            String textForLabel = String.format("<html>%s<br>there are no pupils in this class</html>", node.toString());
-//            informationLabelForPupilPanel.setText(textForLabel);
-//        }
-//        pupilsTreeModel.nodeStructureChanged(rootForPupilsTree);
-//        pupilsPanel.repaint();
-//    }
     public void showPupilInformation (int id) {
         pupilInformationLabel.setText(PupilsDataList.getPupilInformation
                 (Objects.requireNonNull(PupilsDataList.getPupilWithCertainID(id))));
@@ -232,5 +295,32 @@ public class CentralPanel extends JPanel implements ActionListener, TreeSelectio
         informationPanel.repaint();
 
 
+    }
+
+    private void setStyleForComponentsFilterPane(Container container, Font font) {
+        for (Component component : container.getComponents()) {
+            if (component instanceof JRadioButton) {
+                component.setFont(font);
+                component.setBackground(ColorsSets.ACTUAL_SET_OF_COLORS.get(2));
+            }
+        }
+    }
+
+    private int getSelectedGrade(JTree tree) {
+        TreePath path = tree.getSelectionPath();
+        if (path != null) {
+            DefaultMutableTreeNode node = (DefaultMutableTreeNode) path.getLastPathComponent();
+
+            return (Objects.equals(node.toString(), "Zero class")) ? 0 :
+                    (Objects.equals(node.toString(), "First class")) ? 1 :
+                            (Objects.equals(node.toString(), "Second class")) ? 2 :
+                                    (Objects.equals(node.toString(), "Third class")) ? 3 :
+                                            (Objects.equals(node.toString(), "Fourth class")) ? 4 :
+                                                    (Objects.equals(node.toString(), "Fifth class")) ? 5 :
+                                                            (Objects.equals(node.toString(), "Sixth class")) ? 6 :
+                                                                    (Objects.equals(node.toString(), "Seventh class")) ? 7 :
+                                                                            (Objects.equals(node.toString(), "Eighth class")) ? 8 : -1;
+        }
+        return -1;
     }
 }

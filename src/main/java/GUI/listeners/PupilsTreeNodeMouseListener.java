@@ -43,11 +43,8 @@ public class PupilsTreeNodeMouseListener extends MouseAdapter {
             System.out.println(PupilsDataList.getPupilInformation
                     (Objects.requireNonNull(PupilsDataList.getPupilWithCertainID(id))));
             pupilInformationLabel.repaint();
-//        scrollPaneForInformationLabel.repaint();
             informationPanel.repaint();
-//            CentralPanel.showPupilInformation(id);
 
-//            CentralPanel.showPupilsOfCertainGrade(PupilsDataList.getListOfPupilsOfCertainGrade(grade), node);
 
         }
     }

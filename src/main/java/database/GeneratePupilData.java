@@ -8,7 +8,7 @@ public class GeneratePupilData {
             "Wiktor", "Leon", "Piotr", "Mark", "Ignacy", "Franek", "Kosma"};
     private final String[] FEMALE_NAMES = new String[]{"Zuzanna", "Julia", "Maja", "Zofia", "Hanna", "Lena", "Alicja",
             "Maria", "Amelia", "Oliwia", "Anna", "Sofia", "Maria", "Katarzyna", "Małgorzata", "Agnieszka", "Barbara",
-            "Ewa", "Krystyna", "Elżbieta", "Magdalena."};
+            "Ewa", "Krystyna", "Elżbieta", "Magdalena"};
     public final String[] SURNAMES = new String[]{"Nowak", "Wójcik", "Woźniak", "Mazur", "Kowalik", "Ławniczak",
             "Zając", "Wróbiel", "Wieczorek", "Pietrzak", "Wilk",
             "Ratajczak", "Lis", "Kołodziej", "Sobczak", "Szulc", "Mróz", "Duda",
@@ -228,8 +228,8 @@ public class GeneratePupilData {
                 pesel7And8And9thDigits, pesel10thDigit, random.nextInt(10));
 
         Marks marks = (grade>6) ? generateMarks7and8() : (grade>3) ? generateMarks456() : null;
-        boolean promotion = (marks!=null)?marks.getPromotion(grade):false;
-        boolean awardBar = (marks!=null)?marks.isAwardBar(promotion, grade):false;
+        boolean promotion = marks != null && marks.getPromotion(grade);
+        boolean awardBar = marks != null && marks.isAwardBar(promotion, grade);
 
         return new Pupil(name, secondName, surname, gender, year, month, day, address,
                 pesel, Pupil.getIdNumber(), grade, generateParent(surname, parentGender, address),

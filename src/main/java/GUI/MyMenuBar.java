@@ -1,5 +1,6 @@
 package GUI;
 
+import GUI.styleStorage.ConstantsOfStyle;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import database.Pupil;
 import database.PupilsDataList;
@@ -19,54 +20,49 @@ import java.util.Properties;
 
 public class MyMenuBar  implements ActionListener {
     Properties properties;
-    JMenu fileMenu;
-    JMenu styleMenu;
-    JMenu informationMenu;
-    JMenuItem openFileItem;
-    JMenuItem newDatabaseItem;
-    JMenuItem saveFileItem;
-    JMenuItem closeItem;
-    JMenu userMenu;
-    JMenuItem logOutItem;
-    JMenuItem ocean;
-    JMenuItem changeAdmissionItem;
-    JMenuItem informationItem;
-    JMenuItem softRose;
-    JMenuItem aggressive;
-    JMenuItem contrast;
+    JMenu fileMenu, styleMenu, informationMenu, userMenu;
+    JMenuItem openFileItem, newDatabaseItem, saveFileItem, closeItem, logOutItem, ocean, changeAdmissionItem,
+            informationItem, softRose, aggressive, contrast;
     JMenuBar menuBar;
     WriteReadDataToFile writeReadDataToFile;
-    PupilsDataList pupilsDataList = new PupilsDataList();
     JFrame parentFrame;
     JTextField currentStatusField;
-    Main main;
 
     MyMenuBar(JFrame parentFrame, JTextField currentStatusField)  throws IOException {
         this.parentFrame = parentFrame;
         this.currentStatusField = currentStatusField;
 
-        main = new Main();
         menuBar = new JMenuBar();
-
         writeReadDataToFile = new WriteReadDataToFile();
 
-        Path iconsPath = Paths.get("src", "main", "resources", "icons");
-        URL imageURL = MainWindow.class.getResource("/src/main/resources/icons/goals.png");
-        assert imageURL != null;
-        ImageIcon fileIcon = new ImageIcon(iconsPath.resolve("file.png").toString());
-        ImageIcon infoIcon = new ImageIcon(iconsPath.resolve("info.png").toString());
-        ImageIcon userIcon = new ImageIcon(iconsPath.resolve("user.png").toString());
-        ImageIcon styleIcon = new ImageIcon(iconsPath.resolve("style.png").toString());
+        setMenuComponents();
+        setIconsToMenuComponents();
+        addActionListenerToComponents();
+    }
 
+    private void addActionListenerToComponents() {
+        openFileItem.addActionListener(this);
+        newDatabaseItem.addActionListener(this);
+        saveFileItem.addActionListener(this);
+        changeAdmissionItem.addActionListener(this);
+        informationItem.addActionListener(this);
+        logOutItem.addActionListener(this);
+        changeAdmissionItem.addActionListener(this);
+        closeItem.addActionListener(this);
+    }
+
+    private void setIconsToMenuComponents() {
+        fileMenu.setIcon(ConstantsOfStyle.FILE_ICON);
+        informationMenu.setIcon(ConstantsOfStyle.INFO_ICON);
+        styleMenu.setIcon(ConstantsOfStyle.STYLE_ICON);
+        userMenu.setIcon(ConstantsOfStyle.USER_ICON);
+    }
+
+    private void setMenuComponents() {
         fileMenu = new JMenu("File");
         styleMenu = new JMenu("Style");
         informationMenu = new JMenu("Information");
         userMenu = new JMenu("User");
-
-        fileMenu.setIcon(fileIcon);
-        informationMenu.setIcon(infoIcon);
-        styleMenu.setIcon(styleIcon);
-        userMenu.setIcon(userIcon);
 
         newDatabaseItem = new JMenuItem("New");
         openFileItem = new JMenuItem("Open");
@@ -102,17 +98,6 @@ public class MyMenuBar  implements ActionListener {
         styleMenu.setMnemonic(KeyEvent.VK_S);
         userMenu.setMnemonic(KeyEvent.VK_U);
         informationMenu.setMnemonic(KeyEvent.VK_H);
-
-
-        openFileItem.addActionListener(this);
-        newDatabaseItem.addActionListener(this);
-        saveFileItem.addActionListener(this);
-        changeAdmissionItem.addActionListener(this);
-        informationItem.addActionListener(this);
-        logOutItem.addActionListener(this);
-        changeAdmissionItem.addActionListener(this);
-        closeItem.addActionListener(this);
-
     }
 
     @Override

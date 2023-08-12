@@ -41,7 +41,6 @@ public class GradesTreeNodeMouseListener extends MouseAdapter {
         TreePath path = tree.getPathForLocation(e.getX(), e.getY());
         if (path != null) {
             DefaultMutableTreeNode node = (DefaultMutableTreeNode) path.getLastPathComponent();
-//            JOptionPane.showMessageDialog(null, node.getUserObject(), "Test", JOptionPane.INFORMATION_MESSAGE);
 
             int grade = (Objects.equals(node.toString(), "Zero class")) ? 0 :
                     (Objects.equals(node.toString(), "First class")) ? 1 :
