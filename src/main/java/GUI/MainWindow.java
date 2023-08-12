@@ -9,6 +9,8 @@ import javax.swing.border.SoftBevelBorder;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.ComponentAdapter;
+import java.awt.event.ComponentEvent;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Path;
@@ -23,7 +25,7 @@ public class MainWindow extends JFrame implements ActionListener {
 //    static ArrayList<Pupil> listOfPupils;
 
     Properties properties;
-    static JTextField currentStatusField;
+    JTextField currentStatusField;
     Border border;
     JPanel centerPanel;
     JPanel gradesPanel;
@@ -33,10 +35,11 @@ public class MainWindow extends JFrame implements ActionListener {
     WriteReadDataToFile writeReadDataToFile;
     MyMenuBar myMenuBar;
 
+
     MainWindow() throws IOException, FontFormatException {
         setColorsSet();
         setActualSetOfColors(ColorsSets.SET_OF_COLORS_SOFT_ROSE);
-        myMenuBar = new MyMenuBar(this, currentStatusField);
+
 
 
         border = BorderFactory.createSoftBevelBorder(SoftBevelBorder.RAISED, ColorsSets.ACTUAL_SET_OF_COLORS.get(0),
@@ -48,14 +51,16 @@ public class MainWindow extends JFrame implements ActionListener {
         downPanel = new JPanel(new BorderLayout());
         setCurrentStatusPanel();
 
-        centerPanel = new CentralPanel();
+        centerPanel = new CentralPanel(currentStatusField);
+        myMenuBar = new MyMenuBar(this, currentStatusField);
 
+        this.setResizable(false);
         this.setLayout(new BorderLayout());
+        this.setSize(1000, 700);
         this.setJMenuBar(myMenuBar.getMenuBar());
         this.add(centerPanel, BorderLayout.CENTER);
         this.add(downPanel, BorderLayout.SOUTH);
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        this.setSize(1000, 700);
         this.setLocationRelativeTo(null);
         this.setTitle("Nothing loaded");
         this.setVisible(true);

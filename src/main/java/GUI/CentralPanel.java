@@ -1,5 +1,8 @@
 package GUI;
 
+import GUI.listeners.GradesTreeNodeMouseListener;
+import GUI.listeners.HandCursorForMouseMotionAdapter;
+import GUI.listeners.PupilsTreeNodeMouseListener;
 import GUI.styleStorage.ColorsSets;
 import database.Pupil;
 import database.PupilsDataList;
@@ -9,6 +12,7 @@ import javax.swing.border.Border;
 import javax.swing.event.TreeSelectionEvent;
 import javax.swing.event.TreeSelectionListener;
 import javax.swing.tree.DefaultMutableTreeNode;
+import javax.swing.tree.DefaultTreeCellRenderer;
 import javax.swing.tree.DefaultTreeModel;
 import javax.swing.tree.TreeSelectionModel;
 import java.awt.*;
@@ -22,58 +26,66 @@ import java.util.ArrayList;
 import java.util.Objects;
 
 public class CentralPanel extends JPanel implements ActionListener, TreeSelectionListener {
-    JPanel gradesPanel;
-    static JPanel pupilsPanel;
-    static JPanel informationPanel;
+    JPanel gradesPanel, pupilsPanel, informationPanel, rightPanel;
     Border border;
     GridBagConstraints constraints;
-    DefaultMutableTreeNode rootForGradePanel;
-    DefaultMutableTreeNode rootForPupilsPanel;
-    DefaultMutableTreeNode gradeZero;
-    DefaultMutableTreeNode gradeFirst;
-    DefaultMutableTreeNode gradeSecond;
-    DefaultMutableTreeNode gradeThird;
-    DefaultMutableTreeNode gradeFourth;
-    DefaultMutableTreeNode gradeFifth;
-    DefaultMutableTreeNode gradeSixth;
-    DefaultMutableTreeNode gradeSeventh;
-    DefaultMutableTreeNode gradeEighth;
-    static DefaultMutableTreeNode[] nodesForPupilsPanel;
-    static ArrayList<Pupil> pupilsChosenGrades;
-    JTree treeForGradePanel;
-    static JTree treeForPupilsPanel;
+    DefaultMutableTreeNode rootForGradePanel, rootForPupilsTree;
+    DefaultMutableTreeNode gradeZero, gradeFirst, gradeSecond, gradeThird, gradeFourth, gradeFifth, gradeSixth,
+                 gradeSeventh, gradeEighth;
+    ArrayList<DefaultMutableTreeNode> nodesForPupilsPanel;
+    ArrayList<Pupil> pupilsChosenGrades;
+    JTree treeForGradePanel, treeForPupilsPanel;
     Font font;
-    static DefaultMutableTreeNode rootForPupilsTree;
-    static DefaultTreeModel pupilsTreeModel;
-    static JLabel informationLabelForPupilPanel;
-    static JLabel pupilInformationLabel;
+    DefaultTreeModel pupilsTreeModel;
+    JLabel informationLabelForPupilPanel, pupilInformationLabel;
     Font remRegular;
-    static JScrollPane scrollPaneForInformationLabel;
-    static JTextField textField;
-    public CentralPanel() throws IOException, FontFormatException {
-        this.setLayout(new GridBagLayout());
+    JTextField  currentStatusField;
+    public CentralPanel(JTextField  currentStatusField) throws IOException, FontFormatException {
+        this.currentStatusField = currentStatusField;
+        this.setLayout(new BorderLayout());
 //        this.setLayout(new GridBagLayout());
 
         border = BorderFactory.createLoweredBevelBorder();
-//        font = new Font("MV Boli",Font.BOLD,16);
+
         Path workDir = Paths.get("src", "main", "resources");
         File fontFile = new File(workDir.resolve("REM-Regular.ttf").toUri());
         remRegular = Font.createFont(Font.TRUETYPE_FONT, fontFile);
         font = remRegular.deriveFont(Font.PLAIN, 16);
-        nodesForPupilsPanel = new DefaultMutableTreeNode[30];
-        rootForPupilsPanel = new DefaultMutableTreeNode();
+        nodesForPupilsPanel = new ArrayList<>();
 
+
+
+
+        setComponentsForGradePanel();
+        setPupilPanel();
+        setComponentsForInformationPanel();
+
+
+        setListeners();
+
+
+        setPanels();
+        this.setBackground(ColorsSets.ACTUAL_SET_OF_COLORS.get(0));
+    }
+
+    private void setListeners() {
+        treeForGradePanel.addMouseListener(new GradesTreeNodeMouseListener(treeForGradePanel, rootForPupilsTree,
+                nodesForPupilsPanel, pupilsTreeModel, informationLabelForPupilPanel, pupilsPanel));
+        treeForPupilsPanel.addMouseMotionListener(new HandCursorForMouseMotionAdapter(treeForPupilsPanel));
+        treeForPupilsPanel.addMouseListener(new PupilsTreeNodeMouseListener(treeForPupilsPanel, pupilInformationLabel,
+                informationPanel));
+    }
+
+    private void setComponentsForGradePanel() {
         gradesPanel = new JPanel(new BorderLayout());
         gradesPanel.setBackground(ColorsSets.ACTUAL_SET_OF_COLORS.get(2));
         gradesPanel.setBorder(border);
         setTreeNode();
         gradesPanel.setToolTipText("Grades");
 //        gradesPanel.add(treeForGradePanel, BorderLayout.NORTH);
+    }
 
-
-        setPupilPanel();
-
-
+    private void setComponentsForInformationPanel() {
         pupilInformationLabel = new JLabel();
         pupilInformationLabel.setFont(font);
         pupilInformationLabel.setText("No student selected");
@@ -88,10 +100,6 @@ public class CentralPanel extends JPanel implements ActionListener, TreeSelectio
         informationPanel.add(pupilInformationLabel, BorderLayout.NORTH);
         informationPanel.setBackground(ColorsSets.ACTUAL_SET_OF_COLORS.get(2));
         informationPanel.setBorder(border);
-//        informationPanel.setMaximumSize(new Dimension(350, 900));
-
-        setGridBagConstraints();
-        this.setBackground(ColorsSets.ACTUAL_SET_OF_COLORS.get(0));
     }
 
     private void setPupilPanel() {
@@ -110,8 +118,7 @@ public class CentralPanel extends JPanel implements ActionListener, TreeSelectio
         treeForPupilsPanel.setFont(font);
         treeForPupilsPanel.setRootVisible(false);
         treeForPupilsPanel.setBackground(ColorsSets.ACTUAL_SET_OF_COLORS.get(2));
-        treeForPupilsPanel.addMouseMotionListener(new HandCursorForMouseMotionAdapter(treeForPupilsPanel));
-        treeForPupilsPanel.addMouseListener(new PupilsTreeNodeMouseListener(treeForPupilsPanel));
+
 //        pupilsPanel.add(treeForPupilsPanel);
         JScrollPane scrollPaneForPupilTree = new JScrollPane(treeForPupilsPanel);
         pupilsPanel.add(scrollPaneForPupilTree);
@@ -148,9 +155,17 @@ public class CentralPanel extends JPanel implements ActionListener, TreeSelectio
         treeForGradePanel.setFont(new Font("MV Boli",Font.BOLD,16));
         treeForGradePanel.setBackground(ColorsSets.ACTUAL_SET_OF_COLORS.get(2));
 //        treeForGradePanel.setCellRenderer(new CustomTreeCellRenderer());
+        treeForGradePanel.setBackground(ColorsSets.ACTUAL_SET_OF_COLORS.get(2));
         treeForGradePanel.setCellRenderer(new CustomTreeCellRenderer());
-        treeForGradePanel.addMouseListener(new GradesTreeNodeMouseListener(treeForGradePanel));
+//        treeForGradePanel.addMouseListener(new GradesTreeNodeMouseListener(treeForGradePanel, rootForPupilsTree,
+//                 nodesForPupilsPanel, pupilsTreeModel, informationLabelForPupilPanel, pupilsPanel));
         treeForGradePanel.addMouseMotionListener(new HandCursorForMouseMotionAdapter(treeForGradePanel));
+
+//        DefaultTreeCellRenderer renderer =
+//                (DefaultTreeCellRenderer) treeForGradePanel.getCellRenderer();
+//        renderer.setTextSelectionColor(Color.white);
+//        renderer.setBackgroundSelectionColor(Color.blue);
+//        renderer.setBorderSelectionColor(Color.red);
 
         JScrollPane paneForGradesTree = new JScrollPane(treeForGradePanel);
         gradesPanel.add(paneForGradesTree);
@@ -167,27 +182,16 @@ public class CentralPanel extends JPanel implements ActionListener, TreeSelectio
 //        }
 //    }
 
-    private void setGridBagConstraints() {
-        GridBagConstraints constraints = new GridBagConstraints();
-        constraints.fill = GridBagConstraints.BOTH;
+    private void setPanels() {
+        rightPanel = new JPanel(new BorderLayout());
 
-        constraints.weightx = 0.43;
-        constraints.weighty = 0.3;
-        constraints.insets = new Insets(5,3,5,2);
+        gradesPanel.setPreferredSize(new Dimension(250,10));
+        pupilsPanel.setPreferredSize(new Dimension(350, 10));
+        informationPanel.setPreferredSize(new Dimension(385,10));
 
-        constraints.gridx = 0;
-        constraints.gridy = 0;
-        this.add(gradesPanel, constraints);
-
-        constraints.weightx = 0.5;
-        constraints.gridx = 1;
-        constraints.gridy = 0;
-        this.add(pupilsPanel, constraints);
-
-        constraints.weightx = 0.6;
-        constraints.gridx = 2;
-        constraints.gridy = 0;
-        this.add(informationPanel, constraints);
+        this.add(informationPanel, BorderLayout.EAST);
+        this.add(gradesPanel, BorderLayout.WEST);
+        this.add(pupilsPanel, BorderLayout.CENTER);
 
     }
 
@@ -201,24 +205,24 @@ public class CentralPanel extends JPanel implements ActionListener, TreeSelectio
 
     }
 
-    public static void showPupilsOfCertainGrade (ArrayList<Pupil> list, DefaultMutableTreeNode node) {
-        rootForPupilsTree.removeAllChildren();
-        if (list.size()!=0) {
-            for (int i = 0; i < list.size(); i++) {
-                String nameNode = String.format("%d. %s", i+1, PupilsDataList.getIdNamesSurname(list.get(i)));
-                nodesForPupilsPanel[i] = new DefaultMutableTreeNode
-                        (nameNode);
-                rootForPupilsTree.add(nodesForPupilsPanel[i]);
-            }
-            informationLabelForPupilPanel.setText(node.toString().concat(":"));
-        } else {
-            String textForLabel = String.format("<html>%s<br>there are no pupils in this class</html>", node.toString());
-            informationLabelForPupilPanel.setText(textForLabel);
-        }
-        pupilsTreeModel.nodeStructureChanged(rootForPupilsTree);
-        pupilsPanel.repaint();
-    }
-    public static void showPupilInformation (int id) {
+//    public void showPupilsOfCertainGrade (ArrayList<Pupil> list, DefaultMutableTreeNode node) {
+//        rootForPupilsTree.removeAllChildren();
+//        if (list.size()!=0) {
+//            for (int i = 0; i < list.size(); i++) {
+//                String nameNode = String.format("%d. %s", i+1, PupilsDataList.getIdNamesSurname(list.get(i)));
+//                nodesForPupilsPanel[i] = new DefaultMutableTreeNode
+//                        (nameNode);
+//                rootForPupilsTree.add(nodesForPupilsPanel[i]);
+//            }
+//            informationLabelForPupilPanel.setText(node.toString().concat(":"));
+//        } else {
+//            String textForLabel = String.format("<html>%s<br>there are no pupils in this class</html>", node.toString());
+//            informationLabelForPupilPanel.setText(textForLabel);
+//        }
+//        pupilsTreeModel.nodeStructureChanged(rootForPupilsTree);
+//        pupilsPanel.repaint();
+//    }
+    public void showPupilInformation (int id) {
         pupilInformationLabel.setText(PupilsDataList.getPupilInformation
                 (Objects.requireNonNull(PupilsDataList.getPupilWithCertainID(id))));
         System.out.println(PupilsDataList.getPupilInformation

@@ -27,17 +27,11 @@ public class Main {
 //        UIManager.put("Menu.foreground", Color.green);
         UIManager.put("MenuItem.opaque", true);
 //        mainWindow = new MainWindow();
-        new MainWindow();
+        mainWindow = new MainWindow();
     }
 
     public static void sleep (int time) throws InterruptedException {
         Thread.sleep(time);
-    }
-    static void setTitleForFrame(String text) {
-        mainWindow.setTitle(text);
-    }
-    static void refreshFrame(String text) {
-        mainWindow.repaint();
     }
 
 }

@@ -1,4 +1,4 @@
-package GUI;
+package GUI.listeners;
 
 import database.PupilsDataList;
 
@@ -11,11 +11,17 @@ import java.util.Objects;
 
 public class PupilsTreeNodeMouseListener extends MouseAdapter {
     private final JTree tree;
+    JLabel pupilInformationLabel;
+    JPanel informationPanel;
+    private DefaultMutableTreeNode lastHoveredNode;
 
-
-    public PupilsTreeNodeMouseListener(JTree tree) {
+    public PupilsTreeNodeMouseListener(JTree tree, JLabel pupilInformationLabel, JPanel informationPanel) {
         this.tree = tree;
+        this.pupilInformationLabel = pupilInformationLabel;
+        this.informationPanel = informationPanel;
     }
+
+
     @Override
     public void mouseClicked(MouseEvent e) {
         TreePath path = tree.getPathForLocation(e.getX(), e.getY());
@@ -31,8 +37,15 @@ public class PupilsTreeNodeMouseListener extends MouseAdapter {
                     break;
                 }
             }
-            System.out.println(id);
-            CentralPanel.showPupilInformation(id);
+
+            pupilInformationLabel.setText(PupilsDataList.getPupilInformation
+                    (Objects.requireNonNull(PupilsDataList.getPupilWithCertainID(id))));
+            System.out.println(PupilsDataList.getPupilInformation
+                    (Objects.requireNonNull(PupilsDataList.getPupilWithCertainID(id))));
+            pupilInformationLabel.repaint();
+//        scrollPaneForInformationLabel.repaint();
+            informationPanel.repaint();
+//            CentralPanel.showPupilInformation(id);
 
 //            CentralPanel.showPupilsOfCertainGrade(PupilsDataList.getListOfPupilsOfCertainGrade(grade), node);
 

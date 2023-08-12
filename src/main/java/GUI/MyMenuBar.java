@@ -38,12 +38,14 @@ public class MyMenuBar  implements ActionListener {
     WriteReadDataToFile writeReadDataToFile;
     PupilsDataList pupilsDataList = new PupilsDataList();
     JFrame parentFrame;
-    JTextField statusTextField;
+    JTextField currentStatusField;
+    Main main;
 
-    MyMenuBar(JFrame parentFrame, JTextField statusTextField)  throws IOException {
+    MyMenuBar(JFrame parentFrame, JTextField currentStatusField)  throws IOException {
         this.parentFrame = parentFrame;
-        this.statusTextField = statusTextField;
+        this.currentStatusField = currentStatusField;
 
+        main = new Main();
         menuBar = new JMenuBar();
 
         writeReadDataToFile = new WriteReadDataToFile();
@@ -127,14 +129,15 @@ public class MyMenuBar  implements ActionListener {
                 File file = new File(fileChooser.getSelectedFile().getAbsolutePath());
                 try {
                     PupilsDataList.setPupilsDataList(writeReadDataToFile.readListFromFile(file));
-                    statusTextField.setText("Database loaded successfully");
+//                    Main.setTextForStatusPanel("Database loaded successfully");
+                    currentStatusField.setText("Database loaded successfully");
                     String nameOfFile = file.getName();
 //                    Main.setTitleForFrame(nameOfFile);
                 } catch (Exception ex) {
                     JOptionPane.showMessageDialog(null,
                             "\t\tI can't read this file!\nCALL TECH SUPPORT OR ELSE!", "title",
                             JOptionPane.ERROR_MESSAGE);
-                    statusTextField.setText("Error. No data has been loaded at the moment.");
+                    currentStatusField.setText("Error. No data has been loaded at the moment.");
                     throw new RuntimeException(ex);
                 }
             }
@@ -151,12 +154,12 @@ public class MyMenuBar  implements ActionListener {
                     File file = new File(fileChooser.getSelectedFile().getAbsolutePath());
                     try {
                         writeReadDataToFile.writeListLoFile(PupilsDataList.getPupilsDataList(), file);
-                        statusTextField.setText("Database saved successfully");
+//                        statusTextField.setText("Database saved successfully");
                     } catch (JsonProcessingException ex) {
                         JOptionPane.showMessageDialog(null,
                                 "\t\tI can't write this file!\nCALL TECH SUPPORT OR ELSE!", "title",
                                 JOptionPane.ERROR_MESSAGE);
-                        statusTextField.setText("Error. I can't save this data");
+                        currentStatusField.setText("Error. I can't save this data");
                         throw new RuntimeException(ex);
                     }
                 }

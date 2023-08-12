@@ -17,10 +17,14 @@ public class CustomTreeCellRenderer extends DefaultTreeCellRenderer {
                                                   boolean leaf, int row, boolean hasFocus) {
         component = super.getTreeCellRendererComponent(tree, value, selected, expanded, leaf, row, hasFocus);
 
-        component.setBackground(ColorsSets.ACTUAL_SET_OF_COLORS.get(2));
-        component.setForeground(Color.black);
+//        component.setBackground(ColorsSets.ACTUAL_SET_OF_COLORS.get(2));
+//        component.setForeground(Color.black);
 
         ((JComponent) component).setOpaque(true);
+
+        this.setTextSelectionColor(Color.BLUE);
+        this.setBackgroundSelectionColor(Color.YELLOW);
+        this.setBackgroundNonSelectionColor(ColorsSets.ACTUAL_SET_OF_COLORS.get(2));
 
         return component;
     }

@@ -1,4 +1,4 @@
-package GUI;
+package GUI.listeners;
 
 import javax.swing.*;
 import javax.swing.tree.TreePath;
