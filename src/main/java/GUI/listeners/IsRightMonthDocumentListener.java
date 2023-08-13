@@ -59,24 +59,12 @@ public class IsRightMonthDocumentListener  implements DocumentListener {
                         Integer.parseInt(monthTextField.getText().trim()),
                         Integer.parseInt(dayTextField.getText().trim()));
             } catch (DateTimeException e) {
-                yearTextField.setBackground(ConstantsOfStyle.COLOR_FOR_RIGHT_FORMAT);
-                monthTextField.setBackground(ConstantsOfStyle.COLOR_FOR_RIGHT_FORMAT);
-                monthTextField.setBackground(ConstantsOfStyle.COLOR_FOR_RIGHT_FORMAT);
+                yearTextField.setBackground(ConstantsOfStyle.COLOR_FOR_WRONG_FORMAT);
+                monthTextField.setBackground(ConstantsOfStyle.COLOR_FOR_WRONG_FORMAT);
+                dayTextField.setBackground(ConstantsOfStyle.COLOR_FOR_WRONG_FORMAT);
             }
         }
-        boolean isNumber = true;
-        for (char c : peselTextField.getText().toCharArray()) {
-            if (!Character.isDigit(c)) {
-                isNumber = false;
-            }
-        }
-        if (peselTextField.getText().trim().isEmpty()) {
-            peselTextField.setBackground(ConstantsOfStyle.COLOR_NEUTRAL_FORMAT);
-        } else if (!isNumber|| peselTextField.getText().length()>11) {
-            peselTextField.setBackground(ConstantsOfStyle.COLOR_FOR_WRONG_FORMAT);
-        }else if (peselTextField.getText().length() < 11) {
-            peselTextField.setBackground(ConstantsOfStyle.COLOR_NEUTRAL_FORMAT);
-        }
+
         if (peselTextField.getText().length() == 11) {
             if (Objects.equals(yearTextField.getBackground(), ConstantsOfStyle.COLOR_FOR_RIGHT_FORMAT) &&
                     Objects.equals(yearTextField.getBackground(), ConstantsOfStyle.COLOR_FOR_RIGHT_FORMAT) &&

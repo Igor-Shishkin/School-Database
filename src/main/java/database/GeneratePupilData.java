@@ -196,7 +196,7 @@ public class GeneratePupilData {
         String secondName = (gender=='M')?generateSecondMaleName():generateSecondFemaleName();
 
         int pesel1And2thDigits = year % 100;
-        int pesel3And4thDigits = month + 20;
+        int pesel3And4thDigits = (year<2000) ? month : (year<2100) ? month +20 : month + 40;
         int pesel7And8And9thDigits = random.nextInt(999);
         int pesel10thDigit = (gender=='F') ? random.nextInt(4) * 2 : (9 - random.nextInt(4) * 2);
         String pesel = String.format("%d%d%02d%03d%d%d", pesel1And2thDigits, pesel3And4thDigits, day,
@@ -221,7 +221,7 @@ public class GeneratePupilData {
         Address address = generateAddress();
 
         int pesel1And2thDigits = year % 100;
-        int pesel3And4thDigits = month + 20;
+        int pesel3And4thDigits = (year<2000) ? month : (year<2100) ? month +20 : month + 40;
         int pesel7And8And9thDigits = random.nextInt(999);
         int pesel10thDigit = (gender=='F') ? random.nextInt(4) * 2 : (9 - random.nextInt(4) * 2);
         String pesel = String.format("%02d%02d%02d%03d%d%d", pesel1And2thDigits, pesel3And4thDigits, day,

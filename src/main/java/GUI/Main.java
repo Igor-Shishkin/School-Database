@@ -27,7 +27,7 @@ public class Main {
 //        UIManager.put("Menu.foreground", Color.green);
         UIManager.put("MenuItem.opaque", true);
 //        mainWindow = new MainWindow();
-        new AddEditPupil(null);
+        new MainWindow();
     }
 
     public static void sleep (int time) throws InterruptedException {

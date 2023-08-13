@@ -1,6 +1,7 @@
 package GUI;
 
 import GUI.addEditPupil.AddEditAchievement;
+import GUI.addEditPupil.AddEditPupil;
 import GUI.listeners.GradesTreeNodeMouseListener;
 import GUI.listeners.HandCursorForMouseMotionAdapter;
 import GUI.listeners.PupilsTreeNodeMouseListener;
@@ -115,10 +116,10 @@ public class CentralPanel extends JPanel implements ActionListener, TreeSelectio
         editDateButton.setPreferredSize(new Dimension(10,50));
         editDateButton.setBorder(BorderFactory.createLineBorder(ColorsSets.ACTUAL_SET_OF_COLORS.get(2),5));
 
-        JPanel buttonPanel = new JPanel(new BorderLayout());
-        buttonPanel.add(editDateButton, BorderLayout.NORTH);
-        buttonPanel.add(showEditAchievementButton, BorderLayout.CENTER);
-        buttonPanel.add(showEditMarksButton, BorderLayout.SOUTH);
+        JPanel buttonPanel = new JPanel(new GridLayout(4,1,5,15));
+        buttonPanel.add(editDateButton);
+        buttonPanel.add(showEditAchievementButton);
+        buttonPanel.add(showEditMarksButton);
 
         informationPanel = new JPanel();
         informationPanel.setLayout(new BorderLayout());
@@ -349,6 +350,27 @@ public class CentralPanel extends JPanel implements ActionListener, TreeSelectio
 //                            Objects.requireNonNull(PupilsDataList.getPupilWithCertainID(id)).getAchievement());
 
 
+                }
+            }
+            if (e.getSource()==editDateButton) {
+                TreePath path = treeForPupilsPanel.getSelectionPath();
+                if (path != null) {
+                    DefaultMutableTreeNode node = (DefaultMutableTreeNode) path.getLastPathComponent();
+                    String nodeName = node.toString();
+                    int id = 0;
+                    for (int i = nodeName.length() - 1, k = 0; i > 0; i--, k++) {
+                        if (Character.isDigit(nodeName.charAt(i))) {
+                            id += Character.digit(nodeName.charAt(i), 10) * Math.pow(10, k);
+                        } else {
+                            break;
+                        }
+                    }
+                    try {
+                        new AddEditPupil(parentFrame,
+                                Objects.requireNonNull(PupilsDataList.getPupilWithCertainID(id)));
+                    } catch (IOException | FontFormatException ex) {
+                        throw new RuntimeException(ex);
+                    }
                 }
             }
 
