@@ -6,6 +6,7 @@ import javax.swing.*;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import java.awt.*;
+import java.time.DateTimeException;
 import java.time.LocalDate;
 import java.util.Objects;
 
@@ -57,18 +58,26 @@ public class IsRightYearDocumentListener implements DocumentListener {
                 yearTextField.setBackground(ConstantsOfStyle.COLOR_FOR_WRONG_FORMAT);
             }
         }
+        if (yearTextField.getBackground()==ConstantsOfStyle.COLOR_FOR_RIGHT_FORMAT &&
+                monthTextField.getBackground()==ConstantsOfStyle.COLOR_FOR_RIGHT_FORMAT &&
+                dayTextField.getBackground()==ConstantsOfStyle.COLOR_FOR_RIGHT_FORMAT) {
+            try {
+                LocalDate.of(Integer.parseInt(yearTextField.getText().trim()),
+                        Integer.parseInt(monthTextField.getText().trim()),
+                        Integer.parseInt(dayTextField.getText().trim()));
+            } catch (DateTimeException e) {
+                yearTextField.setBackground(ConstantsOfStyle.COLOR_FOR_RIGHT_FORMAT);
+                monthTextField.setBackground(ConstantsOfStyle.COLOR_FOR_RIGHT_FORMAT);
+                monthTextField.setBackground(ConstantsOfStyle.COLOR_FOR_RIGHT_FORMAT);
+            }
+        }
+
         boolean isNumber = true;
         for (char c : peselTextField.getText().toCharArray()) {
             if (!Character.isDigit(c)) {
                 isNumber = false;
             }
         }
-//        if (!Objects.equals(yearTextField.getBackground(), ConstantsOfColors.COLOR_FOR_RIGHT_FORMAT) ||
-//                !Objects.equals(yearTextField.getBackground(), ConstantsOfColors.COLOR_FOR_RIGHT_FORMAT) ||
-//                !Objects.equals(monthTextField.getBackground(), ConstantsOfColors.COLOR_FOR_RIGHT_FORMAT) ||
-//                !Objects.equals(dayTextField.getBackground(), ConstantsOfColors.COLOR_FOR_RIGHT_FORMAT)) {
-//            peselTextField.setBackground(ConstantsOfColors.COLOR_NEUTRAL_FORMAT);
-//        }
         if (peselTextField.getText().trim().isEmpty()) {
             peselTextField.setBackground(ConstantsOfStyle.COLOR_NEUTRAL_FORMAT);
         } else if (!isNumber|| peselTextField.getText().length()>11) {

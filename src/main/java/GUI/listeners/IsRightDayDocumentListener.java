@@ -6,6 +6,8 @@ import javax.swing.*;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import java.awt.*;
+import java.time.DateTimeException;
+import java.time.LocalDate;
 import java.util.Objects;
 
 public class IsRightDayDocumentListener implements DocumentListener {
@@ -43,12 +45,25 @@ public class IsRightDayDocumentListener implements DocumentListener {
             try {
                 int number = Integer.parseInt(this.dayTextField.getText().trim());
                 if (number < 32 && number > 0) {
-                    dayTextField.setBackground(new Color(0xD2FFD2));
+                    dayTextField.setBackground(ConstantsOfStyle.COLOR_FOR_RIGHT_FORMAT);
                 } else {
-                    dayTextField.setBackground(new Color(0xEAD1DC));
+                    dayTextField.setBackground(ConstantsOfStyle.COLOR_FOR_WRONG_FORMAT);
                 }
             } catch (NumberFormatException ex) {
-                dayTextField.setBackground(new Color(0xEAD1DC));
+                dayTextField.setBackground(ConstantsOfStyle.COLOR_FOR_WRONG_FORMAT);
+            }
+        }
+        if (yearTextField.getBackground()==ConstantsOfStyle.COLOR_FOR_RIGHT_FORMAT &&
+                monthTextField.getBackground()==ConstantsOfStyle.COLOR_FOR_RIGHT_FORMAT &&
+                dayTextField.getBackground()==ConstantsOfStyle.COLOR_FOR_RIGHT_FORMAT) {
+            try {
+                LocalDate.of(Integer.parseInt(yearTextField.getText().trim()),
+                        Integer.parseInt(monthTextField.getText().trim()),
+                        Integer.parseInt(dayTextField.getText().trim()));
+            } catch (DateTimeException e) {
+                yearTextField.setBackground(ConstantsOfStyle.COLOR_FOR_RIGHT_FORMAT);
+                monthTextField.setBackground(ConstantsOfStyle.COLOR_FOR_RIGHT_FORMAT);
+                monthTextField.setBackground(ConstantsOfStyle.COLOR_FOR_RIGHT_FORMAT);
             }
         }
         boolean isNumber = true;

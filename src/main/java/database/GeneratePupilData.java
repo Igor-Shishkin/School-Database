@@ -224,7 +224,7 @@ public class GeneratePupilData {
         int pesel3And4thDigits = month + 20;
         int pesel7And8And9thDigits = random.nextInt(999);
         int pesel10thDigit = (gender=='F') ? random.nextInt(4) * 2 : (9 - random.nextInt(4) * 2);
-        String pesel = String.format("%d%d%02d%03d%d%d", pesel1And2thDigits, pesel3And4thDigits, day,
+        String pesel = String.format("%02d%02d%02d%03d%d%d", pesel1And2thDigits, pesel3And4thDigits, day,
                 pesel7And8And9thDigits, pesel10thDigit, random.nextInt(10));
 
         Marks marks = (grade>6) ? generateMarks7and8() : (grade>3) ? generateMarks456() : null;

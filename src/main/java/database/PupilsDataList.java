@@ -137,7 +137,7 @@ public class PupilsDataList {
             for (int i = 1;
                  i < pupilsDataList.stream()
                          .max(Comparator.comparingInt(Pupil::getId))
-                         .get().getId();
+                         .get().getId()+5;
                  i++) {
                 int finalI = i;
                 if (pupilsDataList.stream()

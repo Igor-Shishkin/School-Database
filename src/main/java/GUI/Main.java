@@ -1,6 +1,6 @@
 package GUI;
 
-import GUI.addPupil.AddPupil;
+import GUI.addEditPupil.AddEditPupil;
 
 import javax.swing.*;
 import java.awt.*;
@@ -27,7 +27,7 @@ public class Main {
 //        UIManager.put("Menu.foreground", Color.green);
         UIManager.put("MenuItem.opaque", true);
 //        mainWindow = new MainWindow();
-        mainWindow = new MainWindow();
+        new AddEditPupil(null);
     }
 
     public static void sleep (int time) throws InterruptedException {

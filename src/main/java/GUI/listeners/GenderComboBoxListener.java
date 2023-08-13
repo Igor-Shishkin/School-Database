@@ -10,14 +10,17 @@ import java.util.Objects;
 public class GenderComboBoxListener implements ActionListener {
     JTextField yearTextField, monthTextField, dayTextField, peselTextField;
     JComboBox<String> comboBox;
+    JButton addMarksMutton;
+
 
     public GenderComboBoxListener(JTextField yearTextField, JTextField monthTextField, JTextField dayTextField,
-                                  JTextField peselTextField, JComboBox<String> comboBox) {
+                                  JTextField peselTextField, JComboBox<String> comboBox, JButton addMarksMutton) {
         this.yearTextField = yearTextField;
         this.monthTextField = monthTextField;
         this.dayTextField = dayTextField;
         this.peselTextField = peselTextField;
         this.comboBox = comboBox;
+        this.addMarksMutton = addMarksMutton;
     }
 
     @Override
@@ -26,6 +29,11 @@ public class GenderComboBoxListener implements ActionListener {
             comboBox.setBackground(ConstantsOfStyle.COLOR_FOR_WRONG_FORMAT);
         } else {
             comboBox.setBackground(ConstantsOfStyle.COLOR_FOR_RIGHT_FORMAT);
+            if (comboBox.getSelectedIndex()>3) {
+                addMarksMutton.setEnabled(true);
+            } else {
+                addMarksMutton.setEnabled(false);
+            }
         }
         boolean isNumber = true;
         for (char c : peselTextField.getText().toCharArray()) {

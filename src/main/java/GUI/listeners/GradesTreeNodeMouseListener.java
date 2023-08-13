@@ -22,6 +22,7 @@ public class GradesTreeNodeMouseListener extends MouseAdapter {
     ArrayList<Pupil> list;
     JRadioButton getAllPupilsRadioButton;
 
+
     public GradesTreeNodeMouseListener(JTree tree, DefaultMutableTreeNode rootForPupilsTree,
                   ArrayList<DefaultMutableTreeNode> nodesForPupilsPanel, DefaultTreeModel pupilsTreeModel,
                   JLabel informationLabelForPupilPanel, JPanel pupilsPanel, JRadioButton getAllPupilsRadioButton) {

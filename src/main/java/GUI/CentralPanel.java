@@ -1,6 +1,6 @@
 package GUI;
 
-import GUI.addPupil.AddAchievement;
+import GUI.addEditPupil.AddEditAchievement;
 import GUI.listeners.GradesTreeNodeMouseListener;
 import GUI.listeners.HandCursorForMouseMotionAdapter;
 import GUI.listeners.PupilsTreeNodeMouseListener;
@@ -42,7 +42,7 @@ public class CentralPanel extends JPanel implements ActionListener, TreeSelectio
     JTextField  currentStatusField;
     JRadioButton getAllPupilsRadioButton, getPupilsWithBirthdayInThisMonthRadioButton, getPupilsWithAwardBarRadioButton,
             getNoPromotedPupilsRadioButton, getPupilsWithAchievement;
-    JButton showMarksButton, showAchievementButton;
+    JButton showEditMarksButton, showEditAchievementButton, editDateButton;
     JFrame parentFrame;
 
     public CentralPanel(JFrame parentFrame, JTextField  currentStatusField) throws IOException, FontFormatException {
@@ -99,19 +99,26 @@ public class CentralPanel extends JPanel implements ActionListener, TreeSelectio
         pupilInformationLabel.setBackground(ColorsSets.ACTUAL_SET_OF_COLORS.get(2));
         pupilsPanel.setFont(font);
 
-        showMarksButton = new JButton("SHOW MARKS");
-        showMarksButton.addActionListener(this);
-        showMarksButton.setPreferredSize(new Dimension(10,60));
-        showMarksButton.setBorder(BorderFactory.createLineBorder(ColorsSets.ACTUAL_SET_OF_COLORS.get(2),10));
+        showEditMarksButton = new JButton("SHOW/EDIT MARKS");
+        showEditMarksButton.addActionListener(this);
+        showEditMarksButton.setPreferredSize(new Dimension(10,50));
+        showEditMarksButton.setBorder(BorderFactory.createLineBorder(ColorsSets.ACTUAL_SET_OF_COLORS.get(2),5));
 
-        showAchievementButton = new JButton("SHOW ACHIEVEMENT");
-        showAchievementButton.addActionListener(this);
-        showAchievementButton.setPreferredSize(new Dimension(10,60));
-        showAchievementButton.setBorder(BorderFactory.createLineBorder(ColorsSets.ACTUAL_SET_OF_COLORS.get(2),10));
+        showEditAchievementButton = new JButton("SHOW/EDIT ACHIEVEMENT");
+        showEditAchievementButton.addActionListener(this);
+        showEditAchievementButton.setPreferredSize(new Dimension(10,50));
+        showEditAchievementButton.setBorder(BorderFactory.createLineBorder
+                (ColorsSets.ACTUAL_SET_OF_COLORS.get(2),5));
+
+        editDateButton = new JButton("EDIT DATE");
+        editDateButton.addActionListener(this);
+        editDateButton.setPreferredSize(new Dimension(10,50));
+        editDateButton.setBorder(BorderFactory.createLineBorder(ColorsSets.ACTUAL_SET_OF_COLORS.get(2),5));
 
         JPanel buttonPanel = new JPanel(new BorderLayout());
-        buttonPanel.add(showAchievementButton, BorderLayout.NORTH);
-        buttonPanel.add(showMarksButton, BorderLayout.SOUTH);
+        buttonPanel.add(editDateButton, BorderLayout.NORTH);
+        buttonPanel.add(showEditAchievementButton, BorderLayout.CENTER);
+        buttonPanel.add(showEditMarksButton, BorderLayout.SOUTH);
 
         informationPanel = new JPanel();
         informationPanel.setLayout(new BorderLayout());
@@ -319,7 +326,7 @@ public class CentralPanel extends JPanel implements ActionListener, TreeSelectio
                     buildPupilsTree(list, node, grade);
                 }
             }
-            if (e.getSource()==showAchievementButton) {
+            if (e.getSource()== showEditAchievementButton) {
                 TreePath path = treeForPupilsPanel.getSelectionPath();
                 if (path != null) {
                     DefaultMutableTreeNode node = (DefaultMutableTreeNode) path.getLastPathComponent();
@@ -333,8 +340,13 @@ public class CentralPanel extends JPanel implements ActionListener, TreeSelectio
                         }
                     }
 
-                    AchievementDialog achievementDialog =  new AchievementDialog(parentFrame,
+                    AddEditAchievement addEditAchievement = new AddEditAchievement(parentFrame,
                             Objects.requireNonNull(PupilsDataList.getPupilWithCertainID(id)).getAchievement());
+                    Objects.requireNonNull(PupilsDataList.getPupilWithCertainID(id))
+                            .setAchievement(addEditAchievement.showDialogAndGetInput());
+
+//                    AchievementDialog achievementDialog =  new AchievementDialog(parentFrame,
+//                            Objects.requireNonNull(PupilsDataList.getPupilWithCertainID(id)).getAchievement());
 
 
                 }

@@ -1,8 +1,7 @@
-package GUI.addPupil;
+package GUI.addEditPupil;
 
 import GUI.listeners.MarkComboBoxListener;
 import GUI.styleStorage.ConstantsOfStyle;
-import database.GeneratePupilData;
 import database.Marks;
 
 import javax.imageio.ImageIO;
@@ -17,7 +16,7 @@ import java.nio.file.Paths;
 import java.util.Arrays;
 
 
-public class AddMarks extends JDialog implements ActionListener {
+public class AddEditMarks extends JDialog implements ActionListener {
     int QUANTITY_OF_MARK_COMBOBOX;
     Marks marks;
     boolean awardBar, promotionToNextGrade;
@@ -31,7 +30,7 @@ public class AddMarks extends JDialog implements ActionListener {
     Font font, fontForAverage;
     JButton addButton, cancelButton;
 
-    AddMarks(JFrame parentFrame, Marks marks, Boolean awardBar, Boolean promotion, int grade) throws IOException {
+    AddEditMarks(JFrame parentFrame, Marks marks, Boolean awardBar, Boolean promotion, int grade) throws IOException {
         super(parentFrame, "Marks", true);
         this.marks = marks;
         this.grade = grade;

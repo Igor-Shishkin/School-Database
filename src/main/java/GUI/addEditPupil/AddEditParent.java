@@ -1,4 +1,4 @@
-package GUI.addPupil;
+package GUI.addEditPupil;
 
 import GUI.styleStorage.ConstantsOfStyle;
 import database.Parent;
@@ -12,7 +12,7 @@ import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
-public class AddParent extends JDialog implements ActionListener {
+public class AddEditParent extends JDialog implements ActionListener {
     JLabel nameLabel, surnameLabel, secondNameLabel, eMailLabel, telephoneLabel, genderLabel, dateOfBirth, yearLabel,
             monthLabel, dayLabel, addressLabel, countryLabel, provinceLabel, townLabel,
             streetLabel, houseLabel, localLabel, postCodeLabel, peselJLabel;
@@ -32,8 +32,8 @@ public class AddParent extends JDialog implements ActionListener {
     boolean newParent = false;
 
 
-    public AddParent(JFrame parentFrame, Parent parent, String country, String province, String town, String street, String house, String local,
-                     String postCode) throws IOException, FontFormatException {
+    public AddEditParent(JFrame parentFrame, Parent parent, String country, String province, String town, String street, String house, String local,
+                         String postCode) throws IOException, FontFormatException {
         super(parentFrame, "Add parent", true); // Make it modal
         setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
         this.parent = parent;

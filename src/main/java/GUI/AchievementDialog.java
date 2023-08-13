@@ -29,18 +29,15 @@ public class AchievementDialog extends JDialog implements ActionListener {
                     }
                 }
             }
-
             achievementForLabel = "<html>".concat(achievementForLabel).concat("</html>");
 
-
             textArea = new JLabel(achievementForLabel);
-            textArea.setFont(ConstantsOfStyle.THE_MAIN_FONT.deriveFont(Font.PLAIN,16));
+            textArea.setFont(ConstantsOfStyle.THE_MAIN_FONT.deriveFont(Font.PLAIN,20));
 
             closeButton = new JButton("Cancel");
             closeButton.addActionListener(this);
 
             JScrollPane scrollPane = new JScrollPane(textArea);
-//            scrollPane.setPreferredSize(new Dimension(400,120));
 
             GridBagConstraints c = new GridBagConstraints();
             c.insets = new Insets(7,20,4,20);
