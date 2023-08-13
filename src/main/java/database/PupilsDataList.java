@@ -111,7 +111,7 @@ public class PupilsDataList {
                             "Date of birth: %02d.%02d.%d  <br>" +
                             "Grade: %d<br>" +
                             "Parents:<br>" +
-                            "    %s %s. <br>    Telephone: %s<br>eMail: %s <br>",
+                            "    %s %s. <br>    Telephone: %s<br>eMail: %s <br></html>",
                     p.getName(), p.getSurname(),
                     p.getDateOfBirth().getDayOfMonth(), p.getDateOfBirth().getMonthValue(), p.getDateOfBirth().getYear(),
                     p.getGrade(),
@@ -123,7 +123,7 @@ public class PupilsDataList {
                         "Date of birth: %02d.%02d.%d  <br>" +
                         "Grade: %d<br>" +
                         "Parents:<br>" +
-                        "\t%s %s. <br>Telephone: %s<br>eMail: %s <br>",
+                        "\t%s %s. <br>Telephone: %s<br>eMail: %s <br></html>",
                 p.getName(), p.getSecondName(), p.getSurname(),
                 p.getDateOfBirth().getDayOfMonth(), p.getDateOfBirth().getMonthValue(), p.getDateOfBirth().getYear(),
                 p.getGrade(),
@@ -152,14 +152,51 @@ public class PupilsDataList {
         if (grade==-1) {
             return (ArrayList<Pupil>) pupilsDataList.stream()
                     .filter(pupil -> pupil.getDateOfBirth().getMonth().equals(LocalDate.now().getMonth()))
+                    .sorted(Comparator.comparingInt(p -> p.getDateOfBirth().getDayOfMonth()))
                     .collect(Collectors.toList());
         } else {
             return (ArrayList<Pupil>) pupilsDataList.stream()
                     .filter(pupil -> pupil.getGrade() == grade)
-                    .filter(pupil -> pupil.getDateOfBirth().getMonth().equals(LocalDate.now().getMonth()) )
+                    .filter(pupil -> pupil.getDateOfBirth().getMonth().equals(LocalDate.now().getMonth()))
+                    .sorted(Comparator.comparingInt(p -> p.getDateOfBirth().getDayOfMonth()))
                     .collect(Collectors.toList());
         }
-
+    }
+    public static ArrayList<Pupil> getNoPromotedPupilsList (int grade) {
+        if (grade==-1) {
+            return (ArrayList<Pupil>) pupilsDataList.stream()
+                    .filter(pupil -> !pupil.isPromotionToNextGrade())
+                    .collect(Collectors.toList());
+        } else {
+            return (ArrayList<Pupil>) pupilsDataList.stream()
+                    .filter(pupil -> pupil.getGrade()==grade)
+                    .filter(pupil -> !pupil.isPromotionToNextGrade())
+                    .collect(Collectors.toList());
+        }
+    }
+    public static ArrayList<Pupil> getPupilsWithAchievementList (int grade) {
+        if (grade==-1) {
+            return (ArrayList<Pupil>) pupilsDataList.stream()
+                    .filter(pupil -> pupil.getAchievement()!=null)
+                    .collect(Collectors.toList());
+        } else {
+            return (ArrayList<Pupil>) pupilsDataList.stream()
+                    .filter(pupil -> pupil.getGrade()==grade)
+                    .filter(pupil -> pupil.getAchievement()!=null)
+                    .collect(Collectors.toList());
+        }
+    }
+    public static ArrayList<Pupil> getPupilsWithAwardBarList (int grade) {
+        if (grade==-1) {
+            return (ArrayList<Pupil>) pupilsDataList.stream()
+                    .filter(Pupil::isAwardBar)
+                    .collect(Collectors.toList());
+        } else {
+            return (ArrayList<Pupil>) pupilsDataList.stream()
+                    .filter(pupil -> pupil.getGrade()==grade)
+                    .filter(Pupil::isAwardBar)
+                    .collect(Collectors.toList());
+        }
     }
 }
 

@@ -51,7 +51,7 @@ public class MainWindow extends JFrame implements ActionListener {
         downPanel = new JPanel(new BorderLayout());
         setCurrentStatusPanel();
 
-        centerPanel = new CentralPanel(currentStatusField);
+        centerPanel = new CentralPanel(this, currentStatusField);
         myMenuBar = new MyMenuBar(this, currentStatusField);
 
         this.setResizable(false);

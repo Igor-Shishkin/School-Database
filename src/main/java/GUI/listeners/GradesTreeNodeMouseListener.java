@@ -20,24 +20,23 @@ public class GradesTreeNodeMouseListener extends MouseAdapter {
     JLabel informationLabelForPupilPanel;
     JPanel pupilsPanel;
     ArrayList<Pupil> list;
+    JRadioButton getAllPupilsRadioButton;
 
     public GradesTreeNodeMouseListener(JTree tree, DefaultMutableTreeNode rootForPupilsTree,
                   ArrayList<DefaultMutableTreeNode> nodesForPupilsPanel, DefaultTreeModel pupilsTreeModel,
-                  JLabel informationLabelForPupilPanel, JPanel pupilsPanel) {
+                  JLabel informationLabelForPupilPanel, JPanel pupilsPanel, JRadioButton getAllPupilsRadioButton) {
         this.tree = tree;
         this.rootForPupilsTree = rootForPupilsTree;
         this.nodesForPupilsPanel = nodesForPupilsPanel;
         this.pupilsTreeModel = pupilsTreeModel;
         this.informationLabelForPupilPanel = informationLabelForPupilPanel;
         this.pupilsPanel = pupilsPanel;
+        this.getAllPupilsRadioButton = getAllPupilsRadioButton;
     }
-
-//    public GradesTreeNodeMouseListener(JTree tree) {
-//        this.tree = tree;
-//    }
 
     @Override
     public void mouseClicked(MouseEvent e) {
+        getAllPupilsRadioButton.setSelected(true);
         TreePath path = tree.getPathForLocation(e.getX(), e.getY());
         if (path != null) {
             DefaultMutableTreeNode node = (DefaultMutableTreeNode) path.getLastPathComponent();
@@ -53,8 +52,9 @@ public class GradesTreeNodeMouseListener extends MouseAdapter {
                     (Objects.equals(node.toString(), "Eighth class")) ? 8 : -1;
 
             rootForPupilsTree.removeAllChildren();
+
             if (grade>-1) {
-                list = PupilsDataList.getListOfPupilsOfCertainGrade(grade);
+                list =  PupilsDataList.getListOfPupilsOfCertainGrade(grade);
                 if (list.size() != 0) {
                     for (int i = 0; i < list.size(); i++) {
                         String nameNode = String.format("%d. %s", i + 1, PupilsDataList.getIdNamesSurname(list.get(i)));
@@ -82,9 +82,6 @@ public class GradesTreeNodeMouseListener extends MouseAdapter {
             }
             pupilsTreeModel.nodeStructureChanged(rootForPupilsTree);
             pupilsPanel.repaint();
-
-//            CentralPanel.showPupilsOfCertainGrade(PupilsDataList.getListOfPupilsOfCertainGrade(grade), node);
-
         }
     }
 }

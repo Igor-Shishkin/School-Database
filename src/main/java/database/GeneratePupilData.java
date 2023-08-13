@@ -36,10 +36,10 @@ public class GeneratePupilData {
         return MALE_NAMES[random.nextInt(MALE_NAMES.length)];
     }
     public String generateSecondMaleName() {
-        return (random.nextInt(100)>95)? MALE_NAMES[random.nextInt(MALE_NAMES.length)] :null;  }
+        return (random.nextInt(100)>70)? MALE_NAMES[random.nextInt(MALE_NAMES.length)] :null;  }
     public String generateFemaleName() { return FEMALE_NAMES[random.nextInt(FEMALE_NAMES.length)]; }
     public String generateSecondFemaleName() {
-        return (random.nextInt(100)>95)? FEMALE_NAMES[random.nextInt(FEMALE_NAMES.length)] :null;  }
+        return (random.nextInt(100)>70)? FEMALE_NAMES[random.nextInt(FEMALE_NAMES.length)] :null;  }
 
     public String generateSurname() {
         return SURNAMES[random.nextInt(SURNAMES.length)];
@@ -80,7 +80,7 @@ public class GeneratePupilData {
         return (random.nextBoolean())?'M':'F';}
 
     public String generateAchievement() {
-        return (random.nextInt(100)>95)?ACHIEVEMENT[random.nextInt(ACHIEVEMENT.length - 1)]:null;
+        return (random.nextInt(100)>80)?ACHIEVEMENT[random.nextInt(ACHIEVEMENT.length - 1)]:null;
     }
 
     public Marks generateMarks456() {
@@ -231,9 +231,11 @@ public class GeneratePupilData {
         boolean promotion = marks != null && marks.getPromotion(grade);
         boolean awardBar = marks != null && marks.isAwardBar(promotion, grade);
 
+        String achievement = (grade>3) ? generateAchievement() : null;
+
         return new Pupil(name, secondName, surname, gender, year, month, day, address,
                 pesel, Pupil.getIdNumber(), grade, generateParent(surname, parentGender, address),
-                generateSecondParent(surname, parentSecondGender, address), generateAchievement(),
+                generateSecondParent(surname, parentSecondGender, address), achievement,
                 marks, awardBar, promotion);
     }
 
