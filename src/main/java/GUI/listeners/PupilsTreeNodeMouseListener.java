@@ -1,5 +1,6 @@
 package GUI.listeners;
 
+import GUI.CentralPanel;
 import database.PupilsDataList;
 
 import javax.swing.*;
@@ -13,14 +14,17 @@ public class PupilsTreeNodeMouseListener extends MouseAdapter {
     private final JTree tree;
     JLabel pupilInformationLabel;
     JPanel informationPanel;
-    private DefaultMutableTreeNode lastHoveredNode;
+    JButton showEditAchievementButton, showEditMarksButton, editDateButton;
 
-    public PupilsTreeNodeMouseListener(JTree tree, JLabel pupilInformationLabel, JPanel informationPanel) {
+    public PupilsTreeNodeMouseListener(JTree tree, JLabel pupilInformationLabel, JPanel informationPanel,
+                     JButton showEditAchievementButton, JButton showEditMarksButton, JButton editDateButton) {
         this.tree = tree;
         this.pupilInformationLabel = pupilInformationLabel;
         this.informationPanel = informationPanel;
+        this.showEditAchievementButton = showEditAchievementButton;
+        this.showEditMarksButton = showEditMarksButton;
+        this.editDateButton = editDateButton;
     }
-
 
     @Override
     public void mouseClicked(MouseEvent e) {
@@ -39,10 +43,15 @@ public class PupilsTreeNodeMouseListener extends MouseAdapter {
 
             pupilInformationLabel.setText(PupilsDataList.getPupilInformation
                     (Objects.requireNonNull(PupilsDataList.getPupilWithCertainID(id))));
+
+            showEditMarksButton.setVisible(true);
+            showEditAchievementButton.setVisible(true);
+            editDateButton.setVisible(true);
+
+            CentralPanel.currentID = id;
+
             pupilInformationLabel.repaint();
             informationPanel.repaint();
-
-
         }
     }
 }

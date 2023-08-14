@@ -27,7 +27,7 @@ public class GenerateListOfPupils {
             listOfPupils.add(generatePupilData.generatePupil());
         }
         WriteReadDataToFile writer = new WriteReadDataToFile();
-        writer.writeListLoFile(listOfPupils, new File("NewDataWithLocalDate.txt"));
+        writer.writeListLoFile(listOfPupils, new File("NewDataWithMARKS_2.txt"));
 //        Properties properties = new Properties();
 //        properties.load(new FileInputStream("src/main/resources/jdbc.properties"));
 //

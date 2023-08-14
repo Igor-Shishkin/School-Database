@@ -21,11 +21,13 @@ public class GradesTreeNodeMouseListener extends MouseAdapter {
     JPanel pupilsPanel;
     ArrayList<Pupil> list;
     JRadioButton getAllPupilsRadioButton;
+    JButton showEditAchievementButton, showEditMarksButton, editDateButton;
 
 
     public GradesTreeNodeMouseListener(JTree tree, DefaultMutableTreeNode rootForPupilsTree,
                   ArrayList<DefaultMutableTreeNode> nodesForPupilsPanel, DefaultTreeModel pupilsTreeModel,
-                  JLabel informationLabelForPupilPanel, JPanel pupilsPanel, JRadioButton getAllPupilsRadioButton) {
+                  JLabel informationLabelForPupilPanel, JPanel pupilsPanel, JRadioButton getAllPupilsRadioButton,
+                  JButton showEditAchievementButton, JButton showEditMarksButton, JButton editDateButton) {
         this.tree = tree;
         this.rootForPupilsTree = rootForPupilsTree;
         this.nodesForPupilsPanel = nodesForPupilsPanel;
@@ -33,6 +35,9 @@ public class GradesTreeNodeMouseListener extends MouseAdapter {
         this.informationLabelForPupilPanel = informationLabelForPupilPanel;
         this.pupilsPanel = pupilsPanel;
         this.getAllPupilsRadioButton = getAllPupilsRadioButton;
+        this.showEditAchievementButton = showEditAchievementButton;
+        this.showEditMarksButton = showEditMarksButton;
+        this.editDateButton = editDateButton;
     }
 
     @Override
@@ -81,6 +86,11 @@ public class GradesTreeNodeMouseListener extends MouseAdapter {
                     informationLabelForPupilPanel.setText(textForLabel);
                 }
             }
+
+            showEditMarksButton.setVisible(false);
+            showEditAchievementButton.setVisible(false);
+            editDateButton.setVisible(false);
+
             pupilsTreeModel.nodeStructureChanged(rootForPupilsTree);
             pupilsPanel.repaint();
         }

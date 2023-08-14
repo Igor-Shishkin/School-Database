@@ -1,5 +1,7 @@
 package database;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -156,6 +158,7 @@ public class Marks {
         this.behaviorMark = behaviorMark;
     }
 
+    @JsonIgnore
     public int[] getArrayOfMarks() {
         List<int[]> listOfArrays = new ArrayList<>();
         listOfArrays.add(getMathMark());
@@ -181,6 +184,7 @@ public class Marks {
         }
         return arrayOfMarks;
     }
+    @JsonIgnore
     public boolean getPromotion(int grade) {
         int[] arrayOfMarks = getArrayOfMarks();
         int jumpIndex = (grade>6) ? 27 : 31;
@@ -201,6 +205,7 @@ public class Marks {
         }
         return promotion;
     }
+    @JsonIgnore
     public boolean isAwardBar (boolean promotion, int grade) {
         if (promotion) {
             boolean awardBar = true;
@@ -234,6 +239,7 @@ public class Marks {
             return false;
         }
     }
+
 
     @Override
     public String toString() {

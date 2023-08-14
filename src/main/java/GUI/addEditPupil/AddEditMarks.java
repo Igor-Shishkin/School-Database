@@ -30,7 +30,7 @@ public class AddEditMarks extends JDialog implements ActionListener {
     Font font, fontForAverage;
     JButton addButton, cancelButton;
 
-    AddEditMarks(JFrame parentFrame, Marks marks, Boolean awardBar, Boolean promotion, int grade) throws IOException {
+    public AddEditMarks(JFrame parentFrame, Marks marks, Boolean awardBar, Boolean promotion, int grade) throws IOException {
         super(parentFrame, "Marks", true);
         this.marks = marks;
         this.grade = grade;
