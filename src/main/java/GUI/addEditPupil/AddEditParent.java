@@ -2,6 +2,7 @@ package GUI.addEditPupil;
 
 import GUI.listeners.*;
 import GUI.styleStorage.ConstantsOfStyle;
+import database.Address;
 import database.Parent;
 
 import javax.swing.*;
@@ -12,8 +13,12 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.time.DateTimeException;
+import java.time.LocalDate;
+import java.util.Objects;
 
 public class AddEditParent extends JDialog implements ActionListener {
+    JFrame parentFrame;
     JLabel nameLabel, surnameLabel, secondNameLabel, eMailLabel, telephoneLabel, genderLabel, dateOfBirth, yearLabel,
             monthLabel, dayLabel, addressLabel, countryLabel, provinceLabel, townLabel,
             streetLabel, houseLabel, localLabel, postCodeLabel, peselJLabel;
@@ -22,20 +27,20 @@ public class AddEditParent extends JDialog implements ActionListener {
             localField, postCodeField;
     JComboBox<String> genderComboBox;
 
-    JButton makeAddressLikePupils, addDataButton, cancel, addButton, cancelButton;
+    JButton addDataButton, cancelButton, deleteParentButton;
 
     Font remRegular;
     Font font;
 
-    String country, province, town, street, postCode,house, local;
+    String country, province, town, street, postCode, house, local;
     JCheckBox setAddressCheckBox;
     Parent parent;
-    boolean newParent = false;
+    boolean newParent = false, isSecondParent;
 
 
     public AddEditParent(JFrame parentFrame, Parent parent, String country, String province, String town, String street, String house, String local,
-                         String postCode) throws IOException, FontFormatException {
-        super(parentFrame, "Add parent", true); // Make it modal
+                         String postCode, boolean isSecondParent) throws IOException, FontFormatException {
+        super(parentFrame, "Parent's data", true); // Make it modal
         setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
         this.parent = parent;
         this.country = country;
@@ -45,13 +50,15 @@ public class AddEditParent extends JDialog implements ActionListener {
         this.house = house;
         this.local = local;
         this.postCode = postCode;
+        this.parentFrame = parentFrame;
+        this.isSecondParent = isSecondParent;
 
-        if (parent==null) { newParent = true; }
+        if (parent == null) {
+            newParent = true;
+            parent = new Parent();
+        }
 
-        Path workDir = Paths.get("src", "main", "resources");
-        File fontFile = new File(workDir.resolve("REM-Regular.ttf").toUri());
-        remRegular = Font.createFont(Font.TRUETYPE_FONT, fontFile);
-        font = remRegular.deriveFont(Font.PLAIN, 19);
+        font = ConstantsOfStyle.THE_MAIN_FONT.deriveFont(Font.PLAIN, 19);
 
         this.setLayout(new GridBagLayout());
         this.setFont(font);
@@ -87,23 +94,99 @@ public class AddEditParent extends JDialog implements ActionListener {
             peselField.setBackground(ConstantsOfStyle.COLOR_FOR_WRONG_FORMAT);
         } else {
             nameField.setBackground((nameField.getText().trim().equals(""))
-                    ?ConstantsOfStyle.COLOR_FOR_WRONG_FORMAT:ConstantsOfStyle.COLOR_FOR_RIGHT_FORMAT);
+                    ? ConstantsOfStyle.COLOR_FOR_WRONG_FORMAT : ConstantsOfStyle.COLOR_FOR_RIGHT_FORMAT);
             surnameField.setBackground((surnameField.getText().trim().equals(""))
-                    ?ConstantsOfStyle.COLOR_FOR_WRONG_FORMAT:ConstantsOfStyle.COLOR_FOR_RIGHT_FORMAT);
+                    ? ConstantsOfStyle.COLOR_FOR_WRONG_FORMAT : ConstantsOfStyle.COLOR_FOR_RIGHT_FORMAT);
             telephoneField.setBackground((telephoneField.getText().trim().equals(""))
-                    ?ConstantsOfStyle.COLOR_FOR_WRONG_FORMAT:ConstantsOfStyle.COLOR_FOR_RIGHT_FORMAT);
+                    ? ConstantsOfStyle.COLOR_FOR_WRONG_FORMAT : ConstantsOfStyle.COLOR_FOR_RIGHT_FORMAT);
             eMailField.setBackground((eMailField.getText().trim().equals(""))
-                    ?ConstantsOfStyle.COLOR_FOR_WRONG_FORMAT:ConstantsOfStyle.COLOR_FOR_RIGHT_FORMAT);
-            dayField.setBackground((dayField.getText().trim().equals(""))
-                    ?ConstantsOfStyle.COLOR_FOR_WRONG_FORMAT:ConstantsOfStyle.COLOR_FOR_RIGHT_FORMAT);
-            monthField.setBackground((monthField.getText().trim().equals(""))
-                    ?ConstantsOfStyle.COLOR_FOR_WRONG_FORMAT:ConstantsOfStyle.COLOR_FOR_RIGHT_FORMAT);
-            yearField.setBackground((yearField.getText().trim().equals(""))
-                    ?ConstantsOfStyle.COLOR_FOR_WRONG_FORMAT:ConstantsOfStyle.COLOR_FOR_RIGHT_FORMAT);
-            peselField.setBackground((peselField.getText().trim().equals(""))
-                    ?ConstantsOfStyle.COLOR_FOR_WRONG_FORMAT:ConstantsOfStyle.COLOR_FOR_RIGHT_FORMAT);
-            genderComboBox.setBackground((genderComboBox.getSelectedIndex()<1)
-                    ?ConstantsOfStyle.COLOR_FOR_WRONG_FORMAT:ConstantsOfStyle.COLOR_FOR_RIGHT_FORMAT);
+                    ? ConstantsOfStyle.COLOR_FOR_WRONG_FORMAT : ConstantsOfStyle.COLOR_FOR_RIGHT_FORMAT);
+            genderComboBox.setBackground((genderComboBox.getSelectedIndex() < 1)
+                    ? ConstantsOfStyle.COLOR_FOR_WRONG_FORMAT : ConstantsOfStyle.COLOR_FOR_RIGHT_FORMAT);
+            try {
+                int number = Integer.parseInt(dayField.getText().trim());
+                if (number < 32 && number > 0) {
+                    dayField.setBackground(ConstantsOfStyle.COLOR_FOR_RIGHT_FORMAT);
+                } else {
+                    dayField.setBackground(ConstantsOfStyle.COLOR_FOR_WRONG_FORMAT);
+                }
+            } catch (NumberFormatException ex) {
+                dayField.setBackground(ConstantsOfStyle.COLOR_FOR_WRONG_FORMAT);
+            }
+
+            try {
+                int yearNumber = Integer.parseInt(this.yearField.getText().trim());
+                if (yearNumber > LocalDate.now().getYear() - 100 && yearNumber <= LocalDate.now().getYear() - 18) {
+                    yearField.setBackground(ConstantsOfStyle.COLOR_FOR_RIGHT_FORMAT);
+                } else {
+                    yearField.setBackground(ConstantsOfStyle.COLOR_FOR_WRONG_FORMAT);
+                }
+            } catch (NumberFormatException ex) {
+                yearField.setBackground(ConstantsOfStyle.COLOR_FOR_WRONG_FORMAT);
+            }
+            try {
+                int number = Integer.parseInt(this.monthField.getText().trim());
+                if (number < 13 && number > 0) {
+                    monthField.setBackground(ConstantsOfStyle.COLOR_FOR_RIGHT_FORMAT);
+                } else {
+                    monthField.setBackground(ConstantsOfStyle.COLOR_FOR_WRONG_FORMAT);
+                }
+            } catch (NumberFormatException ex) {
+                monthField.setBackground(ConstantsOfStyle.COLOR_FOR_WRONG_FORMAT);
+            }
+            if (yearField.getBackground() == ConstantsOfStyle.COLOR_FOR_RIGHT_FORMAT &&
+                    monthField.getBackground() == ConstantsOfStyle.COLOR_FOR_RIGHT_FORMAT &&
+                    dayField.getBackground() == ConstantsOfStyle.COLOR_FOR_RIGHT_FORMAT) {
+                try {
+                    LocalDate.of(Integer.parseInt(yearField.getText().trim()),
+                            Integer.parseInt(monthField.getText().trim()),
+                            Integer.parseInt(dayField.getText().trim()));
+                } catch (DateTimeException e) {
+                    yearField.setBackground(ConstantsOfStyle.COLOR_FOR_WRONG_FORMAT);
+                    monthField.setBackground(ConstantsOfStyle.COLOR_FOR_WRONG_FORMAT);
+                    dayField.setBackground(ConstantsOfStyle.COLOR_FOR_WRONG_FORMAT);
+                }
+            }
+            if (peselField.getText().length() == 11 &&
+                    Objects.equals(yearField.getBackground(), ConstantsOfStyle.COLOR_FOR_RIGHT_FORMAT) &&
+                    Objects.equals(yearField.getBackground(), ConstantsOfStyle.COLOR_FOR_RIGHT_FORMAT) &&
+                    Objects.equals(monthField.getBackground(), ConstantsOfStyle.COLOR_FOR_RIGHT_FORMAT) &&
+                    Objects.equals(dayField.getBackground(), ConstantsOfStyle.COLOR_FOR_RIGHT_FORMAT) &&
+                    !Objects.equals(genderComboBox.getSelectedItem(), "")) {
+                int yearNumber = Integer.parseInt(yearField.getText().trim());
+                int monthNumber = Integer.parseInt(monthField.getText().trim());
+                String endOfYear = String.format("%02d", Integer.parseInt(yearField.getText().trim()) % 100);
+                String month = String.format("%02d", (yearNumber < 2000)
+                        ? monthNumber :
+                        (yearNumber < 2100) ? monthNumber + 20 :
+                                (yearNumber < 2200) ? monthNumber + 40 : monthNumber + 60);
+                String day = String.format("%02d", Integer.parseInt(dayField.getText().trim()));
+                String pesel = peselField.getText().trim();
+
+                if (pesel.substring(0, 2).equals(endOfYear) &&
+                        pesel.substring(2, 4).equals(month) &&
+                        pesel.substring(4, 6).equals(day) &&
+                        (Objects.equals(genderComboBox.getSelectedItem(), "Male") && (
+                                pesel.charAt(9) == '1' ||
+                                        pesel.charAt(9) == '3' ||
+                                        pesel.charAt(9) == '5' ||
+                                        pesel.charAt(9) == '7' ||
+                                        pesel.charAt(9) == '9') ||
+                                Objects.equals(genderComboBox.getSelectedItem(), "Female") && (
+                                        pesel.charAt(9) == '0' ||
+                                                pesel.charAt(9) == '2' ||
+                                                pesel.charAt(9) == '4' ||
+                                                pesel.charAt(9) == '6' ||
+                                                pesel.charAt(9) == '8')
+                        )
+                ) {
+                    peselField.setBackground(ConstantsOfStyle.COLOR_FOR_RIGHT_FORMAT);
+                } else {
+                    peselField.setBackground(ConstantsOfStyle.COLOR_FOR_WRONG_FORMAT);
+                }
+            } else {
+                peselField.setBackground(ConstantsOfStyle.COLOR_FOR_WRONG_FORMAT);
+            }
         }
     }
 
@@ -118,7 +201,7 @@ public class AddEditParent extends JDialog implements ActionListener {
             monthField.setText((parent.getDateOfBirth() != null) ? Integer.toString(parent.getDateOfBirth().getMonthValue()) : "");
             dayField.setText((parent.getDateOfBirth() != null) ? Integer.toString(parent.getDateOfBirth().getDayOfMonth()) : "");
             peselField.setText((parent.getPesel() != null) ? parent.getPesel() : "");
-            genderComboBox.setSelectedIndex((parent.getGender()=='M')?1:(parent.getGender()=='F')?2:0);
+            genderComboBox.setSelectedIndex((parent.getGender() == 'M') ? 1 : (parent.getGender() == 'F') ? 2 : 0);
             if (parent.getAddress() != null) {
                 countryField.setText((parent.getAddress().getCountry() != null) ? parent.getAddress().getCountry() : "");
                 provinceField.setText((parent.getAddress().getProvince() != null) ? parent.getAddress().getProvince() : "");
@@ -150,6 +233,8 @@ public class AddEditParent extends JDialog implements ActionListener {
         setAddressCheckBox.addActionListener(this);
         eMailField.getDocument().addDocumentListener(new IsRightEMailDocumentListener(eMailField));
         telephoneField.getDocument().addDocumentListener(new IsRightPhoneNumberDocumentListener(telephoneField));
+        addDataButton.addActionListener(this);
+        cancelButton.addActionListener(this);
     }
 
     private void setStyleForWindow() {
@@ -200,7 +285,7 @@ public class AddEditParent extends JDialog implements ActionListener {
         houseField = new JTextField(13);
         localField = new JTextField(13);
         postCodeField = new JTextField(13);
-        peselField =new JTextField(13);
+        peselField = new JTextField(13);
 
         genderComboBox = new JComboBox<>(new String[]{"", "Male", "Female"});
 
@@ -208,7 +293,11 @@ public class AddEditParent extends JDialog implements ActionListener {
         addDataButton = new JButton("Add parent's data");
         addDataButton.setFont(remRegular.deriveFont(Font.BOLD, 19));
         addDataButton.setForeground(new Color(0x044B00));
-        cancel = new JButton("Cancel");
+        cancelButton = new JButton("Cancel");
+        deleteParentButton = new JButton("Delete parent");
+        deleteParentButton.setVisible(isSecondParent);
+        deleteParentButton.setBackground(Color.DARK_GRAY);
+        deleteParentButton.setForeground(Color.red);
 
         GridBagConstraints c = new GridBagConstraints();
         c.insets = new Insets(5, 3, 5, 3);
@@ -387,7 +476,14 @@ public class AddEditParent extends JDialog implements ActionListener {
         c.insets = new Insets(2, 55, 5, 40);
         c.gridx = 0;
         c.gridy = 11;
-        this.add(cancel, c);
+        this.add(cancelButton, c);
+
+        if (isSecondParent) {
+            c.insets = new Insets(2, 5, 5, 5);
+            c.gridx = 4;
+            c.gridy = 11;
+            this.add(deleteParentButton, c);
+        }
     }
 
     private void setFontForComponents(Container container, Font font) {
@@ -400,11 +496,70 @@ public class AddEditParent extends JDialog implements ActionListener {
                 setFontForComponents((Container) component, font);
             }
         }
-        setAddressCheckBox.setFont(ConstantsOfStyle.THE_MAIN_FONT.deriveFont(Font.PLAIN,15));
+        setAddressCheckBox.setFont(ConstantsOfStyle.THE_MAIN_FONT.deriveFont(Font.PLAIN, 15));
     }
+
     @Override
     public void actionPerformed(ActionEvent e) {
-        if(e.getSource()==setAddressCheckBox) {
+        if (e.getSource() == addDataButton) {
+            if (nameField.getBackground() == ConstantsOfStyle.COLOR_FOR_RIGHT_FORMAT &&
+                    surnameField.getBackground() == ConstantsOfStyle.COLOR_FOR_RIGHT_FORMAT &&
+                    telephoneField.getBackground() == ConstantsOfStyle.COLOR_FOR_RIGHT_FORMAT &&
+                    eMailField.getBackground() == ConstantsOfStyle.COLOR_FOR_RIGHT_FORMAT &&
+                    genderComboBox.getBackground() == ConstantsOfStyle.COLOR_FOR_RIGHT_FORMAT &&
+                    peselField.getBackground() == ConstantsOfStyle.COLOR_FOR_RIGHT_FORMAT &&
+                    yearField.getBackground() == ConstantsOfStyle.COLOR_FOR_RIGHT_FORMAT &&
+                    monthField.getBackground() == ConstantsOfStyle.COLOR_FOR_RIGHT_FORMAT &&
+                    dayField.getBackground() == ConstantsOfStyle.COLOR_FOR_RIGHT_FORMAT &&
+                    nameField.getBackground() == ConstantsOfStyle.COLOR_FOR_RIGHT_FORMAT
+            ) {
+                String secondName = (secondNameField.getText().trim().equals("")) ? null : secondNameField.getText().trim();
+                char gender = (Objects.equals(genderComboBox.getSelectedItem(), "Male")) ? 'M' : 'F';
+                parent.setName(nameField.getText().trim());
+                parent.setSecondName(secondName);
+                parent.setSurname(surnameField.getText().trim());
+                parent.setDateOfBirth(LocalDate.of(Integer.parseInt(yearField.getText().trim()),
+                        Integer.parseInt(monthField.getText().trim()),
+                        Integer.parseInt(dayField.getText().trim())));
+                parent.setPesel(peselField.getText().trim());
+                parent.setTelephone(telephoneField.getText().trim());
+                parent.seteMail(eMailField.getText().trim());
+                parent.setAddress(new Address(
+                        countryField.getText().trim(),
+                        provinceField.getText().trim(),
+                        townField.getText().trim(),
+                        streetField.getText().trim(),
+                        Integer.parseInt(houseField.getText().trim()),
+                        Integer.parseInt(localField.getText().trim()),
+                        postCodeField.getText().trim()));
+                dispose();
+            } else {
+                JOptionPane.showMessageDialog(parentFrame, "Some data are wrong.", "ERROR",
+                        JOptionPane.INFORMATION_MESSAGE);
+            }
+
+        }
+        if (e.getSource() == cancelButton) {
+            String[] responses = {"Close without saving", "Return to editing"};
+            int answer = JOptionPane.showOptionDialog(parentFrame, "Would you like to exit? \n Changes won't be saved",
+                    "Are you sure?", JOptionPane.OK_CANCEL_OPTION, JOptionPane.WARNING_MESSAGE, null,
+                    responses, responses[0]);
+            if (answer == 0) { dispose(); }
+        }
+
+        if (e.getSource()==deleteParentButton) {
+            String[] responses = {"Close without saving", "Return to editing"};
+            int answer = JOptionPane.showOptionDialog(parentFrame, "Would you like to exit?\nChanges won't be saved",
+                    "Are you sure?", JOptionPane.OK_CANCEL_OPTION, JOptionPane.WARNING_MESSAGE, null,
+                    responses, responses[0]);
+            if (JOptionPane.showOptionDialog(parentFrame, "Would you like\nto delete parent?",
+                    "Are you sure?", JOptionPane.OK_CANCEL_OPTION, JOptionPane.WARNING_MESSAGE, null,
+                    responses, responses[0]) == JOptionPane.YES_OPTION) {
+                parent = null;
+                dispose(); }
+        }
+
+        if (e.getSource() == setAddressCheckBox) {
             if (setAddressCheckBox.isSelected()) {
                 countryField.setText(country);
                 provinceField.setText(province);

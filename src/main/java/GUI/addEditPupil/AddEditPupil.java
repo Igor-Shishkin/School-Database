@@ -29,6 +29,8 @@ public class AddEditPupil extends JDialog implements ActionListener {
     Font font;
     Pupil pupil, pupilFromDatabase;
     JFrame parentFrame;
+    String achievement;
+    int grade;
 
 
     public AddEditPupil(JFrame parentFrame, Pupil pupil) throws IOException, FontFormatException {
@@ -44,7 +46,12 @@ public class AddEditPupil extends JDialog implements ActionListener {
             pupil.setId(PupilsDataList.getMinPossibleID());
             NEW_PUPIL = true;
         }
-
+        parent1 = pupil.getParent1().clone();
+        parent2 = pupil.getParent2().clone();
+        marks = pupil.getMarks().clone();
+        promotionToNextGrade = pupil.isPromotionToNextGrade();
+        awardBar = pupil.isAwardBar();;
+        achievement = pupil.getAchievement();
 
         this.setLayout(new GridBagLayout());
         this.setFont(new Font(null, Font.BOLD, 20));
@@ -360,6 +367,7 @@ public class AddEditPupil extends JDialog implements ActionListener {
             postCodeField.setText((pupil.getAddress() == null) ? "" : pupil.getAddress().getPostCode());
             gradeComboBox.setSelectedIndex(pupil.getGrade() + 1);
             genderComboBox.setSelectedIndex((pupil.getGender() == 'M') ? 1 : (pupil.getGender() == 'F') ? 2 : 0);
+            idField.setEnabled(false);
 
             checkIfDataAreRight();
 
@@ -384,13 +392,41 @@ public class AddEditPupil extends JDialog implements ActionListener {
             genderComboBox.setBackground(ConstantsOfStyle.COLOR_FOR_WRONG_FORMAT);
         }
         if (pupil.getDateOfBirth() != null) {
-            dayField.setBackground(ConstantsOfStyle.COLOR_FOR_RIGHT_FORMAT);
-            monthField.setBackground(ConstantsOfStyle.COLOR_FOR_RIGHT_FORMAT);
-            yearField.setBackground(ConstantsOfStyle.COLOR_FOR_RIGHT_FORMAT);
+            try {
+                int number = Integer.parseInt(dayField.getText().trim());
+                if (number < 32 && number > 0) {
+                    dayField.setBackground(ConstantsOfStyle.COLOR_FOR_RIGHT_FORMAT);
+                } else {
+                    dayField.setBackground(ConstantsOfStyle.COLOR_FOR_WRONG_FORMAT);
+                }
+            } catch (NumberFormatException ex) {
+                dayField.setBackground(ConstantsOfStyle.COLOR_FOR_WRONG_FORMAT);
+            }
+
+            try {
+                int yearNumber = Integer.parseInt(this.yearField.getText().trim());
+                if (yearNumber > LocalDate.now().getYear() - 20 && yearNumber <= LocalDate.now().getYear() - 5) {
+                    yearField.setBackground(ConstantsOfStyle.COLOR_FOR_RIGHT_FORMAT);
+                } else {
+                    yearField.setBackground(ConstantsOfStyle.COLOR_FOR_WRONG_FORMAT);
+                }
+            } catch (NumberFormatException ex) {
+                yearField.setBackground(ConstantsOfStyle.COLOR_FOR_WRONG_FORMAT);
+            }
+            try {
+                int number = Integer.parseInt(this.monthField.getText().trim());
+                if (number < 13 && number > 0) {
+                    monthField.setBackground(ConstantsOfStyle.COLOR_FOR_RIGHT_FORMAT);
+                } else {
+                    monthField.setBackground(ConstantsOfStyle.COLOR_FOR_WRONG_FORMAT);
+                }
+            } catch (NumberFormatException ex) {
+                monthField.setBackground(ConstantsOfStyle.COLOR_FOR_WRONG_FORMAT);
+            }
         }
-        if (yearField.getBackground()==ConstantsOfStyle.COLOR_FOR_RIGHT_FORMAT &&
-                monthField.getBackground()==ConstantsOfStyle.COLOR_FOR_RIGHT_FORMAT &&
-                dayField.getBackground()==ConstantsOfStyle.COLOR_FOR_RIGHT_FORMAT) {
+        if (yearField.getBackground() == ConstantsOfStyle.COLOR_FOR_RIGHT_FORMAT &&
+                monthField.getBackground() == ConstantsOfStyle.COLOR_FOR_RIGHT_FORMAT &&
+                dayField.getBackground() == ConstantsOfStyle.COLOR_FOR_RIGHT_FORMAT) {
             try {
                 LocalDate.of(Integer.parseInt(yearField.getText().trim()),
                         Integer.parseInt(monthField.getText().trim()),
@@ -400,8 +436,7 @@ public class AddEditPupil extends JDialog implements ActionListener {
                 monthField.setBackground(ConstantsOfStyle.COLOR_FOR_RIGHT_FORMAT);
                 monthField.setBackground(ConstantsOfStyle.COLOR_FOR_RIGHT_FORMAT);
             }
-        }
-        if (peselField.getText().length() == 11) {
+            if (peselField.getText().length() == 11) {
             if (Objects.equals(yearField.getBackground(), ConstantsOfStyle.COLOR_FOR_RIGHT_FORMAT) &&
                     Objects.equals(yearField.getBackground(), ConstantsOfStyle.COLOR_FOR_RIGHT_FORMAT) &&
                     Objects.equals(monthField.getBackground(), ConstantsOfStyle.COLOR_FOR_RIGHT_FORMAT) &&
@@ -410,7 +445,8 @@ public class AddEditPupil extends JDialog implements ActionListener {
                 int yearNumber = Integer.parseInt(yearField.getText().trim());
                 int monthNumber = Integer.parseInt(monthField.getText().trim());
                 String endOfYear = String.format("%02d", Integer.parseInt(yearField.getText().trim()) % 100);
-                String month = Integer.toString((yearNumber < 2000) ? monthNumber :
+                String month = String.format("%02d",(yearNumber < 2000)
+                        ?  monthNumber :
                         (yearNumber < 2100) ? monthNumber + 20 :
                                 (yearNumber < 2200) ? monthNumber + 40 : monthNumber + 60);
                 String day = String.format("%02d", Integer.parseInt(dayField.getText().trim()));
@@ -441,6 +477,7 @@ public class AddEditPupil extends JDialog implements ActionListener {
         } else {
             peselField.setBackground(ConstantsOfStyle.COLOR_FOR_WRONG_FORMAT);
         }
+    }
         nameField.setBackground((!nameField.getText().trim().equals(""))
                 ?ConstantsOfStyle.COLOR_FOR_RIGHT_FORMAT : ConstantsOfStyle.COLOR_FOR_WRONG_FORMAT);
         surnameField.setBackground((!surnameField.getText().trim().equals(""))
@@ -466,34 +503,54 @@ public class AddEditPupil extends JDialog implements ActionListener {
     @Override
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() == achievementButton) {
-            AddEditAchievement addEditAchievement = new AddEditAchievement(parentFrame, pupil.getAchievement());
-            pupil.setAchievement(addEditAchievement.showDialogAndGetInput());
+            AddEditAchievement addEditAchievement = new AddEditAchievement(parentFrame, achievement);
+            achievement = addEditAchievement.showDialogAndGetInput();
         }
         if (e.getSource() == markButton) {
             AddEditMarks addEditMarks = null;
             try {
-                addEditMarks = new AddEditMarks(parentFrame, pupil.getMarks(), pupil.isAwardBar(),
-                        pupil.isPromotionToNextGrade(), pupil.getGrade());
+                addEditMarks = new AddEditMarks(parentFrame, marks, awardBar,
+                        promotionToNextGrade, gradeComboBox.getSelectedIndex()-1);
             } catch (IOException ex) {
                 throw new RuntimeException(ex);
             }
-            pupil.setMarks(addEditMarks.showDialogAndGetInput());
-            pupil.setPromotionToNextGrade(pupil.getMarks().getPromotion(pupil.getGrade()));
-            pupil.setAwardBar(pupil.getMarks().isAwardBar(pupil.isPromotionToNextGrade(), pupil.getGrade()));
+            marks = addEditMarks.showDialogAndGetInput();
+            promotionToNextGrade = marks.getPromotion(pupil.getGrade());
+            awardBar = marks.isAwardBar(promotionToNextGrade, gradeComboBox.getSelectedIndex()-1);
         }
         if (e.getSource() == cancelButton) {
-            dispose();
+            String[] responses = {"Close without saving", "Return to editing"};
+            int answer = JOptionPane.showOptionDialog(parentFrame, "Would you like to exit? \n Changes won't be saved",
+                    "Are you sure?", JOptionPane.OK_CANCEL_OPTION, JOptionPane.WARNING_MESSAGE, null,
+                    responses, responses[0]);
+            if (answer == 0) { dispose(); }
         }
         if (e.getSource() == addFirstParentButton) {
             try {
-                new AddEditParent(parentFrame, pupil.getParent1(),
+                new AddEditParent(parentFrame, parent1,
                         countryField.getText(),
                         provinceField.getText(),
                         townField.getText(),
                         streetField.getText(),
                         houseField.getText().trim(),
                         localField.getText().trim(),
-                        postCodeField.getText());
+                        postCodeField.getText(),
+                        false);
+            } catch (IOException | FontFormatException ex) {
+                throw new RuntimeException(ex);
+            }
+        }
+        if (e.getSource() == addSecondParentButton) {
+            try {
+                new AddEditParent(parentFrame, parent2,
+                        countryField.getText(),
+                        provinceField.getText(),
+                        townField.getText(),
+                        streetField.getText(),
+                        houseField.getText().trim(),
+                        localField.getText().trim(),
+                        postCodeField.getText(),
+                        true);
             } catch (IOException | FontFormatException ex) {
                 throw new RuntimeException(ex);
             }
@@ -507,20 +564,28 @@ public class AddEditPupil extends JDialog implements ActionListener {
                     peselField.getBackground()==ConstantsOfStyle.COLOR_FOR_RIGHT_FORMAT &&
                     genderComboBox.getBackground()==ConstantsOfStyle.COLOR_FOR_RIGHT_FORMAT &&
                     gradeComboBox.getBackground()==ConstantsOfStyle.COLOR_FOR_RIGHT_FORMAT &&
-                    addFirstParentButton.getBackground()==ConstantsOfStyle.COLOR_FOR_RIGHT_FORMAT ) {
-//                    idField.getBackground()==ConstantsOfStyle.COLOR_FOR_RIGHT_FORMAT
+                    addFirstParentButton.getBackground()==ConstantsOfStyle.COLOR_FOR_RIGHT_FORMAT &&
+                    (idField.getBackground()==ConstantsOfStyle.COLOR_FOR_RIGHT_FORMAT ||
+                            !idField.isEnabled()) ) {
 
                 if (NEW_PUPIL) {
-                    String secondName = (secondNameField.getText().trim().equals("")) ? null : secondNameField.getText().trim();
+                    String secondName = (secondNameField.getText().trim().equals(""))
+                            ? null : secondNameField.getText().trim();
                     char gender = (Objects.equals(genderComboBox.getSelectedItem(), "Male")) ? 'M' : 'F';
                     try {
                         if (PupilsDataList.addPupilToList
                                 (new Pupil(nameField.getText().trim(), secondName, surnameField.getText().trim(), gender,
-                                        Integer.parseInt(yearField.getText().trim()), Integer.parseInt(monthField.getText().trim()),
-                                        Integer.parseInt(dayField.getText().trim()), new Address(countryField.getText().trim(),
-                                        provinceField.getText().trim(), townField.getText().trim(), streetField.getText().trim(),
-                                        Integer.parseInt(houseField.getText().trim()), Integer.parseInt(localField.getText().trim()),
-                                        postCodeField.getText().trim()), peselField.getText().trim(),
+                                        Integer.parseInt(yearField.getText().trim()),
+                                        Integer.parseInt(monthField.getText().trim()),
+                                        Integer.parseInt(dayField.getText().trim()),
+                                        new Address(countryField.getText().trim(),
+                                                provinceField.getText().trim(),
+                                                townField.getText().trim(),
+                                                streetField.getText().trim(),
+                                                Integer.parseInt(houseField.getText().trim()),
+                                                Integer.parseInt(localField.getText().trim()),
+                                                postCodeField.getText().trim()),
+                                        peselField.getText().trim(),
                                         Integer.parseInt(idField.getText().trim()),
                                         Integer.parseInt((String) Objects.requireNonNull(gradeComboBox.getSelectedItem())),
                                         parent1, parent2, pupil.getAchievement(), marks, awardBar, promotionToNextGrade))) {
@@ -538,7 +603,8 @@ public class AddEditPupil extends JDialog implements ActionListener {
                                 JOptionPane.ERROR_MESSAGE);
                     }
                 } else {
-                    String secondName = (secondNameField.getText().trim().equals("")) ? null : secondNameField.getText().trim();
+                    String secondName = (secondNameField.getText().trim().equals(""))
+                            ? null : secondNameField.getText().trim();
                     char gender = (Objects.equals(genderComboBox.getSelectedItem(), "Male")) ? 'M' : 'F';
                     pupil.setName(nameField.getText().trim());
                     pupil.setSecondName(secondName);
@@ -556,6 +622,14 @@ public class AddEditPupil extends JDialog implements ActionListener {
                             Integer.parseInt(houseField.getText().trim()),
                             Integer.parseInt(localField.getText().trim()),
                             postCodeField.getText().trim()  ));
+                    pupil.setGrade(gradeComboBox.getSelectedIndex()-1);
+                    pupil.setMarks((pupil.getGrade()<4)?null:marks);
+                    pupil.setPromotionToNextGrade(promotionToNextGrade);
+                    pupil.setAwardBar(awardBar);
+                    pupil.setAchievement(achievement);
+
+                    pupil.setParent1(parent1);
+                    pupil.setParent2(parent2);
                     dispose();
                 }
             } else {
@@ -563,11 +637,6 @@ public class AddEditPupil extends JDialog implements ActionListener {
                         "\t\tI can't write this pupil!\nSome data was entered incorrectly", "ERROR",
                         JOptionPane.ERROR_MESSAGE);
             }
-        }
-
-        if (e.getSource() == addSecondParentButton) {
-//            int a = 10+ Integer.toString(gradeComboBox.getSelectedItem());
-            System.out.println(pupil.getMarks());
         }
     }
 
@@ -591,43 +660,20 @@ public class AddEditPupil extends JDialog implements ActionListener {
         genderComboBox.addActionListener(new GenderComboBoxListener(yearField, monthField, dayField,
                 peselField, genderComboBox));
         gradeComboBox.addActionListener(new GradeComboBoxListener(gradeComboBox, markButton));
-
+        if (NEW_PUPIL) { idField.getDocument().addDocumentListener(new IsRightIDDocumentListener(idField)); }
     }
 
-    private boolean isInt(String number) {
-        try {
-            Integer.parseInt(number.trim());
-            return true;
-        } catch (NumberFormatException e) {
-            return false;
-        }
-    }
-    public Pupil showDialogAndGetPupil(){
-        this.setVisible(true);
-        return pupilFromDatabase;
-    }
-
-//    private Object copyObject(Object objSource) {
-//        Object objDest = null;
+//    private boolean isInt(String number) {
 //        try {
-//            ByteArrayOutputStream bos = new ByteArrayOutputStream();
-//            ObjectOutputStream oos = new ObjectOutputStream(bos);
-//            oos.writeObject(objSource);
-//            oos.flush();
-//            oos.close();
-//            bos.close();
-//            byte[] byteData = bos.toByteArray();
-//            ByteArrayInputStream bais = new ByteArrayInputStream(byteData);
-//            try {
-//                objDest = new ObjectInputStream(bais).readObject();
-//            } catch (ClassNotFoundException e) {
-//                e.printStackTrace();
-//            }
-//        } catch (IOException e) {
-//            e.printStackTrace();
+//            Integer.parseInt(number.trim());
+//            return true;
+//        } catch (NumberFormatException e) {
+//            return false;
 //        }
-//        return objDest;
-//
+//    }
+//    public Pupil showDialogAndGetPupil(){
+//        this.setVisible(true);
+//        return pupilFromDatabase;
 //    }
 }
 

@@ -9,48 +9,37 @@ import java.util.Objects;
 
 public class GenderComboBoxListener implements ActionListener {
     JTextField yearTextField, monthTextField, dayTextField, peselTextField;
-    JComboBox<String> comboBox;
+    JComboBox<String> genderComboBox;
 
 
     public GenderComboBoxListener(JTextField yearTextField, JTextField monthTextField, JTextField dayTextField,
-                                  JTextField peselTextField, JComboBox<String> comboBox) {
+                                  JTextField peselTextField, JComboBox<String> genderComboBox) {
         this.yearTextField = yearTextField;
         this.monthTextField = monthTextField;
         this.dayTextField = dayTextField;
         this.peselTextField = peselTextField;
-        this.comboBox = comboBox;
+        this.genderComboBox = genderComboBox;
     }
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        if (Objects.equals(comboBox.getSelectedItem(), "")){
-            comboBox.setBackground(ConstantsOfStyle.COLOR_FOR_WRONG_FORMAT);
+        if (Objects.equals(genderComboBox.getSelectedItem(), "")){
+            genderComboBox.setBackground(ConstantsOfStyle.COLOR_FOR_WRONG_FORMAT);
         } else {
-            comboBox.setBackground(ConstantsOfStyle.COLOR_FOR_RIGHT_FORMAT);
+            genderComboBox.setBackground(ConstantsOfStyle.COLOR_FOR_RIGHT_FORMAT);
         }
-        boolean isNumber = true;
-        for (char c : peselTextField.getText().toCharArray()) {
-            if (!Character.isDigit(c)) {
-                isNumber = false;
-            }
-        }
-        if (peselTextField.getText().trim().isEmpty()) {
-            peselTextField.setBackground(ConstantsOfStyle.COLOR_NEUTRAL_FORMAT);
-        } else if (!isNumber|| peselTextField.getText().length()>11) {
-            peselTextField.setBackground(ConstantsOfStyle.COLOR_FOR_WRONG_FORMAT);
-        }else if (peselTextField.getText().length() < 11) {
-            peselTextField.setBackground(ConstantsOfStyle.COLOR_NEUTRAL_FORMAT);
-        }
+
         if (peselTextField.getText().length() == 11) {
             if (Objects.equals(yearTextField.getBackground(), ConstantsOfStyle.COLOR_FOR_RIGHT_FORMAT) &&
                     Objects.equals(yearTextField.getBackground(), ConstantsOfStyle.COLOR_FOR_RIGHT_FORMAT) &&
                     Objects.equals(monthTextField.getBackground(), ConstantsOfStyle.COLOR_FOR_RIGHT_FORMAT) &&
                     Objects.equals(dayTextField.getBackground(), ConstantsOfStyle.COLOR_FOR_RIGHT_FORMAT) &&
-                    !Objects.equals(comboBox.getSelectedItem(), "")) {
+                    !Objects.equals(genderComboBox.getSelectedItem(), "")) {
                 int yearNumber = Integer.parseInt(yearTextField.getText().trim());
                 int monthNumber = Integer.parseInt(monthTextField.getText().trim());
                 String endOfYear = String.format("%02d", Integer.parseInt(yearTextField.getText().trim())%100);
-                String month = Integer.toString((yearNumber < 2000) ? monthNumber :
+                String month = String.format("%02d",(yearNumber < 2000)
+                        ?  monthNumber :
                         (yearNumber < 2100) ? monthNumber + 20 :
                                 (yearNumber < 2200) ? monthNumber + 40 : monthNumber + 60);
                 String day = String.format("%02d", Integer.parseInt(dayTextField.getText().trim()));
@@ -59,13 +48,13 @@ public class GenderComboBoxListener implements ActionListener {
                 if (pesel.substring(0, 2).equals(endOfYear) &&
                         pesel.substring(2, 4).equals(month) &&
                         pesel.substring(4, 6).equals(day) &&
-                        (Objects.equals(comboBox.getSelectedItem(), "Male") && (
+                        (Objects.equals(genderComboBox.getSelectedItem(), "Male") && (
                                 pesel.charAt(9) == '1' ||
                                         pesel.charAt(9) == '3' ||
                                         pesel.charAt(9) == '5' ||
                                         pesel.charAt(9) == '7' ||
                                         pesel.charAt(9) == '9') ||
-                                Objects.equals(comboBox.getSelectedItem(), "Female") && (
+                                Objects.equals(genderComboBox.getSelectedItem(), "Female") && (
                                         pesel.charAt(9) == '0' ||
                                                 pesel.charAt(9) == '2' ||
                                                 pesel.charAt(9) == '4' ||

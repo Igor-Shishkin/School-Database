@@ -32,7 +32,7 @@ public class IsRightPhoneNumberDocumentListener implements DocumentListener {
         private void isRight() {
             String regex = "^\\s*(?:\\+?(\\d{1,3}))?[-. (]*(\\d{3})[-. )]*(\\d{3})[-. ]*(\\d{3,4})(?: *x(\\d+))?\\s*$";
             Pattern phonePattern = Pattern.compile(regex);
-            Matcher matcher = phonePattern.matcher(telephoneField.getText());
+            Matcher matcher = phonePattern.matcher(telephoneField.getText().trim());
             telephoneField.setBackground((matcher.matches())
                     ? ConstantsOfStyle.COLOR_FOR_RIGHT_FORMAT : ConstantsOfStyle.COLOR_FOR_WRONG_FORMAT);
         }

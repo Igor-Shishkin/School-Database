@@ -71,14 +71,14 @@ public class AddEditMarks extends JDialog implements ActionListener {
         promotionLayeredPane = new JLayeredPane();
         promotionLayeredPane.setBorder(BorderFactory.createLoweredBevelBorder());
         flagLabel = new JLabel();
-        try {
-            BufferedImage flagImage = ImageIO.read
-                    (new File(Paths.get("src","main", "resources", "Images", "FLAG_POLAND_HORIZONTAL.png")
-                            .toUri()));
-            flagLabel.setIcon(new ImageIcon(flagImage));
-        } catch (Exception e) {
-            e.printStackTrace();
-        };
+//        try {
+//            BufferedImage flagImage = ImageIO.read
+//                    (new File(Paths.get("src","main", "resources", "Images", "FLAG_POLAND_HORIZONTAL.png")
+//                            .toUri()));
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        };
+        flagLabel.setIcon(new ImageIcon(ConstantsOfStyle.FLAG_IMAGE));
         flagLabel.setBounds(0,0,500,50);
         flagLabel.setVisible(awardBar);
         promotionLayeredPane.add(flagLabel);
@@ -124,7 +124,6 @@ public class AddEditMarks extends JDialog implements ActionListener {
     private void setMarksInComboBox() {
         if (marks != null) {
             int[] arrayOfMarks = marks.getArrayOfMarks();
-            System.out.println(Arrays.toString(arrayOfMarks));
             int jumpIndex = (grade>6) ? 27 : 31;
             for (int i = 0, j = 0; i < QUANTITY_OF_MARK_COMBOBOX; i++, j++) {
                 markComboBox[i].setSelectedIndex(arrayOfMarks[j]);
@@ -137,7 +136,6 @@ public class AddEditMarks extends JDialog implements ActionListener {
                 }
             }
             setEnabledForYearMarks();
-            System.out.println(marks.toString());
             for (int i = 0; i < 4; i++) {
                 boolean isAllMarksInColumn = true;
                 double sum = 0;
@@ -278,7 +276,6 @@ public class AddEditMarks extends JDialog implements ActionListener {
                 int option = JOptionPane.showConfirmDialog(
                         null, "Do you want to exit?", "Confirm Exit",
                         JOptionPane.YES_NO_OPTION);
-
                 if (option == JOptionPane.YES_OPTION) {
                     dispose();
                 }

@@ -1,6 +1,8 @@
 package database;
 
-public class Parent extends Person{
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
+public class Parent extends Person implements Cloneable{
     private String telephone;
     private String eMail;
     public Parent() {
@@ -37,5 +39,16 @@ public class Parent extends Person{
                 "telephone=" + telephone +
                 ", eMail='" + eMail + '\'' +
                 '}';
+    }
+
+    @JsonIgnore
+    @Override
+    public Parent clone() {
+        try {
+            // TODO: copy mutable state here, so the clone can't change the internals of the original
+            return (Parent) super.clone();
+        } catch (CloneNotSupportedException e) {
+            throw new AssertionError();
+        }
     }
 }

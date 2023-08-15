@@ -32,7 +32,7 @@ public class IsRightEMailDocumentListener implements DocumentListener {
     private void isRight() {
         String regex = "^\\w*(\\-\\w)?(\\.\\w*)?@\\w*(-\\w*)?\\.\\w{2,3}(\\.\\w{2,3})?$";
         Pattern eMailPattern = Pattern.compile(regex);
-        Matcher matcher = eMailPattern.matcher(eMailField.getText());
+        Matcher matcher = eMailPattern.matcher(eMailField.getText().trim());
         eMailField.setBackground((matcher.matches())
                 ? ConstantsOfStyle.COLOR_FOR_RIGHT_FORMAT : ConstantsOfStyle.COLOR_FOR_WRONG_FORMAT);
     }

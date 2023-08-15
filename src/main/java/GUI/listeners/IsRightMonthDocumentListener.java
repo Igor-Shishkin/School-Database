@@ -38,7 +38,7 @@ public class IsRightMonthDocumentListener  implements DocumentListener {
     }
     void isRight () {
         if (monthTextField.getText().trim().isEmpty()) {
-            monthTextField.setBackground(ConstantsOfStyle.COLOR_NEUTRAL_FORMAT);
+            monthTextField.setBackground(ConstantsOfStyle.COLOR_FOR_WRONG_FORMAT);
         } else {
             try {
                 int number = Integer.parseInt(this.monthTextField.getText().trim());
@@ -74,7 +74,8 @@ public class IsRightMonthDocumentListener  implements DocumentListener {
                 int yearNumber = Integer.parseInt(yearTextField.getText().trim());
                 int monthNumber = Integer.parseInt(monthTextField.getText().trim());
                 String endOfYear = String.format("%02d", Integer.parseInt(yearTextField.getText().trim())%100);
-                String month = Integer.toString((yearNumber < 2000) ? monthNumber :
+                String month = String.format("%02d",(yearNumber < 2000)
+                        ?  monthNumber :
                         (yearNumber < 2100) ? monthNumber + 20 :
                                 (yearNumber < 2200) ? monthNumber + 40 : monthNumber + 60);
                 String day = String.format("%02d", Integer.parseInt(dayTextField.getText().trim()));

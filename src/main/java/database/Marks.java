@@ -6,7 +6,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-public class Marks {
+public class Marks implements Cloneable{
 
     private int[] mathMark;
     private int[] polishMark;
@@ -257,6 +257,17 @@ public class Marks {
                 ", geographyMark=" + Arrays.toString(geographyMark) +
                 ", behaviorMark=" + Arrays.toString(behaviorMark) +
                 '}';
+    }
+
+    @JsonIgnore
+    @Override
+    public Marks clone() {
+        try {
+            // TODO: copy mutable state here, so the clone can't change the internals of the original
+            return (Marks) super.clone();
+        } catch (CloneNotSupportedException e) {
+            throw new AssertionError();
+        }
     }
 }
 

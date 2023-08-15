@@ -27,7 +27,6 @@ import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Objects;
 
 public class CentralPanel extends JPanel implements ActionListener, TreeSelectionListener {
@@ -46,7 +45,7 @@ public class CentralPanel extends JPanel implements ActionListener, TreeSelectio
     JTextField currentStatusField;
     JRadioButton getAllPupilsRadioButton, getPupilsWithBirthdayInThisMonthRadioButton, getPupilsWithAwardBarRadioButton,
             getNoPromotedPupilsRadioButton, getPupilsWithAchievement;
-    JButton showEditMarksButton, showEditAchievementButton, editDateButton;
+    JButton showEditMarksButton, showEditAchievementButton, editDateButton, addPupilButton, deletePupilButton;
     JFrame parentFrame;
 
     public CentralPanel(JFrame parentFrame, JTextField currentStatusField) throws IOException, FontFormatException {

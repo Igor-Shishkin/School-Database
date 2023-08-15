@@ -22,11 +22,13 @@ public class PupilsDataList {
     public static Boolean addPupilToList(Pupil p) {
         if (pupilsDataList.stream().noneMatch(pupil -> pupil.getId() == p.getId()) &&
                 pupilsDataList.stream().noneMatch(pupil -> Objects.equals(pupil.getPesel(), p.getPesel()))) {
-            pupilsDataList.add(p);
-            return true;
+            return pupilsDataList.add(p);
         } else {
             return false;
         }
+    }
+    public static boolean removePupil(Pupil pupil) {
+       return pupilsDataList.remove(pupil);
     }
 
     public static void removePupilFromList(int number) {
@@ -73,6 +75,10 @@ public class PupilsDataList {
         return null;
     }
 
+    public static boolean isNotThereID(int id){
+        return pupilsDataList.stream()
+                .noneMatch(pupil -> pupil.getId()==id);
+    }
     public static String getPupilInformation(Pupil p) {
         if (p.getParent2() != null) {
             if (p.getSecondName() == null) {
