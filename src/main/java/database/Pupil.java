@@ -1,5 +1,7 @@
 package database;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 public class Pupil extends Person{
 
     private static int idNumber=0;
@@ -115,6 +117,69 @@ public class Pupil extends Person{
     public void setId(int newID) {this.id = newID;}
     public static void setIdNumber(int idNumber) {
         Pupil.idNumber = idNumber;
+    }
+
+    @JsonIgnore
+    public String getPupilInformation() {
+        if (this.getParent2() != null) {
+            if (this.getSecondName() == null) {
+                return String.format("<html>%s %s<br>" +
+                                "Date of birth: %02d.%02d.%d  <br>" +
+                                "Grade: %d<br>" +
+                                "Parents:<br>" +
+                                "    %s %s. <br>    Telephone: %s<br>eMail: %s <br>" +
+                                "    %s %s. <br>    Telephone: %s<br>eMail: %s <br><br></html>",
+                        this.getName(), this.getSurname(),
+                        this.getDateOfBirth().getDayOfMonth(), this.getDateOfBirth().getMonthValue(),
+                        this.getDateOfBirth().getYear(),
+                        this.getGrade(),
+                        this.getParent1().getName(), this.getParent1().getSurname(), this.getParent1().getTelephone(),
+                        this.getParent1().geteMail(),
+                        this.getParent2().getName(), this.getParent2().getSurname(), this.getParent2().getTelephone(),
+                        this.getParent2().geteMail()
+                );
+            }
+            return String.format("<html>%s %s %s<br>" +
+                            "Date of birth: %02d.%02d.%d  <br>" +
+                            "Grade: %d<br>" +
+                            "Parents:<br>" +
+                            "\t%s %s. <br>Telephone: %s<br>eMail: %s <br>" +
+                            "\t%s %s. <br>Telephone: %s<br>eMail: %s <br><br></html>",
+                    this.getName(), this.getSecondName(), this.getSurname(),
+                    this.getDateOfBirth().getDayOfMonth(), this.getDateOfBirth().getMonthValue(),
+                    this.getDateOfBirth().getYear(),
+                    this.getGrade(),
+                    this.getParent1().getName(), this.getParent1().getSurname(), this.getParent1().getTelephone(),
+                    this.getParent1().geteMail(),
+                    this.getParent2().getName(), this.getParent2().getSurname(), this.getParent2().getTelephone(),
+                    this.getParent2().geteMail()
+            );
+        }
+        if (this.getSecondName() == null) {
+            return String.format("<html>%s %s<br>" +
+                            "Date of birth: %02d.%02d.%d  <br>" +
+                            "Grade: %d<br>" +
+                            "Parents:<br>" +
+                            "    %s %s. <br>    Telephone: %s<br>eMail: %s <br></html>",
+                    this.getName(), this.getSurname(),
+                    this.getDateOfBirth().getDayOfMonth(), this.getDateOfBirth().getMonthValue(),
+                    this.getDateOfBirth().getYear(),
+                    this.getGrade(),
+                    this.getParent1().getName(), this.getParent1().getSurname(), this.getParent1().getTelephone(),
+                    this.getParent1().geteMail()
+            );
+        }
+        return String.format("<html>%s %s %s<br>" +
+                        "Date of birth: %02d.%02d.%d  <br>" +
+                        "Grade: %d<br>" +
+                        "Parents:<br>" +
+                        "\t%s %s. <br>Telephone: %s<br>eMail: %s <br></html>",
+                this.getName(), this.getSecondName(), this.getSurname(),
+                this.getDateOfBirth().getDayOfMonth(), this.getDateOfBirth().getMonthValue(), this.getDateOfBirth().getYear(),
+                this.getGrade(),
+                this.getParent1().getName(), this.getParent1().getSurname(), this.getParent1().getTelephone(),
+                this.getParent1().geteMail()
+        );
     }
 
 

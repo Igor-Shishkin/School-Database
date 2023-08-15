@@ -1,5 +1,6 @@
 package GUI.addEditPupil;
 
+import GUI.listeners.*;
 import GUI.styleStorage.ConstantsOfStyle;
 import database.Parent;
 
@@ -17,7 +18,7 @@ public class AddEditParent extends JDialog implements ActionListener {
             monthLabel, dayLabel, addressLabel, countryLabel, provinceLabel, townLabel,
             streetLabel, houseLabel, localLabel, postCodeLabel, peselJLabel;
     JTextField nameField, surnameField, secondNameField, eMailField, telephoneField, genderField, yearField, monthField, dayField,
-            countryField, provinceField, townField, streetField, houseField, peselJField,
+            countryField, provinceField, townField, streetField, houseField, peselField,
             localField, postCodeField;
     JComboBox<String> genderComboBox;
 
@@ -58,10 +59,12 @@ public class AddEditParent extends JDialog implements ActionListener {
         setItemsToFrame();
         setFontForComponents(this, font);
         setStyleForWindow();
-        setActionListener();
 
         setDateToJFields();
         setBackgroundForItems();
+
+        setListener();
+
 
 //        this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         this.pack();
@@ -81,7 +84,7 @@ public class AddEditParent extends JDialog implements ActionListener {
             yearField.setBackground(ConstantsOfStyle.COLOR_FOR_WRONG_FORMAT);
             monthField.setBackground(ConstantsOfStyle.COLOR_FOR_WRONG_FORMAT);
             genderComboBox.setBackground(ConstantsOfStyle.COLOR_FOR_WRONG_FORMAT);
-            peselJField.setBackground(ConstantsOfStyle.COLOR_FOR_WRONG_FORMAT);
+            peselField.setBackground(ConstantsOfStyle.COLOR_FOR_WRONG_FORMAT);
         } else {
             nameField.setBackground((nameField.getText().trim().equals(""))
                     ?ConstantsOfStyle.COLOR_FOR_WRONG_FORMAT:ConstantsOfStyle.COLOR_FOR_RIGHT_FORMAT);
@@ -97,7 +100,7 @@ public class AddEditParent extends JDialog implements ActionListener {
                     ?ConstantsOfStyle.COLOR_FOR_WRONG_FORMAT:ConstantsOfStyle.COLOR_FOR_RIGHT_FORMAT);
             yearField.setBackground((yearField.getText().trim().equals(""))
                     ?ConstantsOfStyle.COLOR_FOR_WRONG_FORMAT:ConstantsOfStyle.COLOR_FOR_RIGHT_FORMAT);
-            peselJField.setBackground((peselJField.getText().trim().equals(""))
+            peselField.setBackground((peselField.getText().trim().equals(""))
                     ?ConstantsOfStyle.COLOR_FOR_WRONG_FORMAT:ConstantsOfStyle.COLOR_FOR_RIGHT_FORMAT);
             genderComboBox.setBackground((genderComboBox.getSelectedIndex()<1)
                     ?ConstantsOfStyle.COLOR_FOR_WRONG_FORMAT:ConstantsOfStyle.COLOR_FOR_RIGHT_FORMAT);
@@ -114,7 +117,7 @@ public class AddEditParent extends JDialog implements ActionListener {
             yearField.setText((parent.getDateOfBirth() != null) ? Integer.toString(parent.getDateOfBirth().getYear()) : "");
             monthField.setText((parent.getDateOfBirth() != null) ? Integer.toString(parent.getDateOfBirth().getMonthValue()) : "");
             dayField.setText((parent.getDateOfBirth() != null) ? Integer.toString(parent.getDateOfBirth().getDayOfMonth()) : "");
-            peselJField.setText((parent.getPesel() != null) ? parent.getPesel() : "");
+            peselField.setText((parent.getPesel() != null) ? parent.getPesel() : "");
             genderComboBox.setSelectedIndex((parent.getGender()=='M')?1:(parent.getGender()=='F')?2:0);
             if (parent.getAddress() != null) {
                 countryField.setText((parent.getAddress().getCountry() != null) ? parent.getAddress().getCountry() : "");
@@ -129,8 +132,24 @@ public class AddEditParent extends JDialog implements ActionListener {
 
     }
 
-    private void setActionListener() {
+    private void setListener() {
+        yearField.getDocument().addDocumentListener(new IsRightYearForParentDocumentListener(yearField, monthField, dayField,
+                peselField, genderComboBox));
+        monthField.getDocument().addDocumentListener(new IsRightMonthDocumentListener(yearField, monthField, dayField,
+                peselField, genderComboBox));
+        dayField.getDocument().addDocumentListener(new IsRightDayDocumentListener(yearField, monthField, dayField,
+                peselField, genderComboBox));
+        peselField.getDocument().addDocumentListener(new IsRightPeselDocumentListener(yearField, monthField, dayField,
+                peselField, genderComboBox));
+        genderComboBox.addActionListener(new GenderComboBoxListener(yearField, monthField, dayField,
+                peselField, genderComboBox));
+        houseField.getDocument().addDocumentListener(new CheckStreetAndLocalDocumentListener(houseField));
+        localField.getDocument().addDocumentListener(new CheckStreetAndLocalDocumentListener(localField));
+        nameField.getDocument().addDocumentListener(new IsEmptyDocumentListener(nameField));
+        surnameField.getDocument().addDocumentListener(new IsEmptyDocumentListener(surnameField));
         setAddressCheckBox.addActionListener(this);
+        eMailField.getDocument().addDocumentListener(new IsRightEMailDocumentListener(eMailField));
+        telephoneField.getDocument().addDocumentListener(new IsRightPhoneNumberDocumentListener(telephoneField));
     }
 
     private void setStyleForWindow() {
@@ -181,7 +200,7 @@ public class AddEditParent extends JDialog implements ActionListener {
         houseField = new JTextField(13);
         localField = new JTextField(13);
         postCodeField = new JTextField(13);
-        peselJField  =new JTextField(13);
+        peselField =new JTextField(13);
 
         genderComboBox = new JComboBox<>(new String[]{"", "Male", "Female"});
 
@@ -291,7 +310,7 @@ public class AddEditParent extends JDialog implements ActionListener {
 
         c.gridx = 1;
         c.gridy = 9;
-        this.add(peselJField, c);
+        this.add(peselField, c);
 
         c.gridx = 2;
         c.gridy = 4;

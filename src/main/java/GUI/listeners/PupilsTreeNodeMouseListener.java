@@ -48,7 +48,7 @@ public class PupilsTreeNodeMouseListener extends MouseAdapter {
             showEditAchievementButton.setVisible(true);
             editDateButton.setVisible(true);
 
-            CentralPanel.currentID = id;
+            CentralPanel.CURRENT_ID = id;
 
             pupilInformationLabel.repaint();
             informationPanel.repaint();

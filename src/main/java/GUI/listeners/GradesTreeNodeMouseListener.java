@@ -1,5 +1,6 @@
 package GUI.listeners;
 
+import GUI.CentralPanel;
 import database.Pupil;
 import database.PupilsDataList;
 
@@ -56,6 +57,8 @@ public class GradesTreeNodeMouseListener extends MouseAdapter {
                     (Objects.equals(node.toString(), "Sixth class")) ? 6 :
                     (Objects.equals(node.toString(), "Seventh class")) ? 7 :
                     (Objects.equals(node.toString(), "Eighth class")) ? 8 : -1;
+
+            CentralPanel.CURRENT_GRADE = grade;
 
             rootForPupilsTree.removeAllChildren();
 

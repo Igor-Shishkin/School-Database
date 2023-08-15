@@ -27,10 +27,11 @@ import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Objects;
 
 public class CentralPanel extends JPanel implements ActionListener, TreeSelectionListener {
-    public static int currentID;
+    public static int CURRENT_ID, CURRENT_GRADE;
     JPanel gradesPanel, pupilsPanel, informationPanel, panelForFilterRadioButtons;
     Border border;
     DefaultMutableTreeNode rootForGradePanel, rootForPupilsTree;
@@ -357,30 +358,22 @@ public class CentralPanel extends JPanel implements ActionListener, TreeSelectio
                 }
             }
             if (e.getSource() == editDateButton) {
-//                TreePath path = treeForPupilsPanel.getSelectionPath();
-//                if (path != null) {
-//                    DefaultMutableTreeNode node = (DefaultMutableTreeNode) path.getLastPathComponent();
-//                    String nodeName = node.toString();
-//                    int id = 0;
-//                    for (int i = nodeName.length() - 1, k = 0; i > 0; i--, k++) {
-//                        if (Character.isDigit(nodeName.charAt(i))) {
-//                            id += Character.digit(nodeName.charAt(i), 10) * Math.pow(10, k);
-//                        } else {
-//                            break;
-//                        }
-//                    }
-                System.out.println(currentID);
+
+                Pupil chosenPupil = PupilsDataList.getPupilWithCertainID(CURRENT_ID);
                 try {
                     new AddEditPupil(parentFrame,
-                            Objects.requireNonNull(PupilsDataList.getPupilWithCertainID(currentID)));
+                            chosenPupil);
                 } catch (IOException | FontFormatException ex) {
                     throw new RuntimeException(ex);
                 }
+                assert chosenPupil != null;
+                pupilInformationLabel.setText(chosenPupil.getPupilInformation());
+                refreshPupilsTree();
             }
         }
         if (e.getSource() == showEditMarksButton) {
             AddEditMarks addEditMarks = null;
-            Pupil chosenPupil = PupilsDataList.getPupilWithCertainID(currentID);
+            Pupil chosenPupil = PupilsDataList.getPupilWithCertainID(CURRENT_ID);
             try {
                 assert chosenPupil != null;
                 addEditMarks = new AddEditMarks(parentFrame, chosenPupil.getMarks(), chosenPupil.isAwardBar(),
@@ -390,12 +383,54 @@ public class CentralPanel extends JPanel implements ActionListener, TreeSelectio
             }
             chosenPupil.setMarks(addEditMarks.showDialogAndGetInput());
             chosenPupil.setPromotionToNextGrade(chosenPupil.getMarks().getPromotion(chosenPupil.getGrade()));
-            chosenPupil.setAwardBar(chosenPupil.getMarks().isAwardBar(chosenPupil.isPromotionToNextGrade(), chosenPupil.getGrade()));
+            chosenPupil.setAwardBar(chosenPupil.getMarks().isAwardBar(chosenPupil.isPromotionToNextGrade(),
+                    chosenPupil.getGrade()));
+
         }
 
     }
 
+    private void refreshPupilsTree() {
+        int[] selectionRows = treeForPupilsPanel.getSelectionRows();
+        rootForPupilsTree.removeAllChildren();
+        ArrayList<Pupil> list = new ArrayList<>();
+        DefaultMutableTreeNode node = (DefaultMutableTreeNode)
+                Objects.requireNonNull(treeForPupilsPanel.getSelectionPath()).getLastPathComponent();
 
+        if (CURRENT_GRADE>-1) {
+            list =  PupilsDataList.getListOfPupilsOfCertainGrade(CURRENT_GRADE);
+            if (list.size() != 0) {
+                for (int i = 0; i < list.size(); i++) {
+                    String nameNode = String.format("%d. %s", i + 1, PupilsDataList.getIdNamesSurname(list.get(i)));
+                    nodesForPupilsPanel.add(i, new DefaultMutableTreeNode(nameNode));
+                    rootForPupilsTree.add(nodesForPupilsPanel.get(i));
+                }
+//                informationLabelForPupilPanel.setText(node.toString().concat(":"));
+            } else {
+                String textForLabel = String.format("<html>%s<br>there are no pupils in this class</html>", node.toString());
+                informationLabelForPupilPanel.setText(textForLabel);
+            }
+        } else {
+            list = PupilsDataList.getListOfAllPupils();
+            if (list.size() != 0) {
+                for (int i = 0; i < list.size(); i++) {
+                    String nameNode = String.format(PupilsDataList.getGradeIdNamesSurname(list.get(i)));
+                    nodesForPupilsPanel.add(i, new DefaultMutableTreeNode(nameNode));
+                    rootForPupilsTree.add(nodesForPupilsPanel.get(i));
+                }
+                informationLabelForPupilPanel.setText(node.toString().concat(":"));
+            } else {
+                String textForLabel = "There are no database";
+                informationLabelForPupilPanel.setText(textForLabel);
+            }
+        }
+
+        treeForPupilsPanel.setSelectionRow(4);
+        pupilsTreeModel.nodeStructureChanged(rootForPupilsTree);
+        assert selectionRows != null;
+        treeForPupilsPanel.setSelectionRow(selectionRows[0]);
+        pupilsPanel.repaint();
+    }
     public void buildPupilsTree(ArrayList<Pupil> list,DefaultMutableTreeNode node, int grade) {
         rootForPupilsTree.removeAllChildren();
         if (list.size() != 0) {
@@ -408,7 +443,7 @@ public class CentralPanel extends JPanel implements ActionListener, TreeSelectio
                 rootForPupilsTree.add(nodesForPupilsPanel.get(i));
             }
 
-            informationLabelForPupilPanel.setText(node.toString().concat(":"));
+//            informationLabelForPupilPanel.setText(node.toString().concat(":"));
         } else {
             String textForLabel = String.format("<html>%s<br>there are no pupils in this class</html>",
                     node.toString());

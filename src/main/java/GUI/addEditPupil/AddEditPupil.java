@@ -589,7 +589,7 @@ public class AddEditPupil extends JDialog implements ActionListener {
         peselField.getDocument().addDocumentListener(new IsRightPeselDocumentListener(yearField, monthField, dayField,
                 peselField, genderComboBox));
         genderComboBox.addActionListener(new GenderComboBoxListener(yearField, monthField, dayField,
-                peselField, genderComboBox, markButton));
+                peselField, genderComboBox));
         gradeComboBox.addActionListener(new GradeComboBoxListener(gradeComboBox, markButton));
 
     }
