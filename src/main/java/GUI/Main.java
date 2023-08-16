@@ -31,6 +31,7 @@ public class Main {
     }
 
     public static void sleep (int time) throws InterruptedException {
+
         Thread.sleep(time);
     }
 

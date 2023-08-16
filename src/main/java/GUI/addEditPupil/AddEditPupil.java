@@ -47,8 +47,8 @@ public class AddEditPupil extends JDialog implements ActionListener {
             NEW_PUPIL = true;
         }
         parent1 = pupil.getParent1().clone();
-        parent2 = pupil.getParent2().clone();
-        marks = pupil.getMarks().clone();
+        parent2 = (pupil.getParent2()!=null) ? pupil.getParent2().clone() : null;
+        marks = (pupil.getGrade()>3) ? pupil.getMarks().clone() : null;
         promotionToNextGrade = pupil.isPromotionToNextGrade();
         awardBar = pupil.isAwardBar();;
         achievement = pupil.getAchievement();
@@ -136,14 +136,15 @@ public class AddEditPupil extends JDialog implements ActionListener {
 
         gradeComboBox.addActionListener(this);
 
-        addFirstParentButton = new JButton("*Enter parent's data");
-        addSecondParentButton = new JButton("Enter father's data");
+        addFirstParentButton = new JButton("*First parent");
+        addSecondParentButton = new JButton("Second parent");
         markButton = new JButton("Enter marks");
-        addButton = new JButton("Add pupil");
+        addButton = new JButton("Save");
         cancelButton = new JButton("Cancel");
         achievementButton = new JButton("Add achievement");
         achievementButton.addActionListener(this);
-        addFirstParentButton.setBackground(ConstantsOfStyle.COLOR_FOR_WRONG_FORMAT);
+        addFirstParentButton.setBackground((NEW_PUPIL) ? ConstantsOfStyle.COLOR_FOR_WRONG_FORMAT
+                : ConstantsOfStyle.COLOR_FOR_RIGHT_FORMAT);
         markButton.addActionListener(this);
         if (pupil.getGrade() < 4) {
             markButton.setEnabled(false);
@@ -534,8 +535,7 @@ public class AddEditPupil extends JDialog implements ActionListener {
                         streetField.getText(),
                         houseField.getText().trim(),
                         localField.getText().trim(),
-                        postCodeField.getText(),
-                        false);
+                        postCodeField.getText());
             } catch (IOException | FontFormatException ex) {
                 throw new RuntimeException(ex);
             }
@@ -549,8 +549,7 @@ public class AddEditPupil extends JDialog implements ActionListener {
                         streetField.getText(),
                         houseField.getText().trim(),
                         localField.getText().trim(),
-                        postCodeField.getText(),
-                        true);
+                        postCodeField.getText());
             } catch (IOException | FontFormatException ex) {
                 throw new RuntimeException(ex);
             }

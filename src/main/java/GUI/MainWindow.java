@@ -6,17 +6,16 @@ import database.WriteReadDataToFile;
 import javax.swing.*;
 import javax.swing.border.Border;
 import javax.swing.border.SoftBevelBorder;
+import javax.swing.tree.DefaultMutableTreeNode;
+import javax.swing.tree.DefaultTreeModel;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.ComponentAdapter;
-import java.awt.event.ComponentEvent;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
-import java.util.List;
 import java.util.Properties;
 
 
@@ -30,10 +29,13 @@ public class MainWindow extends JFrame implements ActionListener {
     JPanel centerPanel;
     JPanel gradesPanel;
     JPanel pupilsPanel;
-    JPanel informationPanel;
+    JPanel panelForFilterRadioButtons;
     JPanel downPanel;
     WriteReadDataToFile writeReadDataToFile;
     MyMenuBar myMenuBar;
+    JTree treeForGradePanel;
+    DefaultMutableTreeNode rootForGradePanel;
+    DefaultTreeModel gradesTreeModel;
 
 
     MainWindow() throws IOException, FontFormatException {
@@ -51,8 +53,15 @@ public class MainWindow extends JFrame implements ActionListener {
         downPanel = new JPanel(new BorderLayout());
         setCurrentStatusPanel();
 
-        centerPanel = new CentralPanel(this, currentStatusField);
-        myMenuBar = new MyMenuBar(this, currentStatusField);
+        panelForFilterRadioButtons = new JPanel(new GridLayout(5, 1, 4, 4));
+        rootForGradePanel = new DefaultMutableTreeNode("School");
+        gradesTreeModel = new DefaultTreeModel(rootForGradePanel);
+        treeForGradePanel = new JTree(gradesTreeModel);
+
+        centerPanel = new CentralPanel(this, currentStatusField, treeForGradePanel, rootForGradePanel,
+                gradesTreeModel, panelForFilterRadioButtons);
+        myMenuBar = new MyMenuBar(this, currentStatusField, treeForGradePanel, gradesTreeModel,
+                panelForFilterRadioButtons);
 
         this.setResizable(false);
         this.setLayout(new BorderLayout());

@@ -9,10 +9,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.File;
 import java.io.IOException;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.time.DateTimeException;
 import java.time.LocalDate;
 import java.util.Objects;
@@ -27,7 +24,7 @@ public class AddEditParent extends JDialog implements ActionListener {
             localField, postCodeField;
     JComboBox<String> genderComboBox;
 
-    JButton addDataButton, cancelButton, deleteParentButton;
+    JButton addDataButton, cancelButton;
 
     Font remRegular;
     Font font;
@@ -35,11 +32,11 @@ public class AddEditParent extends JDialog implements ActionListener {
     String country, province, town, street, postCode, house, local;
     JCheckBox setAddressCheckBox;
     Parent parent;
-    boolean newParent = false, isSecondParent;
+    boolean newParent = false;
 
 
     public AddEditParent(JFrame parentFrame, Parent parent, String country, String province, String town, String street, String house, String local,
-                         String postCode, boolean isSecondParent) throws IOException, FontFormatException {
+                         String postCode) throws IOException, FontFormatException {
         super(parentFrame, "Parent's data", true); // Make it modal
         setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
         this.parent = parent;
@@ -51,7 +48,6 @@ public class AddEditParent extends JDialog implements ActionListener {
         this.local = local;
         this.postCode = postCode;
         this.parentFrame = parentFrame;
-        this.isSecondParent = isSecondParent;
 
         if (parent == null) {
             newParent = true;
@@ -290,14 +286,10 @@ public class AddEditParent extends JDialog implements ActionListener {
         genderComboBox = new JComboBox<>(new String[]{"", "Male", "Female"});
 
         setAddressCheckBox = new JCheckBox("Make an address like the pupil's");
-        addDataButton = new JButton("Add parent's data");
-        addDataButton.setFont(remRegular.deriveFont(Font.BOLD, 19));
-        addDataButton.setForeground(new Color(0x044B00));
+        addDataButton = new JButton("Save");
+//        addDataButton.setFont(remRegular.deriveFont(Font.BOLD, 19));
+        addDataButton.setForeground(new Color(0x043100));
         cancelButton = new JButton("Cancel");
-        deleteParentButton = new JButton("Delete parent");
-        deleteParentButton.setVisible(isSecondParent);
-        deleteParentButton.setBackground(Color.DARK_GRAY);
-        deleteParentButton.setForeground(Color.red);
 
         GridBagConstraints c = new GridBagConstraints();
         c.insets = new Insets(5, 3, 5, 3);
@@ -477,13 +469,6 @@ public class AddEditParent extends JDialog implements ActionListener {
         c.gridx = 0;
         c.gridy = 11;
         this.add(cancelButton, c);
-
-        if (isSecondParent) {
-            c.insets = new Insets(2, 5, 5, 5);
-            c.gridx = 4;
-            c.gridy = 11;
-            this.add(deleteParentButton, c);
-        }
     }
 
     private void setFontForComponents(Container container, Font font) {
@@ -541,24 +526,12 @@ public class AddEditParent extends JDialog implements ActionListener {
         }
         if (e.getSource() == cancelButton) {
             String[] responses = {"Close without saving", "Return to editing"};
-            int answer = JOptionPane.showOptionDialog(parentFrame, "Would you like to exit? \n Changes won't be saved",
+            int answer = JOptionPane.showOptionDialog(parentFrame,
+                    "Would you like to exit? \n Changes won't be saved",
                     "Are you sure?", JOptionPane.OK_CANCEL_OPTION, JOptionPane.WARNING_MESSAGE, null,
                     responses, responses[0]);
             if (answer == 0) { dispose(); }
         }
-
-        if (e.getSource()==deleteParentButton) {
-            String[] responses = {"Close without saving", "Return to editing"};
-            int answer = JOptionPane.showOptionDialog(parentFrame, "Would you like to exit?\nChanges won't be saved",
-                    "Are you sure?", JOptionPane.OK_CANCEL_OPTION, JOptionPane.WARNING_MESSAGE, null,
-                    responses, responses[0]);
-            if (JOptionPane.showOptionDialog(parentFrame, "Would you like\nto delete parent?",
-                    "Are you sure?", JOptionPane.OK_CANCEL_OPTION, JOptionPane.WARNING_MESSAGE, null,
-                    responses, responses[0]) == JOptionPane.YES_OPTION) {
-                parent = null;
-                dispose(); }
-        }
-
         if (e.getSource() == setAddressCheckBox) {
             if (setAddressCheckBox.isSelected()) {
                 countryField.setText(country);

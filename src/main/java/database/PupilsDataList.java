@@ -38,6 +38,7 @@ public class PupilsDataList {
     public static ArrayList<Pupil> getListOfPupilsOfCertainGrade(int grade) {
         return (ArrayList<Pupil>) pupilsDataList.stream()
                 .filter(pupil -> pupil.getGrade() == grade)
+                .sorted((p1,p2) -> p1.getSurname().compareToIgnoreCase(p2.getSurname()))
                 .collect(Collectors.toList());
     }
 
@@ -172,11 +173,13 @@ public class PupilsDataList {
         if (grade==-1) {
             return (ArrayList<Pupil>) pupilsDataList.stream()
                     .filter(pupil -> !pupil.isPromotionToNextGrade())
+                    .sorted(Comparator.comparingInt(Pupil::getGrade))
                     .collect(Collectors.toList());
         } else {
             return (ArrayList<Pupil>) pupilsDataList.stream()
                     .filter(pupil -> pupil.getGrade()==grade)
                     .filter(pupil -> !pupil.isPromotionToNextGrade())
+                    .sorted(Comparator.comparingInt(Pupil::getGrade))
                     .collect(Collectors.toList());
         }
     }
@@ -184,11 +187,13 @@ public class PupilsDataList {
         if (grade==-1) {
             return (ArrayList<Pupil>) pupilsDataList.stream()
                     .filter(pupil -> pupil.getAchievement()!=null)
+                    .sorted(Comparator.comparingInt(Pupil::getGrade))
                     .collect(Collectors.toList());
         } else {
             return (ArrayList<Pupil>) pupilsDataList.stream()
                     .filter(pupil -> pupil.getGrade()==grade)
                     .filter(pupil -> pupil.getAchievement()!=null)
+                    .sorted(Comparator.comparingInt(Pupil::getGrade))
                     .collect(Collectors.toList());
         }
     }
@@ -196,11 +201,13 @@ public class PupilsDataList {
         if (grade==-1) {
             return (ArrayList<Pupil>) pupilsDataList.stream()
                     .filter(Pupil::isAwardBar)
+                    .sorted(Comparator.comparingInt(Pupil::getGrade))
                     .collect(Collectors.toList());
         } else {
             return (ArrayList<Pupil>) pupilsDataList.stream()
                     .filter(pupil -> pupil.getGrade()==grade)
                     .filter(Pupil::isAwardBar)
+                    .sorted(Comparator.comparingInt(Pupil::getGrade))
                     .collect(Collectors.toList());
         }
     }

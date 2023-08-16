@@ -7,6 +7,8 @@ import database.PupilsDataList;
 import database.WriteReadDataToFile;
 
 import javax.swing.*;
+import javax.swing.tree.DefaultMutableTreeNode;
+import javax.swing.tree.DefaultTreeModel;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -27,10 +29,17 @@ public class MyMenuBar  implements ActionListener {
     WriteReadDataToFile writeReadDataToFile;
     JFrame parentFrame;
     JTextField currentStatusField;
+    JTree treeForGradePanel;
+    DefaultTreeModel gradesTreeModel;
+    JPanel panelForFilterRadioButtons;
 
-    MyMenuBar(JFrame parentFrame, JTextField currentStatusField)  throws IOException {
+    MyMenuBar(JFrame parentFrame, JTextField currentStatusField, JTree treeForGradePanel,
+              DefaultTreeModel gradesTreeModel, JPanel panelForFilterRadioButtons)  throws IOException {
         this.parentFrame = parentFrame;
         this.currentStatusField = currentStatusField;
+        this.treeForGradePanel = treeForGradePanel;
+        this.gradesTreeModel = gradesTreeModel;
+        this.panelForFilterRadioButtons = panelForFilterRadioButtons;
 
         menuBar = new JMenuBar();
         writeReadDataToFile = new WriteReadDataToFile();
@@ -117,7 +126,9 @@ public class MyMenuBar  implements ActionListener {
 //                    Main.setTextForStatusPanel("Database loaded successfully");
                     currentStatusField.setText("Database loaded successfully");
                     String nameOfFile = file.getName();
-//                    Main.setTitleForFrame(nameOfFile);
+                    parentFrame.setTitle(nameOfFile);
+                    treeForGradePanel.setVisible(true);
+                    panelForFilterRadioButtons.setVisible(true);
                 } catch (Exception ex) {
                     JOptionPane.showMessageDialog(null,
                             "\t\tI can't read this file!\nCALL TECH SUPPORT OR ELSE!", "title",
