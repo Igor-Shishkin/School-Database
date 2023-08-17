@@ -1,5 +1,6 @@
 package GUI.addEditPupil;
 
+import GUI.CentralPanel;
 import GUI.listeners.MarkComboBoxListener;
 import GUI.styleStorage.ConstantsOfStyle;
 import database.Marks;
@@ -29,13 +30,17 @@ public class AddEditMarks extends JDialog implements ActionListener {
     JLabel[] averageScoreLabel = new JLabel[4];
     Font font, fontForAverage;
     JButton addButton, cancelButton;
+    JTextField currentStatusField;
 
-    public AddEditMarks(JFrame parentFrame, Marks marks, Boolean awardBar, Boolean promotion, int grade) throws IOException {
+    public AddEditMarks(JFrame parentFrame, Marks marks, Boolean awardBar, Boolean promotion, int grade,
+                        JTextField currentStatusField) throws IOException {
         super(parentFrame, "Marks", true);
         this.marks = marks;
         this.grade = grade;
         this.promotionToNextGrade = promotion;
         this.awardBar = awardBar;
+        this.currentStatusField = currentStatusField;
+
         this.setLayout(new BorderLayout());
 
         if (marks==null) {
@@ -307,6 +312,8 @@ public class AddEditMarks extends JDialog implements ActionListener {
                 }
             }
             marks = new Marks(arrayOfMarks);
+            currentStatusField.setText(String.format("Changes are saved (%s: MARK)",
+                    CentralPanel.CURRENT_PUPIL.getGradeIdNamesSurname()));
 
             dispose();
 

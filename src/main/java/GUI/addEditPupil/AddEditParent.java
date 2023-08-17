@@ -1,5 +1,6 @@
 package GUI.addEditPupil;
 
+import GUI.CentralPanel;
 import GUI.listeners.*;
 import GUI.styleStorage.ConstantsOfStyle;
 import database.Address;
@@ -21,7 +22,7 @@ public class AddEditParent extends JDialog implements ActionListener {
             streetLabel, houseLabel, localLabel, postCodeLabel, peselJLabel;
     JTextField nameField, surnameField, secondNameField, eMailField, telephoneField, genderField, yearField, monthField, dayField,
             countryField, provinceField, townField, streetField, houseField, peselField,
-            localField, postCodeField;
+            localField, postCodeField, currentStatusField;;
     JComboBox<String> genderComboBox;
 
     JButton addDataButton, cancelButton;
@@ -36,7 +37,7 @@ public class AddEditParent extends JDialog implements ActionListener {
 
 
     public AddEditParent(JFrame parentFrame, Parent parent, String country, String province, String town, String street, String house, String local,
-                         String postCode) throws IOException, FontFormatException {
+                         String postCode, JTextField currentStatusField) throws IOException, FontFormatException {
         super(parentFrame, "Parent's data", true); // Make it modal
         setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
         this.parent = parent;
@@ -48,6 +49,7 @@ public class AddEditParent extends JDialog implements ActionListener {
         this.local = local;
         this.postCode = postCode;
         this.parentFrame = parentFrame;
+        this.currentStatusField = currentStatusField;
 
         if (parent == null) {
             newParent = true;
@@ -517,6 +519,8 @@ public class AddEditParent extends JDialog implements ActionListener {
                         Integer.parseInt(houseField.getText().trim()),
                         Integer.parseInt(localField.getText().trim()),
                         postCodeField.getText().trim()));
+                currentStatusField.setText(String.format("Changes are saved (%s: PARENT)",
+                        CentralPanel.CURRENT_PUPIL.getNamesAndSurname()));
                 dispose();
             } else {
                 JOptionPane.showMessageDialog(parentFrame, "Some data are wrong.", "ERROR",

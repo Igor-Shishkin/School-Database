@@ -81,7 +81,8 @@ public class GradesTreeNodeMouseListener extends MouseAdapter {
                 list = PupilsDataList.getListOfAllPupils();
                 if (list.size() != 0) {
                     for (int i = 0; i < list.size(); i++) {
-                        String nameNode = String.format(PupilsDataList.getGradeIdNamesSurname(list.get(i)));
+//                        String nameNode = String.format(PupilsDataList.getGradeIdNamesSurname(list.get(i)));
+                        String nameNode = list.get(i).getGradeIdNamesSurname();
                         nodesForPupilsPanel.add(i, new DefaultMutableTreeNode(nameNode));
                         rootForPupilsTree.add(nodesForPupilsPanel.get(i));
                     }
@@ -96,6 +97,7 @@ public class GradesTreeNodeMouseListener extends MouseAdapter {
             showEditAchievementButton.setVisible(false);
             editDateButton.setVisible(false);
             deletePupilButton.setVisible(false);
+
 
             pupilsTreeModel.nodeStructureChanged(rootForPupilsTree);
             pupilsPanel.repaint();

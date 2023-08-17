@@ -32,14 +32,17 @@ public class MyMenuBar  implements ActionListener {
     JTree treeForGradePanel;
     DefaultTreeModel gradesTreeModel;
     JPanel panelForFilterRadioButtons;
+    JButton addPupilButton;
 
     MyMenuBar(JFrame parentFrame, JTextField currentStatusField, JTree treeForGradePanel,
-              DefaultTreeModel gradesTreeModel, JPanel panelForFilterRadioButtons)  throws IOException {
+              DefaultTreeModel gradesTreeModel, JPanel panelForFilterRadioButtons, JButton addPupilButton)
+            throws IOException {
         this.parentFrame = parentFrame;
         this.currentStatusField = currentStatusField;
         this.treeForGradePanel = treeForGradePanel;
         this.gradesTreeModel = gradesTreeModel;
         this.panelForFilterRadioButtons = panelForFilterRadioButtons;
+        this.addPupilButton = addPupilButton;
 
         menuBar = new JMenuBar();
         writeReadDataToFile = new WriteReadDataToFile();
@@ -129,6 +132,7 @@ public class MyMenuBar  implements ActionListener {
                     parentFrame.setTitle(nameOfFile);
                     treeForGradePanel.setVisible(true);
                     panelForFilterRadioButtons.setVisible(true);
+                    addPupilButton.setVisible(true);
                 } catch (Exception ex) {
                     JOptionPane.showMessageDialog(null,
                             "\t\tI can't read this file!\nCALL TECH SUPPORT OR ELSE!", "title",

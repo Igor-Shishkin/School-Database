@@ -2,6 +2,8 @@ package database;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
+import java.util.Objects;
+
 public class Pupil extends Person{
 
     private static int idNumber=0;
@@ -120,6 +122,22 @@ public class Pupil extends Person{
     }
 
     @JsonIgnore
+    public String getGradeIdNamesSurname() {
+        if (this.getSecondName() == null) {
+            return String.format("%d grade.   %s %s.   ID: %d", this.getGrade(), this.getName(), this.getSurname(),
+                    this.getId());
+        } else {
+            return String.format("%d grade.   %s %s %s.   ID: %d", this.getGrade(),  this.getName(),
+                    this.getSecondName(), this.getSurname(), this.getId());
+        }
+    }
+
+    @JsonIgnore
+    public String getNamesAndSurname() {
+            return String.format("%s %s: ", this.getName(), this.getSurname());
+    }
+
+    @JsonIgnore
     public String getPupilInformation() {
         if (this.getParent2() != null) {
             if (this.getSecondName() == null) {
@@ -182,6 +200,22 @@ public class Pupil extends Person{
         );
     }
 
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Pupil pupil = (Pupil) o;
+        return id == pupil.id && grade == pupil.grade && awardBar == pupil.awardBar &&
+                promotionToNextGrade == pupil.promotionToNextGrade &&
+                Objects.equals(parent1, pupil.parent1) && Objects.equals(parent2, pupil.parent2) &&
+                Objects.equals(achievement, pupil.achievement) && Objects.equals(marks, pupil.marks);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, grade, parent1, parent2, achievement, marks, awardBar, promotionToNextGrade);
+    }
 
     @Override
     public String toString() {

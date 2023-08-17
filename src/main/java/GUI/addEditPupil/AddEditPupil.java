@@ -1,15 +1,18 @@
 package GUI.addEditPupil;
 
+import GUI.CentralPanel;
 import GUI.listeners.*;
 import GUI.styleStorage.ConstantsOfStyle;
 import database.*;
 
 import javax.swing.*;
+import javax.swing.tree.DefaultMutableTreeNode;
 import java.awt.*;
 import java.awt.event.*;
 import java.io.*;
 import java.time.DateTimeException;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.Objects;
 
 public class AddEditPupil extends JDialog implements ActionListener {
@@ -31,11 +34,14 @@ public class AddEditPupil extends JDialog implements ActionListener {
     JFrame parentFrame;
     String achievement;
     int grade;
+    JTextField currentStatusField;
 
 
-    public AddEditPupil(JFrame parentFrame, Pupil pupil) throws IOException, FontFormatException {
+    public AddEditPupil(JFrame parentFrame, Pupil pupil, JTextField currentStatusField)
+            throws IOException, FontFormatException {
         super(parentFrame, "Achievement", true);
         this.pupil = pupil;
+        this.currentStatusField = currentStatusField;
 //        pupilFromDatabase = (Pupil) copyObject(pupil);
 
 //        GeneratePupilData generatePupilData = new GeneratePupilData();
@@ -45,13 +51,14 @@ public class AddEditPupil extends JDialog implements ActionListener {
             pupil = new Pupil();
             pupil.setId(PupilsDataList.getMinPossibleID());
             NEW_PUPIL = true;
+        } else {
+            parent1 = pupil.getParent1().clone();
+            parent2 = (pupil.getParent2() != null) ? pupil.getParent2().clone() : null;
+            marks = (pupil.getGrade() > 3) ? pupil.getMarks().clone() : null;
+            promotionToNextGrade = pupil.isPromotionToNextGrade();
+            awardBar = pupil.isAwardBar();
+            achievement = pupil.getAchievement();
         }
-        parent1 = pupil.getParent1().clone();
-        parent2 = (pupil.getParent2()!=null) ? pupil.getParent2().clone() : null;
-        marks = (pupil.getGrade()>3) ? pupil.getMarks().clone() : null;
-        promotionToNextGrade = pupil.isPromotionToNextGrade();
-        awardBar = pupil.isAwardBar();;
-        achievement = pupil.getAchievement();
 
         this.setLayout(new GridBagLayout());
         this.setFont(new Font(null, Font.BOLD, 20));
@@ -504,14 +511,14 @@ public class AddEditPupil extends JDialog implements ActionListener {
     @Override
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() == achievementButton) {
-            AddEditAchievement addEditAchievement = new AddEditAchievement(parentFrame, achievement);
+            AddEditAchievement addEditAchievement = new AddEditAchievement(parentFrame, achievement, currentStatusField);
             achievement = addEditAchievement.showDialogAndGetInput();
         }
         if (e.getSource() == markButton) {
             AddEditMarks addEditMarks = null;
             try {
                 addEditMarks = new AddEditMarks(parentFrame, marks, awardBar,
-                        promotionToNextGrade, gradeComboBox.getSelectedIndex()-1);
+                        promotionToNextGrade, gradeComboBox.getSelectedIndex()-1, currentStatusField);
             } catch (IOException ex) {
                 throw new RuntimeException(ex);
             }
@@ -535,7 +542,8 @@ public class AddEditPupil extends JDialog implements ActionListener {
                         streetField.getText(),
                         houseField.getText().trim(),
                         localField.getText().trim(),
-                        postCodeField.getText());
+                        postCodeField.getText(),
+                        currentStatusField);
             } catch (IOException | FontFormatException ex) {
                 throw new RuntimeException(ex);
             }
@@ -549,7 +557,8 @@ public class AddEditPupil extends JDialog implements ActionListener {
                         streetField.getText(),
                         houseField.getText().trim(),
                         localField.getText().trim(),
-                        postCodeField.getText());
+                        postCodeField.getText(),
+                        currentStatusField);
             } catch (IOException | FontFormatException ex) {
                 throw new RuntimeException(ex);
             }
@@ -568,28 +577,46 @@ public class AddEditPupil extends JDialog implements ActionListener {
                             !idField.isEnabled()) ) {
 
                 if (NEW_PUPIL) {
-                    String secondName = (secondNameField.getText().trim().equals(""))
-                            ? null : secondNameField.getText().trim();
-                    char gender = (Objects.equals(genderComboBox.getSelectedItem(), "Male")) ? 'M' : 'F';
                     try {
-                        if (PupilsDataList.addPupilToList
-                                (new Pupil(nameField.getText().trim(), secondName, surnameField.getText().trim(), gender,
-                                        Integer.parseInt(yearField.getText().trim()),
-                                        Integer.parseInt(monthField.getText().trim()),
-                                        Integer.parseInt(dayField.getText().trim()),
-                                        new Address(countryField.getText().trim(),
-                                                provinceField.getText().trim(),
-                                                townField.getText().trim(),
-                                                streetField.getText().trim(),
-                                                Integer.parseInt(houseField.getText().trim()),
-                                                Integer.parseInt(localField.getText().trim()),
-                                                postCodeField.getText().trim()),
-                                        peselField.getText().trim(),
-                                        Integer.parseInt(idField.getText().trim()),
-                                        Integer.parseInt((String) Objects.requireNonNull(gradeComboBox.getSelectedItem())),
-                                        parent1, parent2, pupil.getAchievement(), marks, awardBar, promotionToNextGrade))) {
+                        String secondName = (secondNameField.getText().trim().equals(""))
+                                ? null : secondNameField.getText().trim();
+                        char gender = (Objects.equals(genderComboBox.getSelectedItem(), "Male")) ? 'M' : 'F';
+                        pupil.setName(nameField.getText().trim());
+                        pupil.setSecondName(secondName);
+                        pupil.setSurname(surnameField.getText().trim());
+                        pupil.setDateOfBirth(LocalDate.of(Integer.parseInt(yearField.getText().trim()),
+                                Integer.parseInt(monthField.getText().trim()),
+                                Integer.parseInt(dayField.getText().trim())));
+                        pupil.setPesel(peselField.getText().trim());
+                        pupil.setId(Integer.parseInt(idField.getText().trim()));
+                        pupil.setAddress(new Address(
+                                countryField.getText().trim(),
+                                provinceField.getText().trim(),
+                                townField.getText().trim(),
+                                streetField.getText().trim(),
+                                Integer.parseInt(houseField.getText().trim()),
+                                Integer.parseInt(localField.getText().trim()),
+                                postCodeField.getText().trim()  ));
+                        pupil.setGrade(gradeComboBox.getSelectedIndex()-1);
+                        pupil.setMarks((pupil.getGrade()<4)?null:marks);
+                        pupil.setPromotionToNextGrade(promotionToNextGrade);
+                        pupil.setAwardBar(awardBar);
+                        pupil.setAchievement(achievement);
+
+                        pupil.setParent1(parent1);
+                        pupil.setParent2(parent2);
+
+                        CentralPanel.CURRENT_PUPIL = pupil;
+                        currentStatusField.setText(String.format("Changes are saved (%s)",
+                                CentralPanel.CURRENT_PUPIL.getNamesAndSurname()));
+                        CentralPanel.CURRENT_GRADE = pupil.getGrade();
+
+
+                        if (PupilsDataList.addPupilToList(pupil)) {
                             JOptionPane.showMessageDialog(null, "Pupil is added to database :)",
                                     "Success!", JOptionPane.PLAIN_MESSAGE);
+                            currentStatusField.setText("Pupil is added to database");
+                            CentralPanel.CURRENT_GRADE = pupil.getGrade();
                             dispose();
                         } else {
                             JOptionPane.showMessageDialog(null,
@@ -629,6 +656,10 @@ public class AddEditPupil extends JDialog implements ActionListener {
 
                     pupil.setParent1(parent1);
                     pupil.setParent2(parent2);
+                    currentStatusField.setText(String.format("Changes are saved (%s)",
+                            CentralPanel.CURRENT_PUPIL.getNamesAndSurname()));
+                    CentralPanel.CURRENT_GRADE = pupil.getGrade();
+
                     dispose();
                 }
             } else {

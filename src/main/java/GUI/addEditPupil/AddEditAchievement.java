@@ -1,5 +1,6 @@
 package GUI.addEditPupil;
 
+import GUI.CentralPanel;
 import GUI.styleStorage.ConstantsOfStyle;
 
 import javax.swing.*;
@@ -11,11 +12,16 @@ public class AddEditAchievement extends JDialog implements ActionListener {
     String achievements, returnedAchievements;
     JButton addButton, cancelButton;
     JTextArea textArea;
+    JTextField currentStatusField;
 
-    public AddEditAchievement(JFrame parentFrame, String achievements) {
+
+    public AddEditAchievement(JFrame parentFrame, String achievements, JTextField currentStatusField) {
         super(parentFrame, "Achievement", true);
+        this.currentStatusField = currentStatusField;
+
         this.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
         this.setLayout(new GridBagLayout());
+
 
         returnedAchievements = achievements;
 
@@ -74,6 +80,8 @@ public class AddEditAchievement extends JDialog implements ActionListener {
     public void actionPerformed(ActionEvent e) {
         if (e.getSource()==addButton) {
             returnedAchievements = textArea.getText();
+            currentStatusField.setText(String.format("Changes are saved (%s: achievement)",
+                    CentralPanel.CURRENT_PUPIL.getNamesAndSurname()));
             dispose();
         }
         if (e.getSource()==cancelButton){
