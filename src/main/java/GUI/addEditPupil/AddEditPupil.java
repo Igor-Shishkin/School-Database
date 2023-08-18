@@ -2,6 +2,7 @@ package GUI.addEditPupil;
 
 import GUI.CentralPanel;
 import GUI.listeners.*;
+import GUI.styleStorage.ColorsSets;
 import GUI.styleStorage.ConstantsOfStyle;
 import database.*;
 
@@ -11,6 +12,7 @@ import java.awt.event.*;
 import java.io.*;
 import java.time.DateTimeException;
 import java.time.LocalDate;
+import java.util.Arrays;
 import java.util.Objects;
 
 public class AddEditPupil extends JDialog implements ActionListener {
@@ -67,14 +69,17 @@ public class AddEditPupil extends JDialog implements ActionListener {
         setStyleForWindow();
         setListeners();
 
+        Container contentPane = this.getContentPane();
+        contentPane.setBackground(ColorsSets.ACTUAL_SET_OF_COLORS.get(3));
+
         this.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
         this.pack();
         this.setLocationRelativeTo(null);
         this.setTitle("Write pupil's data");
         this.setVisible(true);
 
-    }
 
+    }
     private void setWindowCloseListener() {
         WindowListener windowListener = new WindowAdapter() {
             @Override

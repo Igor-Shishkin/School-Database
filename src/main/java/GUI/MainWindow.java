@@ -64,7 +64,7 @@ public class MainWindow extends JFrame implements ActionListener {
         centerPanel = new CentralPanel(this, currentStatusField, treeForGradePanel, rootForGradePanel,
                 gradesTreeModel, panelForFilterRadioButtons, addPupilButton);
         myMenuBar = new MyMenuBar(this, currentStatusField, treeForGradePanel, gradesTreeModel,
-                panelForFilterRadioButtons, addPupilButton);
+                panelForFilterRadioButtons, addPupilButton, centerPanel);
 
         this.setResizable(false);
         this.setLayout(new BorderLayout());
@@ -80,11 +80,7 @@ public class MainWindow extends JFrame implements ActionListener {
     }
 
     private void setColorsSet() {
-        ColorsSets.SET_OF_COLORS_SOFT_ROSE.add(new Color(0xFFFFFF));
-        ColorsSets.SET_OF_COLORS_SOFT_ROSE.add(new Color(0xE9FAE3));
-        ColorsSets.SET_OF_COLORS_SOFT_ROSE.add(new Color(0xdee8d5));
-        ColorsSets.SET_OF_COLORS_SOFT_ROSE.add(new Color(0xd5c7bc));
-        ColorsSets.SET_OF_COLORS_SOFT_ROSE.add(new Color(0xac92a6));
+        ColorsSets.setColors();
     }
 
 
@@ -130,7 +126,7 @@ public class MainWindow extends JFrame implements ActionListener {
 
         currentStatusField.setFont(remRegular);
     }
-    public void setActualSetOfColors(ArrayList<Color> listOfColors) {
+    public static void setActualSetOfColors(ArrayList<Color> listOfColors) {
         for (int i = 0; i < 5; i++) {
             ColorsSets.ACTUAL_SET_OF_COLORS.add(i, listOfColors.get(i));
         }

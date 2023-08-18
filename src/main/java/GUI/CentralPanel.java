@@ -465,7 +465,13 @@ public class CentralPanel extends JPanel implements ActionListener, TreeSelectio
                     CURRENT_GRADE = tempPupil.getGrade();
                     CURRENT_ID = tempPupil.getId();
                     getAllPupilsRadioButton.setSelected(true);
+                    currentStatusField.setText(String.format("Pupil '%s' if added", CURRENT_PUPIL.getNamesAndSurname()));
+                    pupilInformationLabel.setText(CURRENT_PUPIL.getPupilInformation());
                     refreshPupilsTree();
+                    TreePath path = treeForGradePanel.getSelectionPath();
+                    assert path != null;
+                    DefaultMutableTreeNode gradeNode = (DefaultMutableTreeNode) path.getLastPathComponent();
+                    informationLabelForPupilPanel.setText(gradeNode.toString());
                 }
 
             } catch (IOException | FontFormatException ex) {
@@ -564,13 +570,13 @@ public class CentralPanel extends JPanel implements ActionListener, TreeSelectio
 
         return (Objects.equals(node.toString(), "Zero class")) ? 0 :
                 (Objects.equals(node.toString(), "First class")) ? 1 :
-                        (Objects.equals(node.toString(), "Second class")) ? 2 :
-                                (Objects.equals(node.toString(), "Third class")) ? 3 :
-                                        (Objects.equals(node.toString(), "Fourth class")) ? 4 :
-                                                (Objects.equals(node.toString(), "Fifth class")) ? 5 :
-                                                        (Objects.equals(node.toString(), "Sixth class")) ? 6 :
-                                                                (Objects.equals(node.toString(), "Seventh class")) ? 7 :
-                                                                        (Objects.equals(node.toString(), "Eighth class")) ? 8 : -1;
+                (Objects.equals(node.toString(), "Second class")) ? 2 :
+                (Objects.equals(node.toString(), "Third class")) ? 3 :
+                (Objects.equals(node.toString(), "Fourth class")) ? 4 :
+                (Objects.equals(node.toString(), "Fifth class")) ? 5 :
+                (Objects.equals(node.toString(), "Sixth class")) ? 6 :
+                (Objects.equals(node.toString(), "Seventh class")) ? 7 :
+                (Objects.equals(node.toString(), "Eighth class")) ? 8 : -1;
     }
 
     public void setGradeForTreeVisible() {

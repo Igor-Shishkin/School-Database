@@ -2,6 +2,7 @@ package GUI.addEditPupil;
 
 import GUI.CentralPanel;
 import GUI.listeners.*;
+import GUI.styleStorage.ColorsSets;
 import GUI.styleStorage.ConstantsOfStyle;
 import database.Address;
 import database.Parent;
@@ -73,6 +74,7 @@ public class AddEditParent extends JDialog implements ActionListener {
 
 
 //        this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        this.setBackground(Color.red);
         this.pack();
         this.setLocationRelativeTo(null);
         this.setTitle("Write parent's data");

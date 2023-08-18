@@ -11,7 +11,7 @@ public class ColorsSets {
     public static ArrayList<Color> SET_OF_COLORS_CONTRAST = new ArrayList<>(10);
     public static ArrayList<Color> SET_OF_COLORS_AGGRESSIVE = new ArrayList<>(10);
 
-    public ColorsSets() {
+    public static void setColors() {
         SET_OF_COLORS_SOFT_ROSE.add(new Color(0xFFFFFF));
         SET_OF_COLORS_SOFT_ROSE.add(new Color(0xE9FAE3));
         SET_OF_COLORS_SOFT_ROSE.add(new Color(0xdee8d5));
@@ -35,5 +35,10 @@ public class ColorsSets {
         SET_OF_COLORS_AGGRESSIVE.add(new Color((0xF53D4C)));
         SET_OF_COLORS_AGGRESSIVE.add(new Color((0xEC31F5)));
         SET_OF_COLORS_AGGRESSIVE.add(new Color((0x4A1796)));
+    }
+    public static void setActualSetOfColors(ArrayList<Color> listOfColors) {
+        for (int i = 0; i < 5; i++) {
+            ColorsSets.ACTUAL_SET_OF_COLORS.add(i, listOfColors.get(i));
+        }
     }
 }

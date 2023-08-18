@@ -1,5 +1,6 @@
 package GUI;
 
+import GUI.styleStorage.ColorsSets;
 import GUI.styleStorage.ConstantsOfStyle;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import database.Pupil;
@@ -31,11 +32,12 @@ public class MyMenuBar  implements ActionListener {
     JTextField currentStatusField;
     JTree treeForGradePanel;
     DefaultTreeModel gradesTreeModel;
-    JPanel panelForFilterRadioButtons;
+    JPanel panelForFilterRadioButtons, centralPanel;
     JButton addPupilButton;
 
     MyMenuBar(JFrame parentFrame, JTextField currentStatusField, JTree treeForGradePanel,
-              DefaultTreeModel gradesTreeModel, JPanel panelForFilterRadioButtons, JButton addPupilButton)
+              DefaultTreeModel gradesTreeModel, JPanel panelForFilterRadioButtons, JButton addPupilButton,
+              JPanel centralPanel)
             throws IOException {
         this.parentFrame = parentFrame;
         this.currentStatusField = currentStatusField;
@@ -43,6 +45,7 @@ public class MyMenuBar  implements ActionListener {
         this.gradesTreeModel = gradesTreeModel;
         this.panelForFilterRadioButtons = panelForFilterRadioButtons;
         this.addPupilButton = addPupilButton;
+        this.centralPanel = centralPanel;
 
         menuBar = new JMenuBar();
         writeReadDataToFile = new WriteReadDataToFile();
@@ -61,6 +64,8 @@ public class MyMenuBar  implements ActionListener {
         logOutItem.addActionListener(this);
         changeAdmissionItem.addActionListener(this);
         closeItem.addActionListener(this);
+        contrast.addActionListener(this);
+        aggressive.addActionListener(this);
     }
 
     private void setIconsToMenuComponents() {
@@ -167,6 +172,12 @@ public class MyMenuBar  implements ActionListener {
                 JOptionPane.showMessageDialog(null, "Your database is empty", "title",
                         JOptionPane.INFORMATION_MESSAGE);
             }
+        }
+        if (e.getSource()==contrast) {
+            System.out.println(ColorsSets.ACTUAL_SET_OF_COLORS);
+            ColorsSets.setActualSetOfColors(ColorsSets.SET_OF_COLORS_CONTRAST);
+            System.out.println(ColorsSets.ACTUAL_SET_OF_COLORS);
+            centralPanel.repaint();
         }
     }
 
