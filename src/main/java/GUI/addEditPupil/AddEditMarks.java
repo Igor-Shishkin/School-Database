@@ -31,15 +31,17 @@ public class AddEditMarks extends JDialog implements ActionListener {
     Font font, fontForAverage;
     JButton addButton, cancelButton;
     JTextField currentStatusField;
+    boolean isNewPupil;
 
     public AddEditMarks(JFrame parentFrame, Marks marks, Boolean awardBar, Boolean promotion, int grade,
-                        JTextField currentStatusField) throws IOException {
+                        JTextField currentStatusField, boolean isNewPupil) throws IOException {
         super(parentFrame, "Marks", true);
         this.marks = marks;
         this.grade = grade;
         this.promotionToNextGrade = promotion;
         this.awardBar = awardBar;
         this.currentStatusField = currentStatusField;
+        this.isNewPupil = isNewPupil;
 
         this.setLayout(new BorderLayout());
 
@@ -312,8 +314,10 @@ public class AddEditMarks extends JDialog implements ActionListener {
                 }
             }
             marks = new Marks(arrayOfMarks);
-            currentStatusField.setText(String.format("Changes are saved (%s: MARK)",
-                    CentralPanel.CURRENT_PUPIL.getGradeIdNamesSurname()));
+            if (!isNewPupil) {
+                currentStatusField.setText(String.format("Changes are saved (%s: MARK)",
+                        CentralPanel.CURRENT_PUPIL.getGradeIdNamesSurname()));
+            }
 
             dispose();
 

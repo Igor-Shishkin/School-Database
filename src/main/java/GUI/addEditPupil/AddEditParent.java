@@ -33,11 +33,12 @@ public class AddEditParent extends JDialog implements ActionListener {
     String country, province, town, street, postCode, house, local;
     JCheckBox setAddressCheckBox;
     Parent parent;
-    boolean newParent = false;
+    boolean newParent = false, isNewPupil;
 
 
-    public AddEditParent(JFrame parentFrame, Parent parent, String country, String province, String town, String street, String house, String local,
-                         String postCode, JTextField currentStatusField) throws IOException, FontFormatException {
+    public AddEditParent(JFrame parentFrame, Parent parent, String country, String province, String town, String street,
+                         String house, String local, String postCode, JTextField currentStatusField, boolean isNewPupil)
+            throws IOException, FontFormatException {
         super(parentFrame, "Parent's data", true); // Make it modal
         setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
         this.parent = parent;
@@ -50,12 +51,12 @@ public class AddEditParent extends JDialog implements ActionListener {
         this.postCode = postCode;
         this.parentFrame = parentFrame;
         this.currentStatusField = currentStatusField;
+        this.isNewPupil = isNewPupil;
 
-        if (parent == null) {
+        if (this.parent == null) {
             newParent = true;
-            parent = new Parent();
+            this.parent = new Parent();
         }
-
         font = ConstantsOfStyle.THE_MAIN_FONT.deriveFont(Font.PLAIN, 19);
 
         this.setLayout(new GridBagLayout());
@@ -498,29 +499,40 @@ public class AddEditParent extends JDialog implements ActionListener {
                     yearField.getBackground() == ConstantsOfStyle.COLOR_FOR_RIGHT_FORMAT &&
                     monthField.getBackground() == ConstantsOfStyle.COLOR_FOR_RIGHT_FORMAT &&
                     dayField.getBackground() == ConstantsOfStyle.COLOR_FOR_RIGHT_FORMAT &&
-                    nameField.getBackground() == ConstantsOfStyle.COLOR_FOR_RIGHT_FORMAT
+                    nameField.getBackground() == ConstantsOfStyle.COLOR_FOR_RIGHT_FORMAT &&
+                    localField.getBackground() != ConstantsOfStyle.COLOR_FOR_WRONG_FORMAT &&
+                    houseField.getBackground() != ConstantsOfStyle.COLOR_FOR_WRONG_FORMAT
             ) {
                 String secondName = (secondNameField.getText().trim().equals("")) ? null : secondNameField.getText().trim();
                 char gender = (Objects.equals(genderComboBox.getSelectedItem(), "Male")) ? 'M' : 'F';
                 parent.setName(nameField.getText().trim());
                 parent.setSecondName(secondName);
                 parent.setSurname(surnameField.getText().trim());
+                parent.setGender(gender);
                 parent.setDateOfBirth(LocalDate.of(Integer.parseInt(yearField.getText().trim()),
                         Integer.parseInt(monthField.getText().trim()),
                         Integer.parseInt(dayField.getText().trim())));
                 parent.setPesel(peselField.getText().trim());
                 parent.setTelephone(telephoneField.getText().trim());
                 parent.seteMail(eMailField.getText().trim());
+                int houseNumber = (houseField.getText().trim().equals(""))
+                        ? 0 : Integer.parseInt(houseField.getText().trim());
+                int localNumber = (localField.getText().trim().equals(""))
+                        ? 0 : Integer.parseInt(localField.getText().trim());
                 parent.setAddress(new Address(
                         countryField.getText().trim(),
                         provinceField.getText().trim(),
                         townField.getText().trim(),
                         streetField.getText().trim(),
-                        Integer.parseInt(houseField.getText().trim()),
-                        Integer.parseInt(localField.getText().trim()),
+                        (houseField.getText().trim().equals(""))
+                                ? 0 : Integer.parseInt(houseField.getText().trim()),
+                        (localField.getText().trim().equals(""))
+                                ? 0 : Integer.parseInt(localField.getText().trim()),
                         postCodeField.getText().trim()));
-                currentStatusField.setText(String.format("Changes are saved (%s: PARENT)",
-                        CentralPanel.CURRENT_PUPIL.getNamesAndSurname()));
+                if (!isNewPupil) {
+                    currentStatusField.setText(String.format("Changes are saved (%s: PARENT)",
+                            CentralPanel.CURRENT_PUPIL.getNamesAndSurname()));
+                }
                 dispose();
             } else {
                 JOptionPane.showMessageDialog(parentFrame, "Some data are wrong.", "ERROR",

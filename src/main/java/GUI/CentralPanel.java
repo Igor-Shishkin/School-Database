@@ -239,8 +239,8 @@ public class CentralPanel extends JPanel implements ActionListener, TreeSelectio
         panelForFilterRadioButtons.setBackground(ColorsSets.ACTUAL_SET_OF_COLORS.get(2));
 
         addPupilButton.setPreferredSize(new Dimension(10,25));
-        addPupilButton.setBackground(ColorsSets.ACTUAL_SET_OF_COLORS.get(3));
-        addPupilButton.setForeground(ColorsSets.ACTUAL_SET_OF_COLORS.get(0));
+        addPupilButton.setBackground(Color.DARK_GRAY);
+        addPupilButton.setForeground(Color.GREEN);
         addPupilButton.setFont(ConstantsOfStyle.THE_MAIN_FONT.deriveFont(Font.BOLD, 18));
         addPupilButton.addActionListener(this);
 
@@ -405,7 +405,7 @@ public class CentralPanel extends JPanel implements ActionListener, TreeSelectio
 
                 Pupil chosenPupil = CURRENT_PUPIL;
                 try {
-                    new AddEditPupil(parentFrame, chosenPupil, currentStatusField);
+                    new AddEditPupil(parentFrame, chosenPupil, currentStatusField, false);
                 } catch (IOException | FontFormatException ex) {
                     throw new RuntimeException(ex);
                 }
@@ -445,7 +445,7 @@ public class CentralPanel extends JPanel implements ActionListener, TreeSelectio
             try {
                 assert chosenPupil != null;
                 addEditMarks = new AddEditMarks(parentFrame, chosenPupil.getMarks(), chosenPupil.isAwardBar(),
-                        chosenPupil.isPromotionToNextGrade(), chosenPupil.getGrade(), currentStatusField);
+                        chosenPupil.isPromotionToNextGrade(), chosenPupil.getGrade(), currentStatusField, false);
             } catch (IOException ex) {
                 throw new RuntimeException(ex);
             }
@@ -457,11 +457,21 @@ public class CentralPanel extends JPanel implements ActionListener, TreeSelectio
         }
         if (e.getSource()==addPupilButton) {
             try {
-                new AddEditPupil(parentFrame, null, currentStatusField);
+                Pupil tempPupil = new Pupil();
+                new AddEditPupil(parentFrame, tempPupil, currentStatusField, true);
+                if (tempPupil.getSurname()!=null) {
+                    PupilsDataList.addPupilToList(tempPupil);
+                    CURRENT_PUPIL = tempPupil;
+                    CURRENT_GRADE = tempPupil.getGrade();
+                    CURRENT_ID = tempPupil.getId();
+                    getAllPupilsRadioButton.setSelected(true);
+                    refreshPupilsTree();
+                }
+
             } catch (IOException | FontFormatException ex) {
                 throw new RuntimeException(ex);
             }
-            refreshPupilsTree();
+
         }
     }
 

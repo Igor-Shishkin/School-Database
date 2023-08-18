@@ -29,15 +29,19 @@ public class CheckStreetAndLocalDocumentListener implements DocumentListener {
         isInt();
     }
     private void isInt () {
-        try {
-            int number = Integer.parseInt(this.textField.getText());
-            if (number<500) {
-                textField.setBackground(ConstantsOfStyle.COLOR_FOR_RIGHT_FORMAT);
-            } else {
-                textField.setBackground(Color.WHITE);
+        if (textField.getText().equals("")) {
+            textField.setBackground(Color.white);
+        } else {
+            try {
+                int number = Integer.parseInt(this.textField.getText());
+                if (number < 500) {
+                    textField.setBackground(ConstantsOfStyle.COLOR_FOR_RIGHT_FORMAT);
+                } else {
+                    textField.setBackground(Color.WHITE);
+                }
+            } catch (NumberFormatException ex) {
+                textField.setBackground(ConstantsOfStyle.COLOR_FOR_WRONG_FORMAT);
             }
-        } catch (NumberFormatException ex) {
-            textField.setBackground(ConstantsOfStyle.COLOR_FOR_WRONG_FORMAT);
         }
     }
 }
