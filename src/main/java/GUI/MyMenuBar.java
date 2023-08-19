@@ -19,6 +19,7 @@ import java.io.IOException;
 import java.net.URL;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.Objects;
 import java.util.Properties;
 
 public class MyMenuBar  implements ActionListener {
@@ -34,10 +35,11 @@ public class MyMenuBar  implements ActionListener {
     DefaultTreeModel gradesTreeModel;
     JPanel panelForFilterRadioButtons, centralPanel;
     JButton addPupilButton;
+    JScrollPane paneForGradesTree;
 
     MyMenuBar(JFrame parentFrame, JTextField currentStatusField, JTree treeForGradePanel,
               DefaultTreeModel gradesTreeModel, JPanel panelForFilterRadioButtons, JButton addPupilButton,
-              JPanel centralPanel)
+              JPanel centralPanel, JScrollPane paneForGradesTree)
             throws IOException {
         this.parentFrame = parentFrame;
         this.currentStatusField = currentStatusField;
@@ -46,6 +48,7 @@ public class MyMenuBar  implements ActionListener {
         this.panelForFilterRadioButtons = panelForFilterRadioButtons;
         this.addPupilButton = addPupilButton;
         this.centralPanel = centralPanel;
+        this.paneForGradesTree = paneForGradesTree;
 
         menuBar = new JMenuBar();
         writeReadDataToFile = new WriteReadDataToFile();
@@ -66,6 +69,7 @@ public class MyMenuBar  implements ActionListener {
         closeItem.addActionListener(this);
         contrast.addActionListener(this);
         aggressive.addActionListener(this);
+        ocean.addActionListener(this);
     }
 
     private void setIconsToMenuComponents() {
@@ -138,6 +142,7 @@ public class MyMenuBar  implements ActionListener {
                     treeForGradePanel.setVisible(true);
                     panelForFilterRadioButtons.setVisible(true);
                     addPupilButton.setVisible(true);
+                    paneForGradesTree.setVisible(true);
                 } catch (Exception ex) {
                     JOptionPane.showMessageDialog(null,
                             "\t\tI can't read this file!\nCALL TECH SUPPORT OR ELSE!", "title",
@@ -174,10 +179,34 @@ public class MyMenuBar  implements ActionListener {
             }
         }
         if (e.getSource()==contrast) {
-            System.out.println(ColorsSets.ACTUAL_SET_OF_COLORS);
             ColorsSets.setActualSetOfColors(ColorsSets.SET_OF_COLORS_CONTRAST);
-            System.out.println(ColorsSets.ACTUAL_SET_OF_COLORS);
+            refreshPanels(centralPanel);
             centralPanel.repaint();
+
+            fileMenu.setBackground(Color.BLACK);
+            menuBar.setBackground(ColorsSets.ACTUAL_SET_OF_COLORS.get(5));
+            setMenuBarColors(Color.BLUE, ColorsSets.ACTUAL_SET_OF_COLORS.get(2));
+        }
+        if (e.getSource()==ocean) {
+            ColorsSets.setActualSetOfColors(ColorsSets.SET_OF_COLORS_OCEAN);
+            refreshPanels(centralPanel);
+            centralPanel.repaint();
+
+            menuBar.setBackground(ColorsSets.ACTUAL_SET_OF_COLORS.get(5));
+            setMenuBarColors(ColorsSets.ACTUAL_SET_OF_COLORS.get(2), ColorsSets.ACTUAL_SET_OF_COLORS.get(4));
+
+
+        }
+    }
+
+    private void refreshMenu(Container container) {
+        for (Component component : container.getComponents()) {
+            if (component instanceof JMenuItem) {
+                component.setBackground(ColorsSets.ACTUAL_SET_OF_COLORS.get(4));
+            }
+            if (component instanceof Container) {
+                refreshPanels((Container) component);
+            }
         }
     }
 
@@ -212,6 +241,31 @@ public class MyMenuBar  implements ActionListener {
     }
     public JMenuBar getMenuBar () {
         return menuBar;
+    }
+
+    public void refreshPanels (Container container) {
+        for (Component component : container.getComponents()) {
+            if (component instanceof JButton) {
+                component.setBackground(ColorsSets.ACTUAL_SET_OF_COLORS.get(5));
+                component.setForeground(ColorsSets.ACTUAL_SET_OF_COLORS.get(2));
+                if (Objects.equals(((JButton) component).getText(), "DELETE PUPIL")){
+                    component.setBackground(ColorsSets.ACTUAL_SET_OF_COLORS.get(2));
+                    component.setForeground(ColorsSets.ACTUAL_SET_OF_COLORS.get(7));
+                }
+                if (Objects.equals(((JButton) component).getText(), "Add new pupil")){
+                    component.setBackground(ColorsSets.ACTUAL_SET_OF_COLORS.get(2));
+                    component.setForeground(ColorsSets.ACTUAL_SET_OF_COLORS.get(8));
+                }
+            }
+            if (component instanceof JLabel || component instanceof JTextField ||
+                    component instanceof JPanel || component instanceof JScrollPane ||
+                    component instanceof JRadioButton || component instanceof JTree) {
+                component.setBackground(ColorsSets.ACTUAL_SET_OF_COLORS.get(0));
+            }
+            if (component instanceof Container) {
+                refreshPanels((Container) component);
+            }
+        }
     }
 
 }

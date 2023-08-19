@@ -1,6 +1,7 @@
 package GUI;
 
 import GUI.addEditPupil.AddEditPupil;
+import GUI.styleStorage.ColorsSets;
 
 import javax.swing.*;
 import java.awt.*;
@@ -21,18 +22,26 @@ public class Main {
         UIManager.put("Menu.font", menuFont);
         UIManager.put("MenuItem.font", menuFont);
 
-        UIManager.put("MenuItem.background", new Color (0xdee8d5));
+        UIManager.put("MenuItem.background", new Color (0x53802C));
         UIManager.put("MenuItem.foreground", Color.black);
         UIManager.put("MenuBar.background", new Color(0xac92a6));
-//        UIManager.put("Menu.foreground", Color.green);
+        UIManager.put("Menu.foreground", Color.green);
         UIManager.put("MenuItem.opaque", true);
-//        mainWindow = new MainWindow();
-        new MainWindow();
+        mainWindow = new MainWindow();
+//        new MainWindow();
     }
 
     public static void sleep (int time) throws InterruptedException {
-
         Thread.sleep(time);
+    }
+
+    public static void setMenuColors() {
+
+        UIManager.put("MenuItem.background", ColorsSets.ACTUAL_SET_OF_COLORS.get(4));
+        UIManager.put("MenuItem.foreground", Color.black);
+        UIManager.put("MenuBar.background", ColorsSets.ACTUAL_SET_OF_COLORS.get(3));
+//        UIManager.put("Menu.foreground", Color.green);
+        UIManager.put("MenuItem.opaque", true);
     }
 
 }

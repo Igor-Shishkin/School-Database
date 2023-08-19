@@ -45,10 +45,12 @@ public class CentralPanel extends JPanel implements ActionListener, TreeSelectio
             getNoPromotedPupilsRadioButton, getPupilsWithAchievement;
     JButton showEditMarksButton, showEditAchievementButton, editDateButton, addPupilButton, deletePupilButton;
     JFrame parentFrame;
+    JScrollPane paneForGradesTree;
 
     public CentralPanel(JFrame parentFrame, JTextField currentStatusField, JTree treeForGradePanel,
                         DefaultMutableTreeNode rootForGradePanel, DefaultTreeModel gradesTreeModel,
-                        JPanel panelForFilterRadioButtons, JButton addPupilButton) throws IOException, FontFormatException {
+                        JPanel panelForFilterRadioButtons, JButton addPupilButton,
+                        JScrollPane paneForGradesTree) throws IOException, FontFormatException {
         this.currentStatusField = currentStatusField;
         this.parentFrame = parentFrame;
         this.treeForGradePanel = treeForGradePanel;
@@ -56,6 +58,7 @@ public class CentralPanel extends JPanel implements ActionListener, TreeSelectio
         this.gradesTreeModel = gradesTreeModel;
         this.panelForFilterRadioButtons = panelForFilterRadioButtons;
         this.addPupilButton = addPupilButton;
+        this.paneForGradesTree = paneForGradesTree;
 
         this.setLayout(new BorderLayout());
 //        this.setLayout(new GridBagLayout());
@@ -110,32 +113,33 @@ public class CentralPanel extends JPanel implements ActionListener, TreeSelectio
         showEditMarksButton = new JButton("MARKS");
         showEditMarksButton.addActionListener(this);
         showEditMarksButton.setPreferredSize(new Dimension(10, 30));
-        showEditMarksButton.setBorder(BorderFactory.createLineBorder(ColorsSets.ACTUAL_SET_OF_COLORS.get(2), 5));
+        showEditMarksButton.setBorder(BorderFactory.createLineBorder(ColorsSets.ACTUAL_SET_OF_COLORS.get(2), 2));
         showEditMarksButton.setVisible(false);
 
         showEditAchievementButton = new JButton("ACHIEVEMENT");
         showEditAchievementButton.addActionListener(this);
         showEditAchievementButton.setPreferredSize(new Dimension(10, 30));
         showEditAchievementButton.setBorder(BorderFactory.createLineBorder
-                (ColorsSets.ACTUAL_SET_OF_COLORS.get(2), 5));
+                (ColorsSets.ACTUAL_SET_OF_COLORS.get(2), 2));
         showEditAchievementButton.setVisible(false);
 
         editDateButton = new JButton("DATE");
         editDateButton.addActionListener(this);
         editDateButton.setPreferredSize(new Dimension(10, 30));
-        editDateButton.setBorder(BorderFactory.createLineBorder(ColorsSets.ACTUAL_SET_OF_COLORS.get(2), 5));
+        editDateButton.setBorder(BorderFactory.createLineBorder(ColorsSets.ACTUAL_SET_OF_COLORS.get(2), 2));
         editDateButton.setVisible(false);
 
         deletePupilButton = new JButton("DELETE PUPIL");
         deletePupilButton.addActionListener(this);
         deletePupilButton.setPreferredSize(new Dimension(10, 30));
-        deletePupilButton.setBorder(BorderFactory.createLineBorder(ColorsSets.ACTUAL_SET_OF_COLORS.get(2), 5));
+        deletePupilButton.setBorder(BorderFactory.createLineBorder(ColorsSets.ACTUAL_SET_OF_COLORS.get(2), 2));
         deletePupilButton.setBackground(Color.darkGray);
         deletePupilButton.setForeground(Color.red);
         deletePupilButton.setVisible(false);
 
 
-        JPanel buttonInformationPanel = new JPanel(new GridLayout(4, 1, 2, 3));
+        JPanel buttonInformationPanel = new JPanel(new GridLayout(4, 1, 0, 0));
+        buttonInformationPanel.setPreferredSize(new Dimension(10,150));
         buttonInformationPanel.setBackground(ColorsSets.ACTUAL_SET_OF_COLORS.get(2));
         buttonInformationPanel.add(editDateButton);
         buttonInformationPanel.add(showEditAchievementButton);
@@ -214,14 +218,15 @@ public class CentralPanel extends JPanel implements ActionListener, TreeSelectio
         treeForGradePanel.getSelectionModel().setSelectionMode(TreeSelectionModel.SINGLE_TREE_SELECTION);
         treeForGradePanel.addTreeSelectionListener(this);
 
-        treeForGradePanel.putClientProperty("JTree.lineStyle", "Angled");
-        treeForGradePanel.setFont(new Font("MV Boli", Font.BOLD, 20));
-        treeForGradePanel.setBackground(ColorsSets.ACTUAL_SET_OF_COLORS.get(2));
+//        treeForGradePanel.putClientProperty("JTree.lineStyle", "Angled");
+        treeForGradePanel.setFont(new Font("MV Boli", Font.BOLD, 19));
         treeForGradePanel.setBackground(ColorsSets.ACTUAL_SET_OF_COLORS.get(2));
         treeForGradePanel.setCellRenderer(new CustomTreeCellRenderer());
 
         treeForGradePanel.addMouseMotionListener(new HandCursorForMouseMotionAdapter(treeForGradePanel));
-//        JScrollPane paneForGradesTree = new JScrollPane(treeForGradePanel);
+
+        paneForGradesTree.setPreferredSize(new Dimension(230,330));
+        paneForGradesTree.setBackground(ColorsSets.ACTUAL_SET_OF_COLORS.get(2));
 
         GridBagConstraints c = new GridBagConstraints();
         c.fill = GridBagConstraints.HORIZONTAL;
@@ -249,7 +254,7 @@ public class CentralPanel extends JPanel implements ActionListener, TreeSelectio
         c.gridy = 0;
         c.gridx = 0;
         c.gridheight = 3;
-        gradesPanel.add(treeForGradePanel, c);
+        gradesPanel.add(paneForGradesTree, c);
 
         c.insets = new Insets(5, 3, 5, 3);
         c.gridy = 3;
@@ -582,6 +587,7 @@ public class CentralPanel extends JPanel implements ActionListener, TreeSelectio
     public void setGradeForTreeVisible() {
         treeForGradePanel.setVisible(!treeForGradePanel.isVisible());
     }
+
 
 
 }

@@ -37,6 +37,7 @@ public class MainWindow extends JFrame implements ActionListener {
     DefaultMutableTreeNode rootForGradePanel;
     DefaultTreeModel gradesTreeModel;
     JButton addPupilButton;
+    JScrollPane paneForGradesTree;
 
 
     MainWindow() throws IOException, FontFormatException {
@@ -58,13 +59,15 @@ public class MainWindow extends JFrame implements ActionListener {
         rootForGradePanel = new DefaultMutableTreeNode("School");
         gradesTreeModel = new DefaultTreeModel(rootForGradePanel);
         treeForGradePanel = new JTree(gradesTreeModel);
+        JScrollPane paneForGradesTree = new JScrollPane(treeForGradePanel);
+        paneForGradesTree.setVisible(false);
         addPupilButton = new JButton("Add new pupil");
         addPupilButton.setVisible(false);
 
         centerPanel = new CentralPanel(this, currentStatusField, treeForGradePanel, rootForGradePanel,
-                gradesTreeModel, panelForFilterRadioButtons, addPupilButton);
+                gradesTreeModel, panelForFilterRadioButtons, addPupilButton, paneForGradesTree);
         myMenuBar = new MyMenuBar(this, currentStatusField, treeForGradePanel, gradesTreeModel,
-                panelForFilterRadioButtons, addPupilButton, centerPanel);
+                panelForFilterRadioButtons, addPupilButton, centerPanel, paneForGradesTree);
 
         this.setResizable(false);
         this.setLayout(new BorderLayout());
@@ -131,6 +134,8 @@ public class MainWindow extends JFrame implements ActionListener {
             ColorsSets.ACTUAL_SET_OF_COLORS.add(i, listOfColors.get(i));
         }
     }
+
+
 
 
 }
