@@ -64,9 +64,9 @@ public class GeneratePupilData {
 
     public String generateStreet() { return STREETS[random.nextInt(STREETS.length)]; }
 
-    public int generateHouse() {  return random.nextInt(150) + 1; }
+    public String generateHouse() {  return Integer.toString(random.nextInt(150) + 1); }
 
-    public int generateLocal() { return random.nextInt(20) + 1;  }
+    public String generateLocal() { return Integer.toString(random.nextInt(20) + 1);  }
 
     public String generatePostCode() {
         return (random.nextInt(30) + 40) + "-" + (random.nextInt(500) + 123);
@@ -177,14 +177,14 @@ public class GeneratePupilData {
         String secondName = (gender=='M')?generateSecondMaleName():generateSecondFemaleName();
 
         int pesel1And2thDigits = year % 100;
-        int pesel3And4thDigits = month + 20;
+        int pesel3And4thDigits = (year<2000) ? month : (year<2100) ? month +20 : month + 40;
         int pesel7And8And9thDigits = random.nextInt(999);
         int pesel10thDigit = (gender=='F') ? random.nextInt(4) * 2 : (9 - random.nextInt(4) * 2);
-        String pesel = String.format("%d%d%02d%03d%d%d", pesel1And2thDigits, pesel3And4thDigits, day,
+        String pesel = String.format("%d%02d%02d%03d%d%d", pesel1And2thDigits, pesel3And4thDigits, day,
                 pesel7And8And9thDigits, pesel10thDigit, random.nextInt(10));
         String eMail = name.toLowerCase().concat(".").concat(surname.toLowerCase()).concat("@gmail.com");
 
-        return new Parent(name, secondName, surname, gender, year, month, day, address,
+        return new Parent(name, secondName, surname, gender,  address,
                 pesel, generateTelephone(), eMail);
     }
 
@@ -197,13 +197,13 @@ public class GeneratePupilData {
 
         int pesel1And2thDigits = year % 100;
         int pesel3And4thDigits = (year<2000) ? month : (year<2100) ? month +20 : month + 40;
-        int pesel7And8And9thDigits = random.nextInt(999);
+        int pesel7And8And9thDigits = random.nextInt(1000);
         int pesel10thDigit = (gender=='F') ? random.nextInt(4) * 2 : (9 - random.nextInt(4) * 2);
-        String pesel = String.format("%d%d%02d%03d%d%d", pesel1And2thDigits, pesel3And4thDigits, day,
+        String pesel = String.format("%d%02d%02d%03d%d%d", pesel1And2thDigits, pesel3And4thDigits, day,
                 pesel7And8And9thDigits, pesel10thDigit, random.nextInt(10));
         String eMail = name.toLowerCase().concat(".").concat(surname.toLowerCase()).concat("@gmail.com");
 
-        return (random.nextInt(100)<95)? new Parent(name, secondName, surname, gender, year, month, day, address,
+        return (random.nextInt(100)<90)? new Parent(name, secondName, surname, gender,  address,
                 pesel, generateTelephone(), eMail) : null;
     }
 

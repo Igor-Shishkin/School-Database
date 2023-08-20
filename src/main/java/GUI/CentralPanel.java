@@ -112,27 +112,27 @@ public class CentralPanel extends JPanel implements ActionListener, TreeSelectio
 
         showEditMarksButton = new JButton("MARKS");
         showEditMarksButton.addActionListener(this);
-        showEditMarksButton.setPreferredSize(new Dimension(10, 30));
-        showEditMarksButton.setBorder(BorderFactory.createLineBorder(ColorsSets.ACTUAL_SET_OF_COLORS.get(2), 2));
+        showEditMarksButton.setPreferredSize(new Dimension(10, 21));
+        showEditMarksButton.setBorder(BorderFactory.createLineBorder(ColorsSets.ACTUAL_SET_OF_COLORS.get(2), 3));
         showEditMarksButton.setVisible(false);
 
         showEditAchievementButton = new JButton("ACHIEVEMENT");
         showEditAchievementButton.addActionListener(this);
-        showEditAchievementButton.setPreferredSize(new Dimension(10, 30));
+        showEditAchievementButton.setPreferredSize(new Dimension(10, 21));
         showEditAchievementButton.setBorder(BorderFactory.createLineBorder
-                (ColorsSets.ACTUAL_SET_OF_COLORS.get(2), 2));
+                (ColorsSets.ACTUAL_SET_OF_COLORS.get(2), 3));
         showEditAchievementButton.setVisible(false);
 
         editDateButton = new JButton("DATE");
         editDateButton.addActionListener(this);
-        editDateButton.setPreferredSize(new Dimension(10, 30));
-        editDateButton.setBorder(BorderFactory.createLineBorder(ColorsSets.ACTUAL_SET_OF_COLORS.get(2), 2));
+        editDateButton.setPreferredSize(new Dimension(10, 21));
+        editDateButton.setBorder(BorderFactory.createLineBorder(ColorsSets.ACTUAL_SET_OF_COLORS.get(2), 3));
         editDateButton.setVisible(false);
 
         deletePupilButton = new JButton("DELETE PUPIL");
         deletePupilButton.addActionListener(this);
-        deletePupilButton.setPreferredSize(new Dimension(10, 30));
-        deletePupilButton.setBorder(BorderFactory.createLineBorder(ColorsSets.ACTUAL_SET_OF_COLORS.get(2), 2));
+        deletePupilButton.setPreferredSize(new Dimension(10, 21));
+        deletePupilButton.setBorder(BorderFactory.createLineBorder(ColorsSets.ACTUAL_SET_OF_COLORS.get(2), 3));
         deletePupilButton.setBackground(Color.darkGray);
         deletePupilButton.setForeground(Color.red);
         deletePupilButton.setVisible(false);

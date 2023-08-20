@@ -11,8 +11,9 @@ public class Parent extends Person implements Cloneable{
         this.eMail = null;
     }
 
-    public Parent(String name, String secondName, String surname, char gender, int year, int month, int day, Address address, String pesel, String telephone, String eMail) {
-        super(name, secondName, surname, gender, year, month, day, address, pesel);
+    public Parent(String name, String secondName, String surname, char gender,
+                  Address address, String pesel, String telephone, String eMail) {
+        super(name, secondName, surname, gender, address, pesel);
         this.telephone = telephone;
         this.eMail = eMail;
     }
@@ -45,7 +46,6 @@ public class Parent extends Person implements Cloneable{
     @Override
     public Parent clone() {
         try {
-            // TODO: copy mutable state here, so the clone can't change the internals of the original
             return (Parent) super.clone();
         } catch (CloneNotSupportedException e) {
             throw new AssertionError();

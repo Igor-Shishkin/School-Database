@@ -9,7 +9,7 @@ import java.util.Objects;
 import java.util.stream.Collectors;
 
 public class PupilsDataList {
-    static ArrayList<Pupil> pupilsDataList = new ArrayList<>();
+    static ArrayList<Pupil> pupilsDataList;
 
     public static ArrayList<Pupil> getPupilsDataList() {
         return pupilsDataList;

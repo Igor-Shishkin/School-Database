@@ -2,7 +2,6 @@ package GUI.addEditPupil;
 
 import GUI.CentralPanel;
 import GUI.listeners.*;
-import GUI.styleStorage.ColorsSets;
 import GUI.styleStorage.ConstantsOfStyle;
 import database.Address;
 import database.Parent;
@@ -12,16 +11,16 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
-import java.time.DateTimeException;
-import java.time.LocalDate;
 import java.util.Objects;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class AddEditParent extends JDialog implements ActionListener {
     JFrame parentFrame;
-    JLabel nameLabel, surnameLabel, secondNameLabel, eMailLabel, telephoneLabel, genderLabel, dateOfBirth, yearLabel,
-            monthLabel, dayLabel, addressLabel, countryLabel, provinceLabel, townLabel,
+    JLabel nameLabel, surnameLabel, secondNameLabel, eMailLabel, telephoneLabel, genderLabel, contactsLabel,
+            addressLabel, countryLabel, provinceLabel, townLabel,
             streetLabel, houseLabel, localLabel, postCodeLabel, peselJLabel;
-    JTextField nameField, surnameField, secondNameField, eMailField, telephoneField, genderField, yearField, monthField, dayField,
+    JTextField nameField, surnameField, secondNameField, eMailField, telephoneField, genderField,
             countryField, provinceField, townField, streetField, houseField, peselField,
             localField, postCodeField, currentStatusField;;
     JComboBox<String> genderComboBox;
@@ -88,9 +87,6 @@ public class AddEditParent extends JDialog implements ActionListener {
             surnameField.setBackground(ConstantsOfStyle.COLOR_FOR_WRONG_FORMAT);
             telephoneField.setBackground(ConstantsOfStyle.COLOR_FOR_WRONG_FORMAT);
             eMailField.setBackground(ConstantsOfStyle.COLOR_FOR_WRONG_FORMAT);
-            dayField.setBackground(ConstantsOfStyle.COLOR_FOR_WRONG_FORMAT);
-            yearField.setBackground(ConstantsOfStyle.COLOR_FOR_WRONG_FORMAT);
-            monthField.setBackground(ConstantsOfStyle.COLOR_FOR_WRONG_FORMAT);
             genderComboBox.setBackground(ConstantsOfStyle.COLOR_FOR_WRONG_FORMAT);
             peselField.setBackground(ConstantsOfStyle.COLOR_FOR_WRONG_FORMAT);
         } else {
@@ -104,90 +100,17 @@ public class AddEditParent extends JDialog implements ActionListener {
                     ? ConstantsOfStyle.COLOR_FOR_WRONG_FORMAT : ConstantsOfStyle.COLOR_FOR_RIGHT_FORMAT);
             genderComboBox.setBackground((genderComboBox.getSelectedIndex() < 1)
                     ? ConstantsOfStyle.COLOR_FOR_WRONG_FORMAT : ConstantsOfStyle.COLOR_FOR_RIGHT_FORMAT);
-            try {
-                int number = Integer.parseInt(dayField.getText().trim());
-                if (number < 32 && number > 0) {
-                    dayField.setBackground(ConstantsOfStyle.COLOR_FOR_RIGHT_FORMAT);
-                } else {
-                    dayField.setBackground(ConstantsOfStyle.COLOR_FOR_WRONG_FORMAT);
-                }
-            } catch (NumberFormatException ex) {
-                dayField.setBackground(ConstantsOfStyle.COLOR_FOR_WRONG_FORMAT);
-            }
 
-            try {
-                int yearNumber = Integer.parseInt(this.yearField.getText().trim());
-                if (yearNumber > LocalDate.now().getYear() - 100 && yearNumber <= LocalDate.now().getYear() - 18) {
-                    yearField.setBackground(ConstantsOfStyle.COLOR_FOR_RIGHT_FORMAT);
-                } else {
-                    yearField.setBackground(ConstantsOfStyle.COLOR_FOR_WRONG_FORMAT);
-                }
-            } catch (NumberFormatException ex) {
-                yearField.setBackground(ConstantsOfStyle.COLOR_FOR_WRONG_FORMAT);
-            }
-            try {
-                int number = Integer.parseInt(this.monthField.getText().trim());
-                if (number < 13 && number > 0) {
-                    monthField.setBackground(ConstantsOfStyle.COLOR_FOR_RIGHT_FORMAT);
-                } else {
-                    monthField.setBackground(ConstantsOfStyle.COLOR_FOR_WRONG_FORMAT);
-                }
-            } catch (NumberFormatException ex) {
-                monthField.setBackground(ConstantsOfStyle.COLOR_FOR_WRONG_FORMAT);
-            }
-            if (yearField.getBackground() == ConstantsOfStyle.COLOR_FOR_RIGHT_FORMAT &&
-                    monthField.getBackground() == ConstantsOfStyle.COLOR_FOR_RIGHT_FORMAT &&
-                    dayField.getBackground() == ConstantsOfStyle.COLOR_FOR_RIGHT_FORMAT) {
-                try {
-                    LocalDate.of(Integer.parseInt(yearField.getText().trim()),
-                            Integer.parseInt(monthField.getText().trim()),
-                            Integer.parseInt(dayField.getText().trim()));
-                } catch (DateTimeException e) {
-                    yearField.setBackground(ConstantsOfStyle.COLOR_FOR_WRONG_FORMAT);
-                    monthField.setBackground(ConstantsOfStyle.COLOR_FOR_WRONG_FORMAT);
-                    dayField.setBackground(ConstantsOfStyle.COLOR_FOR_WRONG_FORMAT);
-                }
-            }
-            if (peselField.getText().length() == 11 &&
-                    Objects.equals(yearField.getBackground(), ConstantsOfStyle.COLOR_FOR_RIGHT_FORMAT) &&
-                    Objects.equals(yearField.getBackground(), ConstantsOfStyle.COLOR_FOR_RIGHT_FORMAT) &&
-                    Objects.equals(monthField.getBackground(), ConstantsOfStyle.COLOR_FOR_RIGHT_FORMAT) &&
-                    Objects.equals(dayField.getBackground(), ConstantsOfStyle.COLOR_FOR_RIGHT_FORMAT) &&
-                    !Objects.equals(genderComboBox.getSelectedItem(), "")) {
-                int yearNumber = Integer.parseInt(yearField.getText().trim());
-                int monthNumber = Integer.parseInt(monthField.getText().trim());
-                String endOfYear = String.format("%02d", Integer.parseInt(yearField.getText().trim()) % 100);
-                String month = String.format("%02d", (yearNumber < 2000)
-                        ? monthNumber :
-                        (yearNumber < 2100) ? monthNumber + 20 :
-                                (yearNumber < 2200) ? monthNumber + 40 : monthNumber + 60);
-                String day = String.format("%02d", Integer.parseInt(dayField.getText().trim()));
-                String pesel = peselField.getText().trim();
-
-                if (pesel.substring(0, 2).equals(endOfYear) &&
-                        pesel.substring(2, 4).equals(month) &&
-                        pesel.substring(4, 6).equals(day) &&
-                        (Objects.equals(genderComboBox.getSelectedItem(), "Male") && (
-                                pesel.charAt(9) == '1' ||
-                                        pesel.charAt(9) == '3' ||
-                                        pesel.charAt(9) == '5' ||
-                                        pesel.charAt(9) == '7' ||
-                                        pesel.charAt(9) == '9') ||
-                                Objects.equals(genderComboBox.getSelectedItem(), "Female") && (
-                                        pesel.charAt(9) == '0' ||
-                                                pesel.charAt(9) == '2' ||
-                                                pesel.charAt(9) == '4' ||
-                                                pesel.charAt(9) == '6' ||
-                                                pesel.charAt(9) == '8')
-                        )
-                ) {
-                    peselField.setBackground(ConstantsOfStyle.COLOR_FOR_RIGHT_FORMAT);
-                } else {
-                    peselField.setBackground(ConstantsOfStyle.COLOR_FOR_WRONG_FORMAT);
-                }
+            String regex = "";
+            if (genderComboBox.getSelectedIndex() == 1) {
+                regex = "^[0-9]{2}(2[1-9]|3[012]|0[1-9]||1[012])(0[1-9]|1[0-9]|2[0-9]|3[01])[0-9]{3}[13579]{1}[0-9]{1}$";
             } else {
-                peselField.setBackground(ConstantsOfStyle.COLOR_FOR_WRONG_FORMAT);
+                regex = "^[0-9]{2}(2[1-9]|3[012]|0[1-9]||1[012])(0[1-9]|1[0-9]|2[0-9]|3[01])[0-9]{3}[24680]{1}[0-9]{1}$";
             }
+            Pattern peselPattern = Pattern.compile(regex);
+            Matcher matcher = peselPattern.matcher(peselField.getText().trim());
+            peselField.setBackground((matcher.matches())
+                    ? ConstantsOfStyle.COLOR_FOR_RIGHT_FORMAT : ConstantsOfStyle.COLOR_FOR_WRONG_FORMAT);
         }
     }
 
@@ -198,9 +121,6 @@ public class AddEditParent extends JDialog implements ActionListener {
             surnameField.setText((parent.getSurname() != null) ? parent.getSurname() : "");
             eMailField.setText((parent.geteMail() != null) ? parent.geteMail() : "");
             telephoneField.setText((parent.getTelephone() != null) ? parent.getTelephone() : "");
-            yearField.setText((parent.getDateOfBirth() != null) ? Integer.toString(parent.getDateOfBirth().getYear()) : "");
-            monthField.setText((parent.getDateOfBirth() != null) ? Integer.toString(parent.getDateOfBirth().getMonthValue()) : "");
-            dayField.setText((parent.getDateOfBirth() != null) ? Integer.toString(parent.getDateOfBirth().getDayOfMonth()) : "");
             peselField.setText((parent.getPesel() != null) ? parent.getPesel() : "");
             genderComboBox.setSelectedIndex((parent.getGender() == 'M') ? 1 : (parent.getGender() == 'F') ? 2 : 0);
             if (parent.getAddress() != null) {
@@ -208,8 +128,8 @@ public class AddEditParent extends JDialog implements ActionListener {
                 provinceField.setText((parent.getAddress().getProvince() != null) ? parent.getAddress().getProvince() : "");
                 townField.setText((parent.getAddress().getTown() != null) ? parent.getAddress().getTown() : "");
                 streetField.setText((parent.getAddress().getStreet() != null) ? parent.getAddress().getStreet() : "");
-                houseField.setText(Integer.toString(parent.getAddress().getHouse()));
-                localField.setText(Integer.toString(parent.getAddress().getLocal()));
+                houseField.setText(parent.getAddress().getHouse());
+                localField.setText(parent.getAddress().getLocal());
                 postCodeField.setText((parent.getAddress().getCountry() != null) ? parent.getAddress().getPostCode() : "");
             }
         }
@@ -217,16 +137,8 @@ public class AddEditParent extends JDialog implements ActionListener {
     }
 
     private void setListener() {
-        yearField.getDocument().addDocumentListener(new IsRightYearForParentDocumentListener(yearField, monthField, dayField,
-                peselField, genderComboBox));
-        monthField.getDocument().addDocumentListener(new IsRightMonthDocumentListener(yearField, monthField, dayField,
-                peselField, genderComboBox));
-        dayField.getDocument().addDocumentListener(new IsRightDayDocumentListener(yearField, monthField, dayField,
-                peselField, genderComboBox));
-        peselField.getDocument().addDocumentListener(new IsRightPeselDocumentListener(yearField, monthField, dayField,
-                peselField, genderComboBox));
-        genderComboBox.addActionListener(new GenderComboBoxListener(yearField, monthField, dayField,
-                peselField, genderComboBox));
+        peselField.getDocument().addDocumentListener(new IsRightParentPeselDocumentListener(peselField, genderComboBox));
+        genderComboBox.addActionListener(new GenderForParentComboBoxListener(peselField, genderComboBox));
         houseField.getDocument().addDocumentListener(new CheckStreetAndLocalDocumentListener(houseField));
         localField.getDocument().addDocumentListener(new CheckStreetAndLocalDocumentListener(localField));
         nameField.getDocument().addDocumentListener(new IsEmptyDocumentListener(nameField));
@@ -254,9 +166,6 @@ public class AddEditParent extends JDialog implements ActionListener {
         eMailLabel = new JLabel("*eMail: ");
         telephoneLabel = new JLabel("*Telephone: ");
         genderLabel = new JLabel("*Gender: ");
-        yearLabel = new JLabel("*Year: ");
-        monthLabel = new JLabel("*Month: ");
-        dayLabel = new JLabel("*Day: ");
         countryLabel = new JLabel("Country: ");
         provinceLabel = new JLabel("Province: ");
         townLabel = new JLabel("Town: ");
@@ -264,21 +173,15 @@ public class AddEditParent extends JDialog implements ActionListener {
         houseLabel = new JLabel("House: ");
         localLabel = new JLabel("Local: ");
         postCodeLabel = new JLabel("Postcode: ");
-        dateOfBirth = new JLabel("Date of birth: ");
+        contactsLabel = new JLabel("Contacts: ");
         addressLabel = new JLabel("Address: ");
         peselJLabel = new JLabel("*Pesel: ");
 
-        yearLabel.setHorizontalAlignment(SwingConstants.RIGHT);
-        dayLabel.setHorizontalAlignment(SwingConstants.RIGHT);
-        monthLabel.setHorizontalAlignment(SwingConstants.RIGHT);
         peselJLabel.setHorizontalAlignment(SwingConstants.RIGHT);
 
         eMailField = new JTextField(13);
         telephoneField = new JTextField(13);
         genderField = new JTextField(13);
-        yearField = new JTextField(13);
-        monthField = new JTextField(13);
-        dayField = new JTextField(13);
         countryField = new JTextField(13);
         provinceField = new JTextField(13);
         townField = new JTextField(13);
@@ -325,32 +228,7 @@ public class AddEditParent extends JDialog implements ActionListener {
         c.gridy = 2;
         this.add(surnameField, c);
 
-        c.gridx = 2;
-        c.gridy = 0;
-        this.add(telephoneLabel, c);
-
-        c.gridx = 3;
-        c.gridy = 0;
-        c.gridwidth = 1;
-        this.add(telephoneField, c);
-
-        c.gridx = 2;
-        c.gridy = 1;
-        this.add(eMailLabel, c);
-
-        c.gridx = 3;
-        c.gridy = 1;
-        this.add(eMailField, c);
-
-        c.gridx = 2;
-        c.gridy = 2;
-        this.add(genderLabel, c);
-
-        c.gridx = 3;
-        c.gridy = 2;
-        this.add(genderComboBox, c);
-
-        c.gridwidth = 4;
+        c.gridwidth = 2;
         c.gridx = 0;
         c.gridy = 3;
         this.add(new JSeparator(), c);
@@ -358,31 +236,32 @@ public class AddEditParent extends JDialog implements ActionListener {
         c.gridwidth = 1;
         c.gridx = 0;
         c.gridy = 4;
-        this.add(dateOfBirth, c);
+        this.add(contactsLabel, c);
 
         c.gridx = 0;
         c.gridy = 5;
-        this.add(yearLabel, c);
+        this.add(telephoneLabel, c);
 
         c.gridx = 1;
         c.gridy = 5;
-        this.add(yearField, c);
+        c.gridwidth = 1;
+        this.add(telephoneField, c);
 
         c.gridx = 0;
         c.gridy = 6;
-        this.add(monthLabel, c);
+        this.add(eMailLabel, c);
 
         c.gridx = 1;
         c.gridy = 6;
-        this.add(monthField, c);
+        this.add(eMailField, c);
 
         c.gridx = 0;
         c.gridy = 7;
-        this.add(dayLabel, c);
+        this.add(genderLabel, c);
 
         c.gridx = 1;
         c.gridy = 7;
-        this.add(dayField, c);
+        this.add(genderComboBox, c);
 
         c.gridx = 0;
         c.gridy = 8;
@@ -399,80 +278,80 @@ public class AddEditParent extends JDialog implements ActionListener {
         this.add(peselField, c);
 
         c.gridx = 2;
-        c.gridy = 4;
+        c.gridy = 0;
         this.add(addressLabel, c);
 
         c.gridx = 2;
-        c.gridy = 5;
+        c.gridy = 1;
         this.add(countryLabel, c);
 
         c.gridx = 3;
-        c.gridy = 5;
+        c.gridy = 1;
         this.add(countryField, c);
 
         c.gridx = 2;
-        c.gridy = 6;
+        c.gridy = 2;
         this.add(provinceLabel, c);
 
         c.gridx = 3;
-        c.gridy = 6;
+        c.gridy = 2;
         this.add(provinceField, c);
 
         c.gridx = 2;
-        c.gridy = 7;
+        c.gridy = 3;
         this.add(townLabel, c);
 
         c.gridx = 3;
-        c.gridy = 7;
+        c.gridy = 3;
         this.add(townField, c);
 
         c.gridx = 2;
-        c.gridy = 8;
+        c.gridy = 4;
         this.add(streetLabel, c);
 
         c.gridx = 3;
-        c.gridy = 8;
+        c.gridy = 4;
         this.add(streetField, c);
 
         c.gridx = 2;
-        c.gridy = 9;
+        c.gridy = 5;
         this.add(houseLabel, c);
 
         c.gridx = 3;
-        c.gridy = 9;
+        c.gridy = 5;
         this.add(houseField, c);
 
         c.gridx = 2;
-        c.gridy = 10;
+        c.gridy = 6;
         this.add(localLabel, c);
 
         c.gridx = 3;
-        c.gridy = 10;
+        c.gridy = 6;
         this.add(localField, c);
 
         c.gridx = 2;
-        c.gridy = 11;
+        c.gridy = 7;
         this.add(postCodeLabel, c);
 
         c.gridx = 3;
-        c.gridy = 11;
+        c.gridy = 7;
         this.add(postCodeField, c);
 
 //        c.insets = new Insets(2, 3, 2, 3);
         c.gridwidth = 1;
         c.gridx = 3;
-        c.gridy = 4;
+        c.gridy = 0;
         this.add(setAddressCheckBox, c);
 
         c.insets = new Insets(2, 55, 0, 40);
         c.gridwidth = 2;
-        c.gridx = 0;
-        c.gridy = 10;
+        c.gridx = 2;
+        c.gridy = 8;
         this.add(addDataButton, c);
 
         c.insets = new Insets(2, 55, 5, 40);
-        c.gridx = 0;
-        c.gridy = 11;
+        c.gridx = 2;
+        c.gridy = 9;
         this.add(cancelButton, c);
     }
 
@@ -498,9 +377,6 @@ public class AddEditParent extends JDialog implements ActionListener {
                     eMailField.getBackground() == ConstantsOfStyle.COLOR_FOR_RIGHT_FORMAT &&
                     genderComboBox.getBackground() == ConstantsOfStyle.COLOR_FOR_RIGHT_FORMAT &&
                     peselField.getBackground() == ConstantsOfStyle.COLOR_FOR_RIGHT_FORMAT &&
-                    yearField.getBackground() == ConstantsOfStyle.COLOR_FOR_RIGHT_FORMAT &&
-                    monthField.getBackground() == ConstantsOfStyle.COLOR_FOR_RIGHT_FORMAT &&
-                    dayField.getBackground() == ConstantsOfStyle.COLOR_FOR_RIGHT_FORMAT &&
                     nameField.getBackground() == ConstantsOfStyle.COLOR_FOR_RIGHT_FORMAT &&
                     localField.getBackground() != ConstantsOfStyle.COLOR_FOR_WRONG_FORMAT &&
                     houseField.getBackground() != ConstantsOfStyle.COLOR_FOR_WRONG_FORMAT
@@ -511,25 +387,16 @@ public class AddEditParent extends JDialog implements ActionListener {
                 parent.setSecondName(secondName);
                 parent.setSurname(surnameField.getText().trim());
                 parent.setGender(gender);
-                parent.setDateOfBirth(LocalDate.of(Integer.parseInt(yearField.getText().trim()),
-                        Integer.parseInt(monthField.getText().trim()),
-                        Integer.parseInt(dayField.getText().trim())));
                 parent.setPesel(peselField.getText().trim());
                 parent.setTelephone(telephoneField.getText().trim());
                 parent.seteMail(eMailField.getText().trim());
-                int houseNumber = (houseField.getText().trim().equals(""))
-                        ? 0 : Integer.parseInt(houseField.getText().trim());
-                int localNumber = (localField.getText().trim().equals(""))
-                        ? 0 : Integer.parseInt(localField.getText().trim());
                 parent.setAddress(new Address(
                         countryField.getText().trim(),
                         provinceField.getText().trim(),
                         townField.getText().trim(),
                         streetField.getText().trim(),
-                        (houseField.getText().trim().equals(""))
-                                ? 0 : Integer.parseInt(houseField.getText().trim()),
-                        (localField.getText().trim().equals(""))
-                                ? 0 : Integer.parseInt(localField.getText().trim()),
+                        houseField.getText().trim(),
+                        localField.getText().trim(),
                         postCodeField.getText().trim()));
                 if (!isNewPupil) {
                     currentStatusField.setText(String.format("Changes are saved (%s: PARENT)",

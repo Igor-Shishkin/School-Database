@@ -10,18 +10,16 @@ public abstract class Person {
     private String secondName;
     private String surname;
     private char gender;
-    @JsonFormat(pattern = "yyyy-MM-dd")
-    private LocalDate dateOfBirth;
+
     private Address address;
     private String pesel;
 
-    public Person(String name, String secondName, String surname, char gender, int year, int month, int day,
+    public Person(String name, String secondName, String surname, char gender,
                   Address address, String pesel) {
         this.name = name;
         this.secondName = secondName;
         this.surname = surname;
         this.gender = gender;
-        this.dateOfBirth = LocalDate.of(year, month, day);
         this.address = address;
         this.pesel = pesel;
     }
@@ -29,40 +27,6 @@ public abstract class Person {
     public Person() {
     }
 
-    //    public Person(String name, String secondName, String surname, char gender, int year, int month, int day, Address address, String pesel) {
-//        this.name = name;
-//        this.secondName = secondName;
-//        this.surname = surname;
-//        this.gender = gender;
-//        this.year = year;
-//        this.month = month;
-//        this.day = day;
-//        this.address = address;
-//        this.pesel = pesel;
-//    }
-//    public Person(String name, String surname, char gender, int year, int month, int day, Address address, String pesel) {
-//        this.name = name;
-//        this.gender = gender;
-//        this.secondName = null;
-//        this.surname = surname;
-//        this.year = year;
-//        this.month = month;
-//        this.day = day;
-//        this.address = address;
-//        this.pesel = pesel;
-//    }
-//
-//    public Person(Person person) {
-//        this.gender = '-';
-//        this.name = null;
-//        this.secondName = null;
-//        this.surname = null;
-//        this.year = 0;
-//        this.month = 0;
-//        this.day = 0;
-//        this.address = null;
-//        this.pesel = null;
-//    }
 
     public String getName() {
         return name;
@@ -96,14 +60,6 @@ public abstract class Person {
         this.surname = surname;
     }
 
-    public LocalDate getDateOfBirth() {
-        return dateOfBirth;
-    }
-
-    public void setDateOfBirth(LocalDate dateOfBirth) {
-        this.dateOfBirth = dateOfBirth;
-    }
-
     public Address getAddress() {
         return address;
     }
@@ -127,9 +83,6 @@ public abstract class Person {
                 ", secondName='" + secondName + '\'' +
                 ", surname='" + surname + '\'' +
                 ", gender=" + gender +
-                "\nyear=" + dateOfBirth.getYear() +
-                ", month=" + dateOfBirth.getMonth() +
-                ", day=" + dateOfBirth.getDayOfMonth() +
                 "\naddress=" + address +
                 "\npesel='" + pesel + '\'' +
                 '}';

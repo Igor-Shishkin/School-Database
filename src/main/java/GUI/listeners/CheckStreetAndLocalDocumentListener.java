@@ -6,6 +6,8 @@ import javax.swing.*;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import java.awt.*;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class CheckStreetAndLocalDocumentListener implements DocumentListener {
     JTextField textField;
@@ -29,19 +31,16 @@ public class CheckStreetAndLocalDocumentListener implements DocumentListener {
         isInt();
     }
     private void isInt () {
+
         if (textField.getText().equals("")) {
-            textField.setBackground(Color.white);
+            textField.setBackground(ConstantsOfStyle.COLOR_NEUTRAL_FORMAT);
         } else {
-            try {
-                int number = Integer.parseInt(this.textField.getText());
-                if (number < 500) {
-                    textField.setBackground(ConstantsOfStyle.COLOR_FOR_RIGHT_FORMAT);
-                } else {
-                    textField.setBackground(Color.WHITE);
-                }
-            } catch (NumberFormatException ex) {
-                textField.setBackground(ConstantsOfStyle.COLOR_FOR_WRONG_FORMAT);
-            }
+            String regex = "^[1-9]{1}[0-9]?[0-9]?[a-zA-Z]?";
+            Pattern pattern = Pattern.compile(regex);
+            Matcher matcher = pattern.matcher(textField.getText().trim());
+            textField.setBackground( (matcher.matches())
+                    ? ConstantsOfStyle.COLOR_FOR_RIGHT_FORMAT :  ConstantsOfStyle.COLOR_FOR_WRONG_FORMAT);
+
         }
     }
 }

@@ -1,7 +1,9 @@
 package database;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
+import java.time.LocalDate;
 import java.util.Objects;
 
 public class Pupil extends Person{
@@ -9,6 +11,8 @@ public class Pupil extends Person{
     private static int idNumber=0;
     private int id;
     private int grade;
+    @JsonFormat(pattern = "yyyy-MM-dd")
+    private LocalDate dateOfBirth;
     private Parent parent1;
     private Parent parent2;
     private String achievement;
@@ -34,9 +38,10 @@ public class Pupil extends Person{
     public Pupil(String name, String secondName, String surname, char gender, int year, int month, int day,
                  Address address, String pesel, int id, int grade, Parent parent1, Parent parent2, String achievement,
                  Marks marks, boolean awardBar, boolean promotionToNextGrade) {
-        super(name, secondName, surname, gender, year, month, day, address, pesel);
+        super(name, secondName, surname, gender, address, pesel);
         this.id = id;
         this.grade = grade;
+        this.dateOfBirth = LocalDate.of(year, month, day);
         this.parent1 = parent1;
         this.parent2 = parent2;
         this.achievement = achievement;
@@ -47,7 +52,7 @@ public class Pupil extends Person{
 
     public Pupil(String name, String secondName, String surname, char gender, String pesel, int id, int grade,
                  boolean promotionToNextGrade) {
-        super(name, secondName, surname, gender, 0, 0, 0, null, pesel);
+        super(name, secondName, surname, gender,  null, pesel);
         this.id = id;
         this.grade = grade;
         this.parent1 = null;
@@ -96,6 +101,14 @@ public class Pupil extends Person{
 
     public void setPromotionToNextGrade(boolean promotionToNextGrade) {
         this.promotionToNextGrade = promotionToNextGrade;
+    }
+
+    public LocalDate getDateOfBirth() {
+        return dateOfBirth;
+    }
+
+    public void setDateOfBirth(LocalDate dateOfBirth) {
+        this.dateOfBirth = dateOfBirth;
     }
 
     public Parent getParent1() {
@@ -207,14 +220,14 @@ public class Pupil extends Person{
         if (o == null || getClass() != o.getClass()) return false;
         Pupil pupil = (Pupil) o;
         return id == pupil.id && grade == pupil.grade && awardBar == pupil.awardBar &&
-                promotionToNextGrade == pupil.promotionToNextGrade &&
+                promotionToNextGrade == pupil.promotionToNextGrade && Objects.equals(dateOfBirth, pupil.dateOfBirth) &&
                 Objects.equals(parent1, pupil.parent1) && Objects.equals(parent2, pupil.parent2) &&
                 Objects.equals(achievement, pupil.achievement) && Objects.equals(marks, pupil.marks);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, grade, parent1, parent2, achievement, marks, awardBar, promotionToNextGrade);
+        return Objects.hash(id, grade, dateOfBirth, parent1, parent2, achievement, marks, awardBar, promotionToNextGrade);
     }
 
     @Override

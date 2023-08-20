@@ -371,8 +371,8 @@ public class AddEditPupil extends JDialog implements ActionListener {
             provinceField.setText((pupil.getAddress() == null) ? "" : pupil.getAddress().getProvince());
             townField.setText((pupil.getAddress() == null) ? "" : pupil.getAddress().getTown());
             streetField.setText((pupil.getAddress() == null) ? "" : pupil.getAddress().getStreet());
-            houseField.setText((pupil.getAddress() == null) ? "" : Integer.toString(pupil.getAddress().getHouse()));
-            localField.setText((pupil.getAddress() == null) ? "" : Integer.toString(pupil.getAddress().getLocal()));
+            houseField.setText((pupil.getAddress() == null) ? "" : pupil.getAddress().getHouse());
+            localField.setText((pupil.getAddress() == null) ? "" : pupil.getAddress().getLocal());
             postCodeField.setText((pupil.getAddress() == null) ? "" : pupil.getAddress().getPostCode());
             gradeComboBox.setSelectedIndex(pupil.getGrade() + 1);
             genderComboBox.setSelectedIndex((pupil.getGender() == 'M') ? 1 : (pupil.getGender() == 'F') ? 2 : 0);
@@ -606,10 +606,8 @@ public class AddEditPupil extends JDialog implements ActionListener {
                                 provinceField.getText().trim(),
                                 townField.getText().trim(),
                                 streetField.getText().trim(),
-                                (houseField.getText().trim().equals(""))
-                                        ? 0 : Integer.parseInt(houseField.getText().trim()),
-                                (localField.getText().trim().equals(""))
-                                        ? 0 : Integer.parseInt(localField.getText().trim()),
+                                houseField.getText().trim(),
+                                localField.getText().trim(),
                                 postCodeField.getText().trim()  ));
                         pupil.setGrade(gradeComboBox.getSelectedIndex()-1);
                         pupil.setMarks((pupil.getGrade()<4)?null:marks);
@@ -659,10 +657,8 @@ public class AddEditPupil extends JDialog implements ActionListener {
                             provinceField.getText().trim(),
                             townField.getText().trim(),
                             streetField.getText().trim(),
-                            (houseField.getText().trim().equals(""))
-                                    ? 0 : Integer.parseInt(houseField.getText().trim()),
-                            (localField.getText().trim().equals(""))
-                                    ? 0 : Integer.parseInt(localField.getText().trim()),
+                            houseField.getText().trim(),
+                            localField.getText().trim(),
                             postCodeField.getText().trim()  ));
                     pupil.setGrade(gradeComboBox.getSelectedIndex()-1);
                     pupil.setMarks((pupil.getGrade()<4)?null:marks);
