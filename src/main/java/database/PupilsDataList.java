@@ -1,7 +1,5 @@
 package database;
 
-import com.sun.nio.sctp.MessageInfo;
-
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -11,7 +9,7 @@ import java.util.stream.Collectors;
 public class PupilsDataList {
     static ArrayList<Pupil> pupilsDataList;
 
-    public static ArrayList<Pupil> getPupilsDataList() {
+    public ArrayList<Pupil> getPupilsDataList() {
         return pupilsDataList;
     }
 
@@ -19,7 +17,7 @@ public class PupilsDataList {
         PupilsDataList.pupilsDataList = pupilsDataList;
     }
 
-    public static Boolean addPupilToList(Pupil p) {
+    public Boolean addPupilToList(Pupil p) {
         if (pupilsDataList.stream().noneMatch(pupil -> pupil.getId() == p.getId()) &&
                 pupilsDataList.stream().noneMatch(pupil -> Objects.equals(pupil.getPesel(), p.getPesel()))) {
             return pupilsDataList.add(p);
@@ -27,28 +25,28 @@ public class PupilsDataList {
             return false;
         }
     }
-    public static boolean removePupil(Pupil pupil) {
-       return pupilsDataList.remove(pupil);
+    public void removePupil(Pupil pupil) {
+        pupilsDataList.remove(pupil);
     }
 
-    public static void removePupilFromList(int number) {
+    public void removePupilFromList(int number) {
         pupilsDataList.remove(number);
     }
 
-    public static ArrayList<Pupil> getListOfPupilsOfCertainGrade(int grade) {
+    public ArrayList<Pupil> getListOfPupilsOfCertainGrade(int grade) {
         return (ArrayList<Pupil>) pupilsDataList.stream()
                 .filter(pupil -> pupil.getGrade() == grade)
                 .sorted((p1,p2) -> p1.getSurname().compareToIgnoreCase(p2.getSurname()))
                 .collect(Collectors.toList());
     }
 
-    public static ArrayList<Pupil> getListOfAllPupils() {
+    public ArrayList<Pupil> getListOfAllPupils() {
         return (ArrayList<Pupil>) pupilsDataList.stream()
                 .sorted(Comparator.comparingInt(Pupil::getGrade))
                 .collect(Collectors.toList());
     }
 
-    public static String getIdNamesSurname(Pupil pupil) {
+    public String getIdNamesSurname(Pupil pupil) {
         if (pupil.getSecondName() == null) {
             return String.format("%s %s.    ID: %d", pupil.getName(), pupil.getSurname(), pupil.getId());
         } else {
@@ -57,7 +55,7 @@ public class PupilsDataList {
         }
     }
 
-    public static String getGradeIdNamesSurname(Pupil pupil) {
+    public String getGradeIdNamesSurname(Pupil pupil) {
         if (pupil.getSecondName() == null) {
             return String.format("%d grade.    %s %s.   ID: %d", pupil.getGrade(), pupil.getName(), pupil.getSurname(),
                     pupil.getId());
@@ -67,7 +65,7 @@ public class PupilsDataList {
         }
     }
 
-    public static Pupil getPupilWithCertainID(int id) {
+    public Pupil getPupilWithCertainID(int id) {
         for (Pupil pupil : pupilsDataList) {
             if (pupil.getId() == id) {
                 return pupil;
@@ -76,11 +74,11 @@ public class PupilsDataList {
         return null;
     }
 
-    public static boolean isNotThereID(int id){
+    public boolean isNotThereID(int id){
         return pupilsDataList.stream()
                 .noneMatch(pupil -> pupil.getId()==id);
     }
-    public static String getPupilInformation(Pupil p) {
+    public String getPupilInformation(Pupil p) {
         if (p.getParent2() != null) {
             if (p.getSecondName() == null) {
                 return String.format("<html>%s %s<br>" +
@@ -139,7 +137,7 @@ public class PupilsDataList {
         );
     }
 
-    public static int getMinPossibleID() {
+    public int getMinPossibleID() {
         if (!pupilsDataList.isEmpty()) {
             for (int i = 1;
                  i < pupilsDataList.stream()
@@ -155,7 +153,7 @@ public class PupilsDataList {
         }
         return 1;
     }
-    public static ArrayList<Pupil> getPupilsWithBirthdayInThisMonth (int grade) {
+    public ArrayList<Pupil> getPupilsWithBirthdayInThisMonth (int grade) {
         if (grade==-1) {
             return (ArrayList<Pupil>) pupilsDataList.stream()
                     .filter(pupil -> pupil.getDateOfBirth().getMonth().equals(LocalDate.now().getMonth()))
@@ -169,7 +167,7 @@ public class PupilsDataList {
                     .collect(Collectors.toList());
         }
     }
-    public static ArrayList<Pupil> getNoPromotedPupilsList (int grade) {
+    public ArrayList<Pupil> getNoPromotedPupilsList (int grade) {
         if (grade==-1) {
             return (ArrayList<Pupil>) pupilsDataList.stream()
                     .filter(pupil -> !pupil.isPromotionToNextGrade())
@@ -183,7 +181,7 @@ public class PupilsDataList {
                     .collect(Collectors.toList());
         }
     }
-    public static ArrayList<Pupil> getPupilsWithAchievementList (int grade) {
+    public ArrayList<Pupil> getPupilsWithAchievementList (int grade) {
         if (grade==-1) {
             return (ArrayList<Pupil>) pupilsDataList.stream()
                     .filter(pupil -> pupil.getAchievement()!=null)
@@ -197,7 +195,7 @@ public class PupilsDataList {
                     .collect(Collectors.toList());
         }
     }
-    public static ArrayList<Pupil> getPupilsWithAwardBarList (int grade) {
+    public ArrayList<Pupil> getPupilsWithAwardBarList (int grade) {
         if (grade==-1) {
             return (ArrayList<Pupil>) pupilsDataList.stream()
                     .filter(Pupil::isAwardBar)

@@ -1,6 +1,7 @@
 package GUI;
 
 import GUI.styleStorage.ColorsSets;
+import database.PupilsDataList;
 import database.WriteReadDataToFile;
 
 import javax.swing.*;
@@ -38,9 +39,11 @@ public class MainWindow extends JFrame implements ActionListener {
     DefaultTreeModel gradesTreeModel;
     JButton addPupilButton;
     JScrollPane paneForGradesTree;
+    PupilsDataList dataList;
 
 
-    MainWindow() throws IOException, FontFormatException {
+    MainWindow(PupilsDataList dataList) throws IOException, FontFormatException {
+        this.dataList = dataList;
         setColorsSet();
         setActualSetOfColors(ColorsSets.SET_OF_COLORS_SOFT_ROSE);
 
@@ -65,9 +68,9 @@ public class MainWindow extends JFrame implements ActionListener {
         addPupilButton.setVisible(false);
 
         centerPanel = new CentralPanel(this, currentStatusField, treeForGradePanel, rootForGradePanel,
-                gradesTreeModel, panelForFilterRadioButtons, addPupilButton, paneForGradesTree);
+                gradesTreeModel, panelForFilterRadioButtons, addPupilButton, paneForGradesTree, dataList);
         myMenuBar = new MyMenuBar(this, currentStatusField, treeForGradePanel, gradesTreeModel,
-                panelForFilterRadioButtons, addPupilButton, centerPanel, paneForGradesTree);
+                panelForFilterRadioButtons, addPupilButton, centerPanel, paneForGradesTree, dataList);
 
         this.setResizable(false);
         this.setLayout(new BorderLayout());

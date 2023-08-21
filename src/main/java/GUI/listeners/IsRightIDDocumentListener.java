@@ -9,9 +9,12 @@ import javax.swing.event.DocumentListener;
 
 public class IsRightIDDocumentListener implements DocumentListener {
     JTextField idField;
+    PupilsDataList dataList;
 
-    public IsRightIDDocumentListener(JTextField idField) {
+    public IsRightIDDocumentListener(JTextField idField, PupilsDataList dataList) {
+
         this.idField = idField;
+        this.dataList = dataList;
     }
 
     @Override
@@ -33,7 +36,7 @@ public class IsRightIDDocumentListener implements DocumentListener {
             try {
                 int id = Integer.parseInt(idField.getText().trim());
                 if (id > 0 && id < 1000) {
-                    if (PupilsDataList.isNotThereID(id)) {
+                    if (dataList.isNotThereID(id)) {
                         idField.setBackground(ConstantsOfStyle.COLOR_FOR_RIGHT_FORMAT);
                     } else {
                         idField.setBackground(ConstantsOfStyle.COLOR_FOR_WRONG_FORMAT);

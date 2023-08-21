@@ -36,10 +36,11 @@ public class MyMenuBar  implements ActionListener {
     JPanel panelForFilterRadioButtons, centralPanel;
     JButton addPupilButton;
     JScrollPane paneForGradesTree;
+    PupilsDataList dataList;
 
     MyMenuBar(JFrame parentFrame, JTextField currentStatusField, JTree treeForGradePanel,
               DefaultTreeModel gradesTreeModel, JPanel panelForFilterRadioButtons, JButton addPupilButton,
-              JPanel centralPanel, JScrollPane paneForGradesTree)
+              JPanel centralPanel, JScrollPane paneForGradesTree, PupilsDataList dataList)
             throws IOException {
         this.parentFrame = parentFrame;
         this.currentStatusField = currentStatusField;
@@ -49,6 +50,7 @@ public class MyMenuBar  implements ActionListener {
         this.addPupilButton = addPupilButton;
         this.centralPanel = centralPanel;
         this.paneForGradesTree = paneForGradesTree;
+        this.dataList = dataList;
 
         menuBar = new JMenuBar();
         writeReadDataToFile = new WriteReadDataToFile();
@@ -155,7 +157,7 @@ public class MyMenuBar  implements ActionListener {
 
         if (e.getSource() == saveFileItem) {
 
-            if (PupilsDataList.getPupilsDataList().size() != 0) {
+            if (dataList.getPupilsDataList().size() != 0) {
                 JFileChooser fileChooser = new JFileChooser();
 //            fileChooser.showOpenDialog(null);
                 int response = fileChooser.showOpenDialog(null);
@@ -163,7 +165,7 @@ public class MyMenuBar  implements ActionListener {
                 if (response == JFileChooser.APPROVE_OPTION) {
                     File file = new File(fileChooser.getSelectedFile().getAbsolutePath());
                     try {
-                        writeReadDataToFile.writeListLoFile(PupilsDataList.getPupilsDataList(), file);
+                        writeReadDataToFile.writeListLoFile(dataList.getPupilsDataList(), file);
 //                        statusTextField.setText("Database saved successfully");
                     } catch (JsonProcessingException ex) {
                         JOptionPane.showMessageDialog(null,

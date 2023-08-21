@@ -34,21 +34,24 @@ public class AddEditPupil extends JDialog implements ActionListener {
     String achievement;
     int grade;
     JTextField currentStatusField;
+    PupilsDataList dataList;
 
 
-    public AddEditPupil(JFrame parentFrame, Pupil pupil, JTextField currentStatusField, boolean isNewPupil)
+    public AddEditPupil(JFrame parentFrame, Pupil pupil, JTextField currentStatusField, boolean isNewPupil,
+                        PupilsDataList dataList)
             throws IOException, FontFormatException {
         super(parentFrame, "Achievement", true);
         this.pupil = pupil;
         this.currentStatusField = currentStatusField;
         this.isNewPupil = isNewPupil;
+        this.dataList = dataList;
 //        pupilFromDatabase = (Pupil) copyObject(pupil);
 
 //        GeneratePupilData generatePupilData = new GeneratePupilData();
 //        pupil = generatePupilData.generatePupil();
 
         if (isNewPupil) {
-            pupil.setId(PupilsDataList.getMinPossibleID());
+            pupil.setId(dataList.getMinPossibleID());
         } else {
             parent1 = pupil.getParent1().clone();
             parent2 = (pupil.getParent2() != null) ? pupil.getParent2().clone() : null;
@@ -66,11 +69,11 @@ public class AddEditPupil extends JDialog implements ActionListener {
         setWindowCloseListener();
         setItemsToFrame();
         setFontForComponents(this, font);
-        setStyleForWindow();
+        setStyleForWindow(this);
         setListeners();
 
         Container contentPane = this.getContentPane();
-        contentPane.setBackground(ColorsSets.ACTUAL_SET_OF_COLORS.get(3));
+        contentPane.setBackground(ColorsSets.ACTUAL_SET_OF_COLORS.get(1));
 
         this.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
         this.pack();
@@ -96,9 +99,22 @@ public class AddEditPupil extends JDialog implements ActionListener {
         this.addWindowListener(windowListener);
     }
 
-    private void setStyleForWindow() {
-        //this.setBackground(MainWindow.actualSetColor.get(1));
+    private void setStyleForWindow(Container container) {
+        for (Component component : container.getComponents()) {
+            if (component instanceof JButton) {
+                component.setBackground(ColorsSets.ACTUAL_SET_OF_COLORS.get(5));
+                component.setForeground(ColorsSets.ACTUAL_SET_OF_COLORS.get(2));
 
+            }
+            if (component instanceof JLabel || component instanceof JTextField ||
+                    component instanceof JPanel || component instanceof JScrollPane ||
+                    component instanceof JRadioButton || component instanceof JTree) {
+                component.setBackground(ColorsSets.ACTUAL_SET_OF_COLORS.get(0));
+            }
+            if (component instanceof Container) {
+                setStyleForWindow((Container) component);
+            }
+        }
     }
 
     private void setItemsToFrame() {
@@ -389,7 +405,7 @@ public class AddEditPupil extends JDialog implements ActionListener {
             monthField.setBackground(ConstantsOfStyle.COLOR_FOR_WRONG_FORMAT);
             dayField.setBackground(ConstantsOfStyle.COLOR_FOR_WRONG_FORMAT);
             genderComboBox.setBackground(ConstantsOfStyle.COLOR_FOR_WRONG_FORMAT);
-            idField.setText(Integer.toString(PupilsDataList.getMinPossibleID()));
+            idField.setText(Integer.toString(dataList.getMinPossibleID()));
             idField.setBackground(ConstantsOfStyle.COLOR_FOR_RIGHT_FORMAT);
             gradeComboBox.setSelectedIndex(CentralPanel.CURRENT_GRADE + 1);
             gradeComboBox.setBackground(ConstantsOfStyle.COLOR_FOR_RIGHT_FORMAT);
@@ -624,7 +640,7 @@ public class AddEditPupil extends JDialog implements ActionListener {
                         CentralPanel.CURRENT_GRADE = pupil.getGrade();
 
 
-                        if (PupilsDataList.addPupilToList(pupil)) {
+                        if (dataList.addPupilToList(pupil)) {
                             JOptionPane.showMessageDialog(null, "Pupil is added to database :)",
                                     "Success!", JOptionPane.PLAIN_MESSAGE);
                             currentStatusField.setText("Pupil is added to database");
@@ -702,7 +718,7 @@ public class AddEditPupil extends JDialog implements ActionListener {
         genderComboBox.addActionListener(new GenderComboBoxListener(yearField, monthField, dayField,
                 peselField, genderComboBox));
         gradeComboBox.addActionListener(new GradeComboBoxListener(gradeComboBox, markButton));
-        if (isNewPupil) { idField.getDocument().addDocumentListener(new IsRightIDDocumentListener(idField)); }
+        if (isNewPupil) { idField.getDocument().addDocumentListener(new IsRightIDDocumentListener(idField, dataList)); }
     }
 
 //    private boolean isInt(String number) {

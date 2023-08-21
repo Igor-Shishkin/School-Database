@@ -15,10 +15,11 @@ public class PupilsTreeNodeMouseListener extends MouseAdapter {
     JLabel pupilInformationLabel;
     JPanel informationPanel;
     JButton showEditAchievementButton, showEditMarksButton, editDateButton, deletePupilButton;
+    PupilsDataList dataList;
 
     public PupilsTreeNodeMouseListener(JTree tree, JLabel pupilInformationLabel, JPanel informationPanel,
                      JButton showEditAchievementButton, JButton showEditMarksButton, JButton editDateButton,
-                                       JButton deletePupilButton) {
+                                       JButton deletePupilButton, PupilsDataList dataList) {
         this.tree = tree;
         this.pupilInformationLabel = pupilInformationLabel;
         this.informationPanel = informationPanel;
@@ -26,6 +27,7 @@ public class PupilsTreeNodeMouseListener extends MouseAdapter {
         this.showEditMarksButton = showEditMarksButton;
         this.editDateButton = editDateButton;
         this.deletePupilButton = deletePupilButton;
+        this.dataList = dataList;
     }
 
     @Override
@@ -42,7 +44,7 @@ public class PupilsTreeNodeMouseListener extends MouseAdapter {
                     break;
                 }
             }
-            CentralPanel.CURRENT_PUPIL = PupilsDataList.getPupilWithCertainID(id);
+            CentralPanel.CURRENT_PUPIL = dataList.getPupilWithCertainID(id);
             CentralPanel.CURRENT_ID = id;
 
             assert CentralPanel.CURRENT_PUPIL != null;

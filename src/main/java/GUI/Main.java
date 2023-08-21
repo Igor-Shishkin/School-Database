@@ -2,6 +2,7 @@ package GUI;
 
 import GUI.addEditPupil.AddEditPupil;
 import GUI.styleStorage.ColorsSets;
+import database.PupilsDataList;
 
 import javax.swing.*;
 import java.awt.*;
@@ -13,6 +14,9 @@ import java.nio.file.Paths;
 public class Main {
     static MainWindow mainWindow;
     public static void main(String[] args) throws IOException, FontFormatException {
+
+        PupilsDataList dataList = new PupilsDataList();
+
 //        IDandPasswords logInfo = new IDandPasswords();
 //        new LoginPage(logInfo.getLoginInfo());
         Path workDir = Paths.get("src", "main", "resources");
@@ -27,7 +31,7 @@ public class Main {
         UIManager.put("MenuBar.background", new Color(0xac92a6));
         UIManager.put("Menu.foreground", Color.green);
         UIManager.put("MenuItem.opaque", true);
-        mainWindow = new MainWindow();
+        mainWindow = new MainWindow(dataList);
 //        new MainWindow();
     }
 

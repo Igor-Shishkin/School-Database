@@ -28,16 +28,16 @@ public class ColorsSets {
         SET_OF_COLORS_OCEAN.add(new Color(0xFA32B7));
         SET_OF_COLORS_OCEAN.add(new Color(0x3CA631));
 
-        SET_OF_COLORS_CONTRAST.add(new Color(0x5FCDD9));
-        SET_OF_COLORS_CONTRAST.add(new Color(0x04BFAD));
-        SET_OF_COLORS_CONTRAST.add(new Color(0x04BF9D));
-        SET_OF_COLORS_CONTRAST.add(new Color(0x027373));
-        SET_OF_COLORS_CONTRAST.add(new Color(0x172026));
-        SET_OF_COLORS_CONTRAST.add(new Color(0x172026));
-        SET_OF_COLORS_CONTRAST.add(new Color(0x172026));
-        SET_OF_COLORS_CONTRAST.add(new Color(0x172026));
-        SET_OF_COLORS_CONTRAST.add(new Color(0x172026));
-        SET_OF_COLORS_CONTRAST.add(new Color(0x172026));
+        SET_OF_COLORS_CONTRAST.add(new Color(0x282C34));
+        SET_OF_COLORS_CONTRAST.add(new Color(0x36504D));
+        SET_OF_COLORS_CONTRAST.add(new Color(0xAEF8EA));
+        SET_OF_COLORS_CONTRAST.add(new Color(0xC5DE5B));
+        SET_OF_COLORS_CONTRAST.add(new Color(0x79B9E1));
+        SET_OF_COLORS_CONTRAST.add(new Color(0x7AC5EF));
+        SET_OF_COLORS_CONTRAST.add(new Color(0xF51908));
+        SET_OF_COLORS_CONTRAST.add(new Color(0x0A85D7));
+        SET_OF_COLORS_CONTRAST.add(new Color(0x40AAF5));
+        SET_OF_COLORS_CONTRAST.add(new Color(0xB125D3));
 
         SET_OF_COLORS_AGGRESSIVE.add(new Color((0xF5EF49)));
         SET_OF_COLORS_AGGRESSIVE.add(new Color((0x18F54C)));

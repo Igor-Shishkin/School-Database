@@ -23,13 +23,14 @@ public class GradesTreeNodeMouseListener extends MouseAdapter {
     ArrayList<Pupil> list;
     JRadioButton getAllPupilsRadioButton;
     JButton showEditAchievementButton, showEditMarksButton, editDateButton, deletePupilButton;
+    PupilsDataList dataList;
 
 
     public GradesTreeNodeMouseListener(JTree tree, DefaultMutableTreeNode rootForPupilsTree,
                   ArrayList<DefaultMutableTreeNode> nodesForPupilsPanel, DefaultTreeModel pupilsTreeModel,
                   JLabel informationLabelForPupilPanel, JPanel pupilsPanel, JRadioButton getAllPupilsRadioButton,
                   JButton showEditAchievementButton, JButton showEditMarksButton, JButton editDateButton,
-                                       JButton deletePupilButton) {
+                                       JButton deletePupilButton, PupilsDataList dataList) {
         this.tree = tree;
         this.rootForPupilsTree = rootForPupilsTree;
         this.nodesForPupilsPanel = nodesForPupilsPanel;
@@ -41,6 +42,7 @@ public class GradesTreeNodeMouseListener extends MouseAdapter {
         this.showEditMarksButton = showEditMarksButton;
         this.editDateButton = editDateButton;
         this.deletePupilButton = deletePupilButton;
+        this.dataList = dataList;
     }
 
     @Override
@@ -65,10 +67,10 @@ public class GradesTreeNodeMouseListener extends MouseAdapter {
             rootForPupilsTree.removeAllChildren();
 
             if (grade>-1) {
-                list =  PupilsDataList.getListOfPupilsOfCertainGrade(grade);
+                list =  dataList.getListOfPupilsOfCertainGrade(grade);
                 if (list.size() != 0) {
                     for (int i = 0; i < list.size(); i++) {
-                        String nameNode = String.format("%d. %s", i + 1, PupilsDataList.getIdNamesSurname(list.get(i)));
+                        String nameNode = String.format("%d. %s", i + 1, dataList.getIdNamesSurname(list.get(i)));
                         nodesForPupilsPanel.add(i, new DefaultMutableTreeNode(nameNode));
                         rootForPupilsTree.add(nodesForPupilsPanel.get(i));
                     }
@@ -78,7 +80,7 @@ public class GradesTreeNodeMouseListener extends MouseAdapter {
                     informationLabelForPupilPanel.setText(textForLabel);
                 }
             } else {
-                list = PupilsDataList.getListOfAllPupils();
+                list = dataList.getListOfAllPupils();
                 if (list.size() != 0) {
                     for (int i = 0; i < list.size(); i++) {
 //                        String nameNode = String.format(PupilsDataList.getGradeIdNamesSurname(list.get(i)));
