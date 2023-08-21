@@ -9,28 +9,24 @@ import java.awt.event.ActionListener;
 import java.io.IOException;
 import java.util.HashMap;
 
-public class LoginPage implements ActionListener {
-
-    JFrame frame = new JFrame();
-    JButton loginButton = new JButton("Login");
-    JButton resetButton = new JButton("Reset");
+public class ChangeLogin extends JDialog implements ActionListener {
+    JButton loginButton = new JButton("Login"), resetButton = new JButton("Reset");
     JTextField userIDField = new JTextField();
     JPasswordField userPasswordField = new JPasswordField();
     JLabel userIDLabel = new JLabel("userID:");
     JLabel userPasswordLabel = new JLabel("password:");
     JLabel messageLabel = new JLabel();
-    HashMap<String,User> loginInfo;
+    HashMap<String,User> loginInfo = new IDandPasswords().getLoginInfo();
     JPanel resultPanel;
     JLabel resultLabel;
     int INDENT_FROM_THE_TOP = -60;
     Permissions permissions;
-    private final PupilsDataList dataList;
 
 
-    LoginPage (HashMap<String, User> originalLoginInfo, Permissions permissions, PupilsDataList dataList) {
-        loginInfo = originalLoginInfo;
+    ChangeLogin (JFrame parentFrame, Permissions permissions) {
+        super(parentFrame, "Change permission", true);
         this.permissions = permissions;
-        this.dataList = dataList;
+
 
         resultPanel = new JPanel();
         resultPanel.setBounds(0,0,450,420);
@@ -63,19 +59,19 @@ public class LoginPage implements ActionListener {
         resetButton.setFont(buttonFont);
         resetButton.addActionListener(this);
 
-        frame.setLocationRelativeTo(null);
-        frame.add(resultPanel);
-        frame.add(userIDField);
-        frame.add(userPasswordField);
-        frame.add(userIDLabel);
-        frame.add(userPasswordLabel);
-        frame.add(messageLabel);
-        frame.add(loginButton);
-        frame.add(resetButton);
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.setSize(450,280);
-        frame.setLayout(null);
-        frame.setVisible(true);
+        this.setLocationRelativeTo(null);
+        this.add(resultPanel);
+        this.add(userIDField);
+        this.add(userPasswordField);
+        this.add(userIDLabel);
+        this.add(userPasswordLabel);
+        this.add(messageLabel);
+        this.add(loginButton);
+        this.add(resetButton);
+        this.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
+        this.setSize(450,280);
+        this.setLayout(null);
+        this.setVisible(true);
 
 
     }
@@ -96,12 +92,7 @@ public class LoginPage implements ActionListener {
                     messageLabel.setForeground(Color.green);
                     messageLabel.setText("   Access confirmed :)");
                     permissions = loginInfo.get(id).getPermissions();
-                    try {
-                        new MainWindow(dataList, permissions);
-                    } catch (IOException | FontFormatException ex) {
-                        throw new RuntimeException(ex);
-                    }
-                    frame.dispose();
+                    this.dispose();
                 }else{
                     messageLabel.setForeground(Color.red);
                     messageLabel.setText("Wrong password");
@@ -112,6 +103,4 @@ public class LoginPage implements ActionListener {
             }
         }
     }
-
-
 }

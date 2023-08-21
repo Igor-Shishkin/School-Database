@@ -29,29 +29,39 @@ import java.util.Objects;
 public class CentralPanel extends JPanel implements ActionListener, TreeSelectionListener {
     public static int CURRENT_ID, CURRENT_GRADE;
     public static Pupil CURRENT_PUPIL;
-    JPanel gradesPanel, pupilsPanel, informationPanel, panelForFilterRadioButtons, basisForGradesPanel,
+    private JPanel gradesPanel, pupilsPanel, informationPanel, panelForFilterRadioButtons, basisForGradesPanel,
             basisForInformationPanel;
-    Border border;
-    DefaultMutableTreeNode rootForGradePanel, rootForPupilsTree;
-    DefaultMutableTreeNode gradeZero, gradeFirst, gradeSecond, gradeThird, gradeFourth, gradeFifth, gradeSixth,
-            gradeSeventh, gradeEighth, currentNode;
-    ArrayList<DefaultMutableTreeNode> nodesForPupilsPanel;
-    JTree treeForGradePanel, treeForPupilsPanel;
-    DefaultTreeModel pupilsTreeModel, gradesTreeModel;
-    JLabel informationLabelForPupilPanel, pupilInformationLabel, gradesCapitalLabel, informationCapitalLabel;
-    Font remRegular;
-    JTextField currentStatusField;
-    JRadioButton getAllPupilsRadioButton, getPupilsWithBirthdayInThisMonthRadioButton, getPupilsWithAwardBarRadioButton,
+    private final Border border;
+    private final DefaultMutableTreeNode rootForGradePanel;
+    private DefaultMutableTreeNode rootForPupilsTree;
+    private DefaultMutableTreeNode currentNode;
+    private final ArrayList<DefaultMutableTreeNode> nodesForPupilsPanel;
+    private final JTree treeForGradePanel;
+    private JTree treeForPupilsPanel;
+    private DefaultTreeModel pupilsTreeModel;
+    private final DefaultTreeModel gradesTreeModel;
+    private JLabel informationLabelForPupilPanel;
+    private JLabel pupilInformationLabel;
+    private JLabel gradesCapitalLabel;
+    private Font remRegular;
+    private final JTextField currentStatusField;
+    private JRadioButton getAllPupilsRadioButton, getPupilsWithBirthdayInThisMonthRadioButton, getPupilsWithAwardBarRadioButton,
             getNoPromotedPupilsRadioButton, getPupilsWithAchievement;
-    JButton showEditMarksButton, showEditAchievementButton, editDateButton, addPupilButton, deletePupilButton;
-    JFrame parentFrame;
-    JScrollPane paneForGradesTree;
-    PupilsDataList dataList;
+    private JButton showEditMarksButton;
+    private JButton showEditAchievementButton;
+    private JButton editDateButton;
+    private final JButton addPupilButton;
+    private JButton deletePupilButton;
+    private final JFrame parentFrame;
+    private final JScrollPane paneForGradesTree;
+    private final PupilsDataList dataList;
+    private Permissions permissions;
 
     public CentralPanel(JFrame parentFrame, JTextField currentStatusField, JTree treeForGradePanel,
                         DefaultMutableTreeNode rootForGradePanel, DefaultTreeModel gradesTreeModel,
                         JPanel panelForFilterRadioButtons, JButton addPupilButton,
-                        JScrollPane paneForGradesTree, PupilsDataList dataList) throws IOException, FontFormatException {
+                        JScrollPane paneForGradesTree, PupilsDataList dataList,
+                        Permissions permissions) throws IOException, FontFormatException {
         this.currentStatusField = currentStatusField;
         this.parentFrame = parentFrame;
         this.treeForGradePanel = treeForGradePanel;
@@ -61,6 +71,7 @@ public class CentralPanel extends JPanel implements ActionListener, TreeSelectio
         this.addPupilButton = addPupilButton;
         this.paneForGradesTree = paneForGradesTree;
         this.dataList = dataList;
+        this.permissions = permissions;
 
         this.setLayout(new BorderLayout());
 //        this.setLayout(new GridBagLayout());
@@ -89,7 +100,7 @@ public class CentralPanel extends JPanel implements ActionListener, TreeSelectio
         treeForPupilsPanel.addMouseMotionListener(new HandCursorForMouseMotionAdapter(treeForPupilsPanel));
         treeForPupilsPanel.addMouseListener(new PupilsTreeNodeMouseListener(treeForPupilsPanel, pupilInformationLabel,
                 informationPanel, showEditAchievementButton, showEditMarksButton, editDateButton, deletePupilButton,
-                dataList));
+                dataList, permissions));
     }
 
     private void setComponentsForGradePanel() {
@@ -157,7 +168,7 @@ public class CentralPanel extends JPanel implements ActionListener, TreeSelectio
         informationPanel.setBorder(BorderFactory.createLoweredBevelBorder());
         informationPanel.setPreferredSize(new Dimension(10, 568));
 
-        informationCapitalLabel = new JLabel("Pupil");
+        JLabel informationCapitalLabel = new JLabel("Pupil");
         informationCapitalLabel.setFont(ConstantsOfStyle.THE_MAIN_FONT.deriveFont(Font.BOLD, 19));
 
 
@@ -196,15 +207,15 @@ public class CentralPanel extends JPanel implements ActionListener, TreeSelectio
     private void setComponentsToGradePanel() {
 //        rootForGradePanel = new DefaultMutableTreeNode("School");
 
-        gradeZero = new DefaultMutableTreeNode("Zero class");
-        gradeFirst = new DefaultMutableTreeNode("First class");
-        gradeSecond = new DefaultMutableTreeNode("Second class");
-        gradeThird = new DefaultMutableTreeNode("Third class");
-        gradeFourth = new DefaultMutableTreeNode("Fourth class");
-        gradeFifth = new DefaultMutableTreeNode("Fifth class");
-        gradeSixth = new DefaultMutableTreeNode("Sixth class");
-        gradeSeventh = new DefaultMutableTreeNode("Seventh class");
-        gradeEighth = new DefaultMutableTreeNode("Eighth class");
+        DefaultMutableTreeNode gradeZero = new DefaultMutableTreeNode("Zero class");
+        DefaultMutableTreeNode gradeFirst = new DefaultMutableTreeNode("First class");
+        DefaultMutableTreeNode gradeSecond = new DefaultMutableTreeNode("Second class");
+        DefaultMutableTreeNode gradeThird = new DefaultMutableTreeNode("Third class");
+        DefaultMutableTreeNode gradeFourth = new DefaultMutableTreeNode("Fourth class");
+        DefaultMutableTreeNode gradeFifth = new DefaultMutableTreeNode("Fifth class");
+        DefaultMutableTreeNode gradeSixth = new DefaultMutableTreeNode("Sixth class");
+        DefaultMutableTreeNode gradeSeventh = new DefaultMutableTreeNode("Seventh class");
+        DefaultMutableTreeNode gradeEighth = new DefaultMutableTreeNode("Eighth class");
 
         rootForGradePanel.add(gradeZero);
         rootForGradePanel.add(gradeFirst);
@@ -411,15 +422,18 @@ public class CentralPanel extends JPanel implements ActionListener, TreeSelectio
 
             if (e.getSource() == editDateButton) {
 
-                Pupil chosenPupil = CURRENT_PUPIL;
-                try {
-                    new AddEditPupil(parentFrame, chosenPupil, currentStatusField, false, dataList);
-                } catch (IOException | FontFormatException ex) {
-                    throw new RuntimeException(ex);
-                }
-                assert chosenPupil != null;
-                pupilInformationLabel.setText(chosenPupil.getPupilInformation());
-                refreshPupilsTree();
+                new ChangeLogin(parentFrame, permissions);
+
+
+//                Pupil chosenPupil = CURRENT_PUPIL;
+//                try {
+//                    new AddEditPupil(parentFrame, chosenPupil, currentStatusField, false, dataList);
+//                } catch (IOException | FontFormatException ex) {
+//                    throw new RuntimeException(ex);
+//                }
+//                assert chosenPupil != null;
+//                pupilInformationLabel.setText(chosenPupil.getPupilInformation());
+//                refreshPupilsTree();
             }
         }
         if (e.getSource() == deletePupilButton) {

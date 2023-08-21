@@ -1,6 +1,7 @@
 package GUI.listeners;
 
 import GUI.CentralPanel;
+import GUI.Permissions;
 import database.PupilsDataList;
 
 import javax.swing.*;
@@ -16,10 +17,11 @@ public class PupilsTreeNodeMouseListener extends MouseAdapter {
     JPanel informationPanel;
     JButton showEditAchievementButton, showEditMarksButton, editDateButton, deletePupilButton;
     PupilsDataList dataList;
+    Permissions permissions;
 
     public PupilsTreeNodeMouseListener(JTree tree, JLabel pupilInformationLabel, JPanel informationPanel,
                      JButton showEditAchievementButton, JButton showEditMarksButton, JButton editDateButton,
-                                       JButton deletePupilButton, PupilsDataList dataList) {
+                                       JButton deletePupilButton, PupilsDataList dataList, Permissions permissions) {
         this.tree = tree;
         this.pupilInformationLabel = pupilInformationLabel;
         this.informationPanel = informationPanel;
@@ -28,6 +30,7 @@ public class PupilsTreeNodeMouseListener extends MouseAdapter {
         this.editDateButton = editDateButton;
         this.deletePupilButton = deletePupilButton;
         this.dataList = dataList;
+        this.permissions = permissions;
     }
 
     @Override
@@ -50,11 +53,13 @@ public class PupilsTreeNodeMouseListener extends MouseAdapter {
             assert CentralPanel.CURRENT_PUPIL != null;
             pupilInformationLabel.setText(CentralPanel.CURRENT_PUPIL.getPupilInformation());
 
-            showEditMarksButton.setVisible(true);
-            showEditMarksButton.setEnabled(CentralPanel.CURRENT_GRADE>3);
-            showEditAchievementButton.setVisible(true);
-            editDateButton.setVisible(true);
-            deletePupilButton.setVisible(true);
+            if (CentralPanel.CURRENT_GRADE == permissions.getNumberPermission() || permissions==Permissions.DIRECTOR) {
+                showEditMarksButton.setVisible(true);
+                showEditMarksButton.setEnabled(CentralPanel.CURRENT_GRADE > 3);
+                showEditAchievementButton.setVisible(true);
+                editDateButton.setVisible(true);
+                deletePupilButton.setVisible(true);
+            }
 
             CentralPanel.CURRENT_ID = id;
 

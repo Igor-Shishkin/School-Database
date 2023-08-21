@@ -2,7 +2,6 @@ package GUI;
 
 import GUI.styleStorage.ColorsSets;
 import database.PupilsDataList;
-import database.WriteReadDataToFile;
 
 import javax.swing.*;
 import javax.swing.border.Border;
@@ -17,36 +16,22 @@ import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
-import java.util.Properties;
 
 
 public class MainWindow extends JFrame implements ActionListener {
 
 //    static ArrayList<Pupil> listOfPupils;
 
-    Properties properties;
-    JTextField currentStatusField;
-    Border border;
-    JPanel centerPanel;
-    JPanel gradesPanel;
-    JPanel pupilsPanel;
-    JPanel panelForFilterRadioButtons;
-    JPanel downPanel;
-    WriteReadDataToFile writeReadDataToFile;
-    MyMenuBar myMenuBar;
-    JTree treeForGradePanel;
-    DefaultMutableTreeNode rootForGradePanel;
-    DefaultTreeModel gradesTreeModel;
-    JButton addPupilButton;
-    JScrollPane paneForGradesTree;
-    PupilsDataList dataList;
+    private JTextField currentStatusField;
+    private final Border border;
+    private final JPanel downPanel;
+    private final Permissions permissions;
 
 
-    MainWindow(PupilsDataList dataList) throws IOException, FontFormatException {
-        this.dataList = dataList;
+    MainWindow(PupilsDataList dataList, Permissions permissions) throws IOException, FontFormatException {
+        this.permissions = permissions;
         setColorsSet();
         setActualSetOfColors(ColorsSets.SET_OF_COLORS_SOFT_ROSE);
-
 
 
         border = BorderFactory.createSoftBevelBorder(SoftBevelBorder.RAISED, ColorsSets.ACTUAL_SET_OF_COLORS.get(0),
@@ -58,19 +43,21 @@ public class MainWindow extends JFrame implements ActionListener {
         downPanel = new JPanel(new BorderLayout());
         setCurrentStatusPanel();
 
-        panelForFilterRadioButtons = new JPanel(new GridLayout(5, 1, 4, 4));
-        rootForGradePanel = new DefaultMutableTreeNode("School");
-        gradesTreeModel = new DefaultTreeModel(rootForGradePanel);
-        treeForGradePanel = new JTree(gradesTreeModel);
+        JPanel panelForFilterRadioButtons = new JPanel(new GridLayout(5, 1, 4, 4));
+        DefaultMutableTreeNode rootForGradePanel = new DefaultMutableTreeNode("School");
+        DefaultTreeModel gradesTreeModel = new DefaultTreeModel(rootForGradePanel);
+        JTree treeForGradePanel = new JTree(gradesTreeModel);
         JScrollPane paneForGradesTree = new JScrollPane(treeForGradePanel);
         paneForGradesTree.setVisible(false);
-        addPupilButton = new JButton("Add new pupil");
+        JButton addPupilButton = new JButton("Add new pupil");
         addPupilButton.setVisible(false);
 
-        centerPanel = new CentralPanel(this, currentStatusField, treeForGradePanel, rootForGradePanel,
-                gradesTreeModel, panelForFilterRadioButtons, addPupilButton, paneForGradesTree, dataList);
-        myMenuBar = new MyMenuBar(this, currentStatusField, treeForGradePanel, gradesTreeModel,
-                panelForFilterRadioButtons, addPupilButton, centerPanel, paneForGradesTree, dataList);
+        JPanel centerPanel = new CentralPanel(this, currentStatusField, treeForGradePanel, rootForGradePanel,
+                gradesTreeModel, panelForFilterRadioButtons, addPupilButton, paneForGradesTree, dataList
+                ,permissions);
+        MyMenuBar myMenuBar = new MyMenuBar(this, currentStatusField, treeForGradePanel, gradesTreeModel,
+                panelForFilterRadioButtons, addPupilButton, centerPanel, paneForGradesTree, dataList,
+                permissions);
 
         this.setResizable(false);
         this.setLayout(new BorderLayout());

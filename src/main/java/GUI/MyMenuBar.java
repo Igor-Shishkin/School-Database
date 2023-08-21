@@ -24,23 +24,25 @@ import java.util.Properties;
 
 public class MyMenuBar  implements ActionListener {
     Properties properties;
-    JMenu fileMenu, styleMenu, informationMenu, userMenu;
-    JMenuItem openFileItem, newDatabaseItem, saveFileItem, closeItem, logOutItem, ocean, changeAdmissionItem,
+    private JMenu fileMenu, styleMenu, informationMenu, userMenu;
+    private JMenuItem openFileItem, newDatabaseItem, saveFileItem, closeItem, logOutItem, ocean, changeAdmissionItem,
             informationItem, softRose, aggressive, contrast;
-    JMenuBar menuBar;
-    WriteReadDataToFile writeReadDataToFile;
-    JFrame parentFrame;
-    JTextField currentStatusField;
-    JTree treeForGradePanel;
-    DefaultTreeModel gradesTreeModel;
-    JPanel panelForFilterRadioButtons, centralPanel;
-    JButton addPupilButton;
-    JScrollPane paneForGradesTree;
-    PupilsDataList dataList;
+    private final JMenuBar menuBar;
+    private final WriteReadDataToFile writeReadDataToFile;
+    private final JFrame parentFrame;
+    private final JTextField currentStatusField;
+    private final JTree treeForGradePanel;
+    private DefaultTreeModel gradesTreeModel;
+    private final JPanel panelForFilterRadioButtons, centralPanel;
+    private final JButton addPupilButton;
+    private final JScrollPane paneForGradesTree;
+    private final PupilsDataList dataList;
+    private Permissions permissions;
 
     MyMenuBar(JFrame parentFrame, JTextField currentStatusField, JTree treeForGradePanel,
               DefaultTreeModel gradesTreeModel, JPanel panelForFilterRadioButtons, JButton addPupilButton,
-              JPanel centralPanel, JScrollPane paneForGradesTree, PupilsDataList dataList)
+              JPanel centralPanel, JScrollPane paneForGradesTree, PupilsDataList dataList,
+              Permissions permissions)
             throws IOException {
         this.parentFrame = parentFrame;
         this.currentStatusField = currentStatusField;
@@ -51,6 +53,7 @@ public class MyMenuBar  implements ActionListener {
         this.centralPanel = centralPanel;
         this.paneForGradesTree = paneForGradesTree;
         this.dataList = dataList;
+        this.permissions = permissions;
 
         menuBar = new JMenuBar();
         writeReadDataToFile = new WriteReadDataToFile();
@@ -67,7 +70,6 @@ public class MyMenuBar  implements ActionListener {
         changeAdmissionItem.addActionListener(this);
         informationItem.addActionListener(this);
         logOutItem.addActionListener(this);
-        changeAdmissionItem.addActionListener(this);
         closeItem.addActionListener(this);
         contrast.addActionListener(this);
         aggressive.addActionListener(this);
@@ -143,7 +145,7 @@ public class MyMenuBar  implements ActionListener {
                     parentFrame.setTitle(nameOfFile);
                     treeForGradePanel.setVisible(true);
                     panelForFilterRadioButtons.setVisible(true);
-                    addPupilButton.setVisible(true);
+                    addPupilButton.setVisible(permissions==Permissions.DIRECTOR);
                     paneForGradesTree.setVisible(true);
                 } catch (Exception ex) {
                     JOptionPane.showMessageDialog(null,
@@ -197,7 +199,11 @@ public class MyMenuBar  implements ActionListener {
             menuBar.setBackground(ColorsSets.ACTUAL_SET_OF_COLORS.get(5));
             setMenuBarColors(ColorsSets.ACTUAL_SET_OF_COLORS.get(2), ColorsSets.ACTUAL_SET_OF_COLORS.get(4));
 
-
+        }
+        if (e.getSource() == changeAdmissionItem) {
+            new ChangeLogin(parentFrame, permissions);
+            System.out.println(permissions);
+            addPupilButton.setVisible(permissions.getNumberPermission()==9);
         }
     }
 

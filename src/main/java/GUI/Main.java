@@ -1,6 +1,5 @@
 package GUI;
 
-import GUI.addEditPupil.AddEditPupil;
 import GUI.styleStorage.ColorsSets;
 import database.PupilsDataList;
 
@@ -16,9 +15,10 @@ public class Main {
     public static void main(String[] args) throws IOException, FontFormatException {
 
         PupilsDataList dataList = new PupilsDataList();
+        Permissions permissions = Permissions.TEACHER;
 
-//        IDandPasswords logInfo = new IDandPasswords();
-//        new LoginPage(logInfo.getLoginInfo());
+
+
         Path workDir = Paths.get("src", "main", "resources");
         File fontFile = new File(workDir.resolve("REM-Regular.ttf").toUri());
         Font remRegular = Font.createFont(Font.TRUETYPE_FONT, fontFile);
@@ -31,8 +31,11 @@ public class Main {
         UIManager.put("MenuBar.background", new Color(0xac92a6));
         UIManager.put("Menu.foreground", Color.green);
         UIManager.put("MenuItem.opaque", true);
-        mainWindow = new MainWindow(dataList);
+//        mainWindow = new MainWindow(dataList);
 //        new MainWindow();
+
+        IDandPasswords logInfo = new IDandPasswords();
+        new LoginPage(logInfo.getLoginInfo(), permissions, dataList);
     }
 
     public static void sleep (int time) throws InterruptedException {
