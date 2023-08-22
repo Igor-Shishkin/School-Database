@@ -1,12 +1,9 @@
 package GUI;
 
-import database.PupilsDataList;
-
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.IOException;
 import java.util.HashMap;
 
 public class ChangeLogin extends JDialog implements ActionListener {
@@ -23,9 +20,8 @@ public class ChangeLogin extends JDialog implements ActionListener {
     Permissions permissions;
 
 
-    ChangeLogin (JFrame parentFrame, Permissions permissions) {
+    ChangeLogin (JFrame parentFrame) {
         super(parentFrame, "Change permission", true);
-        this.permissions = permissions;
 
 
         resultPanel = new JPanel();
@@ -84,14 +80,14 @@ public class ChangeLogin extends JDialog implements ActionListener {
             userPasswordField.setText("");
         }
         if (e.getSource() == loginButton) {
-            String id = userIDField.getText();
+            String newID = userIDField.getText();
             String password = String.valueOf(userPasswordField.getPassword());
 
-            if (loginInfo.containsKey(id)) {
-                if (loginInfo.get(id).getPassword().equals(password)) {
+            if (loginInfo.containsKey(newID)) {
+                if (loginInfo.get(newID).getPassword().equals(password)) {
                     messageLabel.setForeground(Color.green);
                     messageLabel.setText("   Access confirmed :)");
-                    permissions = loginInfo.get(id).getPermissions();
+                    Main.PERMISSIONS = loginInfo.get(newID).getPermissions();
                     this.dispose();
                 }else{
                     messageLabel.setForeground(Color.red);
@@ -103,4 +99,8 @@ public class ChangeLogin extends JDialog implements ActionListener {
             }
         }
     }
+//    public String showDialogAndGetInput(){
+//        this.setVisible(true);
+//        return id;
+//    }
 }

@@ -11,7 +11,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 
 public class Main {
-    static MainWindow mainWindow;
+    public static Permissions PERMISSIONS;
     public static void main(String[] args) throws IOException, FontFormatException {
 
         PupilsDataList dataList = new PupilsDataList();
@@ -40,15 +40,6 @@ public class Main {
 
     public static void sleep (int time) throws InterruptedException {
         Thread.sleep(time);
-    }
-
-    public static void setMenuColors() {
-
-        UIManager.put("MenuItem.background", ColorsSets.ACTUAL_SET_OF_COLORS.get(4));
-        UIManager.put("MenuItem.foreground", Color.black);
-        UIManager.put("MenuBar.background", ColorsSets.ACTUAL_SET_OF_COLORS.get(3));
-//        UIManager.put("Menu.foreground", Color.green);
-        UIManager.put("MenuItem.opaque", true);
     }
 
 }

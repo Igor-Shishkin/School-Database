@@ -1,6 +1,7 @@
 package GUI.listeners;
 
 import GUI.CentralPanel;
+import GUI.Main;
 import GUI.Permissions;
 import database.PupilsDataList;
 
@@ -9,7 +10,6 @@ import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.TreePath;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.util.Objects;
 
 public class PupilsTreeNodeMouseListener extends MouseAdapter {
     private final JTree tree;
@@ -17,11 +17,12 @@ public class PupilsTreeNodeMouseListener extends MouseAdapter {
     JPanel informationPanel;
     JButton showEditAchievementButton, showEditMarksButton, editDateButton, deletePupilButton;
     PupilsDataList dataList;
-    Permissions permissions;
+//    private String login;
+//    HashMap<String, User> loginInfo;
 
     public PupilsTreeNodeMouseListener(JTree tree, JLabel pupilInformationLabel, JPanel informationPanel,
                      JButton showEditAchievementButton, JButton showEditMarksButton, JButton editDateButton,
-                                       JButton deletePupilButton, PupilsDataList dataList, Permissions permissions) {
+                                       JButton deletePupilButton, PupilsDataList dataList) {
         this.tree = tree;
         this.pupilInformationLabel = pupilInformationLabel;
         this.informationPanel = informationPanel;
@@ -30,7 +31,8 @@ public class PupilsTreeNodeMouseListener extends MouseAdapter {
         this.editDateButton = editDateButton;
         this.deletePupilButton = deletePupilButton;
         this.dataList = dataList;
-        this.permissions = permissions;
+//        this.login = login;
+//        this.loginInfo = loginInfo;
     }
 
     @Override
@@ -53,7 +55,9 @@ public class PupilsTreeNodeMouseListener extends MouseAdapter {
             assert CentralPanel.CURRENT_PUPIL != null;
             pupilInformationLabel.setText(CentralPanel.CURRENT_PUPIL.getPupilInformation());
 
-            if (CentralPanel.CURRENT_GRADE == permissions.getNumberPermission() || permissions==Permissions.DIRECTOR) {
+
+            if (CentralPanel.CURRENT_GRADE == Main.PERMISSIONS.getNumberPermission() ||
+                    Main.PERMISSIONS ==Permissions.DIRECTOR) {
                 showEditMarksButton.setVisible(true);
                 showEditMarksButton.setEnabled(CentralPanel.CURRENT_GRADE > 3);
                 showEditAchievementButton.setVisible(true);

@@ -3,12 +3,10 @@ package GUI;
 import GUI.styleStorage.ColorsSets;
 import GUI.styleStorage.ConstantsOfStyle;
 import com.fasterxml.jackson.core.JsonProcessingException;
-import database.Pupil;
 import database.PupilsDataList;
 import database.WriteReadDataToFile;
 
 import javax.swing.*;
-import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeModel;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -16,9 +14,6 @@ import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.io.File;
 import java.io.IOException;
-import java.net.URL;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.Objects;
 import java.util.Properties;
 
@@ -37,12 +32,13 @@ public class MyMenuBar  implements ActionListener {
     private final JButton addPupilButton;
     private final JScrollPane paneForGradesTree;
     private final PupilsDataList dataList;
-    private Permissions permissions;
+//    private String id;
+//    HashMap<String,User> loginInfo;
+
 
     MyMenuBar(JFrame parentFrame, JTextField currentStatusField, JTree treeForGradePanel,
               DefaultTreeModel gradesTreeModel, JPanel panelForFilterRadioButtons, JButton addPupilButton,
-              JPanel centralPanel, JScrollPane paneForGradesTree, PupilsDataList dataList,
-              Permissions permissions)
+              JPanel centralPanel, JScrollPane paneForGradesTree, PupilsDataList dataList)
             throws IOException {
         this.parentFrame = parentFrame;
         this.currentStatusField = currentStatusField;
@@ -53,7 +49,8 @@ public class MyMenuBar  implements ActionListener {
         this.centralPanel = centralPanel;
         this.paneForGradesTree = paneForGradesTree;
         this.dataList = dataList;
-        this.permissions = permissions;
+//        this.id = id;
+//        this.loginInfo = loginInfo;
 
         menuBar = new JMenuBar();
         writeReadDataToFile = new WriteReadDataToFile();
@@ -145,7 +142,7 @@ public class MyMenuBar  implements ActionListener {
                     parentFrame.setTitle(nameOfFile);
                     treeForGradePanel.setVisible(true);
                     panelForFilterRadioButtons.setVisible(true);
-                    addPupilButton.setVisible(permissions==Permissions.DIRECTOR);
+                    addPupilButton.setVisible(Main.PERMISSIONS ==Permissions.DIRECTOR);
                     paneForGradesTree.setVisible(true);
                 } catch (Exception ex) {
                     JOptionPane.showMessageDialog(null,
@@ -201,9 +198,8 @@ public class MyMenuBar  implements ActionListener {
 
         }
         if (e.getSource() == changeAdmissionItem) {
-            new ChangeLogin(parentFrame, permissions);
-            System.out.println(permissions);
-            addPupilButton.setVisible(permissions.getNumberPermission()==9);
+            new ChangeLogin(parentFrame);
+            addPupilButton.setVisible(Main.PERMISSIONS ==Permissions.DIRECTOR);
         }
     }
 

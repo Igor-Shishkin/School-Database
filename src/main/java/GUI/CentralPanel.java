@@ -24,6 +24,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Objects;
 
 public class CentralPanel extends JPanel implements ActionListener, TreeSelectionListener {
@@ -55,13 +56,13 @@ public class CentralPanel extends JPanel implements ActionListener, TreeSelectio
     private final JFrame parentFrame;
     private final JScrollPane paneForGradesTree;
     private final PupilsDataList dataList;
-    private Permissions permissions;
+//    private String id;
+//    HashMap<String,User> loginInfo;
 
     public CentralPanel(JFrame parentFrame, JTextField currentStatusField, JTree treeForGradePanel,
                         DefaultMutableTreeNode rootForGradePanel, DefaultTreeModel gradesTreeModel,
                         JPanel panelForFilterRadioButtons, JButton addPupilButton,
-                        JScrollPane paneForGradesTree, PupilsDataList dataList,
-                        Permissions permissions) throws IOException, FontFormatException {
+                        JScrollPane paneForGradesTree, PupilsDataList dataList) throws IOException, FontFormatException {
         this.currentStatusField = currentStatusField;
         this.parentFrame = parentFrame;
         this.treeForGradePanel = treeForGradePanel;
@@ -71,7 +72,8 @@ public class CentralPanel extends JPanel implements ActionListener, TreeSelectio
         this.addPupilButton = addPupilButton;
         this.paneForGradesTree = paneForGradesTree;
         this.dataList = dataList;
-        this.permissions = permissions;
+//        this.id = id;
+//        this.loginInfo = loginInfo;
 
         this.setLayout(new BorderLayout());
 //        this.setLayout(new GridBagLayout());
@@ -100,7 +102,7 @@ public class CentralPanel extends JPanel implements ActionListener, TreeSelectio
         treeForPupilsPanel.addMouseMotionListener(new HandCursorForMouseMotionAdapter(treeForPupilsPanel));
         treeForPupilsPanel.addMouseListener(new PupilsTreeNodeMouseListener(treeForPupilsPanel, pupilInformationLabel,
                 informationPanel, showEditAchievementButton, showEditMarksButton, editDateButton, deletePupilButton,
-                dataList, permissions));
+                dataList));
     }
 
     private void setComponentsForGradePanel() {
@@ -422,18 +424,15 @@ public class CentralPanel extends JPanel implements ActionListener, TreeSelectio
 
             if (e.getSource() == editDateButton) {
 
-                new ChangeLogin(parentFrame, permissions);
-
-
-//                Pupil chosenPupil = CURRENT_PUPIL;
-//                try {
-//                    new AddEditPupil(parentFrame, chosenPupil, currentStatusField, false, dataList);
-//                } catch (IOException | FontFormatException ex) {
-//                    throw new RuntimeException(ex);
-//                }
-//                assert chosenPupil != null;
-//                pupilInformationLabel.setText(chosenPupil.getPupilInformation());
-//                refreshPupilsTree();
+                Pupil chosenPupil = CURRENT_PUPIL;
+                try {
+                    new AddEditPupil(parentFrame, chosenPupil, currentStatusField, false, dataList);
+                } catch (IOException | FontFormatException ex) {
+                    throw new RuntimeException(ex);
+                }
+                assert chosenPupil != null;
+                pupilInformationLabel.setText(chosenPupil.getPupilInformation());
+                refreshPupilsTree();
             }
         }
         if (e.getSource() == deletePupilButton) {

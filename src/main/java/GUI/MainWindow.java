@@ -16,6 +16,7 @@ import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 
 public class MainWindow extends JFrame implements ActionListener {
@@ -25,11 +26,13 @@ public class MainWindow extends JFrame implements ActionListener {
     private JTextField currentStatusField;
     private final Border border;
     private final JPanel downPanel;
-    private final Permissions permissions;
+//    private String id;
+//    HashMap<String,User> loginInfo;
 
 
-    MainWindow(PupilsDataList dataList, Permissions permissions) throws IOException, FontFormatException {
-        this.permissions = permissions;
+    MainWindow(PupilsDataList dataList) throws IOException, FontFormatException {
+//        this.id = id;
+//        this.loginInfo = loginInfo;
         setColorsSet();
         setActualSetOfColors(ColorsSets.SET_OF_COLORS_SOFT_ROSE);
 
@@ -53,11 +56,9 @@ public class MainWindow extends JFrame implements ActionListener {
         addPupilButton.setVisible(false);
 
         JPanel centerPanel = new CentralPanel(this, currentStatusField, treeForGradePanel, rootForGradePanel,
-                gradesTreeModel, panelForFilterRadioButtons, addPupilButton, paneForGradesTree, dataList
-                ,permissions);
+                gradesTreeModel, panelForFilterRadioButtons, addPupilButton, paneForGradesTree, dataList);
         MyMenuBar myMenuBar = new MyMenuBar(this, currentStatusField, treeForGradePanel, gradesTreeModel,
-                panelForFilterRadioButtons, addPupilButton, centerPanel, paneForGradesTree, dataList,
-                permissions);
+                panelForFilterRadioButtons, addPupilButton, centerPanel, paneForGradesTree, dataList);
 
         this.setResizable(false);
         this.setLayout(new BorderLayout());
