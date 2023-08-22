@@ -25,6 +25,7 @@ import java.awt.event.ActionListener;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Objects;
 
 public class CentralPanel extends JPanel implements ActionListener, TreeSelectionListener {
@@ -337,7 +338,7 @@ public class CentralPanel extends JPanel implements ActionListener, TreeSelectio
                 if (path != null) {
                     DefaultMutableTreeNode node = (DefaultMutableTreeNode) path.getLastPathComponent();
                     CURRENT_GRADE = getSelectedGrade(node);
-                    ArrayList<Pupil> list;
+                    List<Pupil> list;
                     list = (CURRENT_GRADE < 0)
                             ? dataList.getListOfAllPupils()
                             : dataList.getListOfPupilsOfCertainGrade(CURRENT_GRADE);
@@ -505,7 +506,7 @@ public class CentralPanel extends JPanel implements ActionListener, TreeSelectio
     private void refreshPupilsTree() {
 //        int[] selectionRows = treeForPupilsPanel.getSelectionRows();
         rootForPupilsTree.removeAllChildren();
-        ArrayList<Pupil> list = new ArrayList<>();
+        List<Pupil> list = new ArrayList<>();
 
         if (getAllPupilsRadioButton.isSelected()) {
             list = dataList.getListOfPupilsOfCertainGrade(CURRENT_GRADE);
@@ -537,7 +538,7 @@ public class CentralPanel extends JPanel implements ActionListener, TreeSelectio
         pupilsPanel.repaint();
 }
 
-    public void buildPupilsTree(ArrayList<Pupil> list, DefaultMutableTreeNode node) {
+    public void buildPupilsTree(List<Pupil> list, DefaultMutableTreeNode node) {
         rootForPupilsTree.removeAllChildren();
         if (list.size() != 0) {
             for (int i = 0; i < list.size(); i++) {

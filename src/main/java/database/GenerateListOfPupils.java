@@ -1,5 +1,7 @@
 package database;
 
+import GUI.Permissions;
+import GUI.User;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -7,17 +9,11 @@ import org.jasypt.encryption.pbe.StandardPBEStringEncryptor;
 import org.jasypt.exceptions.EncryptionOperationNotPossibleException;
 
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileReader;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.nio.file.StandardOpenOption;
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.List;
-import java.util.Properties;
+import java.util.*;
 
 public class GenerateListOfPupils {
     public static void main(String[] args) throws IOException {
@@ -26,8 +22,20 @@ public class GenerateListOfPupils {
         for (int i = 0; i < 150; i++) {
             listOfPupils.add(generatePupilData.generatePupil());
         }
+        HashMap<String, User> loginInfo = new HashMap<>();
+        loginInfo.put("Director", new User("director1967", Permissions.DIRECTOR));
+        loginInfo.put("teacher", new User("5643S", Permissions.TEACHER));
+        loginInfo.put("mr Richardson", new User("1234", Permissions.CLASS_TEACHER_6));
+        loginInfo.put("Pani Iwona", new User("5j569", Permissions.CLASS_TEACHER_7));
+//        Object[] data = new Object[2];
+//        data[0] = listOfPupils;
+//        data[1] = loginInfo;
+
+        DataToFile data = new DataToFile(listOfPupils, loginInfo);
+
         WriteReadDataToFile writer = new WriteReadDataToFile();
-        writer.writeListLoFile(listOfPupils, new File("DATA_PARENT_WITHOUT_DATES.txt"));
+//        writer.writeListLoFile(data, new File("DATA_with_users.txt"));
+        writer.writeDataToFile(data, new File("DATA_with_users_2.txt"));
 //        Properties properties = new Properties();
 //        properties.load(new FileInputStream("src/main/resources/jdbc.properties"));
 //

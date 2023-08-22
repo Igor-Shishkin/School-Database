@@ -135,7 +135,7 @@ public class MyMenuBar  implements ActionListener {
             if (response == JFileChooser.APPROVE_OPTION) {
                 File file = new File(fileChooser.getSelectedFile().getAbsolutePath());
                 try {
-                    PupilsDataList.setPupilsDataList(writeReadDataToFile.readListFromFile(file));
+                    dataList.setDataObject(writeReadDataToFile.readDataFromFile(file));
 //                    Main.setTextForStatusPanel("Database loaded successfully");
                     currentStatusField.setText("Database loaded successfully");
                     String nameOfFile = file.getName();
@@ -161,19 +161,19 @@ public class MyMenuBar  implements ActionListener {
 //            fileChooser.showOpenDialog(null);
                 int response = fileChooser.showOpenDialog(null);
 
-                if (response == JFileChooser.APPROVE_OPTION) {
-                    File file = new File(fileChooser.getSelectedFile().getAbsolutePath());
-                    try {
-                        writeReadDataToFile.writeListLoFile(dataList.getPupilsDataList(), file);
-//                        statusTextField.setText("Database saved successfully");
-                    } catch (JsonProcessingException ex) {
-                        JOptionPane.showMessageDialog(null,
-                                "\t\tI can't write this file!\nCALL TECH SUPPORT OR ELSE!", "title",
-                                JOptionPane.ERROR_MESSAGE);
-                        currentStatusField.setText("Error. I can't save this data");
-                        throw new RuntimeException(ex);
-                    }
-                }
+//                if (response == JFileChooser.APPROVE_OPTION) {
+//                    File file = new File(fileChooser.getSelectedFile().getAbsolutePath());
+//                    try {
+//                        writeReadDataToFile.writeListLoFile(dataList.getPupilsDataList(), file);
+////                        statusTextField.setText("Database saved successfully");
+//                    } catch (JsonProcessingException ex) {
+//                        JOptionPane.showMessageDialog(null,
+//                                "\t\tI can't write this file!\nCALL TECH SUPPORT OR ELSE!", "title",
+//                                JOptionPane.ERROR_MESSAGE);
+//                        currentStatusField.setText("Error. I can't save this data");
+//                        throw new RuntimeException(ex);
+//                    }
+//                }
             } else {
                 JOptionPane.showMessageDialog(null, "Your database is empty", "title",
                         JOptionPane.INFORMATION_MESSAGE);
@@ -200,6 +200,7 @@ public class MyMenuBar  implements ActionListener {
         if (e.getSource() == changeAdmissionItem) {
             new ChangeLogin(parentFrame);
             addPupilButton.setVisible(Main.PERMISSIONS ==Permissions.DIRECTOR);
+            currentStatusField.setText("Actual permissions: ".concat(Main.PERMISSIONS.toString()));
         }
     }
 

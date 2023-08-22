@@ -1,20 +1,33 @@
 package database;
 
+import GUI.User;
+
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.Objects;
+import java.util.*;
 import java.util.stream.Collectors;
 
 public class PupilsDataList {
-    static ArrayList<Pupil> pupilsDataList;
+    private HashMap<String, User> loginInfo = new HashMap<>();
+    private List<Pupil> pupilsDataList;
 
-    public ArrayList<Pupil> getPupilsDataList() {
+    public void setDataObject(DataToFile data) {
+
+        pupilsDataList = new ArrayList<>();
+//        System.out.println(schoolData[0]);
+
+        pupilsDataList = data.getListOfPupils();
+//        pupilsDataList = (List<Pupil>) schoolData[0];
+        loginInfo = data.getLoginInfo();
+    }
+
+
+
+    public List<Pupil> getPupilsDataList() {
         return pupilsDataList;
     }
 
-    public static void setPupilsDataList(ArrayList<Pupil> pupilsDataList) {
-        PupilsDataList.pupilsDataList = pupilsDataList;
+    public void setPupilsDataList(ArrayList<Pupil> pupilsList) {
+        pupilsDataList = pupilsList;
     }
 
     public Boolean addPupilToList(Pupil p) {
@@ -33,8 +46,8 @@ public class PupilsDataList {
         pupilsDataList.remove(number);
     }
 
-    public ArrayList<Pupil> getListOfPupilsOfCertainGrade(int grade) {
-        return (ArrayList<Pupil>) pupilsDataList.stream()
+    public List<Pupil> getListOfPupilsOfCertainGrade(int grade) {
+        return pupilsDataList.stream()
                 .filter(pupil -> pupil.getGrade() == grade)
                 .sorted((p1,p2) -> p1.getSurname().compareToIgnoreCase(p2.getSurname()))
                 .collect(Collectors.toList());

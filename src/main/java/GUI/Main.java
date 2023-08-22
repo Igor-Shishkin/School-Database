@@ -15,9 +15,6 @@ public class Main {
     public static void main(String[] args) throws IOException, FontFormatException {
 
         PupilsDataList dataList = new PupilsDataList();
-        Permissions permissions = Permissions.TEACHER;
-
-
 
         Path workDir = Paths.get("src", "main", "resources");
         File fontFile = new File(workDir.resolve("REM-Regular.ttf").toUri());
@@ -32,10 +29,8 @@ public class Main {
         UIManager.put("Menu.foreground", Color.green);
         UIManager.put("MenuItem.opaque", true);
 //        mainWindow = new MainWindow(dataList);
-//        new MainWindow();
+        new MainWindow(dataList);
 
-        IDandPasswords logInfo = new IDandPasswords();
-        new LoginPage(logInfo.getLoginInfo(), permissions, dataList);
     }
 
     public static void sleep (int time) throws InterruptedException {

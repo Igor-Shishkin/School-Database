@@ -11,6 +11,7 @@ import javax.swing.tree.TreePath;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 public class GradesTreeNodeMouseListener extends MouseAdapter {
@@ -20,7 +21,7 @@ public class GradesTreeNodeMouseListener extends MouseAdapter {
     DefaultTreeModel pupilsTreeModel;
     JLabel informationLabelForPupilPanel;
     JPanel pupilsPanel;
-    ArrayList<Pupil> list;
+    List<Pupil> list;
     JRadioButton getAllPupilsRadioButton;
     JButton showEditAchievementButton, showEditMarksButton, editDateButton, deletePupilButton;
     PupilsDataList dataList;
