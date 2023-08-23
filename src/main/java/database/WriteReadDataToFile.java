@@ -100,8 +100,7 @@ public class WriteReadDataToFile {
         ObjectMapper mapper = new ObjectMapper();
         mapper.configure(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS, false);
         mapper.registerModule(new JavaTimeModule());
-        return mapper.readValue(jsonData, new TypeReference<ArrayList<Pupil>>() {
-        });
+        return mapper.readValue(jsonData, new TypeReference<ArrayList<Pupil>>() {});
     }
     private DataToFile deserializeDataFromJSON(String jsonData) throws JsonProcessingException {
         ObjectMapper mapper = new ObjectMapper();

@@ -27,6 +27,7 @@ public class GenerateListOfPupils {
         loginInfo.put("teacher", new User("5643S", Permissions.TEACHER));
         loginInfo.put("mr Richardson", new User("1234", Permissions.CLASS_TEACHER_6));
         loginInfo.put("Pani Iwona", new User("5j569", Permissions.CLASS_TEACHER_7));
+        loginInfo.put("1", new User("1", Permissions.DIRECTOR));
 //        Object[] data = new Object[2];
 //        data[0] = listOfPupils;
 //        data[1] = loginInfo;
@@ -35,7 +36,7 @@ public class GenerateListOfPupils {
 
         WriteReadDataToFile writer = new WriteReadDataToFile();
 //        writer.writeListLoFile(data, new File("DATA_with_users.txt"));
-        writer.writeDataToFile(data, new File("DATA_with_users_2.txt"));
+        writer.writeDataToFile(data, new File("DATA_with_users_EASY.txt"));
 //        Properties properties = new Properties();
 //        properties.load(new FileInputStream("src/main/resources/jdbc.properties"));
 //

@@ -228,7 +228,7 @@ public class GeneratePupilData {
                 pesel7And8And9thDigits, pesel10thDigit, random.nextInt(10));
 
         Marks marks = (grade>6) ? generateMarks7and8() : (grade>3) ? generateMarks456() : null;
-        boolean promotion = marks != null && marks.getPromotion(grade);
+        boolean promotion = (marks != null) ? marks.getPromotion(grade) : true;
         boolean awardBar = marks != null && marks.isAwardBar(promotion, grade);
 
         String achievement = (grade>3) ? generateAchievement() : null;

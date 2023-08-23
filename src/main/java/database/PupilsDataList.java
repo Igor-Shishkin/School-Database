@@ -20,7 +20,16 @@ public class PupilsDataList {
         loginInfo = data.getLoginInfo();
     }
 
+    public HashMap<String, User> getLoginInfo() {
+        return loginInfo;
+    }
 
+    public void setLoginInfo(HashMap<String, User> loginInfo) {
+        this.loginInfo = loginInfo;
+    }
+    public void addUser(String name, User user) {
+        loginInfo.put(name, user);
+    }
 
     public List<Pupil> getPupilsDataList() {
         return pupilsDataList;

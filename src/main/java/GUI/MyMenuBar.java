@@ -1,8 +1,8 @@
 package GUI;
 
+import GUI.addEditPupil.EditUsers;
 import GUI.styleStorage.ColorsSets;
 import GUI.styleStorage.ConstantsOfStyle;
-import com.fasterxml.jackson.core.JsonProcessingException;
 import database.PupilsDataList;
 import database.WriteReadDataToFile;
 
@@ -20,7 +20,7 @@ import java.util.Properties;
 public class MyMenuBar  implements ActionListener {
     Properties properties;
     private JMenu fileMenu, styleMenu, informationMenu, userMenu;
-    private JMenuItem openFileItem, newDatabaseItem, saveFileItem, closeItem, logOutItem, ocean, changeAdmissionItem,
+    private JMenuItem openFileItem, newDatabaseItem, saveFileItem, closeItem, usersItem, ocean, changeAdmissionItem,
             informationItem, softRose, aggressive, contrast;
     private final JMenuBar menuBar;
     private final WriteReadDataToFile writeReadDataToFile;
@@ -66,7 +66,7 @@ public class MyMenuBar  implements ActionListener {
         saveFileItem.addActionListener(this);
         changeAdmissionItem.addActionListener(this);
         informationItem.addActionListener(this);
-        logOutItem.addActionListener(this);
+        usersItem.addActionListener(this);
         closeItem.addActionListener(this);
         contrast.addActionListener(this);
         aggressive.addActionListener(this);
@@ -89,8 +89,8 @@ public class MyMenuBar  implements ActionListener {
         newDatabaseItem = new JMenuItem("New");
         openFileItem = new JMenuItem("Open");
         saveFileItem = new JMenuItem("Save");
-        closeItem = new JMenuItem("Close");
-        logOutItem = new JMenuItem("Log out");
+        closeItem = new JMenuItem("Close database");
+        usersItem = new JMenuItem("Users");
         changeAdmissionItem = new JMenuItem("Change admission");
         informationItem = new JMenuItem("Information");
         softRose = new JMenuItem("Soft rose");
@@ -109,12 +109,16 @@ public class MyMenuBar  implements ActionListener {
         styleMenu.add(aggressive);
         informationMenu.add(informationItem);
         userMenu.add(changeAdmissionItem);
-        userMenu.add(logOutItem);
+        userMenu.add(usersItem);
 
         menuBar.add(fileMenu);
         menuBar.add(userMenu);
         menuBar.add(styleMenu);
         menuBar.add(informationMenu);
+
+        changeAdmissionItem.setEnabled(false);
+        saveFileItem.setEnabled(false);
+        closeItem.setEnabled(false);
 
         fileMenu.setMnemonic(KeyEvent.VK_F);
         styleMenu.setMnemonic(KeyEvent.VK_S);
@@ -138,12 +142,21 @@ public class MyMenuBar  implements ActionListener {
                     dataList.setDataObject(writeReadDataToFile.readDataFromFile(file));
 //                    Main.setTextForStatusPanel("Database loaded successfully");
                     currentStatusField.setText("Database loaded successfully");
-                    String nameOfFile = file.getName();
-                    parentFrame.setTitle(nameOfFile);
-                    treeForGradePanel.setVisible(true);
-                    panelForFilterRadioButtons.setVisible(true);
-                    addPupilButton.setVisible(Main.PERMISSIONS ==Permissions.DIRECTOR);
-                    paneForGradesTree.setVisible(true);
+                    ChangeLogin changeLogin = new ChangeLogin(parentFrame, dataList.getLoginInfo());
+                    if (changeLogin.showAndReturnIsSuccess()) {
+                        String nameOfFile = file.getName();
+                        parentFrame.setTitle(nameOfFile);
+                        treeForGradePanel.setVisible(true);
+                        panelForFilterRadioButtons.setVisible(true);
+                        addPupilButton.setVisible(Main.PERMISSIONS == Permissions.DIRECTOR);
+                        paneForGradesTree.setVisible(true);
+                        changeAdmissionItem.setEnabled(true);
+                        saveFileItem.setEnabled(true);
+                        closeItem.setEnabled(true);
+                    } else {
+                        dataList.setPupilsDataList(null);
+                        dataList.setPupilsDataList(null);
+                    }
                 } catch (Exception ex) {
                     JOptionPane.showMessageDialog(null,
                             "\t\tI can't read this file!\nCALL TECH SUPPORT OR ELSE!", "title",
@@ -198,9 +211,13 @@ public class MyMenuBar  implements ActionListener {
 
         }
         if (e.getSource() == changeAdmissionItem) {
-            new ChangeLogin(parentFrame);
+            ChangeLogin changeLogin =  new ChangeLogin(parentFrame, dataList.getLoginInfo());
+            changeLogin.showAndReturnIsSuccess();
             addPupilButton.setVisible(Main.PERMISSIONS ==Permissions.DIRECTOR);
             currentStatusField.setText("Actual permissions: ".concat(Main.PERMISSIONS.toString()));
+        }
+        if (e.getSource() == usersItem) {
+            new EditUsers(parentFrame, dataList, currentStatusField);
         }
     }
 
@@ -225,7 +242,7 @@ public class MyMenuBar  implements ActionListener {
         openFileItem.setForeground(foreground);
         saveFileItem.setForeground(foreground);
         closeItem.setForeground(foreground);
-        logOutItem.setForeground(foreground);
+        usersItem.setForeground(foreground);
         ocean.setForeground(foreground);
         changeAdmissionItem.setForeground(foreground);
         informationItem.setForeground(foreground);
@@ -239,7 +256,7 @@ public class MyMenuBar  implements ActionListener {
         openFileItem.setBackground(background);
         saveFileItem.setBackground(background);
         closeItem.setBackground(background);
-        logOutItem.setBackground(background);
+        usersItem.setBackground(background);
         ocean.setBackground(background);
         changeAdmissionItem.setBackground(background);
         informationItem.setBackground(background);

@@ -2,8 +2,7 @@ package GUI;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
+import java.awt.event.*;
 import java.util.HashMap;
 
 public class ChangeLogin extends JDialog implements ActionListener {
@@ -13,15 +12,17 @@ public class ChangeLogin extends JDialog implements ActionListener {
     JLabel userIDLabel = new JLabel("userID:");
     JLabel userPasswordLabel = new JLabel("password:");
     JLabel messageLabel = new JLabel();
-    HashMap<String,User> loginInfo = new IDandPasswords().getLoginInfo();
+    HashMap<String,User> loginInfo;
     JPanel resultPanel;
     JLabel resultLabel;
     int INDENT_FROM_THE_TOP = -60;
     Permissions permissions;
+    boolean isSuccess;
 
 
-    ChangeLogin (JFrame parentFrame) {
+    ChangeLogin (JFrame parentFrame, HashMap<String,User> loginInfo) {
         super(parentFrame, "Change permission", true);
+        this.loginInfo = loginInfo;
 
 
         resultPanel = new JPanel();
@@ -55,6 +56,8 @@ public class ChangeLogin extends JDialog implements ActionListener {
         resetButton.setFont(buttonFont);
         resetButton.addActionListener(this);
 
+        setWindowCloseListener();
+
         this.setLocationRelativeTo(null);
         this.add(resultPanel);
         this.add(userIDField);
@@ -67,9 +70,28 @@ public class ChangeLogin extends JDialog implements ActionListener {
         this.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
         this.setSize(450,280);
         this.setLayout(null);
-        this.setVisible(true);
+        this.setVisible(false);
 
 
+    }
+
+    private void setWindowCloseListener() {
+        WindowListener windowListener = new WindowAdapter() {
+            @Override
+            public void windowClosing(WindowEvent e) {
+                int option = JOptionPane.showConfirmDialog(
+                        null,
+                        "Cancel? In this case you will not\nbe able to work with the database",
+                        "Confirm Exit",
+                        JOptionPane.YES_NO_OPTION);
+
+                if (option == JOptionPane.YES_OPTION) {
+                    isSuccess = false;
+                    dispose();
+                }
+            }
+        };
+        this.addWindowListener(windowListener);
     }
 
 
@@ -88,6 +110,7 @@ public class ChangeLogin extends JDialog implements ActionListener {
                     messageLabel.setForeground(Color.green);
                     messageLabel.setText("   Access confirmed :)");
                     Main.PERMISSIONS = loginInfo.get(newID).getPermissions();
+                    isSuccess = true;
                     this.dispose();
                 }else{
                     messageLabel.setForeground(Color.red);
@@ -98,7 +121,14 @@ public class ChangeLogin extends JDialog implements ActionListener {
                 messageLabel.setText("Username is not found.");
             }
         }
+
     }
+
+    public boolean showAndReturnIsSuccess() {
+        this.setVisible(true);
+        return isSuccess;
+    }
+
 //    public String showDialogAndGetInput(){
 //        this.setVisible(true);
 //        return id;
