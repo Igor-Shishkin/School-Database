@@ -102,14 +102,14 @@ public class ChangeLogin extends JDialog implements ActionListener {
             userPasswordField.setText("");
         }
         if (e.getSource() == loginButton) {
-            String newID = userIDField.getText();
+            String id = userIDField.getText();
             String password = String.valueOf(userPasswordField.getPassword());
 
-            if (loginInfo.containsKey(newID)) {
-                if (loginInfo.get(newID).getPassword().equals(password)) {
+            if (loginInfo.containsKey(id)) {
+                if (loginInfo.get(id).getPassword().equals(password)) {
                     messageLabel.setForeground(Color.green);
                     messageLabel.setText("   Access confirmed :)");
-                    Main.PERMISSIONS = loginInfo.get(newID).getPermissions();
+                    Main.CURRENT_USER = id;
                     isSuccess = true;
                     this.dispose();
                 }else{

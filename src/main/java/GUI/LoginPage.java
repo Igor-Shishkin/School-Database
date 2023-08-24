@@ -95,7 +95,7 @@ public class LoginPage implements ActionListener {
                 if (loginInfo.get(id).getPassword().equals(password)) {
                     messageLabel.setForeground(Color.green);
                     messageLabel.setText("   Access confirmed :)");
-                    Main.PERMISSIONS = loginInfo.get(id).getPermissions();
+//                    Main.PERMISSIONS = loginInfo.get(id).getPermissions();
                     try {
                         new MainWindow(dataList);
                     } catch (IOException | FontFormatException ex) {

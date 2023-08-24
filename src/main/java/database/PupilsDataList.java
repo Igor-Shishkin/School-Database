@@ -4,6 +4,7 @@ import GUI.User;
 
 import java.time.LocalDate;
 import java.util.*;
+import java.util.concurrent.RecursiveTask;
 import java.util.stream.Collectors;
 
 public class PupilsDataList {
@@ -31,6 +32,9 @@ public class PupilsDataList {
         loginInfo.put(name, user);
     }
 
+    public DataToFile getDataToFile() {
+        return new DataToFile((ArrayList<Pupil>) getPupilsDataList(), getLoginInfo());
+    }
     public List<Pupil> getPupilsDataList() {
         return pupilsDataList;
     }
@@ -56,10 +60,13 @@ public class PupilsDataList {
     }
 
     public List<Pupil> getListOfPupilsOfCertainGrade(int grade) {
-        return pupilsDataList.stream()
-                .filter(pupil -> pupil.getGrade() == grade)
-                .sorted((p1,p2) -> p1.getSurname().compareToIgnoreCase(p2.getSurname()))
-                .collect(Collectors.toList());
+        if (pupilsDataList!=null) {
+            return pupilsDataList.stream()
+                    .filter(pupil -> pupil.getGrade() == grade)
+                    .sorted((p1, p2) -> p1.getSurname().compareToIgnoreCase(p2.getSurname()))
+                    .collect(Collectors.toList());
+        }
+        return null;
     }
 
     public ArrayList<Pupil> getListOfAllPupils() {

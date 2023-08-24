@@ -1,5 +1,6 @@
 package GUI.addEditPupil;
 
+import GUI.Main;
 import GUI.User;
 import GUI.styleStorage.ConstantsOfStyle;
 import database.PupilsDataList;
@@ -24,26 +25,26 @@ public class EditUsers extends JDialog implements ActionListener {
     GridBagConstraints c;
     ButtonGroup buttonGroup;
 
-    public EditUsers (JFrame parentFrame, PupilsDataList dataList, JTextField currentStatusField){
-        super(parentFrame,"Achievement",true);
-        this.currentStatusField =currentStatusField;
+    public EditUsers(JFrame parentFrame, PupilsDataList dataList, JTextField currentStatusField) {
+        super(parentFrame, "Achievement", true);
+        this.currentStatusField = currentStatusField;
         this.dataList = dataList;
         this.parentFrame = parentFrame;
 
         setComponentsToGeneralPanel();
 
         this.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
-        this.setLayout(new GridLayout(1,1,10,10));
+        this.setLayout(new GridLayout(1, 1, 0, 10));
         this.add(mainPanel);
         this.pack();
         this.setLocationRelativeTo(null);
         this.setResizable(false);
         this.setTitle("Pupil's achievement");
         this.setVisible(true);
-}
+    }
 
     private void setComponentsToGeneralPanel() {
-        capitalLabel = new JLabel("User : PERMISSIONS")   ;
+        capitalLabel = new JLabel("User : PERMISSIONS");
         capitalLabel.setFont(ConstantsOfStyle.THE_MAIN_FONT.deriveFont(Font.BOLD, 30));
 
         loginInfo = dataList.getLoginInfo();
@@ -55,7 +56,6 @@ public class EditUsers extends JDialog implements ActionListener {
                             .concat(entry.getValue().getPermissions().toString())));
         }
 
-
         addButton = new JButton("Add users");
         addButton.addActionListener(this);
         removeButton = new JButton("Remove user");
@@ -64,9 +64,12 @@ public class EditUsers extends JDialog implements ActionListener {
         cancelButton.addActionListener(this);
 
         buttonGroup = new ButtonGroup();
-        usersPanel = new JPanel(new GridLayout(loginInfo.size(),1,5,5));
+        usersPanel = new JPanel(new GridLayout(loginInfo.size(), 1, 5, 5));
         usersPanel.setBorder(BorderFactory.createLoweredSoftBevelBorder());
         for (JRadioButton rb : listOfUsers) {
+            if (rb.getText().substring(0, rb.getText().indexOf(" : ")).equals(Main.CURRENT_USER)) {
+                rb.setEnabled(false);
+            }
             rb.setFont(ConstantsOfStyle.THE_MAIN_FONT.deriveFont(Font.PLAIN, 23));
             usersPanel.add(rb);
             buttonGroup.add(rb);
@@ -75,7 +78,7 @@ public class EditUsers extends JDialog implements ActionListener {
         mainPanel = new JPanel(new GridBagLayout());
         c = new GridBagConstraints();
         c.fill = GridBagConstraints.BOTH;
-        c.insets = new Insets(10,10,10,10);
+        c.insets = new Insets(10, 10, 10, 10);
 
         c.gridx = 0;
         c.gridy = 0;
@@ -119,6 +122,37 @@ public class EditUsers extends JDialog implements ActionListener {
                     rb.setFont(ConstantsOfStyle.THE_MAIN_FONT.deriveFont(Font.PLAIN, 23));
                     usersPanel.add(rb);
                     buttonGroup.add(rb);
+                    if (rb.getText().substring(0, rb.getText().indexOf(" : ")).equals(Main.CURRENT_USER)) {
+                        rb.setEnabled(false);
+                    }
+
+                }
+                c.gridx = 0;
+                c.gridy = 1;
+                c.gridheight = loginInfo.size();
+                mainPanel.add(usersPanel, c);
+
+                mainPanel.repaint();
+                this.pack();
+            }
+        }
+        if (e.getSource() == removeButton) {
+            for (JRadioButton radioButton : listOfUsers) {
+                if (radioButton.isSelected()) {
+                    String id = radioButton.getText().substring(0, radioButton.getText().indexOf(" : "));
+                    loginInfo.remove(id);
+                    listOfUsers.remove(radioButton);
+                }
+                mainPanel.remove(usersPanel);
+
+                usersPanel = new JPanel(new GridLayout(listOfUsers.size(), 1, 7, 7));
+                for (JRadioButton rb : listOfUsers) {
+                    rb.setFont(ConstantsOfStyle.THE_MAIN_FONT.deriveFont(Font.PLAIN, 23));
+                    usersPanel.add(rb);
+                    buttonGroup.add(rb);
+                    if (rb.getText().substring(0, rb.getText().indexOf(" : ")).equals(Main.CURRENT_USER)) {
+                        rb.setEnabled(false);
+                    }
                 }
                 c.gridx = 0;
                 c.gridy = 1;
@@ -131,3 +165,5 @@ public class EditUsers extends JDialog implements ActionListener {
         }
     }
 }
+
+

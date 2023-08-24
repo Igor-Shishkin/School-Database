@@ -1,6 +1,5 @@
 package GUI;
 
-import GUI.styleStorage.ColorsSets;
 import database.PupilsDataList;
 
 import javax.swing.*;
@@ -11,7 +10,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 
 public class Main {
-    public static Permissions PERMISSIONS;
+    public static String CURRENT_USER;
     public static void main(String[] args) throws IOException, FontFormatException {
 
         PupilsDataList dataList = new PupilsDataList();

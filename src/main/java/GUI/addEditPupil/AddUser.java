@@ -9,13 +9,15 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.Arrays;
 import java.util.HashMap;
 
 public class AddUser extends JDialog implements ActionListener {
     JTextField currentStatusField;
     JPanel mainPanel;
     JButton addButton, cancelButton;
-    JTextField nameField, passwordField, repeatPasswordField;
+    JTextField nameField;
+    JPasswordField passwordField, repeatPasswordField;
     JComboBox<String> permissionComboBox;
     JLabel capitalLabel;
     HashMap<String, User> loginInfo;
@@ -41,17 +43,20 @@ public class AddUser extends JDialog implements ActionListener {
     private void setComponentsToMainPanel() {
         capitalLabel = new JLabel("Enter new user's data:");
         nameField = new JTextField(13);
-        passwordField = new JTextField(13);
-        repeatPasswordField = new JTextField(13);
+        passwordField = new JPasswordField(13);
+        repeatPasswordField = new JPasswordField(13);
 
-        nameField.setText("User name");
-        passwordField.setText("Enter password");
-        repeatPasswordField.setText("Repeat password");
+        JLabel nameLabel = new JLabel("Name:");
+        JLabel passwordLabel = new JLabel("Enter password:");
+        JLabel repeatPasswordLabel = new JLabel("Repeat password:");
+        JLabel choosePermissionLabel = new JLabel("Choose permission:");
+
+
         repeatPasswordField.setToolTipText("Repeat password");
         nameField.setToolTipText("User name");
         passwordField.setToolTipText("Enter password");
 
-        String[] responses = {"", "Director" , "Teacher", "0 grade's class teacher", "0 grade's class teacher",
+        String[] responses = {"", "Director" , "Teacher", "0 grade's class teacher",
                 "1 grade's class teacher",  "2 grade's class teacher", "3 grade's class teacher",
                 "4 grade's class teacher", "5 grade's class teacher", "6 grade's class teacher",
                 "7 grade's class teacher", "8 grade's class teacher"} ;
@@ -65,11 +70,15 @@ public class AddUser extends JDialog implements ActionListener {
         buttonsPanel.add(addButton);
         buttonsPanel.add(cancelButton);
 
-        mainPanel = new JPanel(new GridLayout(6,1,10,10));
+        mainPanel = new JPanel(new GridLayout(10,1,5,10));
         mainPanel.add(capitalLabel);
+        mainPanel.add(nameLabel);
         mainPanel.add(nameField);
+        mainPanel.add(passwordLabel);
         mainPanel.add(passwordField);
+        mainPanel.add(repeatPasswordLabel);
         mainPanel.add(repeatPasswordField);
+        mainPanel.add(choosePermissionLabel);
         mainPanel.add(permissionComboBox);
         mainPanel.add(buttonsPanel);
 
@@ -90,27 +99,30 @@ public class AddUser extends JDialog implements ActionListener {
     @Override
     public void actionPerformed(ActionEvent e) {
         if (e.getSource()==addButton) {
-            if (!passwordField.getText().trim().equals("") &&
+            if (!String.valueOf(passwordField.getPassword()).equals("") &&
                     !nameField.getText().trim().equals("") &&
                     permissionComboBox.getSelectedIndex()>0)
             {
-                if (passwordField.getText().trim().equals(repeatPasswordField.getText().trim())) {
-                    Permissions permissions = (permissionComboBox.getSelectedIndex()==2) ? Permissions.DIRECTOR
-                            : (permissionComboBox.getSelectedIndex()==3) ? Permissions.TEACHER
-                            : (permissionComboBox.getSelectedIndex()==4) ? Permissions.CLASS_TEACHER_0
-                            : (permissionComboBox.getSelectedIndex()==5) ? Permissions.CLASS_TEACHER_1
-                            : (permissionComboBox.getSelectedIndex()==6) ? Permissions.CLASS_TEACHER_2
-                            : (permissionComboBox.getSelectedIndex()==7) ? Permissions.CLASS_TEACHER_3
-                            : (permissionComboBox.getSelectedIndex()==8) ? Permissions.CLASS_TEACHER_4
-                            : (permissionComboBox.getSelectedIndex()==9) ? Permissions.CLASS_TEACHER_5
-                            : (permissionComboBox.getSelectedIndex()==10) ? Permissions.CLASS_TEACHER_6
-                            : (permissionComboBox.getSelectedIndex()==2) ? Permissions.CLASS_TEACHER_7
+                if (String.valueOf(passwordField.getPassword())
+                        .equals(String.valueOf(repeatPasswordField.getPassword()))) {
+                    Permissions permissions = (permissionComboBox.getSelectedIndex()==1) ? Permissions.DIRECTOR
+                            : (permissionComboBox.getSelectedIndex()==2) ? Permissions.TEACHER
+                            : (permissionComboBox.getSelectedIndex()==3) ? Permissions.CLASS_TEACHER_0
+                            : (permissionComboBox.getSelectedIndex()==4) ? Permissions.CLASS_TEACHER_1
+                            : (permissionComboBox.getSelectedIndex()==5) ? Permissions.CLASS_TEACHER_2
+                            : (permissionComboBox.getSelectedIndex()==6) ? Permissions.CLASS_TEACHER_3
+                            : (permissionComboBox.getSelectedIndex()==7) ? Permissions.CLASS_TEACHER_4
+                            : (permissionComboBox.getSelectedIndex()==8) ? Permissions.CLASS_TEACHER_5
+                            : (permissionComboBox.getSelectedIndex()==9) ? Permissions.CLASS_TEACHER_6
+                            : (permissionComboBox.getSelectedIndex()==10) ? Permissions.CLASS_TEACHER_7
                             : Permissions.CLASS_TEACHER_8;
-                    loginInfo.put(nameField.getText().trim(), new User(passwordField.getText().trim(), permissions));
+                    System.out.println(permissionComboBox.getSelectedIndex());
+                    loginInfo.put(nameField.getText().trim(),
+                            new User(String.valueOf(passwordField.getPassword()), permissions));
                     addedID  = nameField.getText().trim();
                     dispose();
                 } else {
-                    repeatPasswordField.setText("WRONG PASSWORD");
+                    capitalLabel.setText("WRONG PASSWORD");
                 }
             }  else {
                 capitalLabel.setText("Please fill in all fields");

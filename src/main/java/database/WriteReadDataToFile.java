@@ -27,8 +27,8 @@ public class WriteReadDataToFile {
         properties.load(new FileInputStream("src/main/resources/jdbc.properties"));
     }
 
-    public void writeListLoFile(ArrayList<Pupil> listOfPupils, File file) throws JsonProcessingException {
-        String serializedList = serializeToJSON(listOfPupils);
+    public void writeListLoFile(DataToFile data, File file) throws JsonProcessingException {
+        String serializedList = serializeToJSON(data);
         String encryptedData = encryptData(serializedList,
                 properties.getProperty("jdbc.encryptPassword"));
         writeToFile(encryptedData, file.toPath());

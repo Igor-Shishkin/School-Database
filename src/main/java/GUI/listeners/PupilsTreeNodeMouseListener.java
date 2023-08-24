@@ -56,8 +56,9 @@ public class PupilsTreeNodeMouseListener extends MouseAdapter {
             pupilInformationLabel.setText(CentralPanel.CURRENT_PUPIL.getPupilInformation());
 
 
-            if (CentralPanel.CURRENT_GRADE == Main.PERMISSIONS.getNumberPermission() ||
-                    Main.PERMISSIONS ==Permissions.DIRECTOR) {
+            if (CentralPanel.CURRENT_GRADE ==
+                    dataList.getLoginInfo().get(Main.CURRENT_USER).getPermissions().getNumberPermission() ||
+                    dataList.getLoginInfo().get(Main.CURRENT_USER).getPermissions() ==Permissions.DIRECTOR) {
                 showEditMarksButton.setVisible(true);
                 showEditMarksButton.setEnabled(CentralPanel.CURRENT_PUPIL.getGrade() > 3);
                 showEditAchievementButton.setVisible(true);

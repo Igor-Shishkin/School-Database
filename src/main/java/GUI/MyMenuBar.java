@@ -3,10 +3,12 @@ package GUI;
 import GUI.addEditPupil.EditUsers;
 import GUI.styleStorage.ColorsSets;
 import GUI.styleStorage.ConstantsOfStyle;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import database.PupilsDataList;
 import database.WriteReadDataToFile;
 
 import javax.swing.*;
+import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeModel;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -14,14 +16,16 @@ import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Objects;
 import java.util.Properties;
 
-public class MyMenuBar  implements ActionListener {
+public class MyMenuBar implements ActionListener {
     Properties properties;
     private JMenu fileMenu, styleMenu, informationMenu, userMenu;
-    private JMenuItem openFileItem, newDatabaseItem, saveFileItem, closeItem, usersItem, ocean, changeAdmissionItem,
-            informationItem, softRose, aggressive, contrast;
+    private JMenuItem openFileItem, newDatabaseItem, saveFileItem, exitItem, usersItem, ocean, changeAdmissionItem,
+            informationItem, contrast, saveAsFileItem;
     private final JMenuBar menuBar;
     private final WriteReadDataToFile writeReadDataToFile;
     private final JFrame parentFrame;
@@ -32,14 +36,19 @@ public class MyMenuBar  implements ActionListener {
     private final JButton addPupilButton;
     private final JScrollPane paneForGradesTree;
     private final PupilsDataList dataList;
+    File file;
+    DefaultMutableTreeNode rootForPupilsTree;
+    DefaultTreeModel pupilsTreeModel;
+    ArrayList<DefaultMutableTreeNode> nodesForPupilsPanel;
 //    private String id;
 //    HashMap<String,User> loginInfo;
 
 
     MyMenuBar(JFrame parentFrame, JTextField currentStatusField, JTree treeForGradePanel,
               DefaultTreeModel gradesTreeModel, JPanel panelForFilterRadioButtons, JButton addPupilButton,
-              JPanel centralPanel, JScrollPane paneForGradesTree, PupilsDataList dataList)
-            throws IOException {
+              JPanel centralPanel, JScrollPane paneForGradesTree, PupilsDataList dataList,
+              DefaultMutableTreeNode rootForPupilsTree, DefaultTreeModel pupilsTreeModel,
+              ArrayList<DefaultMutableTreeNode> nodesForPupilsPanel) throws IOException {
         this.parentFrame = parentFrame;
         this.currentStatusField = currentStatusField;
         this.treeForGradePanel = treeForGradePanel;
@@ -49,6 +58,9 @@ public class MyMenuBar  implements ActionListener {
         this.centralPanel = centralPanel;
         this.paneForGradesTree = paneForGradesTree;
         this.dataList = dataList;
+        this.rootForPupilsTree = rootForPupilsTree;
+        this.pupilsTreeModel = pupilsTreeModel;
+        this.nodesForPupilsPanel = nodesForPupilsPanel;
 //        this.id = id;
 //        this.loginInfo = loginInfo;
 
@@ -64,12 +76,12 @@ public class MyMenuBar  implements ActionListener {
         openFileItem.addActionListener(this);
         newDatabaseItem.addActionListener(this);
         saveFileItem.addActionListener(this);
+        saveAsFileItem.addActionListener(this);
         changeAdmissionItem.addActionListener(this);
         informationItem.addActionListener(this);
         usersItem.addActionListener(this);
-        closeItem.addActionListener(this);
+        exitItem.addActionListener(this);
         contrast.addActionListener(this);
-        aggressive.addActionListener(this);
         ocean.addActionListener(this);
     }
 
@@ -87,26 +99,25 @@ public class MyMenuBar  implements ActionListener {
         userMenu = new JMenu("User");
 
         newDatabaseItem = new JMenuItem("New");
-        openFileItem = new JMenuItem("Open");
+        openFileItem = new JMenuItem("Open...");
         saveFileItem = new JMenuItem("Save");
-        closeItem = new JMenuItem("Close database");
+        exitItem = new JMenuItem("Exit");
         usersItem = new JMenuItem("Users");
         changeAdmissionItem = new JMenuItem("Change admission");
         informationItem = new JMenuItem("Information");
-        softRose = new JMenuItem("Soft rose");
         ocean = new JMenuItem("Ocean");
         contrast = new JMenuItem("Contrast");
-        aggressive = new JMenuItem("Aggressive");
+        saveAsFileItem = new JMenuItem("Save as...");
+
 
         fileMenu.add(newDatabaseItem);
         fileMenu.add(openFileItem);
         fileMenu.add(saveFileItem);
-        fileMenu.add(closeItem);
+        fileMenu.add(saveAsFileItem);
+        fileMenu.add(exitItem);
 
         styleMenu.add(ocean);
-        styleMenu.add(softRose);
         styleMenu.add(contrast);
-        styleMenu.add(aggressive);
         informationMenu.add(informationItem);
         userMenu.add(changeAdmissionItem);
         userMenu.add(usersItem);
@@ -118,7 +129,8 @@ public class MyMenuBar  implements ActionListener {
 
         changeAdmissionItem.setEnabled(false);
         saveFileItem.setEnabled(false);
-        closeItem.setEnabled(false);
+        saveAsFileItem.setEnabled(false);
+        usersItem.setEnabled(false);
 
         fileMenu.setMnemonic(KeyEvent.VK_F);
         styleMenu.setMnemonic(KeyEvent.VK_S);
@@ -128,71 +140,324 @@ public class MyMenuBar  implements ActionListener {
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        if (e.getSource() == closeItem) {
-            System.exit(0);
+        if (e.getSource() == exitItem) {
+            int option = JOptionPane.showConfirmDialog(
+                    null, "Do you want to exit?", "Confirm Exit",
+                    JOptionPane.YES_NO_CANCEL_OPTION);
+            if (option == JOptionPane.YES_OPTION) {
+                System.exit(0);
+            }
         }
         if (e.getSource() == openFileItem) {
-            JFileChooser fileChooser = new JFileChooser();
-//            fileChooser.showOpenDialog(null);
-            int response = fileChooser.showOpenDialog(null);
+            if (dataList.getPupilsDataList() != null) {
+                String[] responses = {"Open without saving", "Save changes at first", "Cancel"};
+                int answer = JOptionPane.showOptionDialog(parentFrame, "Would you like to save changes\nin previous database at first",
+                        "Save previous database?", JOptionPane.OK_CANCEL_OPTION, JOptionPane.WARNING_MESSAGE, null,
+                        responses, responses[0]);
+                if (answer == JOptionPane.YES_OPTION) {
 
-            if (response == JFileChooser.APPROVE_OPTION) {
-                File file = new File(fileChooser.getSelectedFile().getAbsolutePath());
-                try {
-                    dataList.setDataObject(writeReadDataToFile.readDataFromFile(file));
-//                    Main.setTextForStatusPanel("Database loaded successfully");
-                    currentStatusField.setText("Database loaded successfully");
-                    ChangeLogin changeLogin = new ChangeLogin(parentFrame, dataList.getLoginInfo());
-                    if (changeLogin.showAndReturnIsSuccess()) {
-                        String nameOfFile = file.getName();
-                        parentFrame.setTitle(nameOfFile);
-                        treeForGradePanel.setVisible(true);
-                        panelForFilterRadioButtons.setVisible(true);
-                        addPupilButton.setVisible(Main.PERMISSIONS == Permissions.DIRECTOR);
-                        paneForGradesTree.setVisible(true);
-                        changeAdmissionItem.setEnabled(true);
-                        saveFileItem.setEnabled(true);
-                        closeItem.setEnabled(true);
-                    } else {
-                        dataList.setPupilsDataList(null);
-                        dataList.setPupilsDataList(null);
+                    JFileChooser fileChooser = new JFileChooser();
+                    int response = fileChooser.showOpenDialog(null);
+
+                    if (response == JFileChooser.APPROVE_OPTION) {
+                        rootForPupilsTree.removeAllChildren();
+                        pupilsTreeModel.nodeStructureChanged(rootForPupilsTree);
+                        setComponentsInvisible(centralPanel);
+                        file = new File(fileChooser.getSelectedFile().getAbsolutePath());
+                        try {
+                            dataList.setDataObject(writeReadDataToFile.readDataFromFile(file));
+                            currentStatusField.setText("Database loaded successfully");
+                            ChangeLogin changeLogin = new ChangeLogin(parentFrame, dataList.getLoginInfo());
+                            if (changeLogin.showAndReturnIsSuccess()) {
+                                String nameOfFile = file.getName();
+                                parentFrame.setTitle(nameOfFile);
+                                treeForGradePanel.setVisible(true);
+                                panelForFilterRadioButtons.setVisible(true);
+                                addPupilButton.setVisible
+                                        (dataList.getLoginInfo().get(Main.CURRENT_USER).getPermissions() == Permissions.DIRECTOR);
+                                paneForGradesTree.setVisible(true);
+                                changeAdmissionItem.setEnabled(true);
+                                saveFileItem.setEnabled(true);
+                                saveAsFileItem.setEnabled(true);
+                            } else {
+                                dataList.setPupilsDataList(null);
+                                dataList.setPupilsDataList(null);
+                                changeAdmissionItem.setEnabled(false);
+                                saveFileItem.setEnabled(false);
+                                saveAsFileItem.setEnabled(false);
+                                usersItem.setEnabled(false);
+                            }
+                        } catch (Exception ex) {
+                            JOptionPane.showMessageDialog(null,
+                                    "\t\tI can't read this file!\nCALL TECH SUPPORT OR ELSE!", "title",
+                                    JOptionPane.ERROR_MESSAGE);
+                            currentStatusField.setText("Error. No data has been loaded at the moment.");
+                            throw new RuntimeException(ex);
+                        }
                     }
-                } catch (Exception ex) {
-                    JOptionPane.showMessageDialog(null,
-                            "\t\tI can't read this file!\nCALL TECH SUPPORT OR ELSE!", "title",
-                            JOptionPane.ERROR_MESSAGE);
-                    currentStatusField.setText("Error. No data has been loaded at the moment.");
-                    throw new RuntimeException(ex);
+                } else if (answer == JOptionPane.NO_OPTION) {
+                    rootForPupilsTree.removeAllChildren();
+                    pupilsTreeModel.nodeStructureChanged(rootForPupilsTree);
+                    setComponentsInvisible(centralPanel);
+                    try {
+                        if (file==null) {
+                            JFileChooser fileChooser = new JFileChooser();
+                            int response = fileChooser.showSaveDialog(null);
+
+                            if (response == JFileChooser.APPROVE_OPTION) {
+                                file = new File(fileChooser.getSelectedFile().getAbsolutePath());
+                                try {
+                                    writeReadDataToFile.writeListLoFile(dataList.getDataToFile(), file);
+                                    currentStatusField.setText("Database is saved successfully");
+                                    JOptionPane.showMessageDialog(null,
+                                            "\t\tDatabase is saved!", "SUCCESS",
+                                            JOptionPane.PLAIN_MESSAGE);
+
+                                } catch (JsonProcessingException ex) {
+                                    JOptionPane.showMessageDialog(null,
+                                            "\t\tI can't write this file!\nCALL TECH SUPPORT OR ELSE!", "title",
+                                            JOptionPane.ERROR_MESSAGE);
+                                    currentStatusField.setText("Error. I can't save this data");
+                                    throw new RuntimeException(ex);
+                                }
+                            }
+                        } else {
+                            writeReadDataToFile.writeListLoFile(dataList.getDataToFile(), file);
+                            currentStatusField.setText("Database is saved successfully");
+                            JOptionPane.showMessageDialog(null,
+                                    "\t\tDatabase is saved!", "SUCCESS",
+                                    JOptionPane.PLAIN_MESSAGE);
+                        }
+
+                        JFileChooser fileChooser = new JFileChooser();
+                        int response = fileChooser.showOpenDialog(null);
+
+                        if (response == JFileChooser.APPROVE_OPTION) {
+                            file = new File(fileChooser.getSelectedFile().getAbsolutePath());
+                            try {
+                                dataList.setDataObject(writeReadDataToFile.readDataFromFile(file));
+                                currentStatusField.setText("Database loaded successfully");
+                                ChangeLogin changeLogin = new ChangeLogin(parentFrame, dataList.getLoginInfo());
+                                if (changeLogin.showAndReturnIsSuccess()) {
+                                    String nameOfFile = file.getName();
+                                    parentFrame.setTitle(nameOfFile);
+                                    treeForGradePanel.setVisible(true);
+                                    panelForFilterRadioButtons.setVisible(true);
+                                    addPupilButton.setVisible
+                                            (dataList.getLoginInfo()
+                                                    .get(Main.CURRENT_USER).getPermissions() == Permissions.DIRECTOR);
+                                    paneForGradesTree.setVisible(true);
+                                    changeAdmissionItem.setEnabled(true);
+                                    saveFileItem.setEnabled(true);
+                                    exitItem.setEnabled(true);
+                                } else {
+                                    dataList.setPupilsDataList(null);
+                                    dataList.setPupilsDataList(null);
+                                    changeAdmissionItem.setEnabled(false);
+                                    saveFileItem.setEnabled(false);
+                                    saveAsFileItem.setEnabled(false);
+                                    usersItem.setEnabled(false);
+                                }
+                                saveFileItem.setEnabled(true);
+                            } catch (Exception ex) {
+                                JOptionPane.showMessageDialog(null,
+                                        "\t\tI can't read this file!\nCALL TECH SUPPORT OR ELSE!", "title",
+                                        JOptionPane.ERROR_MESSAGE);
+                                currentStatusField.setText("Error. No data has been loaded at the moment.");
+                                throw new RuntimeException(ex);
+                            }
+                        }
+                    } catch (JsonProcessingException ex) {
+                        JOptionPane.showMessageDialog(null,
+                                "\t\tI can't write this file!\nCALL TECH SUPPORT OR ELSE!", "title",
+                                JOptionPane.ERROR_MESSAGE);
+                        currentStatusField.setText("Error. I can't save this data");
+                        throw new RuntimeException(ex);
+                    }
+
+                }
+            } else {
+                JFileChooser fileChooser = new JFileChooser();
+                int response = fileChooser.showOpenDialog(null);
+
+                if (response == JFileChooser.APPROVE_OPTION) {
+                    file = new File(fileChooser.getSelectedFile().getAbsolutePath());
+                    try {
+                        dataList.setDataObject(writeReadDataToFile.readDataFromFile(file));
+                        currentStatusField.setText("Database loaded successfully");
+                        ChangeLogin changeLogin = new ChangeLogin(parentFrame, dataList.getLoginInfo());
+                        if (changeLogin.showAndReturnIsSuccess()) {
+                            String nameOfFile = file.getName();
+                            parentFrame.setTitle(nameOfFile);
+                            treeForGradePanel.setVisible(true);
+                            panelForFilterRadioButtons.setVisible(true);
+                            addPupilButton.setVisible
+                                    (dataList.getLoginInfo().get(Main.CURRENT_USER)
+                                            .getPermissions() == Permissions.DIRECTOR);
+                            paneForGradesTree.setVisible(true);
+                            changeAdmissionItem.setEnabled(true);
+                            saveFileItem.setEnabled(true);
+                            saveAsFileItem.setEnabled(true);
+                            usersItem.setEnabled(true);
+                        } else {
+                            dataList.setPupilsDataList(null);
+                            dataList.setPupilsDataList(null);
+                            changeAdmissionItem.setEnabled(false);
+                            saveFileItem.setEnabled(false);
+                            saveAsFileItem.setEnabled(false);
+                            usersItem.setEnabled(false);
+                        }
+                    } catch (Exception ex) {
+                        JOptionPane.showMessageDialog(null,
+                                "\t\tI can't read this file!\nCALL TECH SUPPORT OR ELSE!", "title",
+                                JOptionPane.ERROR_MESSAGE);
+                        currentStatusField.setText("Error. No data has been loaded at the moment.");
+                        throw new RuntimeException(ex);
+                    }
                 }
             }
         }
 
-        if (e.getSource() == saveFileItem) {
+        if (e.getSource() == saveAsFileItem) {
 
             if (dataList.getPupilsDataList().size() != 0) {
                 JFileChooser fileChooser = new JFileChooser();
-//            fileChooser.showOpenDialog(null);
-                int response = fileChooser.showOpenDialog(null);
+                int response = fileChooser.showSaveDialog(null);
 
-//                if (response == JFileChooser.APPROVE_OPTION) {
-//                    File file = new File(fileChooser.getSelectedFile().getAbsolutePath());
-//                    try {
-//                        writeReadDataToFile.writeListLoFile(dataList.getPupilsDataList(), file);
-////                        statusTextField.setText("Database saved successfully");
-//                    } catch (JsonProcessingException ex) {
-//                        JOptionPane.showMessageDialog(null,
-//                                "\t\tI can't write this file!\nCALL TECH SUPPORT OR ELSE!", "title",
-//                                JOptionPane.ERROR_MESSAGE);
-//                        currentStatusField.setText("Error. I can't save this data");
-//                        throw new RuntimeException(ex);
-//                    }
-//                }
+                if (response == JFileChooser.APPROVE_OPTION) {
+                    file = new File(fileChooser.getSelectedFile().getAbsolutePath());
+                    try {
+                        writeReadDataToFile.writeListLoFile(dataList.getDataToFile(), file);
+                        currentStatusField.setText("Database is saved successfully");
+                        saveFileItem.setEnabled(true);
+                    } catch (JsonProcessingException ex) {
+                        JOptionPane.showMessageDialog(null,
+                                "\t\tI can't write this file!\nCALL TECH SUPPORT OR ELSE!", "title",
+                                JOptionPane.ERROR_MESSAGE);
+                        currentStatusField.setText("Error. I can't save this data");
+                        throw new RuntimeException(ex);
+                    }
+                }
             } else {
                 JOptionPane.showMessageDialog(null, "Your database is empty", "title",
                         JOptionPane.INFORMATION_MESSAGE);
             }
         }
-        if (e.getSource()==contrast) {
+        if (e.getSource() == saveFileItem) {
+
+            if (dataList.getPupilsDataList().size() != 0 || file != null) {
+                try {
+                    writeReadDataToFile.writeListLoFile(dataList.getDataToFile(), file);
+                    JOptionPane.showMessageDialog(null,
+                            "Database is saved :)", "SUCCESS",
+                            JOptionPane.PLAIN_MESSAGE);
+                    currentStatusField.setText("Database saved is successfully");
+                } catch (JsonProcessingException ex) {
+                    JOptionPane.showMessageDialog(null,
+                            "\t\tI can't write this file!\nCALL TECH SUPPORT OR ELSE!", "title",
+                            JOptionPane.ERROR_MESSAGE);
+                    currentStatusField.setText("Error. I can't save this data");
+                    throw new RuntimeException(ex);
+                }
+
+            } else {
+                JOptionPane.showMessageDialog(null, "Your database is empty", "title",
+                        JOptionPane.INFORMATION_MESSAGE);
+            }
+        }
+        if (e.getSource() == newDatabaseItem) {
+            if (dataList.getPupilsDataList() != null) {
+                String[] responses = {"Open without saving", "Save changes at first", "Cancel"};
+                int answer = JOptionPane.showOptionDialog(parentFrame, "Would you like to save changes\nin previous database at first",
+                        "Save previous database?", JOptionPane.YES_NO_CANCEL_OPTION,
+                        JOptionPane.WARNING_MESSAGE, null,
+                        responses, responses[0]);
+                if (answer == JOptionPane.YES_OPTION) {
+                    saveFileItem.setEnabled(false);
+                    changeAdmissionItem.setEnabled(false);
+                    usersItem.setEnabled(false);
+                    saveAsFileItem.setEnabled(false);
+                    file = null;
+                    rootForPupilsTree.removeAllChildren();
+                    pupilsTreeModel.nodeStructureChanged(rootForPupilsTree);
+                    setComponentsInvisible(centralPanel);
+
+                    dataList.setPupilsDataList(new ArrayList<>());
+                    dataList.setLoginInfo(new HashMap<>());
+                    dataList.getLoginInfo().put("Director", new User("0000", Permissions.DIRECTOR));
+                    Main.CURRENT_USER = "Director";
+                    JOptionPane.showMessageDialog(null,
+                            "\t\tDatabase is created!\nUser 'Director' with '0000' password \n is added",
+                            "SUCCESS",
+                            JOptionPane.PLAIN_MESSAGE);
+                    changeAdmissionItem.setEnabled(true);
+                    usersItem.setEnabled(true);
+                    saveAsFileItem.setEnabled(true);
+                    currentStatusField.setText("New database is created");
+                    addPupilButton.setVisible(true);
+
+
+                } else if (answer == JOptionPane.NO_OPTION) {
+//                    saveFileItem.setEnabled(false);
+//                    changeAdmissionItem.setEnabled(false);
+//                    usersItem.setEnabled(false);
+//                    saveAsFileItem.setEnabled(false);
+//                    saveFileItem.setEnabled(false);
+                    rootForPupilsTree.removeAllChildren();
+                    pupilsTreeModel.nodeStructureChanged(rootForPupilsTree);
+                    setComponentsInvisible(centralPanel);
+                    try {
+                        writeReadDataToFile.writeListLoFile(dataList.getDataToFile(), file);
+                        currentStatusField.setText("Database is saved successfully");
+                        JOptionPane.showMessageDialog(null,
+                                "\t\tDatabase is saved!", "SUCCESS",
+                                JOptionPane.PLAIN_MESSAGE);
+                    } catch (JsonProcessingException ex) {
+                        JOptionPane.showMessageDialog(null,
+                                "\t\tI can't write this file!\nCALL TECH SUPPORT OR ELSE!", "title",
+                                JOptionPane.ERROR_MESSAGE);
+                        currentStatusField.setText("Error. I can't save this data");
+                        throw new RuntimeException(ex);
+                    }
+                    dataList.setPupilsDataList(new ArrayList<>());
+                    dataList.setLoginInfo(new HashMap<>());
+                    dataList.getLoginInfo().put("Director", new User("0000", Permissions.DIRECTOR));
+                    Main.CURRENT_USER = "Director";
+                    JOptionPane.showMessageDialog(null,
+                            "\t\tDatabase is created!\nUser 'Director' with '0000' password \n is added",
+                            "SUCCESS",
+                            JOptionPane.PLAIN_MESSAGE);
+                    file = null;
+                    saveAsFileItem.setEnabled(true);
+                    usersItem.setEnabled(true);
+                    changeAdmissionItem.setEnabled(true);
+                    currentStatusField.setText("New database is created");
+                    addPupilButton.setVisible(true);
+
+                }
+
+            } else {
+                file = null;
+                dataList.setPupilsDataList(new ArrayList<>());
+                dataList.setLoginInfo(new HashMap<>());
+                dataList.getLoginInfo().put("Director", new User("0000", Permissions.DIRECTOR));
+                Main.CURRENT_USER = "Director";
+                JOptionPane.showMessageDialog(null,
+                        "\t\tDatabase is created!\nUser 'Director' with '0000' password \n is added",
+                        "SUCCESS",
+                        JOptionPane.PLAIN_MESSAGE);
+                saveAsFileItem.setEnabled(true);
+                usersItem.setEnabled(true);
+                changeAdmissionItem.setEnabled(true);
+                currentStatusField.setText("New database is created");
+                treeForGradePanel.setVisible(true);
+                panelForFilterRadioButtons.setVisible(true);
+                addPupilButton.setVisible(true);
+                paneForGradesTree.setVisible(true);
+
+            }
+        }
+        if (e.getSource() == contrast) {
             ColorsSets.setActualSetOfColors(ColorsSets.SET_OF_COLORS_CONTRAST);
             refreshPanels(centralPanel);
             centralPanel.repaint();
@@ -201,7 +466,7 @@ public class MyMenuBar  implements ActionListener {
             menuBar.setBackground(ColorsSets.ACTUAL_SET_OF_COLORS.get(5));
             setMenuBarColors(Color.BLUE, ColorsSets.ACTUAL_SET_OF_COLORS.get(2));
         }
-        if (e.getSource()==ocean) {
+        if (e.getSource() == ocean) {
             ColorsSets.setActualSetOfColors(ColorsSets.SET_OF_COLORS_OCEAN);
             refreshPanels(centralPanel);
             centralPanel.repaint();
@@ -211,10 +476,12 @@ public class MyMenuBar  implements ActionListener {
 
         }
         if (e.getSource() == changeAdmissionItem) {
-            ChangeLogin changeLogin =  new ChangeLogin(parentFrame, dataList.getLoginInfo());
+            ChangeLogin changeLogin = new ChangeLogin(parentFrame, dataList.getLoginInfo());
             changeLogin.showAndReturnIsSuccess();
-            addPupilButton.setVisible(Main.PERMISSIONS ==Permissions.DIRECTOR);
-            currentStatusField.setText("Actual permissions: ".concat(Main.PERMISSIONS.toString()));
+            addPupilButton.setVisible
+                    (dataList.getLoginInfo().get(Main.CURRENT_USER).getPermissions() == Permissions.DIRECTOR);
+            currentStatusField.setText("Actual permissions: "
+                    .concat(dataList.getLoginInfo().get(Main.CURRENT_USER).getPermissions().toString()));
         }
         if (e.getSource() == usersItem) {
             new EditUsers(parentFrame, dataList, currentStatusField);
@@ -227,7 +494,7 @@ public class MyMenuBar  implements ActionListener {
                 component.setBackground(ColorsSets.ACTUAL_SET_OF_COLORS.get(4));
             }
             if (component instanceof Container) {
-                refreshPanels((Container) component);
+                refreshMenu((Container) component);
             }
         }
     }
@@ -241,7 +508,7 @@ public class MyMenuBar  implements ActionListener {
         newDatabaseItem.setForeground(foreground);
         openFileItem.setForeground(foreground);
         saveFileItem.setForeground(foreground);
-        closeItem.setForeground(foreground);
+        exitItem.setForeground(foreground);
         usersItem.setForeground(foreground);
         ocean.setForeground(foreground);
         changeAdmissionItem.setForeground(foreground);
@@ -255,26 +522,27 @@ public class MyMenuBar  implements ActionListener {
         newDatabaseItem.setBackground(background);
         openFileItem.setBackground(background);
         saveFileItem.setBackground(background);
-        closeItem.setBackground(background);
+        exitItem.setBackground(background);
         usersItem.setBackground(background);
         ocean.setBackground(background);
         changeAdmissionItem.setBackground(background);
         informationItem.setBackground(background);
     }
-    public JMenuBar getMenuBar () {
+
+    public JMenuBar getMenuBar() {
         return menuBar;
     }
 
-    public void refreshPanels (Container container) {
+    public void refreshPanels(Container container) {
         for (Component component : container.getComponents()) {
             if (component instanceof JButton) {
                 component.setBackground(ColorsSets.ACTUAL_SET_OF_COLORS.get(5));
                 component.setForeground(ColorsSets.ACTUAL_SET_OF_COLORS.get(2));
-                if (Objects.equals(((JButton) component).getText(), "DELETE PUPIL")){
+                if (Objects.equals(((JButton) component).getText(), "DELETE PUPIL")) {
                     component.setBackground(ColorsSets.ACTUAL_SET_OF_COLORS.get(2));
                     component.setForeground(ColorsSets.ACTUAL_SET_OF_COLORS.get(7));
                 }
-                if (Objects.equals(((JButton) component).getText(), "Add new pupil")){
+                if (Objects.equals(((JButton) component).getText(), "Add new pupil")) {
                     component.setBackground(ColorsSets.ACTUAL_SET_OF_COLORS.get(2));
                     component.setForeground(ColorsSets.ACTUAL_SET_OF_COLORS.get(8));
                 }
@@ -290,4 +558,17 @@ public class MyMenuBar  implements ActionListener {
         }
     }
 
+    public void setComponentsInvisible(Container container) {
+        for (Component component : container.getComponents()) {
+            if (component instanceof JButton) {
+                component.setVisible(false);
+            }
+            if (component instanceof JLabel) {
+                ((JLabel) component).setText("");
+            }
+            if (component instanceof Container) {
+                setComponentsInvisible((Container) component);
+            }
+        }
+    }
 }

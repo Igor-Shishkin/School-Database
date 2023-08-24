@@ -26,6 +26,7 @@ public class MainWindow extends JFrame implements ActionListener {
     private JTextField currentStatusField;
     private final Border border;
     private final JPanel downPanel;
+
 //    private String id;
 //    HashMap<String,User> loginInfo;
 
@@ -34,7 +35,7 @@ public class MainWindow extends JFrame implements ActionListener {
 //        this.id = id;
 //        this.loginInfo = loginInfo;
         setColorsSet();
-        setActualSetOfColors(ColorsSets.SET_OF_COLORS_SOFT_ROSE);
+        setActualSetOfColors(ColorsSets.SET_OF_COLORS_OCEAN);
 
 
         border = BorderFactory.createSoftBevelBorder(SoftBevelBorder.RAISED, ColorsSets.ACTUAL_SET_OF_COLORS.get(0),
@@ -54,11 +55,18 @@ public class MainWindow extends JFrame implements ActionListener {
         paneForGradesTree.setVisible(false);
         JButton addPupilButton = new JButton("Add new pupil");
         addPupilButton.setVisible(false);
+        DefaultMutableTreeNode rootForPupilsTree = new DefaultMutableTreeNode("root");
+        DefaultTreeModel pupilsTreeModel = new DefaultTreeModel(rootForPupilsTree);
+
+        ArrayList<DefaultMutableTreeNode> nodesForPupilsPanel = new ArrayList<>();
+
 
         JPanel centerPanel = new CentralPanel(this, currentStatusField, treeForGradePanel, rootForGradePanel,
-                gradesTreeModel, panelForFilterRadioButtons, addPupilButton, paneForGradesTree, dataList);
+                gradesTreeModel, panelForFilterRadioButtons, addPupilButton, paneForGradesTree, dataList, pupilsTreeModel,
+                nodesForPupilsPanel, rootForPupilsTree);
         MyMenuBar myMenuBar = new MyMenuBar(this, currentStatusField, treeForGradePanel, gradesTreeModel,
-                panelForFilterRadioButtons, addPupilButton, centerPanel, paneForGradesTree, dataList);
+                panelForFilterRadioButtons, addPupilButton, centerPanel, paneForGradesTree, dataList,
+                rootForPupilsTree, pupilsTreeModel, nodesForPupilsPanel);
 
         this.setResizable(false);
         this.setLayout(new BorderLayout());
