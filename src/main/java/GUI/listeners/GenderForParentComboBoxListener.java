@@ -11,16 +11,19 @@ import java.util.regex.Pattern;
 public class GenderForParentComboBoxListener implements ActionListener {
     JTextField peselField;
     JComboBox genderComboBox;
+    ConstantsOfStyle styleConstants;
 
-    public GenderForParentComboBoxListener(JTextField peselField, JComboBox genderComboBox) {
+    public GenderForParentComboBoxListener(JTextField peselField, JComboBox genderComboBox,
+                                           ConstantsOfStyle styleConstants) {
         this.peselField = peselField;
         this.genderComboBox = genderComboBox;
+        this.styleConstants = styleConstants;
     }
 
     @Override
     public void actionPerformed(ActionEvent e) {
         genderComboBox.setBackground((genderComboBox.getSelectedIndex()>0)
-                ? ConstantsOfStyle.COLOR_FOR_RIGHT_FORMAT : ConstantsOfStyle.COLOR_NEUTRAL_FORMAT);
+                ? styleConstants.getCOLOR_FOR_RIGHT_FORMAT() : styleConstants.getCOLOR_NEUTRAL_FORMAT());
 
         if (peselField.getText().length() == 11 && genderComboBox.getSelectedIndex() > 0) {
             String regex = "";
@@ -32,7 +35,7 @@ public class GenderForParentComboBoxListener implements ActionListener {
             Pattern peselPattern = Pattern.compile(regex);
             Matcher matcher = peselPattern.matcher(peselField.getText().trim());
             peselField.setBackground((matcher.matches())
-                    ? ConstantsOfStyle.COLOR_FOR_RIGHT_FORMAT : ConstantsOfStyle.COLOR_FOR_WRONG_FORMAT);
+                    ? styleConstants.getCOLOR_FOR_RIGHT_FORMAT() : styleConstants.getCOLOR_FOR_WRONG_FORMAT());
         }
     }
 }

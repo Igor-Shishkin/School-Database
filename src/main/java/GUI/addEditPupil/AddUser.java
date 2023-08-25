@@ -1,15 +1,13 @@
 package GUI.addEditPupil;
 
-import GUI.Permissions;
-import GUI.User;
+import database.Permissions;
+import database.User;
 import GUI.styleStorage.ConstantsOfStyle;
-import database.PupilsDataList;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.Arrays;
 import java.util.HashMap;
 
 public class AddUser extends JDialog implements ActionListener {
@@ -22,17 +20,21 @@ public class AddUser extends JDialog implements ActionListener {
     JLabel capitalLabel;
     HashMap<String, User> loginInfo;
     String addedID = null;
+    ConstantsOfStyle styleConstants;
 
-    public AddUser (JFrame parentFrame, HashMap<String, User> loginInfo, JTextField currentStatusField){
+    public AddUser (JFrame parentFrame, HashMap<String, User> loginInfo, JTextField currentStatusField,
+                    ConstantsOfStyle styleConstants){
         super(parentFrame,"Achievement",true);
         this.currentStatusField =currentStatusField;
         this.loginInfo = loginInfo;
+        this.styleConstants = styleConstants;
 
         setComponentsToMainPanel();
 
         this.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
         this.setLayout(new GridLayout(1,1,20,20));
         this.add(mainPanel);
+        setStyleForWindow(this);
         this.pack();
         this.setLocationRelativeTo(null);
         this.setResizable(false);
@@ -89,7 +91,7 @@ public class AddUser extends JDialog implements ActionListener {
         for (Component component : container.getComponents()) {
             if (component instanceof JButton || component instanceof JLabel || component instanceof JTextField
                     || component instanceof JRadioButton) {
-                component.setFont(ConstantsOfStyle.THE_MAIN_FONT.deriveFont(Font.PLAIN,30));
+                component.setFont(styleConstants.getTHE_MAIN_FONT().deriveFont(Font.PLAIN,30));
             }
             if (component instanceof Container) {
                 setFontForComponents((Container) component);
@@ -135,5 +137,22 @@ public class AddUser extends JDialog implements ActionListener {
     public String showDialogAndGetResult() {
         this.setVisible(true);
         return addedID;
+    }
+    private void setStyleForWindow(Container container) {
+        for (Component component : container.getComponents()) {
+            if (component instanceof JButton) {
+                component.setBackground(styleConstants.getACTUAL_SET_OF_COLORS().get(5));
+                component.setForeground(styleConstants.getACTUAL_SET_OF_COLORS().get(2));
+            }
+            if (component instanceof JLabel || component instanceof JPanel) {
+                component.setBackground(styleConstants.getACTUAL_SET_OF_COLORS().get(0));
+            }
+            if (component instanceof JTextField) {
+                component.setForeground(styleConstants.getACTUAL_SET_OF_COLORS().get(2));
+            }
+            if (component instanceof Container) {
+                setStyleForWindow((Container) component);
+            }
+        }
     }
 }

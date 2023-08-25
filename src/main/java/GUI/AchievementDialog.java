@@ -11,9 +11,11 @@ public class AchievementDialog extends JDialog implements ActionListener {
         String achievements;
         JButton  closeButton;
         JLabel textArea;
+    ConstantsOfStyle styleConstants;
 
-    AchievementDialog(JFrame parentFrame, String achievements) {
+    AchievementDialog(JFrame parentFrame, String achievements, ConstantsOfStyle styleConstants) {
             super(parentFrame, "Achievement", true);
+            this.styleConstants = styleConstants;
 
             this.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
             this.setLayout(new GridBagLayout());
@@ -32,7 +34,7 @@ public class AchievementDialog extends JDialog implements ActionListener {
             achievementForLabel = "<html>".concat(achievementForLabel).concat("</html>");
 
             textArea = new JLabel(achievementForLabel);
-            textArea.setFont(ConstantsOfStyle.THE_MAIN_FONT.deriveFont(Font.PLAIN,20));
+            textArea.setFont(styleConstants.getTHE_MAIN_FONT().deriveFont(Font.PLAIN,20));
 
             closeButton = new JButton("Cancel");
             closeButton.addActionListener(this);

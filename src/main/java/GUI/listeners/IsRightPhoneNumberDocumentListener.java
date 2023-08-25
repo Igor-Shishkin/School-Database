@@ -10,9 +10,12 @@ import java.util.regex.Pattern;
 
 public class IsRightPhoneNumberDocumentListener implements DocumentListener {
         JTextField telephoneField;
+        ConstantsOfStyle styleConstants;
 
-        public IsRightPhoneNumberDocumentListener(JTextField telephoneField) {
+        public IsRightPhoneNumberDocumentListener(JTextField telephoneField,
+                                                  ConstantsOfStyle styleConstants) {
             this.telephoneField = telephoneField;
+            this.styleConstants = styleConstants;
         }
 
         @Override
@@ -34,7 +37,7 @@ public class IsRightPhoneNumberDocumentListener implements DocumentListener {
             Pattern phonePattern = Pattern.compile(regex);
             Matcher matcher = phonePattern.matcher(telephoneField.getText().trim());
             telephoneField.setBackground((matcher.matches())
-                    ? ConstantsOfStyle.COLOR_FOR_RIGHT_FORMAT : ConstantsOfStyle.COLOR_FOR_WRONG_FORMAT);
+                    ? styleConstants.getCOLOR_FOR_RIGHT_FORMAT() : styleConstants.getCOLOR_FOR_WRONG_FORMAT());
         }
 
 }

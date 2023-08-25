@@ -50,19 +50,6 @@ public class Pupil extends Person{
         this.promotionToNextGrade = promotionToNextGrade;
     }
 
-    public Pupil(String name, String secondName, String surname, char gender, String pesel, int id, int grade,
-                 boolean promotionToNextGrade) {
-        super(name, secondName, surname, gender,  null, pesel);
-        this.id = id;
-        this.grade = grade;
-        this.parent1 = null;
-        this.parent2 = null;
-        this.achievement = null;
-        this.marks = null;
-        this.awardBar = false;
-        this.promotionToNextGrade = promotionToNextGrade;
-    }
-
     public int getGrade() {
         return grade;
     }

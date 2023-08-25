@@ -1,7 +1,5 @@
 package database;
 
-import GUI.User;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 

@@ -1,4 +1,4 @@
-package GUI;
+package database;
 
 public enum Permissions {
     DIRECTOR(9),

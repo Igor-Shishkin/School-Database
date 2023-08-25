@@ -1,5 +1,8 @@
 package GUI;
 
+import database.Permissions;
+import database.User;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
@@ -12,7 +15,7 @@ public class ChangeLogin extends JDialog implements ActionListener {
     JLabel userIDLabel = new JLabel("userID:");
     JLabel userPasswordLabel = new JLabel("password:");
     JLabel messageLabel = new JLabel();
-    HashMap<String,User> loginInfo;
+    HashMap<String, User> loginInfo;
     JPanel resultPanel;
     JLabel resultLabel;
     int INDENT_FROM_THE_TOP = -60;

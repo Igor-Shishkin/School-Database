@@ -1,10 +1,11 @@
 package GUI;
 
 import GUI.addEditPupil.EditUsers;
-import GUI.styleStorage.ColorsSets;
 import GUI.styleStorage.ConstantsOfStyle;
 import com.fasterxml.jackson.core.JsonProcessingException;
+import database.Permissions;
 import database.PupilsDataList;
+import database.User;
 import database.WriteReadDataToFile;
 
 import javax.swing.*;
@@ -20,6 +21,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Objects;
 import java.util.Properties;
+
 
 public class MyMenuBar implements ActionListener {
     Properties properties;
@@ -42,13 +44,17 @@ public class MyMenuBar implements ActionListener {
     ArrayList<DefaultMutableTreeNode> nodesForPupilsPanel;
 //    private String id;
 //    HashMap<String,User> loginInfo;
+    ConstantsOfStyle styleConstants;
+    JTree treeForPupilsPanel;
 
 
     MyMenuBar(JFrame parentFrame, JTextField currentStatusField, JTree treeForGradePanel,
               DefaultTreeModel gradesTreeModel, JPanel panelForFilterRadioButtons, JButton addPupilButton,
               JPanel centralPanel, JScrollPane paneForGradesTree, PupilsDataList dataList,
               DefaultMutableTreeNode rootForPupilsTree, DefaultTreeModel pupilsTreeModel,
-              ArrayList<DefaultMutableTreeNode> nodesForPupilsPanel) throws IOException {
+              ArrayList<DefaultMutableTreeNode> nodesForPupilsPanel, ConstantsOfStyle styleConstants,
+              JTree treeForPupilsPanel)
+                throws IOException {
         this.parentFrame = parentFrame;
         this.currentStatusField = currentStatusField;
         this.treeForGradePanel = treeForGradePanel;
@@ -61,6 +67,8 @@ public class MyMenuBar implements ActionListener {
         this.rootForPupilsTree = rootForPupilsTree;
         this.pupilsTreeModel = pupilsTreeModel;
         this.nodesForPupilsPanel = nodesForPupilsPanel;
+        this.styleConstants = styleConstants;
+        this.treeForPupilsPanel = treeForPupilsPanel;
 //        this.id = id;
 //        this.loginInfo = loginInfo;
 
@@ -86,10 +94,10 @@ public class MyMenuBar implements ActionListener {
     }
 
     private void setIconsToMenuComponents() {
-        fileMenu.setIcon(ConstantsOfStyle.FILE_ICON);
-        informationMenu.setIcon(ConstantsOfStyle.INFO_ICON);
-        styleMenu.setIcon(ConstantsOfStyle.STYLE_ICON);
-        userMenu.setIcon(ConstantsOfStyle.USER_ICON);
+        fileMenu.setIcon(styleConstants.getFILE_ICON());
+        informationMenu.setIcon(styleConstants.getINFO_ICON());
+        styleMenu.setIcon(styleConstants.getSTYLE_ICON());
+        userMenu.setIcon(styleConstants.getUSER_ICON());
     }
 
     private void setMenuComponents() {
@@ -458,21 +466,25 @@ public class MyMenuBar implements ActionListener {
             }
         }
         if (e.getSource() == contrast) {
-            ColorsSets.setActualSetOfColors(ColorsSets.SET_OF_COLORS_CONTRAST);
+            styleConstants.setActualSetOfColors(styleConstants.getSET_OF_COLORS_CONTRAST());
             refreshPanels(centralPanel);
             centralPanel.repaint();
 
             fileMenu.setBackground(Color.BLACK);
-            menuBar.setBackground(ColorsSets.ACTUAL_SET_OF_COLORS.get(5));
-            setMenuBarColors(Color.BLUE, ColorsSets.ACTUAL_SET_OF_COLORS.get(2));
+            menuBar.setBackground(styleConstants.getACTUAL_SET_OF_COLORS().get(5));
+            setMenuBarColors(Color.BLUE, styleConstants.getACTUAL_SET_OF_COLORS().get(2));
+//            treeForGradePanel.setCellRenderer(new CustomTreeCellRenderer());
+//            treeForPupilsPanel.setCellRenderer(new CustomTreeCellRenderer());
         }
         if (e.getSource() == ocean) {
-            ColorsSets.setActualSetOfColors(ColorsSets.SET_OF_COLORS_OCEAN);
+            styleConstants.setActualSetOfColors(styleConstants.getSET_OF_COLORS_OCEAN());
             refreshPanels(centralPanel);
             centralPanel.repaint();
 
-            menuBar.setBackground(ColorsSets.ACTUAL_SET_OF_COLORS.get(5));
-            setMenuBarColors(ColorsSets.ACTUAL_SET_OF_COLORS.get(2), ColorsSets.ACTUAL_SET_OF_COLORS.get(4));
+            menuBar.setBackground(styleConstants.getACTUAL_SET_OF_COLORS().get(5));
+            setMenuBarColors(styleConstants.getACTUAL_SET_OF_COLORS().get(2), styleConstants.getACTUAL_SET_OF_COLORS().get(4));
+//            treeForGradePanel.setCellRenderer(new CustomTreeCellRenderer());
+//            treeForPupilsPanel.setCellRenderer(new CustomTreeCellRenderer());
 
         }
         if (e.getSource() == changeAdmissionItem) {
@@ -484,14 +496,14 @@ public class MyMenuBar implements ActionListener {
                     .concat(dataList.getLoginInfo().get(Main.CURRENT_USER).getPermissions().toString()));
         }
         if (e.getSource() == usersItem) {
-            new EditUsers(parentFrame, dataList, currentStatusField);
+            new EditUsers(parentFrame, dataList, currentStatusField, styleConstants);
         }
     }
 
     private void refreshMenu(Container container) {
         for (Component component : container.getComponents()) {
             if (component instanceof JMenuItem) {
-                component.setBackground(ColorsSets.ACTUAL_SET_OF_COLORS.get(4));
+                component.setBackground(styleConstants.getACTUAL_SET_OF_COLORS().get(4));
             }
             if (component instanceof Container) {
                 refreshMenu((Container) component);
@@ -500,6 +512,7 @@ public class MyMenuBar implements ActionListener {
     }
 
     public void setMenuBarColors(Color foreground, Color background) {
+        menuBar.setForeground(foreground);
         fileMenu.setForeground(foreground);
         styleMenu.setForeground(foreground);
         informationMenu.setForeground(foreground);
@@ -508,11 +521,15 @@ public class MyMenuBar implements ActionListener {
         newDatabaseItem.setForeground(foreground);
         openFileItem.setForeground(foreground);
         saveFileItem.setForeground(foreground);
+        saveAsFileItem.setForeground(foreground);
         exitItem.setForeground(foreground);
         usersItem.setForeground(foreground);
         ocean.setForeground(foreground);
         changeAdmissionItem.setForeground(foreground);
         informationItem.setForeground(foreground);
+        contrast.setForeground(foreground);
+
+        menuBar.setBackground(background);
 
         fileMenu.setBackground(background);
         styleMenu.setBackground(background);
@@ -522,11 +539,13 @@ public class MyMenuBar implements ActionListener {
         newDatabaseItem.setBackground(background);
         openFileItem.setBackground(background);
         saveFileItem.setBackground(background);
+        saveAsFileItem.setBackground(background);
         exitItem.setBackground(background);
         usersItem.setBackground(background);
         ocean.setBackground(background);
         changeAdmissionItem.setBackground(background);
         informationItem.setBackground(background);
+        contrast.setBackground(background);
     }
 
     public JMenuBar getMenuBar() {
@@ -536,25 +555,35 @@ public class MyMenuBar implements ActionListener {
     public void refreshPanels(Container container) {
         for (Component component : container.getComponents()) {
             if (component instanceof JButton) {
-                component.setBackground(ColorsSets.ACTUAL_SET_OF_COLORS.get(5));
-                component.setForeground(ColorsSets.ACTUAL_SET_OF_COLORS.get(2));
+                component.setBackground(styleConstants.getACTUAL_SET_OF_COLORS().get(5));
+                component.setForeground(styleConstants.getACTUAL_SET_OF_COLORS().get(2));
                 if (Objects.equals(((JButton) component).getText(), "DELETE PUPIL")) {
-                    component.setBackground(ColorsSets.ACTUAL_SET_OF_COLORS.get(2));
-                    component.setForeground(ColorsSets.ACTUAL_SET_OF_COLORS.get(7));
+                    component.setBackground(styleConstants.getACTUAL_SET_OF_COLORS().get(8));
+                    component.setForeground(styleConstants.getACTUAL_SET_OF_COLORS().get(5));
                 }
                 if (Objects.equals(((JButton) component).getText(), "Add new pupil")) {
-                    component.setBackground(ColorsSets.ACTUAL_SET_OF_COLORS.get(2));
-                    component.setForeground(ColorsSets.ACTUAL_SET_OF_COLORS.get(8));
+                    component.setBackground(styleConstants.getACTUAL_SET_OF_COLORS().get(8));
+                    component.setForeground(styleConstants.getACTUAL_SET_OF_COLORS().get(3));
+                }
+                if (!Objects.equals(((JButton) component).getText(), "Add new pupil")) {
+                    ((JButton) component).setBorder(BorderFactory.createLineBorder
+                            (styleConstants.getACTUAL_SET_OF_COLORS().get(0), 3));
                 }
             }
             if (component instanceof JLabel || component instanceof JTextField ||
                     component instanceof JPanel || component instanceof JScrollPane ||
                     component instanceof JRadioButton || component instanceof JTree) {
-                component.setBackground(ColorsSets.ACTUAL_SET_OF_COLORS.get(0));
+                component.setBackground(styleConstants.getACTUAL_SET_OF_COLORS().get(0));
+                component.setForeground(styleConstants.getACTUAL_SET_OF_COLORS().get(2));
             }
             if (component instanceof Container) {
                 refreshPanels((Container) component);
             }
+            currentStatusField.setForeground(styleConstants.getACTUAL_SET_OF_COLORS().get(0));
+            currentStatusField.setBackground(styleConstants.getACTUAL_SET_OF_COLORS().get(5));
+            setMenuBarColors(styleConstants.getACTUAL_SET_OF_COLORS().get(2),
+                    styleConstants.getACTUAL_SET_OF_COLORS().get(5));
+
         }
     }
 

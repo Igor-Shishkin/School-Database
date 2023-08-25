@@ -1,6 +1,6 @@
 package GUI;
 
-import GUI.styleStorage.ColorsSets;
+import GUI.styleStorage.ConstantsOfStyle;
 import database.PupilsDataList;
 
 import javax.swing.*;
@@ -9,14 +9,14 @@ import javax.swing.border.SoftBevelBorder;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeModel;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
+import java.awt.event.*;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Objects;
 
 
 public class MainWindow extends JFrame implements ActionListener {
@@ -26,20 +26,23 @@ public class MainWindow extends JFrame implements ActionListener {
     private JTextField currentStatusField;
     private final Border border;
     private final JPanel downPanel;
+    ConstantsOfStyle styleConstants;
+    MyMenuBar myMenuBar;
 
 //    private String id;
 //    HashMap<String,User> loginInfo;
 
 
-    MainWindow(PupilsDataList dataList) throws IOException, FontFormatException {
+    public MainWindow(PupilsDataList dataList, ConstantsOfStyle styleConstants) throws IOException, FontFormatException {
+        this.styleConstants = styleConstants;
 //        this.id = id;
 //        this.loginInfo = loginInfo;
-        setColorsSet();
-        setActualSetOfColors(ColorsSets.SET_OF_COLORS_OCEAN);
+//        ColorsSets.setColors();
+//        ColorsSets.setActualSetOfColors(ColorsSets.SET_OF_COLORS_OCEAN);
 
-
-        border = BorderFactory.createSoftBevelBorder(SoftBevelBorder.RAISED, ColorsSets.ACTUAL_SET_OF_COLORS.get(0),
-                ColorsSets.ACTUAL_SET_OF_COLORS.get(4));
+        border = BorderFactory.createSoftBevelBorder
+                (SoftBevelBorder.RAISED, styleConstants.getACTUAL_SET_OF_COLORS().get(0),
+                        styleConstants.getACTUAL_SET_OF_COLORS().get(4));
 
 //        JPanel topPanel = new JPanel();
 //        topPanel.setPreferredSize(new Dimension(10, 5));
@@ -52,37 +55,40 @@ public class MainWindow extends JFrame implements ActionListener {
         DefaultTreeModel gradesTreeModel = new DefaultTreeModel(rootForGradePanel);
         JTree treeForGradePanel = new JTree(gradesTreeModel);
         JScrollPane paneForGradesTree = new JScrollPane(treeForGradePanel);
+
+        DefaultMutableTreeNode rootForPupilsTree = new DefaultMutableTreeNode("root");
+        DefaultTreeModel pupilsTreeModel = new DefaultTreeModel(rootForPupilsTree);
+        JTree treeForPupilsPanel = new JTree(pupilsTreeModel);
+
         paneForGradesTree.setVisible(false);
         JButton addPupilButton = new JButton("Add new pupil");
         addPupilButton.setVisible(false);
-        DefaultMutableTreeNode rootForPupilsTree = new DefaultMutableTreeNode("root");
-        DefaultTreeModel pupilsTreeModel = new DefaultTreeModel(rootForPupilsTree);
+
 
         ArrayList<DefaultMutableTreeNode> nodesForPupilsPanel = new ArrayList<>();
 
 
         JPanel centerPanel = new CentralPanel(this, currentStatusField, treeForGradePanel, rootForGradePanel,
                 gradesTreeModel, panelForFilterRadioButtons, addPupilButton, paneForGradesTree, dataList, pupilsTreeModel,
-                nodesForPupilsPanel, rootForPupilsTree);
-        MyMenuBar myMenuBar = new MyMenuBar(this, currentStatusField, treeForGradePanel, gradesTreeModel,
+                nodesForPupilsPanel, rootForPupilsTree, styleConstants, treeForPupilsPanel);
+        myMenuBar = new MyMenuBar(this, currentStatusField, treeForGradePanel, gradesTreeModel,
                 panelForFilterRadioButtons, addPupilButton, centerPanel, paneForGradesTree, dataList,
-                rootForPupilsTree, pupilsTreeModel, nodesForPupilsPanel);
+                rootForPupilsTree, pupilsTreeModel, nodesForPupilsPanel, styleConstants, treeForPupilsPanel);
 
+        refreshPanels(centerPanel);
+
+        setWindowCloseListener();
         this.setResizable(false);
         this.setLayout(new BorderLayout());
         this.setSize(1000, 700);
         this.setJMenuBar(myMenuBar.getMenuBar());
         this.add(centerPanel, BorderLayout.CENTER);
         this.add(downPanel, BorderLayout.SOUTH);
-        this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        this.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
         this.setLocationRelativeTo(null);
         this.setTitle("Nothing loaded");
         this.setVisible(true);
 
-    }
-
-    private void setColorsSet() {
-        ColorsSets.setColors();
     }
 
 
@@ -108,8 +114,6 @@ public class MainWindow extends JFrame implements ActionListener {
     public void setCurrentStatusPanel () {
         currentStatusField = new JTextField("Logged in. No data has been loaded at the moment.");
         currentStatusField.setPreferredSize(new Dimension(982, 25));
-        currentStatusField.setBackground(ColorsSets.ACTUAL_SET_OF_COLORS.get(2));
-        currentStatusField.setForeground(Color.DARK_GRAY);
         currentStatusField.setEditable(false);
         downPanel.setPreferredSize(new Dimension(10, 35));
         downPanel.setBorder(border);
@@ -118,8 +122,8 @@ public class MainWindow extends JFrame implements ActionListener {
     public void setStatusPanel() throws IOException, FontFormatException {
         currentStatusField = new JTextField("Logged in");
         currentStatusField.setBounds(2, 609, 977, 25);
-        currentStatusField.setBackground(ColorsSets.ACTUAL_SET_OF_COLORS.get(2));
-        currentStatusField.setForeground(ColorsSets.ACTUAL_SET_OF_COLORS.get(4));
+        currentStatusField.setBackground(styleConstants.getACTUAL_SET_OF_COLORS().get(2));
+        currentStatusField.setForeground(styleConstants.getACTUAL_SET_OF_COLORS().get(4));
         currentStatusField.setEditable(false);
 
         Path path = Paths.get("src", "main", "resources");
@@ -128,13 +132,51 @@ public class MainWindow extends JFrame implements ActionListener {
 
         currentStatusField.setFont(remRegular);
     }
-    public static void setActualSetOfColors(ArrayList<Color> listOfColors) {
-        for (int i = 0; i < 5; i++) {
-            ColorsSets.ACTUAL_SET_OF_COLORS.add(i, listOfColors.get(i));
+
+    public void refreshPanels(Container container) {
+        for (Component component : container.getComponents()) {
+            if (component instanceof JButton) {
+                component.setBackground(styleConstants.getACTUAL_SET_OF_COLORS().get(5));
+                component.setForeground(styleConstants.getACTUAL_SET_OF_COLORS().get(2));
+                if (Objects.equals(((JButton) component).getText(), "DELETE PUPIL")) {
+                    component.setBackground(styleConstants.getACTUAL_SET_OF_COLORS().get(8));
+                    component.setForeground(styleConstants.getACTUAL_SET_OF_COLORS().get(5));
+                }
+                if (Objects.equals(((JButton) component).getText(), "Add new pupil")) {
+                    component.setBackground(styleConstants.getACTUAL_SET_OF_COLORS().get(8));
+                    component.setForeground(styleConstants.getACTUAL_SET_OF_COLORS().get(3));
+                }
+            }
+            if (component instanceof JLabel || component instanceof JTextField ||
+                    component instanceof JPanel || component instanceof JScrollPane ||
+                    component instanceof JRadioButton || component instanceof JTree) {
+                component.setBackground(styleConstants.getACTUAL_SET_OF_COLORS().get(0));
+                component.setForeground(styleConstants.getACTUAL_SET_OF_COLORS().get(2));
+            }
+            if (component instanceof Container) {
+                refreshPanels((Container) component);
+            }
+            currentStatusField.setForeground(styleConstants.getACTUAL_SET_OF_COLORS().get(0));
+            currentStatusField.setBackground(styleConstants.getACTUAL_SET_OF_COLORS().get(5));
+            myMenuBar.setMenuBarColors(styleConstants.getACTUAL_SET_OF_COLORS().get(2),
+                    styleConstants.getACTUAL_SET_OF_COLORS().get(5));
         }
     }
+    private void setWindowCloseListener() {
+        WindowListener windowListener = new WindowAdapter() {
+            @Override
+            public void windowClosing(WindowEvent e) {
+                int option = JOptionPane.showConfirmDialog(
+                        null, "Do you want to exit without saving?", "Confirm Exit",
+                        JOptionPane.YES_NO_OPTION);
 
-
+                if (option == JOptionPane.YES_OPTION) {
+                    dispose();
+                }
+            }
+        };
+        this.addWindowListener(windowListener);
+    }
 
 
 }

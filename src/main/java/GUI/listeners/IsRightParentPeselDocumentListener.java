@@ -11,10 +11,13 @@ import java.util.regex.Pattern;
 public class IsRightParentPeselDocumentListener implements DocumentListener {
     JTextField peselField;
     JComboBox genderComboBox;
+    ConstantsOfStyle styleConstants;
 
-    public IsRightParentPeselDocumentListener(JTextField peselField, JComboBox genderComboBox) {
+    public IsRightParentPeselDocumentListener(JTextField peselField, JComboBox genderComboBox,
+                                              ConstantsOfStyle styleConstants) {
         this.peselField = peselField;
         this.genderComboBox = genderComboBox;
+        this.styleConstants = styleConstants;
     }
 
     @Override
@@ -42,11 +45,11 @@ public class IsRightParentPeselDocumentListener implements DocumentListener {
             Pattern peselPattern = Pattern.compile(regex);
             Matcher matcher = peselPattern.matcher(peselField.getText().trim());
             peselField.setBackground((matcher.matches())
-                    ? ConstantsOfStyle.COLOR_FOR_RIGHT_FORMAT : ConstantsOfStyle.COLOR_FOR_WRONG_FORMAT);
+                    ? styleConstants.getCOLOR_FOR_RIGHT_FORMAT() : styleConstants.getCOLOR_FOR_WRONG_FORMAT());
         } else if (peselField.getText().length() > 11) {
-            peselField.setBackground(ConstantsOfStyle.COLOR_FOR_WRONG_FORMAT);
+            peselField.setBackground(styleConstants.getCOLOR_FOR_WRONG_FORMAT());
         } else {
-            peselField.setBackground(ConstantsOfStyle.COLOR_NEUTRAL_FORMAT);
+            peselField.setBackground(styleConstants.getCOLOR_NEUTRAL_FORMAT());
         }
     }
 }

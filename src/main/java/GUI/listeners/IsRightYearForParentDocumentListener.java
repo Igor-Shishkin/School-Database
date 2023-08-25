@@ -13,14 +13,17 @@ import java.util.Objects;
 public class IsRightYearForParentDocumentListener implements DocumentListener {
     JTextField yearTextField, monthTextField, dayTextField, peselTextField;
     JComboBox<String> comboBox;
+    ConstantsOfStyle styleConstants;
 
     public IsRightYearForParentDocumentListener(JTextField yearTextField, JTextField monthTextField, JTextField dayTextField,
-                                       JTextField peselTextField, JComboBox<String> comboBox) {
+                                       JTextField peselTextField, JComboBox<String> comboBox,
+                                                ConstantsOfStyle styleConstants) {
         this.yearTextField = yearTextField;
         this.monthTextField = monthTextField;
         this.dayTextField = dayTextField;
         this.peselTextField = peselTextField;
         this.comboBox = comboBox;
+        this.styleConstants = styleConstants;
     }
 
     @Override
@@ -44,33 +47,33 @@ public class IsRightYearForParentDocumentListener implements DocumentListener {
             try {
                 int yearNumber = Integer.parseInt(this.yearTextField.getText().trim());
                     if (yearNumber > LocalDate.now().getYear() - 100 && yearNumber <= LocalDate.now().getYear() - 18) {
-                        yearTextField.setBackground(ConstantsOfStyle.COLOR_FOR_RIGHT_FORMAT);
+                        yearTextField.setBackground(styleConstants.getCOLOR_FOR_RIGHT_FORMAT());
                     } else {
-                        yearTextField.setBackground(ConstantsOfStyle.COLOR_FOR_WRONG_FORMAT);
+                        yearTextField.setBackground(styleConstants.getCOLOR_FOR_WRONG_FORMAT());
                     }
             } catch (NumberFormatException ex) {
-                yearTextField.setBackground(ConstantsOfStyle.COLOR_FOR_WRONG_FORMAT);
+                yearTextField.setBackground(styleConstants.getCOLOR_FOR_WRONG_FORMAT());
             }
         }
-        if (yearTextField.getBackground()==ConstantsOfStyle.COLOR_FOR_RIGHT_FORMAT &&
-                monthTextField.getBackground()==ConstantsOfStyle.COLOR_FOR_RIGHT_FORMAT &&
-                dayTextField.getBackground()==ConstantsOfStyle.COLOR_FOR_RIGHT_FORMAT) {
+        if (yearTextField.getBackground()==styleConstants.getCOLOR_FOR_RIGHT_FORMAT() &&
+                monthTextField.getBackground()==styleConstants.getCOLOR_FOR_RIGHT_FORMAT() &&
+                dayTextField.getBackground()==styleConstants.getCOLOR_FOR_RIGHT_FORMAT()) {
             try {
                 LocalDate.of(Integer.parseInt(yearTextField.getText().trim()),
                         Integer.parseInt(monthTextField.getText().trim()),
                         Integer.parseInt(dayTextField.getText().trim()));
             } catch (DateTimeException e) {
-                yearTextField.setBackground(ConstantsOfStyle.COLOR_FOR_WRONG_FORMAT);
-                monthTextField.setBackground(ConstantsOfStyle.COLOR_FOR_WRONG_FORMAT);
-                dayTextField.setBackground(ConstantsOfStyle.COLOR_FOR_WRONG_FORMAT);
+                yearTextField.setBackground(styleConstants.getCOLOR_FOR_WRONG_FORMAT());
+                monthTextField.setBackground(styleConstants.getCOLOR_FOR_WRONG_FORMAT());
+                dayTextField.setBackground(styleConstants.getCOLOR_FOR_WRONG_FORMAT());
             }
         }
 
         if (peselTextField.getText().length() == 11) {
-            if (Objects.equals(yearTextField.getBackground(), ConstantsOfStyle.COLOR_FOR_RIGHT_FORMAT) &&
-                    Objects.equals(yearTextField.getBackground(), ConstantsOfStyle.COLOR_FOR_RIGHT_FORMAT) &&
-                    Objects.equals(monthTextField.getBackground(), ConstantsOfStyle.COLOR_FOR_RIGHT_FORMAT) &&
-                    Objects.equals(dayTextField.getBackground(), ConstantsOfStyle.COLOR_FOR_RIGHT_FORMAT) &&
+            if (Objects.equals(yearTextField.getBackground(), styleConstants.getCOLOR_FOR_RIGHT_FORMAT()) &&
+                    Objects.equals(yearTextField.getBackground(), styleConstants.getCOLOR_FOR_RIGHT_FORMAT()) &&
+                    Objects.equals(monthTextField.getBackground(), styleConstants.getCOLOR_FOR_RIGHT_FORMAT()) &&
+                    Objects.equals(dayTextField.getBackground(), styleConstants.getCOLOR_FOR_RIGHT_FORMAT()) &&
                     !Objects.equals(comboBox.getSelectedItem(), "")) {
                 int yearNumber = Integer.parseInt(yearTextField.getText().trim());
                 int monthNumber = Integer.parseInt(monthTextField.getText().trim());
@@ -99,12 +102,12 @@ public class IsRightYearForParentDocumentListener implements DocumentListener {
                                                 pesel.charAt(9) == '8')
                         )
                 ) {
-                    peselTextField.setBackground(ConstantsOfStyle.COLOR_FOR_RIGHT_FORMAT);
+                    peselTextField.setBackground(styleConstants.getCOLOR_FOR_RIGHT_FORMAT());
                 } else {
-                    peselTextField.setBackground(ConstantsOfStyle.COLOR_FOR_WRONG_FORMAT);
+                    peselTextField.setBackground(styleConstants.getCOLOR_FOR_WRONG_FORMAT());
                 }
             } else {
-                peselTextField.setBackground(ConstantsOfStyle.COLOR_NEUTRAL_FORMAT);
+                peselTextField.setBackground(styleConstants.getCOLOR_NEUTRAL_FORMAT());
             }
         }
     }

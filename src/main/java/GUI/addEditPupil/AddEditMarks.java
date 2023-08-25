@@ -32,9 +32,11 @@ public class AddEditMarks extends JDialog implements ActionListener {
     JButton addButton, cancelButton;
     JTextField currentStatusField;
     boolean isNewPupil;
+    ConstantsOfStyle styleConstants;
 
     public AddEditMarks(JFrame parentFrame, Marks marks, Boolean awardBar, Boolean promotion, int grade,
-                        JTextField currentStatusField, boolean isNewPupil) throws IOException {
+                        JTextField currentStatusField, boolean isNewPupil, ConstantsOfStyle styleConstants)
+                        throws IOException {
         super(parentFrame, "Marks", true);
         this.marks = marks;
         this.grade = grade;
@@ -42,6 +44,7 @@ public class AddEditMarks extends JDialog implements ActionListener {
         this.awardBar = awardBar;
         this.currentStatusField = currentStatusField;
         this.isNewPupil = isNewPupil;
+        this.styleConstants = styleConstants;
 
         this.setLayout(new BorderLayout());
 
@@ -49,8 +52,8 @@ public class AddEditMarks extends JDialog implements ActionListener {
             marks = new Marks();
         }
 
-        font = ConstantsOfStyle.THE_MAIN_FONT.deriveFont(Font.PLAIN, 19);
-        fontForAverage = ConstantsOfStyle.THE_MAIN_FONT.deriveFont(Font.BOLD, 20);
+        font = styleConstants.getTHE_MAIN_FONT().deriveFont(Font.PLAIN, 19);
+        fontForAverage = styleConstants.getTHE_MAIN_FONT().deriveFont(Font.BOLD, 20);
 
         setWindowCloseListener();
         setPanels();
@@ -65,6 +68,7 @@ public class AddEditMarks extends JDialog implements ActionListener {
         setFontForComponents(this, font);
         setHorizontalAlignment(this);
         promotionLabel.setHorizontalAlignment(SwingConstants.CENTER);
+        setStyleForWindow(this);
 
         this.setResizable(false);
         this.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
@@ -76,7 +80,7 @@ public class AddEditMarks extends JDialog implements ActionListener {
 
     private void setPanels() {
         promotionLayeredPane = new JLayeredPane();
-        promotionLayeredPane.setBorder(BorderFactory.createLoweredBevelBorder());
+        promotionLayeredPane.setBorder(BorderFactory.createSoftBevelBorder(0, Color.GRAY, Color.DARK_GRAY));
         flagLabel = new JLabel();
 //        try {
 //            BufferedImage flagImage = ImageIO.read
@@ -85,17 +89,18 @@ public class AddEditMarks extends JDialog implements ActionListener {
 //        } catch (Exception e) {
 //            e.printStackTrace();
 //        };
-        flagLabel.setIcon(new ImageIcon(ConstantsOfStyle.FLAG_IMAGE));
-        flagLabel.setBounds(0,0,500,50);
+        flagLabel.setIcon(new ImageIcon(styleConstants.getFLAG_IMAGE()));
+        flagLabel.setBounds(0,0,500,60);
         flagLabel.setVisible(awardBar);
+        flagLabel.setBorder(BorderFactory.createSoftBevelBorder(0, Color.GRAY, Color.DARK_GRAY));;
         promotionLayeredPane.add(flagLabel);
         promotionLabel = new JLabel("<html>The pupil has been promoted" +
                 "<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;to the next class</html>");
         promotionLabel.setOpaque(false);
-        promotionLabel.setBounds(0,0,400,50);
+        promotionLabel.setBounds(0,0,400,60);
         promotionLayeredPane.add(promotionLabel,
                 Integer.valueOf(1));
-        promotionLayeredPane.setPreferredSize(new Dimension(10,50));
+        promotionLayeredPane.setPreferredSize(new Dimension(10,60));
         promotionLayeredPane.setVisible(promotionToNextGrade);
 
         addComponentsOfPanels();
@@ -149,7 +154,7 @@ public class AddEditMarks extends JDialog implements ActionListener {
                 int quantityEntered = 0;
                 for (int j = i; j < QUANTITY_OF_MARK_COMBOBOX-4; j+=4) {
                     markComboBox[j].setBackground(
-                            (markComboBox[j].getSelectedItem()!=null)? ConstantsOfStyle.COLOR_FOR_RIGHT_FORMAT:
+                            (markComboBox[j].getSelectedItem()!=null)? styleConstants.getCOLOR_FOR_RIGHT_FORMAT():
                             this.getBackground());
                     if (markComboBox[j].getSelectedItem()==null || !markComboBox[j].isEnabled()) {
                         isAllMarksInColumn = false;
@@ -161,14 +166,14 @@ public class AddEditMarks extends JDialog implements ActionListener {
                             (quantityEntered!=0&&sum!=0)?sum/quantityEntered:0f));
                     averageScoreLabel[i].setBackground((isAllMarksInColumn &&
                             markComboBox[QUANTITY_OF_MARK_COMBOBOX-7+(i)].getSelectedIndex()!=-1)
-                            ? ConstantsOfStyle.COLOR_FOR_RIGHT_FORMAT : this.getBackground());
+                            ? styleConstants.getCOLOR_FOR_RIGHT_FORMAT() : this.getBackground());
                 }
 
             }
             for (int j = QUANTITY_OF_MARK_COMBOBOX-4; j < QUANTITY_OF_MARK_COMBOBOX; j++) {
                 markComboBox[j].setBackground(
-                        (markComboBox[j].getSelectedItem()!=null)? ConstantsOfStyle.COLOR_FOR_RIGHT_FORMAT:
-                                this.getBackground());
+                        (markComboBox[j].getSelectedItem()!=null)? styleConstants.getCOLOR_FOR_RIGHT_FORMAT()
+                                : this.getBackground());
             }
         }
 
@@ -199,7 +204,7 @@ public class AddEditMarks extends JDialog implements ActionListener {
     private void setActionListenerForBackGroundOfCombobox() {
         for (int i = 0; i < QUANTITY_OF_MARK_COMBOBOX; i++) {
             markComboBox[i].addActionListener(new MarkComboBoxListener(markComboBox, i, QUANTITY_OF_MARK_COMBOBOX,
-                    averageScoreLabel, this.getBackground(), promotionLayeredPane, flagLabel));
+                    averageScoreLabel, this.getBackground(), promotionLayeredPane, flagLabel, styleConstants));
         }
     }
 
@@ -321,6 +326,23 @@ public class AddEditMarks extends JDialog implements ActionListener {
 
             dispose();
 
+        }
+    }
+    private void setStyleForWindow(Container container) {
+        for (Component component : container.getComponents()) {
+            if (component instanceof JButton) {
+                component.setBackground(styleConstants.getACTUAL_SET_OF_COLORS().get(5));
+                component.setForeground(styleConstants.getACTUAL_SET_OF_COLORS().get(2));
+            }
+            if (component instanceof JLabel || component instanceof JPanel) {
+                component.setBackground(styleConstants.getACTUAL_SET_OF_COLORS().get(0));
+            }
+            if (component instanceof JComboBox) {
+                component.setForeground(styleConstants.getACTUAL_SET_OF_COLORS().get(2));
+            }
+            if (component instanceof Container) {
+                setStyleForWindow((Container) component);
+            }
         }
     }
 }

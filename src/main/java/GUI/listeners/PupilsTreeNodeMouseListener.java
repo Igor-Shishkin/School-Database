@@ -2,7 +2,7 @@ package GUI.listeners;
 
 import GUI.CentralPanel;
 import GUI.Main;
-import GUI.Permissions;
+import database.Permissions;
 import database.PupilsDataList;
 
 import javax.swing.*;

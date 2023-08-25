@@ -13,11 +13,14 @@ public class AddEditAchievement extends JDialog implements ActionListener {
     JButton addButton, cancelButton;
     JTextArea textArea;
     JTextField currentStatusField;
+    ConstantsOfStyle styleConstants;
 
 
-    public AddEditAchievement(JFrame parentFrame, String achievements, JTextField currentStatusField) {
+    public AddEditAchievement(JFrame parentFrame, String achievements, JTextField currentStatusField,
+                              ConstantsOfStyle styleConstants) {
         super(parentFrame, "Achievement", true);
         this.currentStatusField = currentStatusField;
+        this.styleConstants = styleConstants;
 
         this.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
         this.setLayout(new GridBagLayout());
@@ -28,7 +31,7 @@ public class AddEditAchievement extends JDialog implements ActionListener {
         textArea = new JTextArea(achievements);
         textArea.setLineWrap(true);
         textArea.setWrapStyleWord(true);
-        textArea.setFont(ConstantsOfStyle.THE_MAIN_FONT.deriveFont(Font.PLAIN,18));
+        textArea.setFont(styleConstants.getTHE_MAIN_FONT().deriveFont(Font.PLAIN,18));
 
         addButton = new JButton("OK");
         cancelButton = new JButton("Cancel");
@@ -64,6 +67,8 @@ public class AddEditAchievement extends JDialog implements ActionListener {
 
         addButton.addActionListener(this);
         cancelButton.addActionListener(this);
+
+        setStyleForWindow(this);
         this.pack();
         this.setLocationRelativeTo(null);
         this.setResizable(false);
@@ -87,6 +92,20 @@ public class AddEditAchievement extends JDialog implements ActionListener {
         if (e.getSource()==cancelButton){
             dispose();
 
+        }
+    }
+    private void setStyleForWindow(Container container) {
+        for (Component component : container.getComponents()) {
+            if (component instanceof JButton) {
+                component.setBackground(styleConstants.getACTUAL_SET_OF_COLORS().get(0));
+                component.setForeground(styleConstants.getACTUAL_SET_OF_COLORS().get(2));
+            }
+            if (component instanceof JLabel || component instanceof JPanel) {
+                component.setBackground(styleConstants.getACTUAL_SET_OF_COLORS().get(5));
+            }
+            if (component instanceof Container) {
+                setStyleForWindow((Container) component);
+            }
         }
     }
 }

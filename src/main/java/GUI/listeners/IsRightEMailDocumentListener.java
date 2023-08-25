@@ -10,9 +10,11 @@ import java.util.regex.Pattern;
 
 public class IsRightEMailDocumentListener implements DocumentListener {
     JTextField eMailField;
+    ConstantsOfStyle styleConstants;
 
-    public IsRightEMailDocumentListener(JTextField eMailField) {
+    public IsRightEMailDocumentListener(JTextField eMailField, ConstantsOfStyle styleConstants) {
         this.eMailField = eMailField;
+        this.styleConstants = styleConstants;
     }
 
     @Override
@@ -34,6 +36,6 @@ public class IsRightEMailDocumentListener implements DocumentListener {
         Pattern eMailPattern = Pattern.compile(regex);
         Matcher matcher = eMailPattern.matcher(eMailField.getText().trim());
         eMailField.setBackground((matcher.matches())
-                ? ConstantsOfStyle.COLOR_FOR_RIGHT_FORMAT : ConstantsOfStyle.COLOR_FOR_WRONG_FORMAT);
+                ? styleConstants.getCOLOR_FOR_RIGHT_FORMAT() : styleConstants.getCOLOR_FOR_WRONG_FORMAT());
     }
 }

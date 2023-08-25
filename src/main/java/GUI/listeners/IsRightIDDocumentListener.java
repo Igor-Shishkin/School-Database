@@ -10,11 +10,13 @@ import javax.swing.event.DocumentListener;
 public class IsRightIDDocumentListener implements DocumentListener {
     JTextField idField;
     PupilsDataList dataList;
+    ConstantsOfStyle styleConstants;
 
-    public IsRightIDDocumentListener(JTextField idField, PupilsDataList dataList) {
+    public IsRightIDDocumentListener(JTextField idField, PupilsDataList dataList, ConstantsOfStyle styleConstants) {
 
         this.idField = idField;
         this.dataList = dataList;
+        this.styleConstants = styleConstants;
     }
 
     @Override
@@ -37,18 +39,18 @@ public class IsRightIDDocumentListener implements DocumentListener {
                 int id = Integer.parseInt(idField.getText().trim());
                 if (id > 0 && id < 1000) {
                     if (dataList.isNotThereID(id)) {
-                        idField.setBackground(ConstantsOfStyle.COLOR_FOR_RIGHT_FORMAT);
+                        idField.setBackground(styleConstants.getCOLOR_FOR_RIGHT_FORMAT());
                     } else {
-                        idField.setBackground(ConstantsOfStyle.COLOR_FOR_WRONG_FORMAT);
+                        idField.setBackground(styleConstants.getCOLOR_FOR_WRONG_FORMAT());
                     }
                 } else {
-                    idField.setBackground(ConstantsOfStyle.COLOR_FOR_WRONG_FORMAT);
+                    idField.setBackground(styleConstants.getCOLOR_FOR_WRONG_FORMAT());
                 }
             } catch ( NumberFormatException e) {
-                idField.setBackground(ConstantsOfStyle.COLOR_FOR_WRONG_FORMAT);
+                idField.setBackground(styleConstants.getCOLOR_FOR_WRONG_FORMAT());
             }
         }   else {
-            idField.setBackground(ConstantsOfStyle.COLOR_NEUTRAL_FORMAT);
+            idField.setBackground(styleConstants.getCOLOR_NEUTRAL_FORMAT());
         }
     }
 }

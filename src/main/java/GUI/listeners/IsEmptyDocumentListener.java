@@ -8,9 +8,11 @@ import javax.swing.event.DocumentListener;
 
 public class IsEmptyDocumentListener implements DocumentListener {
     JTextField textField;
+    ConstantsOfStyle styleConstants;
 
-    public IsEmptyDocumentListener(JTextField textField) {
+    public IsEmptyDocumentListener(JTextField textField, ConstantsOfStyle styleConstants) {
         this.textField = textField;
+        this.styleConstants = styleConstants;
     }
 
     @Override
@@ -30,9 +32,9 @@ public class IsEmptyDocumentListener implements DocumentListener {
     private void isEmpty(){
         String text = textField.getText().replaceAll("\\s+", "");
         if (text.isEmpty()) {
-            textField.setBackground(ConstantsOfStyle.COLOR_FOR_WRONG_FORMAT);
+            textField.setBackground(styleConstants.getCOLOR_FOR_WRONG_FORMAT());
         } else {
-            textField.setBackground(ConstantsOfStyle.COLOR_FOR_RIGHT_FORMAT);
+            textField.setBackground(styleConstants.getCOLOR_FOR_RIGHT_FORMAT());
         }
     }
 

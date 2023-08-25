@@ -34,10 +34,12 @@ public class AddEditParent extends JDialog implements ActionListener {
     JCheckBox setAddressCheckBox;
     Parent parent;
     boolean newParent = false, isNewPupil;
+    ConstantsOfStyle styleConstants;
 
 
     public AddEditParent(JFrame parentFrame, Parent parent, String country, String province, String town, String street,
-                         String house, String local, String postCode, JTextField currentStatusField, boolean isNewPupil)
+                         String house, String local, String postCode, JTextField currentStatusField, boolean isNewPupil,
+                         ConstantsOfStyle styleConstants)
             throws IOException, FontFormatException {
         super(parentFrame, "Parent's data", true); // Make it modal
         setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
@@ -52,26 +54,26 @@ public class AddEditParent extends JDialog implements ActionListener {
         this.parentFrame = parentFrame;
         this.currentStatusField = currentStatusField;
         this.isNewPupil = isNewPupil;
+        this.styleConstants = styleConstants;
 
         if (this.parent == null) {
             newParent = true;
             this.parent = new Parent();
         }
-        font = ConstantsOfStyle.THE_MAIN_FONT.deriveFont(Font.PLAIN, 19);
+        font = styleConstants.getTHE_MAIN_FONT().deriveFont(Font.PLAIN, 19);
 
         this.setLayout(new GridBagLayout());
         this.setFont(font);
 
         setItemsToFrame();
         setFontForComponents(this, font);
-        setStyleForWindow();
 
         setDateToJFields();
         setBackgroundForItems();
 
         setListener();
 
-
+        setStyleForWindow(this);
 //        this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         this.setBackground(Color.red);
         this.pack();
@@ -82,24 +84,25 @@ public class AddEditParent extends JDialog implements ActionListener {
     }
 
     private void setBackgroundForItems() {
+        setTextFieldsStyle(this);
         if (newParent) {
-            nameField.setBackground(ConstantsOfStyle.COLOR_FOR_WRONG_FORMAT);
-            surnameField.setBackground(ConstantsOfStyle.COLOR_FOR_WRONG_FORMAT);
-            telephoneField.setBackground(ConstantsOfStyle.COLOR_FOR_WRONG_FORMAT);
-            eMailField.setBackground(ConstantsOfStyle.COLOR_FOR_WRONG_FORMAT);
-            genderComboBox.setBackground(ConstantsOfStyle.COLOR_FOR_WRONG_FORMAT);
-            peselField.setBackground(ConstantsOfStyle.COLOR_FOR_WRONG_FORMAT);
+            nameField.setBackground(styleConstants.getCOLOR_FOR_WRONG_FORMAT());
+            surnameField.setBackground(styleConstants.getCOLOR_FOR_WRONG_FORMAT());
+            telephoneField.setBackground(styleConstants.getCOLOR_FOR_WRONG_FORMAT());
+            eMailField.setBackground(styleConstants.getCOLOR_FOR_WRONG_FORMAT());
+            genderComboBox.setBackground(styleConstants.getCOLOR_FOR_WRONG_FORMAT());
+            peselField.setBackground(styleConstants.getCOLOR_FOR_WRONG_FORMAT());
         } else {
             nameField.setBackground((nameField.getText().trim().equals(""))
-                    ? ConstantsOfStyle.COLOR_FOR_WRONG_FORMAT : ConstantsOfStyle.COLOR_FOR_RIGHT_FORMAT);
+                    ? styleConstants.getCOLOR_FOR_WRONG_FORMAT() : styleConstants.getCOLOR_FOR_RIGHT_FORMAT());
             surnameField.setBackground((surnameField.getText().trim().equals(""))
-                    ? ConstantsOfStyle.COLOR_FOR_WRONG_FORMAT : ConstantsOfStyle.COLOR_FOR_RIGHT_FORMAT);
+                    ? styleConstants.getCOLOR_FOR_WRONG_FORMAT() : styleConstants.getCOLOR_FOR_RIGHT_FORMAT());
             telephoneField.setBackground((telephoneField.getText().trim().equals(""))
-                    ? ConstantsOfStyle.COLOR_FOR_WRONG_FORMAT : ConstantsOfStyle.COLOR_FOR_RIGHT_FORMAT);
+                    ? styleConstants.getCOLOR_FOR_WRONG_FORMAT() : styleConstants.getCOLOR_FOR_RIGHT_FORMAT());
             eMailField.setBackground((eMailField.getText().trim().equals(""))
-                    ? ConstantsOfStyle.COLOR_FOR_WRONG_FORMAT : ConstantsOfStyle.COLOR_FOR_RIGHT_FORMAT);
+                    ? styleConstants.getCOLOR_FOR_WRONG_FORMAT() : styleConstants.getCOLOR_FOR_RIGHT_FORMAT());
             genderComboBox.setBackground((genderComboBox.getSelectedIndex() < 1)
-                    ? ConstantsOfStyle.COLOR_FOR_WRONG_FORMAT : ConstantsOfStyle.COLOR_FOR_RIGHT_FORMAT);
+                    ? styleConstants.getCOLOR_FOR_WRONG_FORMAT() : styleConstants.getCOLOR_FOR_RIGHT_FORMAT());
 
             String regex = "";
             if (genderComboBox.getSelectedIndex() == 1) {
@@ -110,7 +113,7 @@ public class AddEditParent extends JDialog implements ActionListener {
             Pattern peselPattern = Pattern.compile(regex);
             Matcher matcher = peselPattern.matcher(peselField.getText().trim());
             peselField.setBackground((matcher.matches())
-                    ? ConstantsOfStyle.COLOR_FOR_RIGHT_FORMAT : ConstantsOfStyle.COLOR_FOR_WRONG_FORMAT);
+                    ? styleConstants.getCOLOR_FOR_RIGHT_FORMAT() : styleConstants.getCOLOR_FOR_WRONG_FORMAT());
         }
     }
 
@@ -137,23 +140,24 @@ public class AddEditParent extends JDialog implements ActionListener {
     }
 
     private void setListener() {
-        peselField.getDocument().addDocumentListener(new IsRightParentPeselDocumentListener(peselField, genderComboBox));
-        genderComboBox.addActionListener(new GenderForParentComboBoxListener(peselField, genderComboBox));
-        houseField.getDocument().addDocumentListener(new CheckStreetAndLocalDocumentListener(houseField));
-        localField.getDocument().addDocumentListener(new CheckStreetAndLocalDocumentListener(localField));
-        nameField.getDocument().addDocumentListener(new IsEmptyDocumentListener(nameField));
-        surnameField.getDocument().addDocumentListener(new IsEmptyDocumentListener(surnameField));
+        peselField.getDocument().addDocumentListener(new IsRightParentPeselDocumentListener(peselField, genderComboBox,
+                styleConstants));
+        genderComboBox.addActionListener(new GenderForParentComboBoxListener(peselField, genderComboBox,
+                styleConstants));
+        houseField.getDocument().addDocumentListener(new CheckStreetAndLocalDocumentListener(houseField,
+                styleConstants));
+        localField.getDocument().addDocumentListener(new CheckStreetAndLocalDocumentListener(localField,
+                styleConstants));
+        nameField.getDocument().addDocumentListener(new IsEmptyDocumentListener(nameField, styleConstants));
+        surnameField.getDocument().addDocumentListener(new IsEmptyDocumentListener(surnameField, styleConstants));
         setAddressCheckBox.addActionListener(this);
-        eMailField.getDocument().addDocumentListener(new IsRightEMailDocumentListener(eMailField));
-        telephoneField.getDocument().addDocumentListener(new IsRightPhoneNumberDocumentListener(telephoneField));
+        eMailField.getDocument().addDocumentListener(new IsRightEMailDocumentListener(eMailField, styleConstants));
+        telephoneField.getDocument().addDocumentListener(new IsRightPhoneNumberDocumentListener(telephoneField,
+                styleConstants));
         addDataButton.addActionListener(this);
         cancelButton.addActionListener(this);
     }
 
-    private void setStyleForWindow() {
-        //this.setBackground(MainWindow.actualSetColor.get(1));
-
-    }
 
     private void setItemsToFrame() {
         nameLabel = new JLabel("*Name: ");
@@ -365,21 +369,21 @@ public class AddEditParent extends JDialog implements ActionListener {
                 setFontForComponents((Container) component, font);
             }
         }
-        setAddressCheckBox.setFont(ConstantsOfStyle.THE_MAIN_FONT.deriveFont(Font.PLAIN, 15));
+        setAddressCheckBox.setFont(styleConstants.getTHE_MAIN_FONT().deriveFont(Font.PLAIN, 15));
     }
 
     @Override
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() == addDataButton) {
-            if (nameField.getBackground() == ConstantsOfStyle.COLOR_FOR_RIGHT_FORMAT &&
-                    surnameField.getBackground() == ConstantsOfStyle.COLOR_FOR_RIGHT_FORMAT &&
-                    telephoneField.getBackground() == ConstantsOfStyle.COLOR_FOR_RIGHT_FORMAT &&
-                    eMailField.getBackground() == ConstantsOfStyle.COLOR_FOR_RIGHT_FORMAT &&
-                    genderComboBox.getBackground() == ConstantsOfStyle.COLOR_FOR_RIGHT_FORMAT &&
-                    peselField.getBackground() == ConstantsOfStyle.COLOR_FOR_RIGHT_FORMAT &&
-                    nameField.getBackground() == ConstantsOfStyle.COLOR_FOR_RIGHT_FORMAT &&
-                    localField.getBackground() != ConstantsOfStyle.COLOR_FOR_WRONG_FORMAT &&
-                    houseField.getBackground() != ConstantsOfStyle.COLOR_FOR_WRONG_FORMAT
+            if (nameField.getBackground() == styleConstants.getCOLOR_FOR_RIGHT_FORMAT() &&
+                    surnameField.getBackground() == styleConstants.getCOLOR_FOR_RIGHT_FORMAT() &&
+                    telephoneField.getBackground() == styleConstants.getCOLOR_FOR_RIGHT_FORMAT() &&
+                    eMailField.getBackground() == styleConstants.getCOLOR_FOR_RIGHT_FORMAT() &&
+                    genderComboBox.getBackground() == styleConstants.getCOLOR_FOR_RIGHT_FORMAT() &&
+                    peselField.getBackground() == styleConstants.getCOLOR_FOR_RIGHT_FORMAT() &&
+                    nameField.getBackground() == styleConstants.getCOLOR_FOR_RIGHT_FORMAT() &&
+                    localField.getBackground() != styleConstants.getCOLOR_FOR_WRONG_FORMAT() &&
+                    houseField.getBackground() != styleConstants.getCOLOR_FOR_WRONG_FORMAT()
             ) {
                 String secondName = (secondNameField.getText().trim().equals("")) ? null : secondNameField.getText().trim();
                 char gender = (Objects.equals(genderComboBox.getSelectedItem(), "Male")) ? 'M' : 'F';
@@ -442,6 +446,34 @@ public class AddEditParent extends JDialog implements ActionListener {
                 houseField.setEnabled(true);
                 localField.setEnabled(true);
                 postCodeField.setEnabled(true);
+            }
+        }
+    }
+    private void setStyleForWindow(Container container) {
+        for (Component component : container.getComponents()) {
+            if (component instanceof JButton) {
+                component.setBackground(styleConstants.getACTUAL_SET_OF_COLORS().get(5));
+                component.setForeground(styleConstants.getACTUAL_SET_OF_COLORS().get(2));
+            }
+            if (component instanceof JLabel || component instanceof JPanel) {
+                component.setBackground(styleConstants.getACTUAL_SET_OF_COLORS().get(10));
+            }
+//            if (component instanceof JTextField) {
+//                component.setForeground(styleConstants.getACTUAL_SET_OF_COLORS().get(2));
+//            }
+            if (component instanceof Container) {
+                setStyleForWindow((Container) component);
+            }
+        }
+    }
+    private void setTextFieldsStyle(Container container) {
+        for (Component component : container.getComponents()) {
+            if (component instanceof JTextField) {
+                component.setBackground(styleConstants.getACTUAL_SET_OF_COLORS().get(2));
+                component.setForeground(styleConstants.getACTUAL_SET_OF_COLORS().get(0));
+            }
+            if (component instanceof Container) {
+                setTextFieldsStyle((Container) component);
             }
         }
     }

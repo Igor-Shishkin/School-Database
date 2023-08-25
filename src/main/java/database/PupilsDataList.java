@@ -1,10 +1,7 @@
 package database;
 
-import GUI.User;
-
 import java.time.LocalDate;
 import java.util.*;
-import java.util.concurrent.RecursiveTask;
 import java.util.stream.Collectors;
 
 public class PupilsDataList {
@@ -27,9 +24,6 @@ public class PupilsDataList {
 
     public void setLoginInfo(HashMap<String, User> loginInfo) {
         this.loginInfo = loginInfo;
-    }
-    public void addUser(String name, User user) {
-        loginInfo.put(name, user);
     }
 
     public DataToFile getDataToFile() {
@@ -55,9 +49,6 @@ public class PupilsDataList {
         pupilsDataList.remove(pupil);
     }
 
-    public void removePupilFromList(int number) {
-        pupilsDataList.remove(number);
-    }
 
     public List<Pupil> getListOfPupilsOfCertainGrade(int grade) {
         if (pupilsDataList!=null) {

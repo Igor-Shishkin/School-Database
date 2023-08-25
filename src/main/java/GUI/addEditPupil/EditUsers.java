@@ -1,7 +1,7 @@
 package GUI.addEditPupil;
 
 import GUI.Main;
-import GUI.User;
+import database.User;
 import GUI.styleStorage.ConstantsOfStyle;
 import database.PupilsDataList;
 
@@ -24,18 +24,22 @@ public class EditUsers extends JDialog implements ActionListener {
     JFrame parentFrame;
     GridBagConstraints c;
     ButtonGroup buttonGroup;
+    ConstantsOfStyle styleConstants;
 
-    public EditUsers(JFrame parentFrame, PupilsDataList dataList, JTextField currentStatusField) {
+    public EditUsers(JFrame parentFrame, PupilsDataList dataList, JTextField currentStatusField,
+                     ConstantsOfStyle styleConstants) {
         super(parentFrame, "Achievement", true);
         this.currentStatusField = currentStatusField;
         this.dataList = dataList;
         this.parentFrame = parentFrame;
+        this.styleConstants = styleConstants;
 
         setComponentsToGeneralPanel();
 
         this.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
         this.setLayout(new GridLayout(1, 1, 0, 10));
         this.add(mainPanel);
+        setStyleForWindow(this);
         this.pack();
         this.setLocationRelativeTo(null);
         this.setResizable(false);
@@ -45,7 +49,7 @@ public class EditUsers extends JDialog implements ActionListener {
 
     private void setComponentsToGeneralPanel() {
         capitalLabel = new JLabel("User : PERMISSIONS");
-        capitalLabel.setFont(ConstantsOfStyle.THE_MAIN_FONT.deriveFont(Font.BOLD, 30));
+        capitalLabel.setFont(styleConstants.getTHE_MAIN_FONT().deriveFont(Font.BOLD, 30));
 
         loginInfo = dataList.getLoginInfo();
         listOfUsers = new ArrayList<>();
@@ -70,7 +74,7 @@ public class EditUsers extends JDialog implements ActionListener {
             if (rb.getText().substring(0, rb.getText().indexOf(" : ")).equals(Main.CURRENT_USER)) {
                 rb.setEnabled(false);
             }
-            rb.setFont(ConstantsOfStyle.THE_MAIN_FONT.deriveFont(Font.PLAIN, 23));
+            rb.setFont(styleConstants.getTHE_MAIN_FONT().deriveFont(Font.PLAIN, 23));
             usersPanel.add(rb);
             buttonGroup.add(rb);
         }
@@ -110,7 +114,7 @@ public class EditUsers extends JDialog implements ActionListener {
             dispose();
         }
         if (e.getSource() == addButton) {
-            AddUser addUser = new AddUser(parentFrame, loginInfo, currentStatusField);
+            AddUser addUser = new AddUser(parentFrame, loginInfo, currentStatusField, styleConstants);
             String newID = addUser.showDialogAndGetResult();
             if (newID != null) {
                 mainPanel.remove(usersPanel);
@@ -119,7 +123,7 @@ public class EditUsers extends JDialog implements ActionListener {
                         .concat(loginInfo.get(newID).getPermissions().toString())));
                 usersPanel = new JPanel(new GridLayout(listOfUsers.size(), 1, 7, 7));
                 for (JRadioButton rb : listOfUsers) {
-                    rb.setFont(ConstantsOfStyle.THE_MAIN_FONT.deriveFont(Font.PLAIN, 23));
+                    rb.setFont(styleConstants.getTHE_MAIN_FONT().deriveFont(Font.PLAIN, 23));
                     usersPanel.add(rb);
                     buttonGroup.add(rb);
                     if (rb.getText().substring(0, rb.getText().indexOf(" : ")).equals(Main.CURRENT_USER)) {
@@ -147,7 +151,7 @@ public class EditUsers extends JDialog implements ActionListener {
 
                 usersPanel = new JPanel(new GridLayout(listOfUsers.size(), 1, 7, 7));
                 for (JRadioButton rb : listOfUsers) {
-                    rb.setFont(ConstantsOfStyle.THE_MAIN_FONT.deriveFont(Font.PLAIN, 23));
+                    rb.setFont(styleConstants.getTHE_MAIN_FONT().deriveFont(Font.PLAIN, 23));
                     usersPanel.add(rb);
                     buttonGroup.add(rb);
                     if (rb.getText().substring(0, rb.getText().indexOf(" : ")).equals(Main.CURRENT_USER)) {
@@ -161,6 +165,25 @@ public class EditUsers extends JDialog implements ActionListener {
 
                 mainPanel.repaint();
                 this.pack();
+            }
+        }
+    }
+    private void setStyleForWindow(Container container) {
+        for (Component component : container.getComponents()) {
+            if (component instanceof JButton) {
+                component.setBackground(styleConstants.getACTUAL_SET_OF_COLORS().get(5));
+                component.setForeground(styleConstants.getACTUAL_SET_OF_COLORS().get(2));
+            }
+            if (component instanceof JLabel || component instanceof JPanel) {
+                component.setBackground(styleConstants.getACTUAL_SET_OF_COLORS().get(0));
+                component.setForeground(styleConstants.getACTUAL_SET_OF_COLORS().get(2));
+
+            }
+            if (component instanceof Container) {
+                setStyleForWindow((Container) component);
+            }
+            if (component instanceof JTextField) {
+                component.setBackground(styleConstants.getACTUAL_SET_OF_COLORS().get(0));
             }
         }
     }

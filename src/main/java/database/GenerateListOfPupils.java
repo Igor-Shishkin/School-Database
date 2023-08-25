@@ -1,7 +1,5 @@
 package database;
 
-import GUI.Permissions;
-import GUI.User;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;

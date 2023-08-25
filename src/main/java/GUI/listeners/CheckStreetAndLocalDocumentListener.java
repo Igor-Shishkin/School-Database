@@ -11,9 +11,11 @@ import java.util.regex.Pattern;
 
 public class CheckStreetAndLocalDocumentListener implements DocumentListener {
     JTextField textField;
+    ConstantsOfStyle styleConstants;
 
-    public CheckStreetAndLocalDocumentListener(JTextField textField) {
+    public CheckStreetAndLocalDocumentListener(JTextField textField, ConstantsOfStyle styleConstants) {
         this.textField = textField;
+        this.styleConstants = styleConstants;
     }
 
     @Override
@@ -33,13 +35,13 @@ public class CheckStreetAndLocalDocumentListener implements DocumentListener {
     private void isInt () {
 
         if (textField.getText().equals("")) {
-            textField.setBackground(ConstantsOfStyle.COLOR_NEUTRAL_FORMAT);
+            textField.setBackground(styleConstants.getCOLOR_NEUTRAL_FORMAT());
         } else {
             String regex = "^[1-9]{1}[0-9]?[0-9]?[a-zA-Z]?";
             Pattern pattern = Pattern.compile(regex);
             Matcher matcher = pattern.matcher(textField.getText().trim());
             textField.setBackground( (matcher.matches())
-                    ? ConstantsOfStyle.COLOR_FOR_RIGHT_FORMAT :  ConstantsOfStyle.COLOR_FOR_WRONG_FORMAT);
+                    ? styleConstants.getCOLOR_FOR_RIGHT_FORMAT() :  styleConstants.getCOLOR_FOR_WRONG_FORMAT());
 
         }
     }

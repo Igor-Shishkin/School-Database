@@ -1,4 +1,4 @@
-package GUI;
+package database;
 
 public class User {
     private String password;
@@ -16,15 +16,9 @@ public class User {
         return password;
     }
 
-    public void setPassword(String password) {
-        this.password = password;
-    }
 
     public Permissions getPermissions() {
         return permissions;
     }
 
-    public void setPermissions(Permissions permissions) {
-        this.permissions = permissions;
-    }
 }

@@ -1,5 +1,7 @@
 package GUI;
 
+import GUI.MainWindow;
+import GUI.styleStorage.ConstantsOfStyle;
 import database.PupilsDataList;
 
 import javax.swing.*;
@@ -14,6 +16,8 @@ public class Main {
     public static void main(String[] args) throws IOException, FontFormatException {
 
         PupilsDataList dataList = new PupilsDataList();
+        ConstantsOfStyle styleConstants = new ConstantsOfStyle();
+        styleConstants.setActualSetOfColors(styleConstants.getSET_OF_COLORS_OCEAN());
 
         Path workDir = Paths.get("src", "main", "resources");
         File fontFile = new File(workDir.resolve("REM-Regular.ttf").toUri());
@@ -28,7 +32,7 @@ public class Main {
         UIManager.put("Menu.foreground", Color.green);
         UIManager.put("MenuItem.opaque", true);
 //        mainWindow = new MainWindow(dataList);
-        new MainWindow(dataList);
+        new MainWindow(dataList, styleConstants);
 
     }
 

@@ -10,30 +10,33 @@ import java.util.Objects;
 public class GenderComboBoxListener implements ActionListener {
     JTextField yearTextField, monthTextField, dayTextField, peselTextField;
     JComboBox<String> genderComboBox;
+    ConstantsOfStyle styleConstants;
 
 
     public GenderComboBoxListener(JTextField yearTextField, JTextField monthTextField, JTextField dayTextField,
-                                  JTextField peselTextField, JComboBox<String> genderComboBox) {
+                                  JTextField peselTextField, JComboBox<String> genderComboBox, 
+                                  ConstantsOfStyle styleConstants) {
         this.yearTextField = yearTextField;
         this.monthTextField = monthTextField;
         this.dayTextField = dayTextField;
         this.peselTextField = peselTextField;
         this.genderComboBox = genderComboBox;
+        this.styleConstants = styleConstants;
     }
 
     @Override
     public void actionPerformed(ActionEvent e) {
         if (Objects.equals(genderComboBox.getSelectedItem(), "")){
-            genderComboBox.setBackground(ConstantsOfStyle.COLOR_FOR_WRONG_FORMAT);
+            genderComboBox.setBackground(styleConstants.getCOLOR_FOR_WRONG_FORMAT());
         } else {
-            genderComboBox.setBackground(ConstantsOfStyle.COLOR_FOR_RIGHT_FORMAT);
+            genderComboBox.setBackground(styleConstants.getCOLOR_FOR_RIGHT_FORMAT());
         }
 
         if (peselTextField.getText().length() == 11) {
-            if (Objects.equals(yearTextField.getBackground(), ConstantsOfStyle.COLOR_FOR_RIGHT_FORMAT) &&
-                    Objects.equals(yearTextField.getBackground(), ConstantsOfStyle.COLOR_FOR_RIGHT_FORMAT) &&
-                    Objects.equals(monthTextField.getBackground(), ConstantsOfStyle.COLOR_FOR_RIGHT_FORMAT) &&
-                    Objects.equals(dayTextField.getBackground(), ConstantsOfStyle.COLOR_FOR_RIGHT_FORMAT) &&
+            if (Objects.equals(yearTextField.getBackground(), styleConstants.getCOLOR_FOR_RIGHT_FORMAT()) &&
+                    Objects.equals(yearTextField.getBackground(), styleConstants.getCOLOR_FOR_RIGHT_FORMAT()) &&
+                    Objects.equals(monthTextField.getBackground(), styleConstants.getCOLOR_FOR_RIGHT_FORMAT()) &&
+                    Objects.equals(dayTextField.getBackground(), styleConstants.getCOLOR_FOR_RIGHT_FORMAT()) &&
                     !Objects.equals(genderComboBox.getSelectedItem(), "")) {
                 int yearNumber = Integer.parseInt(yearTextField.getText().trim());
                 int monthNumber = Integer.parseInt(monthTextField.getText().trim());
@@ -62,12 +65,12 @@ public class GenderComboBoxListener implements ActionListener {
                                                 pesel.charAt(9) == '8')
                         )
                 ) {
-                    peselTextField.setBackground(ConstantsOfStyle.COLOR_FOR_RIGHT_FORMAT);
+                    peselTextField.setBackground(styleConstants.getCOLOR_FOR_RIGHT_FORMAT());
                 } else {
-                    peselTextField.setBackground(ConstantsOfStyle.COLOR_FOR_WRONG_FORMAT);
+                    peselTextField.setBackground(styleConstants.getCOLOR_FOR_WRONG_FORMAT());
                 }
             }else {
-                peselTextField.setBackground(ConstantsOfStyle.COLOR_NEUTRAL_FORMAT);
+                peselTextField.setBackground(styleConstants.getCOLOR_NEUTRAL_FORMAT());
             }
         }
     }
