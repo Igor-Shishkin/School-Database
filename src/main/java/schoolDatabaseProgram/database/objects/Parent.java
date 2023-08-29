@@ -1,8 +1,6 @@
-package schoolDatabaseProgram.database;
+package schoolDatabaseProgram.database.objects;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-
-public class Parent extends Person implements Cloneable{
+public class Parent extends Person{
     private String telephone;
     private String eMail;
     public Parent() {
@@ -16,6 +14,12 @@ public class Parent extends Person implements Cloneable{
         super(name, secondName, surname, gender, address, pesel);
         this.telephone = telephone;
         this.eMail = eMail;
+    }
+    public Parent(Parent parent) {
+        super(parent.getName(), parent.getSecondName(), parent.getSurname(), parent.getGender(), parent.getAddress(),
+                parent.getPesel());
+        this.telephone = parent.getTelephone();
+        this.eMail = parent.eMail;
     }
 
     public String getTelephone() {
@@ -42,15 +46,5 @@ public class Parent extends Person implements Cloneable{
                 "telephone=" + telephone +
                 ", eMail='" + eMail + '\'' +
                 '}';
-    }
-
-    @JsonIgnore
-    @Override
-    public Parent clone() {
-        try {
-            return (Parent) super.clone();
-        } catch (CloneNotSupportedException e) {
-            throw new AssertionError();
-        }
     }
 }

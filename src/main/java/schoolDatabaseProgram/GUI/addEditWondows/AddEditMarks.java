@@ -3,7 +3,7 @@ package schoolDatabaseProgram.GUI.addEditWondows;
 import schoolDatabaseProgram.GUI.CentralPanel;
 import schoolDatabaseProgram.GUI.listeners.MarkComboBoxListener;
 import schoolDatabaseProgram.GUI.styleStorage.ConstantsOfStyle;
-import schoolDatabaseProgram.database.Marks;
+import schoolDatabaseProgram.database.objects.Marks;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;

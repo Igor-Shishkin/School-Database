@@ -1,4 +1,4 @@
-package schoolDatabaseProgram.database;
+package schoolDatabaseProgram.database.objects;
 
 public enum Permissions {
     DIRECTOR(9),

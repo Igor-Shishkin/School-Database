@@ -2,7 +2,7 @@ package schoolDatabaseProgram.GUI.addEditWondows;
 
 import schoolDatabaseProgram.Main;
 import schoolDatabaseProgram.GUI.styleStorage.ConstantsOfStyle;
-import schoolDatabaseProgram.database.User;
+import schoolDatabaseProgram.database.objects.User;
 import schoolDatabaseProgram.database.PupilsDataList;
 
 import javax.swing.*;

@@ -4,6 +4,10 @@ import schoolDatabaseProgram.GUI.CentralPanel;
 import schoolDatabaseProgram.GUI.listeners.*;
 import schoolDatabaseProgram.GUI.styleStorage.ConstantsOfStyle;
 import schoolDatabaseProgram.database.*;
+import schoolDatabaseProgram.database.objects.Address;
+import schoolDatabaseProgram.database.objects.Marks;
+import schoolDatabaseProgram.database.objects.Parent;
+import schoolDatabaseProgram.database.objects.Pupil;
 
 import javax.swing.*;
 import java.awt.*;
@@ -26,7 +30,6 @@ public class AddEditPupil extends JDialog implements ActionListener {
     JComboBox<String> genderComboBox;
     JComboBox<Integer> gradeComboBox;
     JButton addFirstParentButton, addSecondParentButton, markButton, addButton, cancelButton, achievementButton;
-    Font font;
     Pupil pupil;
     JFrame parentFrame;
     String achievement;
@@ -48,9 +51,9 @@ public class AddEditPupil extends JDialog implements ActionListener {
         if (isNewPupil) {
             pupil.setId(dataList.getMinPossibleID());
         } else {
-            parent1 = pupil.getParent1().clone();
-            parent2 = (pupil.getParent2() != null) ? pupil.getParent2().clone() : null;
-            marks = (pupil.getGrade() > 3) ? pupil.getMarks().clone() : null;
+            parent1 = new Parent(pupil.getParent1());
+            parent2 = (pupil.getParent2() != null) ? new Parent(pupil.getParent2()) : null;
+            marks = (pupil.getGrade() > 3) ? new Marks(pupil.getMarks()) : null;
             promotionToNextGrade = pupil.isPromotionToNextGrade();
             awardBar = pupil.isAwardBar();
             achievement = pupil.getAchievement();
@@ -59,11 +62,9 @@ public class AddEditPupil extends JDialog implements ActionListener {
         this.setLayout(new GridBagLayout());
         this.setFont(new Font(null, Font.BOLD, 20));
 
-        font = styleConstants.getTHE_MAIN_FONT().deriveFont(Font.PLAIN, 19);
-
         setWindowCloseListener();
         setItemsToFrame();
-        setFontForComponents(this, font);
+        setFontForComponents(this, styleConstants.getTHE_MAIN_FONT().deriveFont(Font.PLAIN, 19));
         setStyleForWindow(this);
         setListeners();
 

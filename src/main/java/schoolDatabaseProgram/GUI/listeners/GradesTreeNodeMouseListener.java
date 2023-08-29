@@ -1,7 +1,7 @@
 package schoolDatabaseProgram.GUI.listeners;
 
 import schoolDatabaseProgram.GUI.CentralPanel;
-import schoolDatabaseProgram.database.Pupil;
+import schoolDatabaseProgram.database.objects.Pupil;
 import schoolDatabaseProgram.database.PupilsDataList;
 
 import javax.swing.*;

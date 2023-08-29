@@ -1,5 +1,8 @@
 package schoolDatabaseProgram.database;
 
+import schoolDatabaseProgram.database.objects.Pupil;
+import schoolDatabaseProgram.database.objects.User;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 

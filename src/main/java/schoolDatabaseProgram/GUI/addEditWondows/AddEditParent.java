@@ -3,8 +3,8 @@ package schoolDatabaseProgram.GUI.addEditWondows;
 import schoolDatabaseProgram.GUI.CentralPanel;
 import schoolDatabaseProgram.GUI.listeners.*;
 import schoolDatabaseProgram.GUI.styleStorage.ConstantsOfStyle;
-import schoolDatabaseProgram.database.Address;
-import schoolDatabaseProgram.database.Parent;
+import schoolDatabaseProgram.database.objects.Address;
+import schoolDatabaseProgram.database.objects.Parent;
 
 import javax.swing.*;
 import java.awt.*;

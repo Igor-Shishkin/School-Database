@@ -1,8 +1,8 @@
 package schoolDatabaseProgram.GUI.addEditWondows;
 
 import schoolDatabaseProgram.GUI.styleStorage.ConstantsOfStyle;
-import schoolDatabaseProgram.database.Permissions;
-import schoolDatabaseProgram.database.User;
+import schoolDatabaseProgram.database.objects.Permissions;
+import schoolDatabaseProgram.database.objects.User;
 
 import javax.swing.*;
 import java.awt.*;

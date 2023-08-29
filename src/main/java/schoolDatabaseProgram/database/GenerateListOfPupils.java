@@ -1,6 +1,10 @@
 package schoolDatabaseProgram.database;
 
 
+import schoolDatabaseProgram.database.objects.Permissions;
+import schoolDatabaseProgram.database.objects.Pupil;
+import schoolDatabaseProgram.database.objects.User;
+
 import java.io.File;
 import java.io.IOException;
 import java.util.*;

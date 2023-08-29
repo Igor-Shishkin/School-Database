@@ -1,5 +1,10 @@
 package schoolDatabaseProgram.database;
 
+import schoolDatabaseProgram.database.objects.Address;
+import schoolDatabaseProgram.database.objects.Marks;
+import schoolDatabaseProgram.database.objects.Parent;
+import schoolDatabaseProgram.database.objects.Pupil;
+
 import java.time.LocalDate;
 import java.util.Random;
 

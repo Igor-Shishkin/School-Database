@@ -1,4 +1,4 @@
-package schoolDatabaseProgram.database;
+package schoolDatabaseProgram.database.objects;
 
 public class Address {
     private String country;

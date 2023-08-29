@@ -7,7 +7,7 @@ import schoolDatabaseProgram.GUI.listeners.GradesTreeNodeMouseListener;
 import schoolDatabaseProgram.GUI.listeners.HandCursorForMouseMotionAdapter;
 import schoolDatabaseProgram.GUI.listeners.PupilsTreeNodeMouseListener;
 import schoolDatabaseProgram.GUI.styleStorage.ConstantsOfStyle;
-import schoolDatabaseProgram.database.Pupil;
+import schoolDatabaseProgram.database.objects.Pupil;
 import schoolDatabaseProgram.database.PupilsDataList;
 
 import javax.swing.*;

@@ -1,4 +1,4 @@
-package schoolDatabaseProgram.database;
+package schoolDatabaseProgram.database.objects;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
@@ -6,7 +6,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-public class Marks implements Cloneable{
+public class Marks{
 
     private int[] mathMark;
     private int[] polishMark;
@@ -60,6 +60,21 @@ public class Marks implements Cloneable{
         this.physicsMark = new int[] {a[36],a[37],a[38],a[39]};
         this.geographyMark = new int[] {a[40],a[41],a[42],a[43]};
         this.behaviorMark = new int[] {a[44],a[45],a[46],a[47]};
+    }
+
+    public Marks(Marks marks) {
+        this.mathMark = marks.getMathMark().clone();
+        this.polishMark = marks.getPolishMark().clone();
+        this.englishMark = marks.getEnglishMark().clone();
+        this.informaticsMark = marks.getInformaticsMark().clone();
+        this.peMark = marks.getPeMark().clone();
+        this.musicMark = marks.getMusicMark().clone();
+        this.religionMark = marks.getReligionMark().clone();
+        this.natureMark = marks.getNatureMark().clone();
+        this.biologyMark = marks.getBiologyMark().clone();
+        this.physicsMark = marks.getPhysicsMark().clone();
+        this.geographyMark = marks.getGeographyMark().clone();
+        this.behaviorMark = marks.getBehaviorMark().clone();
     }
 
     public int[] getMathMark() {
@@ -129,7 +144,8 @@ public class Marks implements Cloneable{
         int[] arrayOfMarks = getArrayOfMarks();
         int jumpIndex = (grade>6) ? 27 : 31;
         boolean promotion = true;
-        for (int i = 0; i < 48; i++) {
+        int i = 0;
+        for (i = 0; i < 48; i++) {
             if (i%4==3) {
                 if (!(arrayOfMarks[i]>1 && arrayOfMarks[i]<7)) {return false;}
             } else {
@@ -198,16 +214,6 @@ public class Marks implements Cloneable{
                 '}';
     }
 
-    @JsonIgnore
-    @Override
-    public Marks clone() {
-        try {
-            // TODO: copy mutable state here, so the clone can't change the internals of the original
-            return (Marks) super.clone();
-        } catch (CloneNotSupportedException e) {
-            throw new AssertionError();
-        }
-    }
 }
 
 

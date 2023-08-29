@@ -4,9 +4,9 @@ import schoolDatabaseProgram.GUI.addEditWondows.EditUsers;
 import schoolDatabaseProgram.GUI.styleStorage.ConstantsOfStyle;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import schoolDatabaseProgram.Main;
-import schoolDatabaseProgram.database.Permissions;
+import schoolDatabaseProgram.database.objects.Permissions;
 import schoolDatabaseProgram.database.PupilsDataList;
-import schoolDatabaseProgram.database.User;
+import schoolDatabaseProgram.database.objects.User;
 import schoolDatabaseProgram.database.WriteReadDataToFile;
 
 import javax.swing.*;

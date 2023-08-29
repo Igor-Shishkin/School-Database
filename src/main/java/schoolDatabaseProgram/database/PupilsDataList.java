@@ -1,5 +1,8 @@
 package schoolDatabaseProgram.database;
 
+import schoolDatabaseProgram.database.objects.Pupil;
+import schoolDatabaseProgram.database.objects.User;
+
 import java.time.LocalDate;
 import java.util.*;
 import java.util.stream.Collectors;

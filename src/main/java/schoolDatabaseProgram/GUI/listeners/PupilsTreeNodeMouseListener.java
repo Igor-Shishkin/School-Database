@@ -2,7 +2,7 @@ package schoolDatabaseProgram.GUI.listeners;
 
 import schoolDatabaseProgram.GUI.CentralPanel;
 import schoolDatabaseProgram.Main;
-import schoolDatabaseProgram.database.Permissions;
+import schoolDatabaseProgram.database.objects.Permissions;
 import schoolDatabaseProgram.database.PupilsDataList;
 
 import javax.swing.*;
