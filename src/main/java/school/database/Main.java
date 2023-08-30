@@ -1,5 +1,6 @@
 package school.database;
 
+import school.database.GUI.ActualElements;
 import school.database.GUI.MainWindow;
 import school.database.GUI.styleStorage.ConstantsOfStyle;
 import school.database.data.Data;
@@ -12,12 +13,12 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 
 public class Main {
-    public static String CURRENT_USER;
     public static void main(String[] args) throws IOException, FontFormatException {
 
         Data dataList = new Data();
         ConstantsOfStyle styleConstants = new ConstantsOfStyle();
         styleConstants.setActualSetOfColors(styleConstants.getSET_OF_COLORS_OCEAN());
+        ActualElements actualElements = new ActualElements();
 
         Path workDir = Paths.get("src", "main", "resources");
         File fontFile = new File(workDir.resolve("REM-Regular.ttf").toUri());
@@ -32,7 +33,7 @@ public class Main {
         UIManager.put("Menu.foreground", Color.green);
         UIManager.put("MenuItem.opaque", true);
 //        mainWindow = new MainWindow(dataList);
-        new MainWindow(dataList, styleConstants);
+        new MainWindow(dataList, styleConstants, actualElements);
 
     }
 

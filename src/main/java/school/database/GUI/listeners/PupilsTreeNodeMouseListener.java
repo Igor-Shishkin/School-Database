@@ -1,5 +1,6 @@
 package school.database.GUI.listeners;
 
+import school.database.GUI.ActualElements;
 import school.database.GUI.CentralPanel;
 import school.database.Main;
 import school.database.data.Data;
@@ -17,12 +18,13 @@ public class PupilsTreeNodeMouseListener extends MouseAdapter {
     JPanel informationPanel;
     JButton showEditAchievementButton, showEditMarksButton, editDateButton, deletePupilButton;
     Data dataList;
+    ActualElements actualElements;
 //    private String login;
 //    HashMap<String, User> loginInfo;
 
     public PupilsTreeNodeMouseListener(JTree tree, JLabel pupilInformationLabel, JPanel informationPanel,
                      JButton showEditAchievementButton, JButton showEditMarksButton, JButton editDateButton,
-                                       JButton deletePupilButton, Data dataList) {
+                                       JButton deletePupilButton, Data dataList, ActualElements actualElements) {
         this.tree = tree;
         this.pupilInformationLabel = pupilInformationLabel;
         this.informationPanel = informationPanel;
@@ -31,6 +33,7 @@ public class PupilsTreeNodeMouseListener extends MouseAdapter {
         this.editDateButton = editDateButton;
         this.deletePupilButton = deletePupilButton;
         this.dataList = dataList;
+        this.actualElements = actualElements;
 //        this.login = login;
 //        this.loginInfo = loginInfo;
     }
@@ -49,28 +52,33 @@ public class PupilsTreeNodeMouseListener extends MouseAdapter {
                     break;
                 }
             }
-            CentralPanel.CURRENT_PUPIL = dataList.getPupilWithCertainID(id);
-            CentralPanel.CURRENT_ID = id;
+            actualElements.setCurrentPupil(dataList.getPupilWithCertainID(id));
+            actualElements.setCurrentID(id);
 
-            assert CentralPanel.CURRENT_PUPIL != null;
-            pupilInformationLabel.setText(CentralPanel.CURRENT_PUPIL.getPupilInformation());
+            assert actualElements.getCurrentPupil() != null;
+            pupilInformationLabel.setText(actualElements.getCurrentPupil().getPupilInformation());
 
 
-            if (CentralPanel.CURRENT_GRADE ==
-                    dataList.getLoginInfo().get(Main.CURRENT_USER).getPermissions().getNumberPermission() ||
-                    dataList.getLoginInfo().get(Main.CURRENT_USER).getPermissions() == Permissions.DIRECTOR) {
+            if (actualElements.getCurrentGrade() == actualElements.getActualPermissions().getNumberPermission() ||
+                    actualElements.getActualPermissions() == Permissions.DIRECTOR) {
                 showEditMarksButton.setVisible(true);
-                showEditMarksButton.setEnabled(CentralPanel.CURRENT_PUPIL.getGrade() > 3);
+                showEditMarksButton.setEnabled(actualElements.getCurrentPupil().getGrade() > 3);
                 showEditAchievementButton.setVisible(true);
                 editDateButton.setVisible(true);
-                deletePupilButton.setVisible(true);
+                deletePupilButton.setVisible(actualElements.getActualPermissions() == Permissions.DIRECTOR);
+            } else {
+                showEditMarksButton.setVisible(false);
+                showEditAchievementButton.setVisible(false);
+                editDateButton.setVisible(false);
+                deletePupilButton.setVisible(false);
             }
 
-            CentralPanel.CURRENT_ID = id;
+            actualElements.setCurrentID(id);
 
             pupilInformationLabel.repaint();
             informationPanel.repaint();
         }
     }
+
 }
 

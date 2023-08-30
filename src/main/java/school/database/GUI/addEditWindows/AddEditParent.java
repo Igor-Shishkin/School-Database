@@ -1,5 +1,6 @@
-package school.database.GUI.addEditWondows;
+package school.database.GUI.addEditWindows;
 
+import school.database.GUI.ActualElements;
 import school.database.GUI.CentralPanel;
 import school.database.GUI.listeners.*;
 //import school.database.GUI.listeners.*;
@@ -33,11 +34,12 @@ public class AddEditParent extends JDialog implements ActionListener {
     Parent parent;
     boolean newParent = false, isNewPupil;
     ConstantsOfStyle styleConstants;
+    ActualElements actualElements;
 
 
     public AddEditParent(JFrame parentFrame, Parent parent, String country, String province, String town, String street,
                          String house, String local, String postCode, JTextField currentStatusField, boolean isNewPupil,
-                         ConstantsOfStyle styleConstants)
+                         ConstantsOfStyle styleConstants, ActualElements actualElements)
             throws IOException, FontFormatException {
         super(parentFrame, "Parent's data", true); // Make it modal
         setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
@@ -53,6 +55,7 @@ public class AddEditParent extends JDialog implements ActionListener {
         this.currentStatusField = currentStatusField;
         this.isNewPupil = isNewPupil;
         this.styleConstants = styleConstants;
+        this.actualElements = actualElements;
 
         if (this.parent == null) {
             newParent = true;
@@ -402,7 +405,7 @@ public class AddEditParent extends JDialog implements ActionListener {
                         postCodeField.getText().trim()));
                 if (!isNewPupil) {
                     currentStatusField.setText(String.format("Changes are saved (%s: PARENT)",
-                            CentralPanel.CURRENT_PUPIL.getNamesAndSurname()));
+                            actualElements.getCurrentPupil().getNamesAndSurname()));
                 }
                 dispose();
             } else {

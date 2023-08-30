@@ -50,8 +50,8 @@ public class ConstantsOfStyle {
                 }
             };
     private final List<Color> ACTUAL_SET_OF_COLORS = new ArrayList<>(15);
-    private final ArrayList<Color> SET_OF_COLORS_OCEAN = new ArrayList<>(15);
-    private final ArrayList<Color> SET_OF_COLORS_CONTRAST = new ArrayList<>(15);
+    private final List<Color> SET_OF_COLORS_OCEAN = new ArrayList<>(15);
+    private final List<Color> SET_OF_COLORS_CONTRAST = new ArrayList<>(15);
 
     public ConstantsOfStyle() {
         setColors();
@@ -75,7 +75,7 @@ public class ConstantsOfStyle {
         SET_OF_COLORS_CONTRAST.add(new Color(0xF6EF9A));
         SET_OF_COLORS_CONTRAST.add(new Color(0x003AC5));
         SET_OF_COLORS_CONTRAST.add(new Color(0x064F00));
-        SET_OF_COLORS_CONTRAST.add(new Color(0x001DD0));
+        SET_OF_COLORS_CONTRAST.add(new Color(0x02147E));
         SET_OF_COLORS_CONTRAST.add(new Color(0x9FA3FD));
         SET_OF_COLORS_CONTRAST.add(new Color(0x4D0000));
         SET_OF_COLORS_CONTRAST.add(new Color(0x27C701));
@@ -83,7 +83,7 @@ public class ConstantsOfStyle {
         SET_OF_COLORS_CONTRAST.add(new Color(0x404A57));
         SET_OF_COLORS_CONTRAST.add(new Color(0x404A57));
     }
-    public void setActualSetOfColors(ArrayList<Color> listOfColors) {
+    public void setActualSetOfColors(List<Color> listOfColors) {
         for (int i = 0; i < 11; i++) {
             ACTUAL_SET_OF_COLORS.add(i, listOfColors.get(i));
         }
@@ -137,11 +137,11 @@ public class ConstantsOfStyle {
         return ACTUAL_SET_OF_COLORS;
     }
 
-    public ArrayList<Color> getSET_OF_COLORS_OCEAN() {
+    public List<Color> getSET_OF_COLORS_OCEAN() {
         return SET_OF_COLORS_OCEAN;
     }
 
-    public ArrayList<Color> getSET_OF_COLORS_CONTRAST() {
+    public List<Color> getSET_OF_COLORS_CONTRAST() {
         return SET_OF_COLORS_CONTRAST;
     }
     public Font getTHE_MAIN_FONT() {

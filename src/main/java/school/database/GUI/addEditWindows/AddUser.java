@@ -1,4 +1,4 @@
-package school.database.GUI.addEditWondows;
+package school.database.GUI.addEditWindows;
 
 import school.database.GUI.styleStorage.ConstantsOfStyle;
 import school.database.data.objects.Permissions;

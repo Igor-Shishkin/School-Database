@@ -22,11 +22,13 @@ public class ChangeLogin extends JDialog implements ActionListener {
     int INDENT_FROM_THE_TOP = -60;
     Permissions permissions;
     boolean isSuccess;
+    ActualElements actualElements;
 
 
-    ChangeLogin (JFrame parentFrame, HashMap<String,User> loginInfo) {
+    ChangeLogin (JFrame parentFrame, HashMap<String,User> loginInfo, ActualElements actualElements) {
         super(parentFrame, "Change permission", true);
         this.loginInfo = loginInfo;
+        this.actualElements = actualElements;
 
 
         resultPanel = new JPanel();
@@ -113,7 +115,8 @@ public class ChangeLogin extends JDialog implements ActionListener {
                 if (loginInfo.get(id).getPassword().equals(password)) {
                     messageLabel.setForeground(Color.green);
                     messageLabel.setText("   Access confirmed :)");
-                    Main.CURRENT_USER = id;
+                    actualElements.setUserName(id);
+                    actualElements.setActualPermissions(loginInfo.get(id).getPermissions());
                     isSuccess = true;
                     this.dispose();
                 }else{

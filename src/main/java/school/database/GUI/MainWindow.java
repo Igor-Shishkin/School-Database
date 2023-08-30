@@ -24,10 +24,13 @@ public class MainWindow extends JFrame implements ActionListener {
     private final JPanel downPanel;
     ConstantsOfStyle styleConstants;
     MyMenuBar myMenuBar;
+    ActualElements actualElements;
 
 
-    public MainWindow(Data dataList, ConstantsOfStyle styleConstants) throws IOException {
+    public MainWindow(Data dataList, ConstantsOfStyle styleConstants, ActualElements actualElements)
+            throws IOException {
         this.styleConstants = styleConstants;
+        this.actualElements = actualElements;
 
         border = BorderFactory.createSoftBevelBorder
                 (SoftBevelBorder.RAISED, styleConstants.getACTUAL_SET_OF_COLORS().get(0),
@@ -56,10 +59,10 @@ public class MainWindow extends JFrame implements ActionListener {
 
         JPanel centerPanel = new CentralPanel(this, currentStatusField, treeForGradePanel, rootForGradePanel,
                 gradesTreeModel, panelForFilterRadioButtons, addPupilButton, paneForGradesTree, dataList, pupilsTreeModel,
-                nodesForPupilsPanel, rootForPupilsTree, styleConstants, treeForPupilsPanel);
+                nodesForPupilsPanel, rootForPupilsTree, styleConstants, treeForPupilsPanel, actualElements);
         myMenuBar = new MyMenuBar(this, currentStatusField, treeForGradePanel, gradesTreeModel,
                 panelForFilterRadioButtons, addPupilButton, centerPanel, paneForGradesTree, dataList,
-                rootForPupilsTree, pupilsTreeModel, nodesForPupilsPanel, styleConstants, treeForPupilsPanel);
+                rootForPupilsTree, pupilsTreeModel, nodesForPupilsPanel, styleConstants, treeForPupilsPanel, actualElements);
 
         refreshPanels(centerPanel);
 

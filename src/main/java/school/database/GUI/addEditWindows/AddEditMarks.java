@@ -1,5 +1,6 @@
-package school.database.GUI.addEditWondows;
+package school.database.GUI.addEditWindows;
 
+import school.database.GUI.ActualElements;
 import school.database.GUI.styleStorage.ConstantsOfStyle;
 import school.database.GUI.CentralPanel;
 import school.database.GUI.listeners.MarkComboBoxListener;
@@ -28,9 +29,11 @@ public class AddEditMarks extends JDialog implements ActionListener {
     JTextField currentStatusField;
     boolean isNewPupil;
     ConstantsOfStyle styleConstants;
+    ActualElements actualElements;
 
     public AddEditMarks(JFrame parentFrame, Marks marks, Boolean awardBar, Boolean promotion, int grade,
-                        JTextField currentStatusField, boolean isNewPupil, ConstantsOfStyle styleConstants)
+                        JTextField currentStatusField, boolean isNewPupil, ConstantsOfStyle styleConstants,
+                        ActualElements actualElements)
                         throws IOException {
         super(parentFrame, "Marks", true);
         this.marks = marks;
@@ -40,6 +43,7 @@ public class AddEditMarks extends JDialog implements ActionListener {
         this.currentStatusField = currentStatusField;
         this.isNewPupil = isNewPupil;
         this.styleConstants = styleConstants;
+        this.actualElements = actualElements;
 
         this.setLayout(new BorderLayout());
 
@@ -309,7 +313,7 @@ public class AddEditMarks extends JDialog implements ActionListener {
             marks = new Marks(arrayOfMarks);
             if (!isNewPupil) {
                 currentStatusField.setText(String.format("Changes are saved (%s: MARK)",
-                        CentralPanel.CURRENT_PUPIL.getGradeIdNamesSurname()));
+                        actualElements.getCurrentPupil().getGradeIdNamesSurname()));
             }
 
             dispose();

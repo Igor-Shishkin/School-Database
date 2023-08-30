@@ -1,5 +1,6 @@
-package school.database.GUI.addEditWondows;
+package school.database.GUI.addEditWindows;
 
+import school.database.GUI.ActualElements;
 import school.database.GUI.listeners.*;
 import school.database.GUI.styleStorage.ConstantsOfStyle;
 import school.database.data.Data;
@@ -38,10 +39,11 @@ public class AddEditPupil extends JDialog implements ActionListener {
     JTextField currentStatusField;
     Data dataList;
     ConstantsOfStyle styleConstants;
+    ActualElements actualElements;
 
 
     public AddEditPupil(JFrame parentFrame, Pupil pupil, JTextField currentStatusField, boolean isNewPupil,
-                        Data dataList, ConstantsOfStyle styleConstants)
+                        Data dataList, ConstantsOfStyle styleConstants, ActualElements actualElements)
             throws IOException, FontFormatException {
         super(parentFrame, "Achievement", true);
         this.pupil = pupil;
@@ -49,6 +51,7 @@ public class AddEditPupil extends JDialog implements ActionListener {
         this.isNewPupil = isNewPupil;
         this.dataList = dataList;
         this.styleConstants = styleConstants;
+        this.actualElements = actualElements;
 
         if (isNewPupil) {
             pupil.setId(dataList.getMinPossibleID());
@@ -412,7 +415,7 @@ public class AddEditPupil extends JDialog implements ActionListener {
             genderComboBox.setBackground(styleConstants.getCOLOR_FOR_WRONG_FORMAT());
             idField.setText(Integer.toString(dataList.getMinPossibleID()));
             idField.setBackground(styleConstants.getCOLOR_FOR_RIGHT_FORMAT());
-            gradeComboBox.setSelectedIndex(CentralPanel.CURRENT_GRADE + 1);
+            gradeComboBox.setSelectedIndex(actualElements.getCurrentGrade() + 1);
             gradeComboBox.setBackground(styleConstants.getCOLOR_FOR_RIGHT_FORMAT());
         }
     }
@@ -538,7 +541,7 @@ public class AddEditPupil extends JDialog implements ActionListener {
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() == achievementButton) {
             AddEditAchievement addEditAchievement = new AddEditAchievement(parentFrame, achievement, currentStatusField,
-                    styleConstants);
+                    styleConstants, actualElements);
             achievement = addEditAchievement.showDialogAndGetInput();
         }
         if (e.getSource() == markButton) {
@@ -546,7 +549,7 @@ public class AddEditPupil extends JDialog implements ActionListener {
             try {
                 addEditMarks = new AddEditMarks(parentFrame, marks, awardBar,
                         promotionToNextGrade, gradeComboBox.getSelectedIndex()-1, currentStatusField, isNewPupil,
-                        styleConstants);
+                        styleConstants, actualElements);
             } catch (IOException ex) {
                 throw new RuntimeException(ex);
             }
@@ -577,7 +580,8 @@ public class AddEditPupil extends JDialog implements ActionListener {
                         postCodeField.getText(),
                         currentStatusField,
                         isNewPupil,
-                        styleConstants);
+                        styleConstants,
+                        actualElements);
             } catch (IOException | FontFormatException ex) {
                 throw new RuntimeException(ex);
             }
@@ -597,7 +601,8 @@ public class AddEditPupil extends JDialog implements ActionListener {
                         postCodeField.getText(),
                         currentStatusField,
                         isNewPupil,
-                        styleConstants);
+                        styleConstants,
+                        actualElements);
             } catch (IOException | FontFormatException ex) {
                 throw new RuntimeException(ex);
             }
@@ -646,17 +651,17 @@ public class AddEditPupil extends JDialog implements ActionListener {
                         pupil.setParent1(parent1);
                         pupil.setParent2(parent2);
 
-                        CentralPanel.CURRENT_PUPIL = pupil;
+                        actualElements.setCurrentPupil(pupil);
                         currentStatusField.setText(String.format("Changes are saved (%s)",
-                                CentralPanel.CURRENT_PUPIL.getNamesAndSurname()));
-                        CentralPanel.CURRENT_GRADE = pupil.getGrade();
+                                actualElements.getCurrentPupil().getNamesAndSurname()));
+                        actualElements.setCurrentGrade(pupil.getGrade());
 
 
                         if (dataList.addPupilToList(pupil)) {
                             JOptionPane.showMessageDialog(null, "Pupil is added to database :)",
                                     "Success!", JOptionPane.PLAIN_MESSAGE);
                             currentStatusField.setText("Pupil is added to database");
-                            CentralPanel.CURRENT_GRADE = pupil.getGrade();
+                            actualElements.setCurrentGrade(pupil.getGrade());
                             dispose();
                         } else {
                             JOptionPane.showMessageDialog(null,
@@ -698,8 +703,8 @@ public class AddEditPupil extends JDialog implements ActionListener {
                     pupil.setParent1(parent1);
                     pupil.setParent2(parent2);
                     currentStatusField.setText(String.format("Changes are saved (%s)",
-                            CentralPanel.CURRENT_PUPIL.getNamesAndSurname()));
-                    CentralPanel.CURRENT_GRADE = pupil.getGrade();
+                            actualElements.getCurrentPupil().getNamesAndSurname()));
+                    actualElements.setCurrentGrade(pupil.getGrade());
 
                     dispose();
                 }

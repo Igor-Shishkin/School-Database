@@ -1,5 +1,6 @@
 package school.database.GUI.listeners;
 
+import school.database.GUI.ActualElements;
 import school.database.data.Data;
 import school.database.data.objects.Pupil;
 import school.database.GUI.CentralPanel;
@@ -25,13 +26,14 @@ public class GradesTreeNodeMouseListener extends MouseAdapter {
     JRadioButton getAllPupilsRadioButton;
     JButton showEditAchievementButton, showEditMarksButton, editDateButton, deletePupilButton;
     Data dataList;
+    ActualElements actualElements;
 
 
     public GradesTreeNodeMouseListener(JTree tree, DefaultMutableTreeNode rootForPupilsTree,
                   ArrayList<DefaultMutableTreeNode> nodesForPupilsPanel, DefaultTreeModel pupilsTreeModel,
                   JLabel informationLabelForPupilPanel, JPanel pupilsPanel, JRadioButton getAllPupilsRadioButton,
                   JButton showEditAchievementButton, JButton showEditMarksButton, JButton editDateButton,
-                                       JButton deletePupilButton, Data dataList) {
+                                       JButton deletePupilButton, Data dataList, ActualElements actualElements) {
         this.tree = tree;
         this.rootForPupilsTree = rootForPupilsTree;
         this.nodesForPupilsPanel = nodesForPupilsPanel;
@@ -44,6 +46,7 @@ public class GradesTreeNodeMouseListener extends MouseAdapter {
         this.editDateButton = editDateButton;
         this.deletePupilButton = deletePupilButton;
         this.dataList = dataList;
+        this.actualElements = actualElements;
     }
 
     @Override
@@ -63,7 +66,7 @@ public class GradesTreeNodeMouseListener extends MouseAdapter {
                     (Objects.equals(node.toString(), "Seventh class")) ? 7 :
                     (Objects.equals(node.toString(), "Eighth class")) ? 8 : -1;
 
-            CentralPanel.CURRENT_GRADE = grade;
+            actualElements.setCurrentGrade(grade);
 
             rootForPupilsTree.removeAllChildren();
 
@@ -75,7 +78,7 @@ public class GradesTreeNodeMouseListener extends MouseAdapter {
                         nodesForPupilsPanel.add(i, new DefaultMutableTreeNode(nameNode));
                         rootForPupilsTree.add(nodesForPupilsPanel.get(i));
                     }
-                    informationLabelForPupilPanel.setText(node.toString().concat(":"));
+                    informationLabelForPupilPanel.setText(getTextForPupilsPanelLabel(grade));
                 } else {
                     String textForLabel = String.format("<html>%s<br>there are no pupils in this class</html>", node.toString());
                     informationLabelForPupilPanel.setText(textForLabel);
@@ -104,6 +107,29 @@ public class GradesTreeNodeMouseListener extends MouseAdapter {
 
             pupilsTreeModel.nodeStructureChanged(rootForPupilsTree);
             pupilsPanel.repaint();
+        }
+    }
+    private String getTextForPupilsPanelLabel(int grade) {
+        if (grade == 0) {
+            return "Class zero: ";
+        } else if (grade==1) {
+            return  "The firth class";
+        } else if (grade==2) {
+            return  "The second class";
+        } else if (grade==3) {
+            return  "The third class";
+        } else if (grade==4) {
+            return  "The fourth class";
+        } else if (grade==5) {
+            return  "The fifth class";
+        } else if (grade==6) {
+            return  "The sixth class";
+        } else if (grade==7) {
+            return  "The seventh class";
+        } else if (grade==8) {
+            return  "The eighth class";
+        } else {
+            return  "";
         }
     }
 }

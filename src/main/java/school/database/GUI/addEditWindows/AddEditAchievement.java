@@ -1,5 +1,6 @@
-package school.database.GUI.addEditWondows;
+package school.database.GUI.addEditWindows;
 
+import school.database.GUI.ActualElements;
 import school.database.GUI.styleStorage.ConstantsOfStyle;
 import school.database.GUI.CentralPanel;
 
@@ -14,13 +15,15 @@ public class AddEditAchievement extends JDialog implements ActionListener {
     JTextArea textArea;
     JTextField currentStatusField;
     ConstantsOfStyle styleConstants;
+    ActualElements actualElements;
 
 
     public AddEditAchievement(JFrame parentFrame, String achievements, JTextField currentStatusField,
-                              ConstantsOfStyle styleConstants) {
+                              ConstantsOfStyle styleConstants, ActualElements actualElements) {
         super(parentFrame, "Achievement", true);
         this.currentStatusField = currentStatusField;
         this.styleConstants = styleConstants;
+        this.actualElements = actualElements;
 
         this.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
         this.setLayout(new GridBagLayout());
@@ -86,7 +89,7 @@ public class AddEditAchievement extends JDialog implements ActionListener {
         if (e.getSource()==addButton) {
             returnedAchievements = textArea.getText();
             currentStatusField.setText(String.format("Changes are saved (%s: achievement)",
-                    CentralPanel.CURRENT_PUPIL.getNamesAndSurname()));
+                    actualElements.getCurrentPupil().getNamesAndSurname()));
             dispose();
         }
         if (e.getSource()==cancelButton){

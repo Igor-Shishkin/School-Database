@@ -1,5 +1,6 @@
-package school.database.GUI.addEditWondows;
+package school.database.GUI.addEditWindows;
 
+import school.database.GUI.ActualElements;
 import school.database.GUI.styleStorage.ConstantsOfStyle;
 import school.database.Main;
 import school.database.data.objects.User;
@@ -25,14 +26,16 @@ public class EditUsers extends JDialog implements ActionListener {
     GridBagConstraints c;
     ButtonGroup buttonGroup;
     ConstantsOfStyle styleConstants;
+    ActualElements actualElements;
 
     public EditUsers(JFrame parentFrame, Data dataList, JTextField currentStatusField,
-                     ConstantsOfStyle styleConstants) {
+                     ConstantsOfStyle styleConstants, ActualElements actualElements) {
         super(parentFrame, "Achievement", true);
         this.currentStatusField = currentStatusField;
         this.dataList = dataList;
         this.parentFrame = parentFrame;
         this.styleConstants = styleConstants;
+        this.actualElements = actualElements;
 
         setComponentsToGeneralPanel();
 
@@ -71,7 +74,7 @@ public class EditUsers extends JDialog implements ActionListener {
         usersPanel = new JPanel(new GridLayout(loginInfo.size(), 1, 5, 5));
         usersPanel.setBorder(BorderFactory.createLoweredSoftBevelBorder());
         for (JRadioButton rb : listOfUsers) {
-            if (rb.getText().substring(0, rb.getText().indexOf(" : ")).equals(Main.CURRENT_USER)) {
+            if (rb.getText().substring(0, rb.getText().indexOf(" : ")).equals(actualElements.getUserName())) {
                 rb.setEnabled(false);
             }
             rb.setFont(styleConstants.getTHE_MAIN_FONT().deriveFont(Font.PLAIN, 23));
@@ -126,7 +129,7 @@ public class EditUsers extends JDialog implements ActionListener {
                     rb.setFont(styleConstants.getTHE_MAIN_FONT().deriveFont(Font.PLAIN, 23));
                     usersPanel.add(rb);
                     buttonGroup.add(rb);
-                    if (rb.getText().substring(0, rb.getText().indexOf(" : ")).equals(Main.CURRENT_USER)) {
+                    if (rb.getText().substring(0, rb.getText().indexOf(" : ")).equals(actualElements.getUserName())) {
                         rb.setEnabled(false);
                     }
 
@@ -154,7 +157,7 @@ public class EditUsers extends JDialog implements ActionListener {
                     rb.setFont(styleConstants.getTHE_MAIN_FONT().deriveFont(Font.PLAIN, 23));
                     usersPanel.add(rb);
                     buttonGroup.add(rb);
-                    if (rb.getText().substring(0, rb.getText().indexOf(" : ")).equals(Main.CURRENT_USER)) {
+                    if (rb.getText().substring(0, rb.getText().indexOf(" : ")).equals(actualElements.getUserName())) {
                         rb.setEnabled(false);
                     }
                 }

@@ -1,8 +1,8 @@
 package school.database.GUI;
 
-import school.database.GUI.addEditWondows.AddEditAchievement;
-import school.database.GUI.addEditWondows.AddEditMarks;
-import school.database.GUI.addEditWondows.AddEditPupil;
+import school.database.GUI.addEditWindows.AddEditAchievement;
+import school.database.GUI.addEditWindows.AddEditMarks;
+import school.database.GUI.addEditWindows.AddEditPupil;
 import school.database.GUI.listeners.GradesTreeNodeMouseListener;
 import school.database.GUI.listeners.HandCursorForMouseMotionAdapter;
 import school.database.GUI.styleStorage.ConstantsOfStyle;
@@ -27,8 +27,6 @@ import java.util.List;
 import java.util.Objects;
 
 public class CentralPanel extends JPanel implements ActionListener, TreeSelectionListener {
-    public static int CURRENT_ID, CURRENT_GRADE;
-    public static Pupil CURRENT_PUPIL;
     private JPanel gradesPanel, pupilsPanel, informationPanel,  basisForGradesPanel,
             basisForInformationPanel;
     private final JPanel panelForFilterRadioButtons;
@@ -50,6 +48,7 @@ public class CentralPanel extends JPanel implements ActionListener, TreeSelectio
     private final JScrollPane paneForGradesTree;
     private final Data dataList;
     ConstantsOfStyle styleConstants;
+    ActualElements actualElements;
 //    private String id;
 //    HashMap<String,User> loginInfo;
 
@@ -59,7 +58,7 @@ public class CentralPanel extends JPanel implements ActionListener, TreeSelectio
                         JScrollPane paneForGradesTree, Data dataList,
                         DefaultTreeModel pupilsTreeModel, ArrayList<DefaultMutableTreeNode> nodesForPupilsPanel,
                         DefaultMutableTreeNode rootForPupilsTree,
-                        ConstantsOfStyle styleConstants,JTree treeForPupilsPanel) {
+                        ConstantsOfStyle styleConstants,JTree treeForPupilsPanel, ActualElements actualElements) {
         this.currentStatusField = currentStatusField;
         this.parentFrame = parentFrame;
         this.treeForGradePanel = treeForGradePanel;
@@ -74,6 +73,7 @@ public class CentralPanel extends JPanel implements ActionListener, TreeSelectio
         this.rootForPupilsTree = rootForPupilsTree;
         this.styleConstants = styleConstants;
         this.treeForPupilsPanel = treeForPupilsPanel;
+        this.actualElements = actualElements;
 
         this.setLayout(new BorderLayout());
 
@@ -94,11 +94,11 @@ public class CentralPanel extends JPanel implements ActionListener, TreeSelectio
         treeForGradePanel.addMouseListener(new GradesTreeNodeMouseListener(treeForGradePanel, rootForPupilsTree,
                 nodesForPupilsPanel, pupilsTreeModel, informationLabelForPupilPanel, pupilsPanel,
                 getAllPupilsRadioButton, showEditAchievementButton, showEditMarksButton, editDateButton,
-                deletePupilButton, dataList));
+                deletePupilButton, dataList, actualElements));
         treeForPupilsPanel.addMouseMotionListener(new HandCursorForMouseMotionAdapter(treeForPupilsPanel));
         treeForPupilsPanel.addMouseListener(new PupilsTreeNodeMouseListener(treeForPupilsPanel, pupilInformationLabel,
                 informationPanel, showEditAchievementButton, showEditMarksButton, editDateButton, deletePupilButton,
-                dataList));
+                dataList, actualElements));
     }
 
     private void setComponentsForGradePanel() {
@@ -327,11 +327,11 @@ public class CentralPanel extends JPanel implements ActionListener, TreeSelectio
                 TreePath path = treeForGradePanel.getSelectionPath();
                 if (path != null) {
                     DefaultMutableTreeNode node = (DefaultMutableTreeNode) path.getLastPathComponent();
-                    CURRENT_GRADE = getSelectedGrade(node);
+                    actualElements.setCurrentGrade(getSelectedGrade(node));
                     List<Pupil> list;
-                    list = (CURRENT_GRADE < 0)
+                    list = (actualElements.getCurrentGrade() < 0)
                             ? dataList.getListOfAllPupils()
-                            : dataList.getListOfPupilsOfCertainGrade(CURRENT_GRADE);
+                            : dataList.getListOfPupilsOfCertainGrade(actualElements.getCurrentGrade());
                     buildPupilsTree(list, node);
                 }
             }
@@ -405,8 +405,9 @@ public class CentralPanel extends JPanel implements ActionListener, TreeSelectio
 //                        }
 //                    }
                 AddEditAchievement addEditAchievement = new AddEditAchievement(parentFrame,
-                        CURRENT_PUPIL.getAchievement(), currentStatusField, styleConstants);
-                CURRENT_PUPIL.setAchievement(addEditAchievement.showDialogAndGetInput());
+                        actualElements.getCurrentPupil().getAchievement(), currentStatusField, styleConstants,
+                        actualElements);
+                actualElements.getCurrentPupil().setAchievement(addEditAchievement.showDialogAndGetInput());
 
 //                    AchievementDialog achievementDialog =  new AchievementDialog(parentFrame,
 //                            Objects.requireNonNull(PupilsDataList.getPupilWithCertainID(id)).getAchievement());
@@ -415,10 +416,10 @@ public class CentralPanel extends JPanel implements ActionListener, TreeSelectio
 
             if (e.getSource() == editDateButton) {
 
-                Pupil chosenPupil = CURRENT_PUPIL;
+                Pupil chosenPupil = actualElements.getCurrentPupil();
                 try {
                     new AddEditPupil(parentFrame, chosenPupil, currentStatusField, false, dataList,
-                            styleConstants);
+                            styleConstants, actualElements);
                 } catch (IOException | FontFormatException ex) {
                     throw new RuntimeException(ex);
                 }
@@ -432,21 +433,21 @@ public class CentralPanel extends JPanel implements ActionListener, TreeSelectio
             if (JOptionPane.showOptionDialog(parentFrame, "Do you want to delete this pupil?", "ARE YOU SURE?",
                     JOptionPane.OK_CANCEL_OPTION, JOptionPane.WARNING_MESSAGE, null,
                     responses, responses[0]) == 0) {
-                dataList.removePupil(CURRENT_PUPIL);
+                dataList.removePupil(actualElements.getCurrentPupil());
                 showEditMarksButton.setVisible(false);
                 showEditAchievementButton.setVisible(false);
                 editDateButton.setVisible(false);
                 deletePupilButton.setVisible(false);
                 if (getAllPupilsRadioButton.isSelected()) {
-                    buildPupilsTree(dataList.getListOfPupilsOfCertainGrade(CURRENT_GRADE), null);
+                    buildPupilsTree(dataList.getListOfPupilsOfCertainGrade(actualElements.getCurrentGrade()), null);
                 } else if (getPupilsWithAchievement.isSelected()) {
-                    buildPupilsTree(dataList.getPupilsWithAchievementList(CURRENT_GRADE), null);
+                    buildPupilsTree(dataList.getPupilsWithAchievementList(actualElements.getCurrentGrade()), null);
                 } else if (getNoPromotedPupilsRadioButton.isSelected()) {
-                    buildPupilsTree(dataList.getNoPromotedPupilsList(CURRENT_GRADE), null);
+                    buildPupilsTree(dataList.getNoPromotedPupilsList(actualElements.getCurrentGrade()), null);
                 } else if (getPupilsWithBirthdayInThisMonthRadioButton.isSelected()) {
-                    buildPupilsTree(dataList.getPupilsWithBirthdayInThisMonth(CURRENT_GRADE), null);
+                    buildPupilsTree(dataList.getPupilsWithBirthdayInThisMonth(actualElements.getCurrentGrade()), null);
                 } else {
-                    buildPupilsTree(dataList.getPupilsWithAwardBarList(CURRENT_GRADE), null);
+                    buildPupilsTree(dataList.getPupilsWithAwardBarList(actualElements.getCurrentGrade()), null);
                 }
                 pupilInformationLabel.setText("Pupil is removed");
                 currentStatusField.setText("Pupil is removed");
@@ -454,12 +455,12 @@ public class CentralPanel extends JPanel implements ActionListener, TreeSelectio
         }
         if (e.getSource() == showEditMarksButton) {
             AddEditMarks addEditMarks = null;
-            Pupil chosenPupil = dataList.getPupilWithCertainID(CURRENT_ID);
+            Pupil chosenPupil = dataList.getPupilWithCertainID(actualElements.getCurrentID());
             try {
                 assert chosenPupil != null;
                 addEditMarks = new AddEditMarks(parentFrame, chosenPupil.getMarks(), chosenPupil.isAwardBar(),
                         chosenPupil.isPromotionToNextGrade(), chosenPupil.getGrade(), currentStatusField, false,
-                        styleConstants);
+                        styleConstants, actualElements);
             } catch (IOException ex) {
                 throw new RuntimeException(ex);
             }
@@ -472,15 +473,18 @@ public class CentralPanel extends JPanel implements ActionListener, TreeSelectio
         if (e.getSource()==addPupilButton) {
             try {
                 Pupil tempPupil = new Pupil();
-                new AddEditPupil(parentFrame, tempPupil, currentStatusField, true, dataList, styleConstants);
+                new AddEditPupil(parentFrame, tempPupil, currentStatusField, true, dataList, styleConstants,
+                        actualElements);
                 if (tempPupil.getSurname()!=null) {
                     dataList.addPupilToList(tempPupil);
-                    CURRENT_PUPIL = tempPupil;
-                    CURRENT_GRADE = tempPupil.getGrade();
-                    CURRENT_ID = tempPupil.getId();
+                    actualElements.setCurrentPupil(tempPupil);
+                    actualElements.setCurrentGrade(tempPupil.getGrade());
+                    actualElements.setCurrentID(tempPupil.getId());
                     getAllPupilsRadioButton.setSelected(true);
-                    currentStatusField.setText(String.format("Pupil '%s' if added", CURRENT_PUPIL.getNamesAndSurname()));
-                    pupilInformationLabel.setText(CURRENT_PUPIL.getPupilInformation());
+                    currentStatusField.setText(String.format("Pupil '%s' if added",
+                            actualElements.getCurrentPupil().getNamesAndSurname()));
+                    pupilInformationLabel.setText(actualElements.getCurrentPupil().getPupilInformation());
+                    informationLabelForPupilPanel.setText(getTextForPupilsPanelLabel(tempPupil.getGrade()));
                     refreshPupilsTree();
                     TreePath path = treeForGradePanel.getSelectionPath();
                     assert path != null;
@@ -501,15 +505,15 @@ public class CentralPanel extends JPanel implements ActionListener, TreeSelectio
         List<Pupil> list;
 
         if (getAllPupilsRadioButton.isSelected()) {
-            list = dataList.getListOfPupilsOfCertainGrade(CURRENT_GRADE);
+            list = dataList.getListOfPupilsOfCertainGrade(actualElements.getCurrentGrade());
         } else if (getPupilsWithAchievement.isSelected()) {
-            list = dataList.getPupilsWithAchievementList(CURRENT_GRADE);
+            list = dataList.getPupilsWithAchievementList(actualElements.getCurrentGrade());
         } else if (getNoPromotedPupilsRadioButton.isSelected()) {
-            list = dataList.getNoPromotedPupilsList(CURRENT_GRADE);
+            list = dataList.getNoPromotedPupilsList(actualElements.getCurrentGrade());
         } else if (getPupilsWithBirthdayInThisMonthRadioButton.isSelected()) {
-            list = dataList.getPupilsWithBirthdayInThisMonth(CURRENT_GRADE);
+            list = dataList.getPupilsWithBirthdayInThisMonth(actualElements.getCurrentGrade());
         } else {
-            list = dataList.getPupilsWithAwardBarList(CURRENT_GRADE);
+            list = dataList.getPupilsWithAwardBarList(actualElements.getCurrentGrade());
         }
 
         int pupilNumberInTheList = 0;
@@ -519,34 +523,30 @@ public class CentralPanel extends JPanel implements ActionListener, TreeSelectio
             nodesForPupilsPanel.add(i, new DefaultMutableTreeNode(nameNode));
             rootForPupilsTree.add(nodesForPupilsPanel.get(i));
 
-            if (list.get(i).equals(CURRENT_PUPIL)) { pupilNumberInTheList = i; }
+            if (list.get(i).equals(actualElements.getCurrentPupil())) { pupilNumberInTheList = i; }
         }
 
 
         pupilsTreeModel.nodeStructureChanged(rootForPupilsTree);
-//        assert selectionRows !=null;
         treeForPupilsPanel.setSelectionRow(pupilNumberInTheList);
-        treeForGradePanel.setSelectionRow(CURRENT_GRADE+1);
+        treeForGradePanel.setSelectionRow(actualElements.getCurrentGrade()+1);
         pupilsPanel.repaint();
 }
 
     public void buildPupilsTree(List<Pupil> list, DefaultMutableTreeNode node) {
         rootForPupilsTree.removeAllChildren();
-        if (list.size() != 0) {
+        if (!list.isEmpty()) {
             for (int i = 0; i < list.size(); i++) {
-                String nameNode = (CURRENT_GRADE > -1)
+                String nameNode = (actualElements.getCurrentGrade() > -1)
                         ? String.format("%d. %s", i + 1, dataList.getIdNamesSurname(list.get(i)))
-
                         : dataList.getGradeIdNamesSurname(list.get(i));
                 nodesForPupilsPanel.add(i, new DefaultMutableTreeNode(nameNode));
                 rootForPupilsTree.add(nodesForPupilsPanel.get(i));
             }
 
-//            informationLabelForPupilPanel.setText(node.toString().concat(":"));
         } else {
             if (node != null) {
-                String textForLabel = String.format("<html>%s<br>there are no pupils in this class</html>",
-                        node.toString());
+                String textForLabel = String.format("<html>%s<br>there are no pupils in this class</html>", node);
                 informationLabelForPupilPanel.setText(textForLabel);
             }
         }
@@ -556,7 +556,7 @@ public class CentralPanel extends JPanel implements ActionListener, TreeSelectio
 
     @Override
     public void valueChanged(TreeSelectionEvent e) {
-
+        // TODO document why this method is empty
     }
     private void setStyleForComponentsFilterPane(Container container, Font font) {
         for (Component component : container.getComponents()) {
@@ -578,5 +578,28 @@ public class CentralPanel extends JPanel implements ActionListener, TreeSelectio
                 (Objects.equals(node.toString(), "Sixth class")) ? 6 :
                 (Objects.equals(node.toString(), "Seventh class")) ? 7 :
                 (Objects.equals(node.toString(), "Eighth class")) ? 8 : -1;
+    }
+    private String getTextForPupilsPanelLabel(int grade) {
+        if (grade == 0) {
+            return "Class zero: ";
+        } else if (grade==1) {
+            return  "The firth class";
+        } else if (grade==2) {
+            return  "The second class";
+        } else if (grade==3) {
+            return  "The third class";
+        } else if (grade==4) {
+            return  "The fourth class";
+        } else if (grade==5) {
+            return  "The fifth class";
+        } else if (grade==6) {
+            return  "The sixth class";
+        } else if (grade==7) {
+            return  "The seventh class";
+        } else if (grade==8) {
+            return  "The eighth class";
+        } else {
+            return  "";
+        }
     }
 }

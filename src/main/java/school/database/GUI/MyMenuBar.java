@@ -1,6 +1,6 @@
 package school.database.GUI;
 
-import school.database.GUI.addEditWondows.EditUsers;
+import school.database.GUI.addEditWindows.EditUsers;
 import school.database.GUI.styleStorage.ConstantsOfStyle;
 import school.database.Main;
 import school.database.data.Data;
@@ -25,8 +25,8 @@ import java.util.Objects;
 
 public class MyMenuBar implements ActionListener {
     private JMenu fileMenu, styleMenu, informationMenu, userMenu;
-    private JMenuItem openFileItem, newDatabaseItem, saveFileItem, exitItem, usersItem, ocean, changeAdmissionItem,
-            informationItem, contrast, saveAsFileItem;
+    private JMenuItem openFileItem, newDatabaseItem, saveFileItem, exitItem, usersItem, ocean,
+            informationItem, contrast, saveAsFileItem, changeAdmissionItem;
     private final JMenuBar menuBar;
     private final WriteReadDataToFile writeReadDataToFile;
     private final JFrame parentFrame;
@@ -42,6 +42,7 @@ public class MyMenuBar implements ActionListener {
     ArrayList<DefaultMutableTreeNode> nodesForPupilsPanel;
     ConstantsOfStyle styleConstants;
     JTree treeForPupilsPanel;
+    ActualElements actualElements;
 
 
     MyMenuBar(JFrame parentFrame, JTextField currentStatusField, JTree treeForGradePanel,
@@ -49,7 +50,7 @@ public class MyMenuBar implements ActionListener {
               JPanel centralPanel, JScrollPane paneForGradesTree, Data dataList,
               DefaultMutableTreeNode rootForPupilsTree, DefaultTreeModel pupilsTreeModel,
               ArrayList<DefaultMutableTreeNode> nodesForPupilsPanel, ConstantsOfStyle styleConstants,
-              JTree treeForPupilsPanel)
+              JTree treeForPupilsPanel, ActualElements actualElements)
                 throws IOException {
         this.parentFrame = parentFrame;
         this.currentStatusField = currentStatusField;
@@ -64,6 +65,7 @@ public class MyMenuBar implements ActionListener {
         this.nodesForPupilsPanel = nodesForPupilsPanel;
         this.styleConstants = styleConstants;
         this.treeForPupilsPanel = treeForPupilsPanel;
+        this.actualElements = actualElements;
 
         menuBar = new JMenuBar();
         writeReadDataToFile = new WriteReadDataToFile();
@@ -157,6 +159,13 @@ public class MyMenuBar implements ActionListener {
                         responses, responses[0]);
                 if (answer == JOptionPane.YES_OPTION) {
 
+                    dataList.setPupilsDataList(null);
+                    dataList.setLoginInfo(null);
+
+                    rootForPupilsTree.removeAllChildren();
+                    pupilsTreeModel.nodeStructureChanged(rootForPupilsTree);
+                    setComponentsInvisible(centralPanel);
+
                     JFileChooser fileChooser = new JFileChooser();
                     int response = fileChooser.showOpenDialog(null);
 
@@ -169,18 +178,19 @@ public class MyMenuBar implements ActionListener {
                             dataList.setDataObject(writeReadDataToFile.readDataFromFile(file));
                             currentStatusField.setText("Database loaded successfully");
                             ChangeLogin changeLogin = new ChangeLogin(parentFrame,
-                                    (HashMap<String, User>) dataList.getLoginInfo());
+                                    (HashMap<String, User>) dataList.getLoginInfo(), actualElements);
                             if (changeLogin.showAndReturnIsSuccess()) {
                                 String nameOfFile = file.getName();
                                 parentFrame.setTitle(nameOfFile);
                                 treeForGradePanel.setVisible(true);
                                 panelForFilterRadioButtons.setVisible(true);
                                 addPupilButton.setVisible
-                                        (dataList.getLoginInfo().get(Main.CURRENT_USER).getPermissions() == Permissions.DIRECTOR);
+                                        (actualElements.getActualPermissions() == Permissions.DIRECTOR);
                                 paneForGradesTree.setVisible(true);
                                 changeAdmissionItem.setEnabled(true);
                                 saveFileItem.setEnabled(true);
                                 saveAsFileItem.setEnabled(true);
+                                usersItem.setEnabled(actualElements.getActualPermissions()==Permissions.DIRECTOR);
                             } else {
                                 dataList.setPupilsDataList(null);
                                 dataList.setPupilsDataList(null);
@@ -198,6 +208,10 @@ public class MyMenuBar implements ActionListener {
                         }
                     }
                 } else if (answer == JOptionPane.NO_OPTION) {
+
+                    dataList.setPupilsDataList(null);
+                    dataList.setLoginInfo(null);
+
                     rootForPupilsTree.removeAllChildren();
                     pupilsTreeModel.nodeStructureChanged(rootForPupilsTree);
                     setComponentsInvisible(centralPanel);
@@ -240,19 +254,19 @@ public class MyMenuBar implements ActionListener {
                                 dataList.setDataObject(writeReadDataToFile.readDataFromFile(file));
                                 currentStatusField.setText("Database loaded successfully");
                                 ChangeLogin changeLogin = new ChangeLogin(parentFrame,
-                                        (HashMap<String, User>)dataList.getLoginInfo());
+                                        (HashMap<String, User>)dataList.getLoginInfo(), actualElements);
                                 if (changeLogin.showAndReturnIsSuccess()) {
                                     String nameOfFile = file.getName();
                                     parentFrame.setTitle(nameOfFile);
                                     treeForGradePanel.setVisible(true);
                                     panelForFilterRadioButtons.setVisible(true);
                                     addPupilButton.setVisible
-                                            (dataList.getLoginInfo()
-                                                    .get(Main.CURRENT_USER).getPermissions() == Permissions.DIRECTOR);
+                                            (actualElements.getActualPermissions() == Permissions.DIRECTOR);
                                     paneForGradesTree.setVisible(true);
                                     changeAdmissionItem.setEnabled(true);
                                     saveFileItem.setEnabled(true);
                                     exitItem.setEnabled(true);
+                                    usersItem.setEnabled(actualElements.getActualPermissions()==Permissions.DIRECTOR);
                                 } else {
                                     dataList.setPupilsDataList(null);
                                     dataList.setPupilsDataList(null);
@@ -289,20 +303,19 @@ public class MyMenuBar implements ActionListener {
                         dataList.setDataObject(writeReadDataToFile.readDataFromFile(file));
                         currentStatusField.setText("Database loaded successfully");
                         ChangeLogin changeLogin = new ChangeLogin(parentFrame,
-                                (HashMap<String, User>)dataList.getLoginInfo());
+                                (HashMap<String, User>)dataList.getLoginInfo(), actualElements);
                         if (changeLogin.showAndReturnIsSuccess()) {
                             String nameOfFile = file.getName();
                             parentFrame.setTitle(nameOfFile);
                             treeForGradePanel.setVisible(true);
                             panelForFilterRadioButtons.setVisible(true);
                             addPupilButton.setVisible
-                                    (dataList.getLoginInfo().get(Main.CURRENT_USER)
-                                            .getPermissions() == Permissions.DIRECTOR);
+                                    (actualElements.getActualPermissions() == Permissions.DIRECTOR);
                             paneForGradesTree.setVisible(true);
                             changeAdmissionItem.setEnabled(true);
                             saveFileItem.setEnabled(true);
                             saveAsFileItem.setEnabled(true);
-                            usersItem.setEnabled(true);
+                            usersItem.setEnabled(actualElements.getActualPermissions()==Permissions.DIRECTOR);
                         } else {
                             dataList.setPupilsDataList(null);
                             dataList.setPupilsDataList(null);
@@ -389,7 +402,7 @@ public class MyMenuBar implements ActionListener {
                     dataList.setPupilsDataList(new ArrayList<>());
                     dataList.setLoginInfo(new HashMap<>());
                     dataList.getLoginInfo().put("Director", new User("0000", Permissions.DIRECTOR));
-                    Main.CURRENT_USER = "Director";
+                    actualElements.setActualPermissions(Permissions.DIRECTOR);
                     JOptionPane.showMessageDialog(null,
                             "\t\tDatabase is created!\nUser 'Director' with '0000' password \n is added",
                             "SUCCESS",
@@ -421,7 +434,7 @@ public class MyMenuBar implements ActionListener {
                     dataList.setPupilsDataList(new ArrayList<>());
                     dataList.setLoginInfo(new HashMap<>());
                     dataList.getLoginInfo().put("Director", new User("0000", Permissions.DIRECTOR));
-                    Main.CURRENT_USER = "Director";
+                    actualElements.setActualPermissions(Permissions.DIRECTOR);
                     JOptionPane.showMessageDialog(null,
                             "\t\tDatabase is created!\nUser 'Director' with '0000' password \n is added",
                             "SUCCESS",
@@ -440,7 +453,7 @@ public class MyMenuBar implements ActionListener {
                 dataList.setPupilsDataList(new ArrayList<>());
                 dataList.setLoginInfo(new HashMap<>());
                 dataList.getLoginInfo().put("Director", new User("0000", Permissions.DIRECTOR));
-                Main.CURRENT_USER = "Director";
+                actualElements.setActualPermissions(Permissions.DIRECTOR);
                 JOptionPane.showMessageDialog(null,
                         "\t\tDatabase is created!\nUser 'Director' with '0000' password \n is added",
                         "SUCCESS",
@@ -463,7 +476,9 @@ public class MyMenuBar implements ActionListener {
 
             fileMenu.setBackground(Color.BLACK);
             menuBar.setBackground(styleConstants.getACTUAL_SET_OF_COLORS().get(5));
-            setMenuBarColors(Color.BLUE, styleConstants.getACTUAL_SET_OF_COLORS().get(2));
+            setMenuBarColors(styleConstants.getACTUAL_SET_OF_COLORS().get(2),
+                    styleConstants.getACTUAL_SET_OF_COLORS().get(5));
+            currentStatusField.setForeground(styleConstants.getACTUAL_SET_OF_COLORS().get(2));
         }
         if (e.getSource() == ocean) {
             styleConstants.setActualSetOfColors(styleConstants.getSET_OF_COLORS_OCEAN());
@@ -471,21 +486,24 @@ public class MyMenuBar implements ActionListener {
             centralPanel.repaint();
 
             menuBar.setBackground(styleConstants.getACTUAL_SET_OF_COLORS().get(5));
-            setMenuBarColors(styleConstants.getACTUAL_SET_OF_COLORS().get(2), styleConstants.getACTUAL_SET_OF_COLORS().get(4));
+            setMenuBarColors(styleConstants.getACTUAL_SET_OF_COLORS().get(2),
+                    styleConstants.getACTUAL_SET_OF_COLORS().get(5));
         }
         if (e.getSource() == changeAdmissionItem) {
             ChangeLogin changeLogin = new ChangeLogin(parentFrame,
-                    (HashMap<String, User>)dataList.getLoginInfo());
+                    (HashMap<String, User>)dataList.getLoginInfo(), actualElements);
             changeLogin.showAndReturnIsSuccess();
+            usersItem.setEnabled(actualElements.getActualPermissions()==Permissions.DIRECTOR);
             addPupilButton.setVisible
-                    (dataList.getLoginInfo().get(Main.CURRENT_USER).getPermissions() == Permissions.DIRECTOR);
+                    (actualElements.getActualPermissions() == Permissions.DIRECTOR);
             currentStatusField.setText("Actual permissions: "
-                    .concat(dataList.getLoginInfo().get(Main.CURRENT_USER).getPermissions().toString()));
+                    .concat(actualElements.getActualPermissions().toString()));
         }
         if (e.getSource() == usersItem) {
-            new EditUsers(parentFrame, dataList, currentStatusField, styleConstants);
+            new EditUsers(parentFrame, dataList, currentStatusField, styleConstants, actualElements);
         }
     }
+
 
     private void refreshMenu(Container container) {
         for (Component component : container.getComponents()) {
@@ -568,8 +586,8 @@ public class MyMenuBar implements ActionListener {
             }
             currentStatusField.setForeground(styleConstants.getACTUAL_SET_OF_COLORS().get(0));
             currentStatusField.setBackground(styleConstants.getACTUAL_SET_OF_COLORS().get(5));
-            setMenuBarColors(styleConstants.getACTUAL_SET_OF_COLORS().get(2),
-                    styleConstants.getACTUAL_SET_OF_COLORS().get(5));
+//            setMenuBarColors(styleConstants.getACTUAL_SET_OF_COLORS().get(2),
+//                    styleConstants.getACTUAL_SET_OF_COLORS().get(5));
 
         }
     }
