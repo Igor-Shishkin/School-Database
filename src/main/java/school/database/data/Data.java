@@ -7,7 +7,7 @@ import java.time.LocalDate;
 import java.util.*;
 import java.util.stream.Collectors;
 
-public class Data {
+public class Data{
     private HashMap<String, User> loginInfo = new HashMap<>();
     private List<Pupil> pupilsDataList;
 
@@ -141,12 +141,11 @@ public class Data {
         }
     }
     public int getMinPossibleID() {
-        if (!pupilsDataList.isEmpty()) {
-            for (int i = 1;
-                 i < pupilsDataList.stream()
-                         .max(Comparator.comparingInt(Pupil::getId))
-                         .get().getId()+5;
-                 i++) {
+        if (!this.getPupilsDataList().isEmpty()) {
+            int maxID = pupilsDataList.stream()
+                    .max(Comparator.comparingInt(Pupil::getId))
+                    .get().getId()+5;
+            for (int i = 1; i < maxID; i++) {
                 int finalI = i;
                 if (pupilsDataList.stream()
                         .noneMatch(pupil -> pupil.getId() == finalI)) {

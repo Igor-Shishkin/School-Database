@@ -1,8 +1,8 @@
 package school.database;
 
-import school.database.GUI.ActualElements;
-import school.database.GUI.MainWindow;
-import school.database.GUI.styleStorage.ConstantsOfStyle;
+import school.database.gui.ActualElements;
+import school.database.gui.MainWindow;
+import school.database.gui.styleStorage.ConstantsOfStyle;
 import school.database.data.Data;
 
 import javax.swing.*;
@@ -32,13 +32,8 @@ public class Main {
         UIManager.put("MenuBar.background", new Color(0xac92a6));
         UIManager.put("Menu.foreground", Color.green);
         UIManager.put("MenuItem.opaque", true);
-//        mainWindow = new MainWindow(dataList);
+
         new MainWindow(dataList, styleConstants, actualElements);
 
     }
-
-    public static void sleep (int time) throws InterruptedException {
-        Thread.sleep(time);
-    }
-
 }
