@@ -113,9 +113,10 @@ public class AddEditMarks extends JDialog implements ActionListener {
     private void setButtons() {
         addButton = new JButton("Done!");
         cancelButton = new JButton("Cancel");
-        addButton.setPreferredSize(new Dimension(10, 30));
+        addButton.setPreferredSize(new Dimension(10, 50));
+        addButton.setBorder(BorderFactory.createLineBorder(this.getBackground(),3));
         cancelButton.setPreferredSize(new Dimension(10, 50));
-        cancelButton.setBorder(BorderFactory.createLineBorder(this.getBackground(),10));
+        cancelButton.setBorder(BorderFactory.createLineBorder(this.getBackground(),3));
         cancelButton.addActionListener(this);
         addButton.addActionListener(this);
     }
@@ -157,7 +158,7 @@ public class AddEditMarks extends JDialog implements ActionListener {
                     averageScoreLabel[i].setText(String.format("%02.1f",
                             (quantityEntered!=0&&sum!=0)?sum/quantityEntered:0f));
                     averageScoreLabel[i].setBackground((isAllMarksInColumn &&
-                            markComboBox[QUANTITY_OF_MARK_COMBOBOX-7+(i)].getSelectedIndex()!=-1)
+                            markComboBox[QUANTITY_OF_MARK_COMBOBOX-4+(i)].getSelectedIndex()!=-1)
                             ? styleConstants.getCOLOR_FOR_RIGHT_FORMAT() : this.getBackground());
                 }
 
@@ -196,7 +197,7 @@ public class AddEditMarks extends JDialog implements ActionListener {
     private void setActionListenerForBackGroundOfCombobox() {
         for (int i = 0; i < QUANTITY_OF_MARK_COMBOBOX; i++) {
             markComboBox[i].addActionListener(new MarkComboBoxListener(markComboBox, i, QUANTITY_OF_MARK_COMBOBOX,
-                    averageScoreLabel, this.getBackground(), promotionLayeredPane, flagLabel, styleConstants));
+                    averageScoreLabel, panelForComboBox.getBackground(), promotionLayeredPane, flagLabel, styleConstants));
         }
     }
 
@@ -328,9 +329,11 @@ public class AddEditMarks extends JDialog implements ActionListener {
             }
             if (component instanceof JLabel || component instanceof JPanel) {
                 component.setBackground(styleConstants.getACTUAL_SET_OF_COLORS().get(0));
+                component.setForeground(styleConstants.getACTUAL_SET_OF_COLORS().get(2));
             }
             if (component instanceof JComboBox) {
                 component.setForeground(styleConstants.getACTUAL_SET_OF_COLORS().get(2));
+                component.setBackground(styleConstants.getACTUAL_SET_OF_COLORS().get(11));
             }
             if (component instanceof Container) {
                 setStyleForWindow((Container) component);

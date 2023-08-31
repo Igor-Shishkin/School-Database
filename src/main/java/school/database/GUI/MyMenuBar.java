@@ -2,7 +2,6 @@ package school.database.GUI;
 
 import school.database.GUI.addEditWindows.EditUsers;
 import school.database.GUI.styleStorage.ConstantsOfStyle;
-import school.database.Main;
 import school.database.data.Data;
 import school.database.data.WriteReadDataToFile;
 import school.database.data.objects.Permissions;
@@ -26,7 +25,7 @@ import java.util.Objects;
 public class MyMenuBar implements ActionListener {
     private JMenu fileMenu, styleMenu, informationMenu, userMenu;
     private JMenuItem openFileItem, newDatabaseItem, saveFileItem, exitItem, usersItem, ocean,
-            informationItem, contrast, saveAsFileItem, changeAdmissionItem;
+            informationItem, nightfall, saveAsFileItem, changeAdmissionItem;
     private final JMenuBar menuBar;
     private final WriteReadDataToFile writeReadDataToFile;
     private final JFrame parentFrame;
@@ -43,6 +42,7 @@ public class MyMenuBar implements ActionListener {
     ConstantsOfStyle styleConstants;
     JTree treeForPupilsPanel;
     ActualElements actualElements;
+    boolean isNew = false;
 
 
     MyMenuBar(JFrame parentFrame, JTextField currentStatusField, JTree treeForGradePanel,
@@ -84,7 +84,7 @@ public class MyMenuBar implements ActionListener {
         informationItem.addActionListener(this);
         usersItem.addActionListener(this);
         exitItem.addActionListener(this);
-        contrast.addActionListener(this);
+        nightfall.addActionListener(this);
         ocean.addActionListener(this);
     }
 
@@ -109,7 +109,7 @@ public class MyMenuBar implements ActionListener {
         changeAdmissionItem = new JMenuItem("Change admission");
         informationItem = new JMenuItem("Information");
         ocean = new JMenuItem("Ocean");
-        contrast = new JMenuItem("Contrast");
+        nightfall = new JMenuItem("Nightfall");
         saveAsFileItem = new JMenuItem("Save as...");
 
 
@@ -120,7 +120,7 @@ public class MyMenuBar implements ActionListener {
         fileMenu.add(exitItem);
 
         styleMenu.add(ocean);
-        styleMenu.add(contrast);
+        styleMenu.add(nightfall);
         informationMenu.add(informationItem);
         userMenu.add(changeAdmissionItem);
         userMenu.add(usersItem);
@@ -418,18 +418,28 @@ public class MyMenuBar implements ActionListener {
                     rootForPupilsTree.removeAllChildren();
                     pupilsTreeModel.nodeStructureChanged(rootForPupilsTree);
                     setComponentsInvisible(centralPanel);
-                    try {
-                        writeReadDataToFile.writeDataToFile(dataList.getDataToFile(), file);
-                        currentStatusField.setText("Database is saved successfully");
-                        JOptionPane.showMessageDialog(null,
-                                "\t\tDatabase is saved!", "SUCCESS",
-                                JOptionPane.PLAIN_MESSAGE);
-                    } catch (JsonProcessingException ex) {
-                        JOptionPane.showMessageDialog(null,
-                                "\t\tI can't write this file!\nCALL TECH SUPPORT OR ELSE!", "title",
-                                JOptionPane.ERROR_MESSAGE);
-                        currentStatusField.setText("Error. I can't save this data");
-                        throw new RuntimeException(ex);
+
+                    if (file==null) {
+                        JFileChooser fileChooser = new JFileChooser();
+                        int response = fileChooser.showSaveDialog(null);
+
+                        if (response == JFileChooser.APPROVE_OPTION) {
+                            file = new File(fileChooser.getSelectedFile().getAbsolutePath());
+                        }
+
+                        try {
+                            writeReadDataToFile.writeDataToFile(dataList.getDataToFile(), file);
+                            currentStatusField.setText("Database is saved successfully");
+                            JOptionPane.showMessageDialog(null,
+                                    "\t\tDatabase is saved!", "SUCCESS",
+                                    JOptionPane.PLAIN_MESSAGE);
+                        } catch (JsonProcessingException ex) {
+                            JOptionPane.showMessageDialog(null,
+                                    "\t\tI can't write this file!\nCALL TECH SUPPORT OR ELSE!", "title",
+                                    JOptionPane.ERROR_MESSAGE);
+                            currentStatusField.setText("Error. I can't save this data");
+                            throw new RuntimeException(ex);
+                        }
                     }
                     dataList.setPupilsDataList(new ArrayList<>());
                     dataList.setLoginInfo(new HashMap<>());
@@ -469,8 +479,8 @@ public class MyMenuBar implements ActionListener {
 
             }
         }
-        if (e.getSource() == contrast) {
-            styleConstants.setActualSetOfColors(styleConstants.getSET_OF_COLORS_CONTRAST());
+        if (e.getSource() == nightfall) {
+            styleConstants.setActualSetOfColors(styleConstants.getSET_OF_COLORS_NIGHTFALL());
             refreshPanels(centralPanel);
             centralPanel.repaint();
 
@@ -479,6 +489,10 @@ public class MyMenuBar implements ActionListener {
             setMenuBarColors(styleConstants.getACTUAL_SET_OF_COLORS().get(2),
                     styleConstants.getACTUAL_SET_OF_COLORS().get(5));
             currentStatusField.setForeground(styleConstants.getACTUAL_SET_OF_COLORS().get(2));
+
+            styleConstants.setCOLOR_FOR_RIGHT_FORMAT(new Color(0x003B00));
+            styleConstants.setCOLOR_FOR_WRONG_FORMAT(new Color(0x482734));
+            styleConstants.setCOLOR_NEUTRAL_FORMAT(new Color(0xBB463900, true));
         }
         if (e.getSource() == ocean) {
             styleConstants.setActualSetOfColors(styleConstants.getSET_OF_COLORS_OCEAN());
@@ -488,6 +502,9 @@ public class MyMenuBar implements ActionListener {
             menuBar.setBackground(styleConstants.getACTUAL_SET_OF_COLORS().get(5));
             setMenuBarColors(styleConstants.getACTUAL_SET_OF_COLORS().get(2),
                     styleConstants.getACTUAL_SET_OF_COLORS().get(5));
+            styleConstants.setCOLOR_FOR_RIGHT_FORMAT(new Color(0xD2FFD2));
+            styleConstants.setCOLOR_FOR_WRONG_FORMAT(new Color(0xEAD1DC));
+            styleConstants.setCOLOR_NEUTRAL_FORMAT(new Color(0xBBF8E690, true));
         }
         if (e.getSource() == changeAdmissionItem) {
             ChangeLogin changeLogin = new ChangeLogin(parentFrame,
@@ -532,7 +549,7 @@ public class MyMenuBar implements ActionListener {
         ocean.setForeground(foreground);
         changeAdmissionItem.setForeground(foreground);
         informationItem.setForeground(foreground);
-        contrast.setForeground(foreground);
+        nightfall.setForeground(foreground);
 
         menuBar.setBackground(background);
 
@@ -550,7 +567,7 @@ public class MyMenuBar implements ActionListener {
         ocean.setBackground(background);
         changeAdmissionItem.setBackground(background);
         informationItem.setBackground(background);
-        contrast.setBackground(background);
+        nightfall.setBackground(background);
     }
 
     public JMenuBar getMenuBar() {

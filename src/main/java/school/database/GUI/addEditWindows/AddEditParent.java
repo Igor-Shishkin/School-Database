@@ -420,7 +420,9 @@ public class AddEditParent extends JDialog implements ActionListener {
                     "Would you like to exit? \n Changes won't be saved",
                     "Are you sure?", JOptionPane.OK_CANCEL_OPTION, JOptionPane.WARNING_MESSAGE, null,
                     responses, responses[0]);
-            if (answer == 0) { dispose(); }
+            if (answer == 0) {
+                dispose();
+            }
         }
         if (e.getSource() == setAddressCheckBox) {
             if (setAddressCheckBox.isSelected()) {
@@ -450,25 +452,31 @@ public class AddEditParent extends JDialog implements ActionListener {
             }
         }
     }
+
     private void setStyleForWindow(Container container) {
         for (Component component : container.getComponents()) {
             if (component instanceof JButton) {
                 component.setBackground(styleConstants.getACTUAL_SET_OF_COLORS().get(5));
                 component.setForeground(styleConstants.getACTUAL_SET_OF_COLORS().get(2));
             }
-            if (component instanceof JLabel || component instanceof JPanel) {
+            if (component instanceof JLabel || component instanceof JPanel ||
+                    component instanceof JCheckBox) {
                 component.setBackground(styleConstants.getACTUAL_SET_OF_COLORS().get(10));
+            }
+            if (component instanceof JLabel || component instanceof JTextField || component instanceof JComboBox) {
+                component.setForeground(styleConstants.getACTUAL_SET_OF_COLORS().get(6));
             }
             if (component instanceof Container) {
                 setStyleForWindow((Container) component);
             }
         }
     }
+
     private void setTextFieldsStyle(Container container) {
         for (Component component : container.getComponents()) {
             if (component instanceof JTextField) {
-                component.setBackground(styleConstants.getACTUAL_SET_OF_COLORS().get(0));
-                component.setForeground(styleConstants.getACTUAL_SET_OF_COLORS().get(2));
+                component.setBackground(styleConstants.getACTUAL_SET_OF_COLORS().get(11));
+                component.setForeground(styleConstants.getACTUAL_SET_OF_COLORS().get(6));
             }
             if (component instanceof Container) {
                 setTextFieldsStyle((Container) component);

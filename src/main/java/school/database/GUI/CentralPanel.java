@@ -473,6 +473,7 @@ public class CentralPanel extends JPanel implements ActionListener, TreeSelectio
         if (e.getSource()==addPupilButton) {
             try {
                 Pupil tempPupil = new Pupil();
+                tempPupil.setGrade(actualElements.getCurrentGrade());
                 new AddEditPupil(parentFrame, tempPupil, currentStatusField, true, dataList, styleConstants,
                         actualElements);
                 if (tempPupil.getSurname()!=null) {

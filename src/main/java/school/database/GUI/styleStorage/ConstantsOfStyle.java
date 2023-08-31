@@ -27,9 +27,9 @@ public class ConstantsOfStyle {
         }
     }
 
-    private final Color COLOR_FOR_RIGHT_FORMAT = new Color(0xD2FFD2);
-    private final Color COLOR_FOR_WRONG_FORMAT = new Color(0xEAD1DC);
-    private final Color COLOR_NEUTRAL_FORMAT = new Color(0xBBF8E690, true);
+    private Color COLOR_FOR_RIGHT_FORMAT = new Color(0xD2FFD2);
+    private Color COLOR_FOR_WRONG_FORMAT = new Color(0xEAD1DC);
+    private Color COLOR_NEUTRAL_FORMAT = new Color(0xBBF8E690, true);
 
 
     private final Path iconsPath = Paths.get("src", "main", "resources", "icons");
@@ -51,7 +51,7 @@ public class ConstantsOfStyle {
             };
     private final List<Color> ACTUAL_SET_OF_COLORS = new ArrayList<>(15);
     private final List<Color> SET_OF_COLORS_OCEAN = new ArrayList<>(15);
-    private final List<Color> SET_OF_COLORS_CONTRAST = new ArrayList<>(15);
+    private final List<Color> SET_OF_COLORS_NIGHTFALL = new ArrayList<>(15);
 
     public ConstantsOfStyle() {
         setColors();
@@ -64,27 +64,28 @@ public class ConstantsOfStyle {
         SET_OF_COLORS_OCEAN.add(new Color(0x10FF00));
         SET_OF_COLORS_OCEAN.add(new Color(0xF8B30D));
         SET_OF_COLORS_OCEAN.add(new Color(0xA68331));
-        SET_OF_COLORS_OCEAN.add(new Color(0xFF969B));
+        SET_OF_COLORS_OCEAN.add(new Color(0x3D3800));
         SET_OF_COLORS_OCEAN.add(new Color(0xFA326E));
         SET_OF_COLORS_OCEAN.add(new Color(0x155D00));
         SET_OF_COLORS_OCEAN.add(new Color(0xA3FDF6));
         SET_OF_COLORS_OCEAN.add(new Color(0x8BBFFD));
+        SET_OF_COLORS_OCEAN.add(new Color(0xC7FDF9));
 
-        SET_OF_COLORS_CONTRAST.add(new Color(0x2C313A));
-        SET_OF_COLORS_CONTRAST.add(new Color(0x40FF00));
-        SET_OF_COLORS_CONTRAST.add(new Color(0xF6EF9A));
-        SET_OF_COLORS_CONTRAST.add(new Color(0x003AC5));
-        SET_OF_COLORS_CONTRAST.add(new Color(0x064F00));
-        SET_OF_COLORS_CONTRAST.add(new Color(0x02147E));
-        SET_OF_COLORS_CONTRAST.add(new Color(0x9FA3FD));
-        SET_OF_COLORS_CONTRAST.add(new Color(0x4D0000));
-        SET_OF_COLORS_CONTRAST.add(new Color(0x27C701));
-        SET_OF_COLORS_CONTRAST.add(new Color(0xB125D3));
-        SET_OF_COLORS_CONTRAST.add(new Color(0x404A57));
-        SET_OF_COLORS_CONTRAST.add(new Color(0x404A57));
+        SET_OF_COLORS_NIGHTFALL.add(new Color(0x2C313A));
+        SET_OF_COLORS_NIGHTFALL.add(new Color(0x40FF00));
+        SET_OF_COLORS_NIGHTFALL.add(new Color(0xF6EF9A));
+        SET_OF_COLORS_NIGHTFALL.add(new Color(0x003AC5));
+        SET_OF_COLORS_NIGHTFALL.add(new Color(0x064F00));
+        SET_OF_COLORS_NIGHTFALL.add(new Color(0x02147E));
+        SET_OF_COLORS_NIGHTFALL.add(new Color(0xA6FFF0));
+        SET_OF_COLORS_NIGHTFALL.add(new Color(0x4D0000));
+        SET_OF_COLORS_NIGHTFALL.add(new Color(0x27C701));
+        SET_OF_COLORS_NIGHTFALL.add(new Color(0xB125D3));
+        SET_OF_COLORS_NIGHTFALL.add(new Color(0x172817));
+        SET_OF_COLORS_NIGHTFALL.add(new Color(0x002148));
     }
     public void setActualSetOfColors(List<Color> listOfColors) {
-        for (int i = 0; i < 11; i++) {
+        for (int i = 0; i < 12; i++) {
             ACTUAL_SET_OF_COLORS.add(i, listOfColors.get(i));
         }
     }
@@ -141,8 +142,8 @@ public class ConstantsOfStyle {
         return SET_OF_COLORS_OCEAN;
     }
 
-    public List<Color> getSET_OF_COLORS_CONTRAST() {
-        return SET_OF_COLORS_CONTRAST;
+    public List<Color> getSET_OF_COLORS_NIGHTFALL() {
+        return SET_OF_COLORS_NIGHTFALL;
     }
     public Font getTHE_MAIN_FONT() {
         return THE_MAIN_FONT;
@@ -150,5 +151,17 @@ public class ConstantsOfStyle {
 
     public BufferedImage getFLAG_IMAGE() {
         return FLAG_IMAGE;
+    }
+
+    public void setCOLOR_FOR_RIGHT_FORMAT(Color COLOR_FOR_RIGHT_FORMAT) {
+        this.COLOR_FOR_RIGHT_FORMAT = COLOR_FOR_RIGHT_FORMAT;
+    }
+
+    public void setCOLOR_FOR_WRONG_FORMAT(Color COLOR_FOR_WRONG_FORMAT) {
+        this.COLOR_FOR_WRONG_FORMAT = COLOR_FOR_WRONG_FORMAT;
+    }
+
+    public void setCOLOR_NEUTRAL_FORMAT(Color COLOR_NEUTRAL_FORMAT) {
+        this.COLOR_NEUTRAL_FORMAT = COLOR_NEUTRAL_FORMAT;
     }
 }
