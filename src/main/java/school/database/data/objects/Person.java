@@ -1,12 +1,16 @@
 package school.database.data.objects;
 
+import school.database.exceptiones.RequiredFieldIsEmpty;
+import school.database.exceptiones.WrongPeselException;
+
+import java.util.regex.Pattern;
+
 public abstract class Person {
 
     private String name;
     private String secondName;
     private String surname;
     private char gender;
-
     private Address address;
     private String pesel;
 
@@ -18,6 +22,18 @@ public abstract class Person {
         this.gender = gender;
         this.address = address;
         this.pesel = pesel;
+        if (name==null || name.isEmpty()) {
+            throw new RequiredFieldIsEmpty("No name entered");
+        }
+        if (surname==null || surname.isEmpty()) {
+            throw new RequiredFieldIsEmpty("No surname entered");
+        }
+        if (pesel==null) {
+            throw new WrongPeselException("Pesel can't be null");
+        }
+        if (!Pattern.compile("^\\d{11}$").matcher(pesel).matches()){
+            throw new WrongPeselException("Pesel number must contain 11 digits");
+        }
     }
 
     protected Person() {
@@ -30,6 +46,9 @@ public abstract class Person {
 
     public void setName(String name) {
         this.name = name;
+        if (name==null || name.isEmpty()) {
+            throw new RequiredFieldIsEmpty("No name entered");
+        }
     }
 
     public String getSecondName() {
@@ -54,6 +73,9 @@ public abstract class Person {
 
     public void setSurname(String surname) {
         this.surname = surname;
+        if (surname==null || surname.isEmpty()) {
+            throw new RequiredFieldIsEmpty("No surname entered");
+        }
     }
 
     public Address getAddress() {
@@ -70,18 +92,11 @@ public abstract class Person {
 
     public void setPesel(String pesel) {
         this.pesel = pesel;
+        if (pesel==null) {
+            throw new WrongPeselException("Pesel can't be null");
+        }
+        if (!Pattern.compile("^\\d{11}$").matcher(pesel).matches()){
+            throw new WrongPeselException("Pesel number must contain 11 digits");
+        }
     }
-
-    @Override
-    public String toString() {
-        return "Person: " +
-                "name='" + name + '\'' +
-                ", secondName='" + secondName + '\'' +
-                ", surname='" + surname + '\'' +
-                ", gender=" + gender +
-                "\naddress=" + address +
-                "\npesel='" + pesel + '\'' +
-                '}';
-    }
-
 }

@@ -38,13 +38,4 @@ public class Parent extends Person{
         this.eMail = eMail;
     }
 
-
-
-    @Override
-    public String toString() {
-        return super.toString() +
-                "telephone=" + telephone +
-                ", eMail='" + eMail + '\'' +
-                '}';
-    }
 }

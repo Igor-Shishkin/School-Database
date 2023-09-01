@@ -20,8 +20,8 @@ public class Marks{
     private int[] physicsMark;
     private int[] geographyMark;
     private int[] behaviorMark;
-    public Marks() {}
 
+    public Marks() {}
     public Marks(int mathI, int mathII, int mathIII, int mathYearly,
                  int polishI, int polishII, int polishIII, int polishYearly,
                  int englishI, int englishII, int englishIII, int englishYearly,

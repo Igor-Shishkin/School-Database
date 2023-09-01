@@ -2,6 +2,8 @@ package school.database.data.objects;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import school.database.data.Data;
+import school.database.exceptiones.WrongGradeNamberException;
 
 import java.time.LocalDate;
 import java.util.Objects;
@@ -19,7 +21,6 @@ public class Pupil extends Person {
     private Marks marks;
     private boolean awardBar;
     private boolean promotionToNextGrade;
-
 
     public Pupil() {
         super();
@@ -54,6 +55,9 @@ public class Pupil extends Person {
     }
 
     public void setGrade(int grade) {
+        if (grade<0 || grade>8) {
+            throw new WrongGradeNamberException("Class number must be between 0 and 8");
+        }
         this.grade = grade;
     }
 
