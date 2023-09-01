@@ -1,4 +1,4 @@
-package school.database.gui.addEditWindows;
+package school.database.gui.add_edit_windows;
 
 import school.database.gui.ActualElements;
 import school.database.gui.listeners.*;
@@ -6,8 +6,6 @@ import school.database.gui.styleStorage.ConstantsOfStyle;
 import school.database.data.Data;
 import school.database.data.objects.Marks;
 import school.database.data.objects.Pupil;
-//import schoolDatabaseProgram.GUI.listeners.*;
-//import schoolDatabaseProgram.database.*;
 import school.database.data.objects.Address;
 import school.database.data.objects.Parent;
 
@@ -20,30 +18,30 @@ import java.time.LocalDate;
 import java.util.Objects;
 
 public class AddEditPupil extends JDialog implements ActionListener {
-    Parent parent1 = null, parent2 = null;
-    boolean awardBar, promotionToNextGrade, isNewPupil;
-    Marks marks;
-    JLabel nameLabel, surnameLabel, secondNameLabel, peselLabel, idLabel, genderLabel, dateOfBirth, yearLabel, monthLabel, dayLabel,
-            addressLabel, countryLabel, provinceLabel, townLabel, streetLabel, houseLabel,
-            localLabel, postCodeLabel, gradeLabel;
-    JTextField nameField, surnameField, secondNameField, peselField, idField, yearField, monthField, dayField,
+    private transient Parent parent1 = null, parent2 = null;
+    private boolean awardBar;
+    private boolean promotionToNextGrade;
+    private final boolean isNewPupil;
+    private transient Marks marks;
+
+
+    private JTextField nameField, surnameField, secondNameField, peselField, idField, yearField, monthField, dayField,
             countryField, provinceField, townField, streetField, houseField,
             localField, postCodeField;
-    JComboBox<String> genderComboBox;
-    JComboBox<Integer> gradeComboBox;
-    JButton addFirstParentButton, addSecondParentButton, markButton, addButton, cancelButton, achievementButton;
-    Pupil pupil;
-    JFrame parentFrame;
-    String achievement;
-    JTextField currentStatusField;
-    Data dataList;
-    ConstantsOfStyle styleConstants;
-    ActualElements actualElements;
+    private JComboBox<String> genderComboBox;
+    private JComboBox<Integer> gradeComboBox;
+    private JButton addFirstParentButton, addSecondParentButton, markButton, addButton, cancelButton, achievementButton;
+    private final transient Pupil pupil;
+    private String achievement;
+    private final JTextField currentStatusField;
+    private final Data dataList;
+    private final transient ConstantsOfStyle styleConstants;
+    private final transient ActualElements actualElements;
+    private final JFrame parentFrame;
 
 
     public AddEditPupil(JFrame parentFrame, Pupil pupil, JTextField currentStatusField, boolean isNewPupil,
-                        Data dataList, ConstantsOfStyle styleConstants, ActualElements actualElements)
-            throws IOException, FontFormatException {
+                        Data dataList, ConstantsOfStyle styleConstants, ActualElements actualElements) {
         super(parentFrame, "Achievement", true);
         this.pupil = pupil;
         this.currentStatusField = currentStatusField;
@@ -51,6 +49,7 @@ public class AddEditPupil extends JDialog implements ActionListener {
         this.dataList = dataList;
         this.styleConstants = styleConstants;
         this.actualElements = actualElements;
+        this.parentFrame = parentFrame;
 
         if (isNewPupil) {
             pupil.setId(dataList.getMinPossibleID());
@@ -73,7 +72,7 @@ public class AddEditPupil extends JDialog implements ActionListener {
         setListeners();
 
         this.setBackground(styleConstants.getACTUAL_SET_OF_COLORS().get(10));
-        this.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
+        this.setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
         this.pack();
         this.setLocationRelativeTo(null);
         this.setTitle("Write pupil's data");
@@ -130,6 +129,25 @@ public class AddEditPupil extends JDialog implements ActionListener {
     }
 
     private void setItemsToFrame() {
+        JLabel monthLabel;
+        JLabel dateOfBirth;
+        JLabel genderLabel;
+        JLabel idLabel;
+        JLabel peselLabel;
+        JLabel secondNameLabel;
+        JLabel nameLabel;
+        JLabel yearLabel;
+        JLabel dayLabel;
+        JLabel addressLabel;
+        JLabel countryLabel;
+        JLabel provinceLabel;
+        JLabel townLabel;
+        JLabel localLabel;
+        JLabel streetLabel;
+        JLabel houseLabel;
+        JLabel postCodeLabel;
+        JLabel gradeLabel;
+        JLabel surnameLabel;
         nameLabel = new JLabel("*Name: ");
         nameField = new JTextField();
         secondNameLabel = new JLabel("SecondName: ");
@@ -185,11 +203,6 @@ public class AddEditPupil extends JDialog implements ActionListener {
         markButton.addActionListener(this);
 
         markButton.setEnabled(pupil.getGrade() > 3);
-//        if (isNewPupil) {
-//            markButton.setEnabled(gradeComboBox.getSelectedIndex()>3);
-//        } else {
-//            markButton.setEnabled(pupil.getGrade() > 4);
-//        }
 
 
         GridBagConstraints c = new GridBagConstraints();
@@ -439,63 +452,37 @@ public class AddEditPupil extends JDialog implements ActionListener {
             genderComboBox.setBackground(styleConstants.getCOLOR_FOR_WRONG_FORMAT());
         }
         if (pupil.getDateOfBirth() != null) {
-            try {
-                int number = Integer.parseInt(dayField.getText().trim());
-                if (number < 32 && number > 0) {
-                    dayField.setBackground(styleConstants.getCOLOR_FOR_RIGHT_FORMAT());
-                } else {
-                    dayField.setBackground(styleConstants.getCOLOR_FOR_WRONG_FORMAT());
-                }
-            } catch (NumberFormatException ex) {
-                dayField.setBackground(styleConstants.getCOLOR_FOR_WRONG_FORMAT());
-            }
-
-            try {
-                int yearNumber = Integer.parseInt(this.yearField.getText().trim());
-                if (yearNumber > LocalDate.now().getYear() - 20 && yearNumber <= LocalDate.now().getYear() - 5) {
-                    yearField.setBackground(styleConstants.getCOLOR_FOR_RIGHT_FORMAT());
-                } else {
-                    yearField.setBackground(styleConstants.getCOLOR_FOR_WRONG_FORMAT());
-                }
-            } catch (NumberFormatException ex) {
-                yearField.setBackground(styleConstants.getCOLOR_FOR_WRONG_FORMAT());
-            }
-            try {
-                int number = Integer.parseInt(this.monthField.getText().trim());
-                if (number < 13 && number > 0) {
-                    monthField.setBackground(styleConstants.getCOLOR_FOR_RIGHT_FORMAT());
-                } else {
-                    monthField.setBackground(styleConstants.getCOLOR_FOR_WRONG_FORMAT());
-                }
-            } catch (NumberFormatException ex) {
-                monthField.setBackground(styleConstants.getCOLOR_FOR_WRONG_FORMAT());
-            }
+            checkDay();
+            checkYear();
+            checkMonth();
+            checkDate();
         }
+        checkPesel();
+
+        nameField.setBackground((!nameField.getText().trim().equals(""))
+                ? styleConstants.getCOLOR_FOR_RIGHT_FORMAT() : styleConstants.getCOLOR_FOR_WRONG_FORMAT());
+        surnameField.setBackground((!surnameField.getText().trim().equals(""))
+                ? styleConstants.getCOLOR_FOR_RIGHT_FORMAT() : styleConstants.getCOLOR_FOR_WRONG_FORMAT());
+        gradeComboBox.setBackground((gradeComboBox.getSelectedIndex() > 0)
+                ? styleConstants.getCOLOR_FOR_RIGHT_FORMAT() : styleConstants.getCOLOR_FOR_WRONG_FORMAT());
+        addFirstParentButton.setBackground((pupil.getParent1() != null)
+                ? styleConstants.getCOLOR_FOR_RIGHT_FORMAT() : styleConstants.getCOLOR_FOR_WRONG_FORMAT());
+    }
+
+    private void checkPesel() {
         if (yearField.getBackground() == styleConstants.getCOLOR_FOR_RIGHT_FORMAT() &&
                 monthField.getBackground() == styleConstants.getCOLOR_FOR_RIGHT_FORMAT() &&
                 dayField.getBackground() == styleConstants.getCOLOR_FOR_RIGHT_FORMAT()) {
-            try {
-                LocalDate.of(Integer.parseInt(yearField.getText().trim()),
-                        Integer.parseInt(monthField.getText().trim()),
-                        Integer.parseInt(dayField.getText().trim()));
-            } catch (DateTimeException e) {
-                yearField.setBackground(styleConstants.getCOLOR_FOR_RIGHT_FORMAT());
-                monthField.setBackground(styleConstants.getCOLOR_FOR_RIGHT_FORMAT());
-                monthField.setBackground(styleConstants.getCOLOR_FOR_RIGHT_FORMAT());
-            }
+
             if (peselField.getText().length() == 11) {
                 if (Objects.equals(yearField.getBackground(), styleConstants.getCOLOR_FOR_RIGHT_FORMAT()) &&
-                        Objects.equals(yearField.getBackground(), styleConstants.getCOLOR_FOR_RIGHT_FORMAT()) &&
                         Objects.equals(monthField.getBackground(), styleConstants.getCOLOR_FOR_RIGHT_FORMAT()) &&
                         Objects.equals(dayField.getBackground(), styleConstants.getCOLOR_FOR_RIGHT_FORMAT()) &&
                         !Objects.equals(genderComboBox.getSelectedItem(), "")) {
                     int yearNumber = Integer.parseInt(yearField.getText().trim());
                     int monthNumber = Integer.parseInt(monthField.getText().trim());
                     String endOfYear = String.format("%02d", Integer.parseInt(yearField.getText().trim()) % 100);
-                    String month = String.format("%02d", (yearNumber < 2000)
-                            ? monthNumber :
-                            (yearNumber < 2100) ? monthNumber + 20 :
-                                    (yearNumber < 2200) ? monthNumber + 40 : monthNumber + 60);
+                    String month = String.format("%02d",getMonthForPesel(monthNumber, yearNumber));
                     String day = String.format("%02d", Integer.parseInt(dayField.getText().trim()));
                     String pesel = peselField.getText().trim();
 
@@ -525,14 +512,67 @@ public class AddEditPupil extends JDialog implements ActionListener {
                 peselField.setBackground(styleConstants.getCOLOR_FOR_WRONG_FORMAT());
             }
         }
-        nameField.setBackground((!nameField.getText().trim().equals(""))
-                ? styleConstants.getCOLOR_FOR_RIGHT_FORMAT() : styleConstants.getCOLOR_FOR_WRONG_FORMAT());
-        surnameField.setBackground((!surnameField.getText().trim().equals(""))
-                ? styleConstants.getCOLOR_FOR_RIGHT_FORMAT() : styleConstants.getCOLOR_FOR_WRONG_FORMAT());
-        gradeComboBox.setBackground((gradeComboBox.getSelectedIndex() > 0)
-                ? styleConstants.getCOLOR_FOR_RIGHT_FORMAT() : styleConstants.getCOLOR_FOR_WRONG_FORMAT());
-        addFirstParentButton.setBackground((pupil.getParent1() != null)
-                ? styleConstants.getCOLOR_FOR_RIGHT_FORMAT() : styleConstants.getCOLOR_FOR_WRONG_FORMAT());
+    }
+
+    private int getMonthForPesel(int monthNumber, int yearNumber) {
+        if (yearNumber < 2000) {
+            return monthNumber;
+        } else if (yearNumber < 2100) {
+            return monthNumber + 20;
+        } else if (yearNumber < 2200) {
+            return monthNumber + 40;
+        }
+        return monthNumber + 60;
+    }
+    private void checkDate() {
+        try {
+            LocalDate.of(Integer.parseInt(yearField.getText().trim()),
+                    Integer.parseInt(monthField.getText().trim()),
+                    Integer.parseInt(dayField.getText().trim()));
+        } catch (DateTimeException e) {
+            yearField.setBackground(styleConstants.getCOLOR_FOR_WRONG_FORMAT());
+            monthField.setBackground(styleConstants.getCOLOR_FOR_WRONG_FORMAT());
+            monthField.setBackground(styleConstants.getCOLOR_FOR_WRONG_FORMAT());
+        }
+    }
+
+    private void checkMonth() {
+        try {
+            int number = Integer.parseInt(this.monthField.getText().trim());
+            if (number < 13 && number > 0) {
+                monthField.setBackground(styleConstants.getCOLOR_FOR_RIGHT_FORMAT());
+            } else {
+                monthField.setBackground(styleConstants.getCOLOR_FOR_WRONG_FORMAT());
+            }
+        } catch (NumberFormatException ex) {
+            monthField.setBackground(styleConstants.getCOLOR_FOR_WRONG_FORMAT());
+        }
+    }
+
+    private void checkYear() {
+        try {
+            int yearNumber = Integer.parseInt(this.yearField.getText().trim());
+            if (yearNumber > LocalDate.now().getYear() - 20 && yearNumber <= LocalDate.now().getYear() - 5) {
+                yearField.setBackground(styleConstants.getCOLOR_FOR_RIGHT_FORMAT());
+            } else {
+                yearField.setBackground(styleConstants.getCOLOR_FOR_WRONG_FORMAT());
+            }
+        } catch (NumberFormatException ex) {
+            yearField.setBackground(styleConstants.getCOLOR_FOR_WRONG_FORMAT());
+        }
+    }
+
+    private void checkDay() {
+        try {
+            int number = Integer.parseInt(dayField.getText().trim());
+            if (number < 32 && number > 0) {
+                dayField.setBackground(styleConstants.getCOLOR_FOR_RIGHT_FORMAT());
+            } else {
+                dayField.setBackground(styleConstants.getCOLOR_FOR_WRONG_FORMAT());
+            }
+        } catch (NumberFormatException ex) {
+            dayField.setBackground(styleConstants.getCOLOR_FOR_WRONG_FORMAT());
+        }
     }
 
     private void setFontForComponents(Container container, Font font) {
@@ -550,184 +590,206 @@ public class AddEditPupil extends JDialog implements ActionListener {
     @Override
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() == achievementButton) {
-            AddEditAchievement addEditAchievement = new AddEditAchievement(parentFrame, achievement, currentStatusField,
-                    styleConstants, actualElements);
-            achievement = addEditAchievement.showDialogAndGetInput();
+            addAcievementMethod();
         }
         if (e.getSource() == markButton) {
-            AddEditMarks addEditMarks = null;
-            try {
-                addEditMarks = new AddEditMarks(parentFrame, marks, awardBar,
-                        promotionToNextGrade, gradeComboBox.getSelectedIndex() - 1, currentStatusField, isNewPupil,
-                        styleConstants, actualElements);
-            } catch (IOException ex) {
-                throw new RuntimeException(ex);
-            }
-            marks = addEditMarks.showDialogAndGetInput();
-            if (marks != null) {
-                promotionToNextGrade = marks.getPromotion(pupil.getGrade());
-                awardBar = marks.isAwardBar(promotionToNextGrade, gradeComboBox.getSelectedIndex() - 1);
-            }
+            addMarkMethod();
+
         }
         if (e.getSource() == cancelButton) {
-            String[] responses = {"Close without saving", "Return to editing"};
-            int answer = JOptionPane.showOptionDialog(parentFrame, "Would you like to exit? \n Changes won't be saved",
-                    "Are you sure?", JOptionPane.OK_CANCEL_OPTION, JOptionPane.WARNING_MESSAGE, null,
-                    responses, responses[0]);
-            if (answer == 0) {
-                dispose();
-            }
+            addCancelMethod();
         }
         if (e.getSource() == addFirstParentButton) {
-            Parent temporaryParent = new Parent();
-            try {
-                new AddEditParent(parentFrame,
-                        (parent1 == null) ? temporaryParent : parent1,
-                        countryField.getText(),
-                        provinceField.getText(),
-                        townField.getText(),
-                        streetField.getText(),
-                        houseField.getText().trim(),
-                        localField.getText().trim(),
-                        postCodeField.getText(),
-                        currentStatusField,
-                        isNewPupil,
-                        styleConstants,
-                        actualElements);
-            } catch (IOException | FontFormatException ex) {
-                throw new RuntimeException(ex);
-            }
-            if (temporaryParent.getName() != null) {
-                parent1 = temporaryParent;
-            }
-            addFirstParentButton.setBackground((parent1 != null)
-                    ? styleConstants.getCOLOR_FOR_RIGHT_FORMAT() : styleConstants.getCOLOR_FOR_WRONG_FORMAT());
+            addFirstParentMethod();
         }
         if (e.getSource() == addSecondParentButton) {
-            try {
-                new AddEditParent(parentFrame, parent2,
-                        countryField.getText(),
-                        provinceField.getText(),
-                        townField.getText(),
-                        streetField.getText(),
-                        houseField.getText().trim(),
-                        localField.getText().trim(),
-                        postCodeField.getText(),
-                        currentStatusField,
-                        isNewPupil,
-                        styleConstants,
-                        actualElements);
-            } catch (IOException | FontFormatException ex) {
-                throw new RuntimeException(ex);
-            }
+            addSecondParentMethod();
         }
         if (e.getSource() == addButton) {
-            if (nameField.getBackground() == styleConstants.getCOLOR_FOR_RIGHT_FORMAT() &&
-                    surnameField.getBackground() == styleConstants.getCOLOR_FOR_RIGHT_FORMAT() &&
-                    yearField.getBackground() == styleConstants.getCOLOR_FOR_RIGHT_FORMAT() &&
-                    dayField.getBackground() == styleConstants.getCOLOR_FOR_RIGHT_FORMAT() &&
-                    monthField.getBackground() == styleConstants.getCOLOR_FOR_RIGHT_FORMAT() &&
-                    peselField.getBackground() == styleConstants.getCOLOR_FOR_RIGHT_FORMAT() &&
-                    genderComboBox.getBackground() == styleConstants.getCOLOR_FOR_RIGHT_FORMAT() &&
-                    gradeComboBox.getBackground() == styleConstants.getCOLOR_FOR_RIGHT_FORMAT() &&
-                    addFirstParentButton.getBackground() == styleConstants.getCOLOR_FOR_RIGHT_FORMAT() &&
-                    (idField.getBackground() == styleConstants.getCOLOR_FOR_RIGHT_FORMAT() ||
-                            !idField.isEnabled())) {
+            addButtonMethod();
+        }
+    }
 
-                if (isNewPupil) {
-                    try {
-                        String secondName = (secondNameField.getText().trim().equals(""))
-                                ? null : secondNameField.getText().trim();
-                        char gender = (Objects.equals(genderComboBox.getSelectedItem(), "Male")) ? 'M' : 'F';
-                        pupil.setName(nameField.getText().trim());
-                        pupil.setSecondName(secondName);
-                        pupil.setSurname(surnameField.getText().trim());
-                        pupil.setGender(gender);
-                        pupil.setDateOfBirth(LocalDate.of(Integer.parseInt(yearField.getText().trim()),
-                                Integer.parseInt(monthField.getText().trim()),
-                                Integer.parseInt(dayField.getText().trim())));
-                        pupil.setPesel(peselField.getText().trim());
-                        pupil.setId(Integer.parseInt(idField.getText().trim()));
-                        pupil.setAddress(new Address(
-                                countryField.getText().trim(),
-                                provinceField.getText().trim(),
-                                townField.getText().trim(),
-                                streetField.getText().trim(),
-                                houseField.getText().trim(),
-                                localField.getText().trim(),
-                                postCodeField.getText().trim()));
-                        pupil.setGrade(gradeComboBox.getSelectedIndex() - 1);
-                        pupil.setMarks((pupil.getGrade() < 4) ? null : marks);
-                        pupil.setPromotionToNextGrade(promotionToNextGrade);
-                        pupil.setAwardBar(awardBar);
-                        pupil.setAchievement(achievement);
+    private void addButtonMethod() {
+        if (nameField.getBackground() == styleConstants.getCOLOR_FOR_RIGHT_FORMAT() &&
+                surnameField.getBackground() == styleConstants.getCOLOR_FOR_RIGHT_FORMAT() &&
+                yearField.getBackground() == styleConstants.getCOLOR_FOR_RIGHT_FORMAT() &&
+                dayField.getBackground() == styleConstants.getCOLOR_FOR_RIGHT_FORMAT() &&
+                monthField.getBackground() == styleConstants.getCOLOR_FOR_RIGHT_FORMAT() &&
+                peselField.getBackground() == styleConstants.getCOLOR_FOR_RIGHT_FORMAT() &&
+                genderComboBox.getBackground() == styleConstants.getCOLOR_FOR_RIGHT_FORMAT() &&
+                gradeComboBox.getBackground() == styleConstants.getCOLOR_FOR_RIGHT_FORMAT() &&
+                addFirstParentButton.getBackground() == styleConstants.getCOLOR_FOR_RIGHT_FORMAT() &&
+                (idField.getBackground() == styleConstants.getCOLOR_FOR_RIGHT_FORMAT() ||
+                        !idField.isEnabled())) {
 
-                        pupil.setParent1(parent1);
-                        pupil.setParent2(parent2);
+            if (isNewPupil) {
+                addNewPupilDataMethod();
 
-                        actualElements.setCurrentPupil(pupil);
-                        currentStatusField.setText(String.format("Changes are saved (%s)",
-                                actualElements.getCurrentPupil().getNamesAndSurname()));
-                        actualElements.setCurrentGrade(pupil.getGrade());
+            } else {
+                addPupilDataMethod();
+            }
+        } else {
+            JOptionPane.showMessageDialog(null,
+                    "\t\tI can't write this pupil!\nSome data was entered incorrectly", "ERROR",
+                    JOptionPane.ERROR_MESSAGE);
+        }
+    }
 
+    private void addPupilDataMethod() {
+        String secondName = (secondNameField.getText().trim().equals(""))
+                ? null : secondNameField.getText().trim();
+        char gender = (Objects.equals(genderComboBox.getSelectedItem(), "Male")) ? 'M' : 'F';
+        pupil.setName(nameField.getText().trim());
+        pupil.setSecondName(secondName);
+        pupil.setSurname(surnameField.getText().trim());
+        pupil.setGender(gender);
+        pupil.setDateOfBirth(LocalDate.of(Integer.parseInt(yearField.getText().trim()),
+                Integer.parseInt(monthField.getText().trim()),
+                Integer.parseInt(dayField.getText().trim())));
+        pupil.setPesel(peselField.getText().trim());
+        pupil.setId(Integer.parseInt(idField.getText().trim()));
+        pupil.setAddress(new Address(
+                countryField.getText().trim(),
+                provinceField.getText().trim(),
+                townField.getText().trim(),
+                streetField.getText().trim(),
+                houseField.getText().trim(),
+                localField.getText().trim(),
+                postCodeField.getText().trim()));
+        pupil.setGrade(gradeComboBox.getSelectedIndex() - 1);
+        pupil.setMarks((pupil.getGrade() < 4) ? null : marks);
+        pupil.setPromotionToNextGrade(promotionToNextGrade);
+        pupil.setAwardBar(awardBar);
+        pupil.setAchievement(achievement);
 
-                        if (dataList.addPupilToList(pupil)) {
-                            JOptionPane.showMessageDialog(null, "Pupil is added to database :)",
-                                    "Success!", JOptionPane.PLAIN_MESSAGE);
-                            currentStatusField.setText("Pupil is added to database");
-                            actualElements.setCurrentGrade(pupil.getGrade());
-                            dispose();
-                        } else {
-                            JOptionPane.showMessageDialog(null,
-                                    "\t\tI can't write this pupil!\nSome data was entered incorrectly", "ERROR",
-                                    JOptionPane.ERROR_MESSAGE);
-                        }
-                    } catch (Exception exception) {
-                        JOptionPane.showMessageDialog(null,
-                                "\t\tI can't write this pupil!\nSome data was entered incorrectly", "ERROR",
-                                JOptionPane.ERROR_MESSAGE);
-                    }
-                } else {
-                    String secondName = (secondNameField.getText().trim().equals(""))
-                            ? null : secondNameField.getText().trim();
-                    char gender = (Objects.equals(genderComboBox.getSelectedItem(), "Male")) ? 'M' : 'F';
-                    pupil.setName(nameField.getText().trim());
-                    pupil.setSecondName(secondName);
-                    pupil.setSurname(surnameField.getText().trim());
-                    pupil.setGender(gender);
-                    pupil.setDateOfBirth(LocalDate.of(Integer.parseInt(yearField.getText().trim()),
-                            Integer.parseInt(monthField.getText().trim()),
-                            Integer.parseInt(dayField.getText().trim())));
-                    pupil.setPesel(peselField.getText().trim());
-                    pupil.setId(Integer.parseInt(idField.getText().trim()));
-                    pupil.setAddress(new Address(
-                            countryField.getText().trim(),
-                            provinceField.getText().trim(),
-                            townField.getText().trim(),
-                            streetField.getText().trim(),
-                            houseField.getText().trim(),
-                            localField.getText().trim(),
-                            postCodeField.getText().trim()));
-                    pupil.setGrade(gradeComboBox.getSelectedIndex() - 1);
-                    pupil.setMarks((pupil.getGrade() < 4) ? null : marks);
-                    pupil.setPromotionToNextGrade(promotionToNextGrade);
-                    pupil.setAwardBar(awardBar);
-                    pupil.setAchievement(achievement);
+        pupil.setParent1(parent1);
+        pupil.setParent2(parent2);
+        currentStatusField.setText(String.format("Changes are saved (%s)",
+                actualElements.getCurrentPupil().getNamesAndSurname()));
+        actualElements.setCurrentGrade(pupil.getGrade());
 
-                    pupil.setParent1(parent1);
-                    pupil.setParent2(parent2);
-                    currentStatusField.setText(String.format("Changes are saved (%s)",
-                            actualElements.getCurrentPupil().getNamesAndSurname()));
-                    actualElements.setCurrentGrade(pupil.getGrade());
+        dispose();
+    }
 
-                    dispose();
-                }
+    private void addNewPupilDataMethod() {
+        try {
+            String secondName = (secondNameField.getText().trim().equals(""))
+                    ? null : secondNameField.getText().trim();
+            char gender = (Objects.equals(genderComboBox.getSelectedItem(), "Male")) ? 'M' : 'F';
+            pupil.setName(nameField.getText().trim());
+            pupil.setSecondName(secondName);
+            pupil.setSurname(surnameField.getText().trim());
+            pupil.setGender(gender);
+            pupil.setDateOfBirth(LocalDate.of(Integer.parseInt(yearField.getText().trim()),
+                    Integer.parseInt(monthField.getText().trim()),
+                    Integer.parseInt(dayField.getText().trim())));
+            pupil.setPesel(peselField.getText().trim());
+            pupil.setId(Integer.parseInt(idField.getText().trim()));
+            pupil.setAddress(new Address(
+                    countryField.getText().trim(),
+                    provinceField.getText().trim(),
+                    townField.getText().trim(),
+                    streetField.getText().trim(),
+                    houseField.getText().trim(),
+                    localField.getText().trim(),
+                    postCodeField.getText().trim()));
+            pupil.setGrade(gradeComboBox.getSelectedIndex() - 1);
+            pupil.setMarks((pupil.getGrade() < 4) ? null : marks);
+            pupil.setPromotionToNextGrade(promotionToNextGrade);
+            pupil.setAwardBar(awardBar);
+            pupil.setAchievement(achievement);
+
+            pupil.setParent1(parent1);
+            pupil.setParent2(parent2);
+
+            actualElements.setCurrentPupil(pupil);
+            currentStatusField.setText(String.format("Changes are saved (%s)",
+                    actualElements.getCurrentPupil().getNamesAndSurname()));
+            actualElements.setCurrentGrade(pupil.getGrade());
+
+            boolean isPupilAdded = dataList.addPupilToList(pupil);
+            if (Boolean.TRUE.equals(isPupilAdded)) {
+                JOptionPane.showMessageDialog(null, "Pupil is added to database :)",
+                        "Success!", JOptionPane.PLAIN_MESSAGE);
+                currentStatusField.setText("Pupil is added to database");
+                actualElements.setCurrentGrade(pupil.getGrade());
+                dispose();
             } else {
                 JOptionPane.showMessageDialog(null,
                         "\t\tI can't write this pupil!\nSome data was entered incorrectly", "ERROR",
                         JOptionPane.ERROR_MESSAGE);
             }
+        } catch (Exception exception) {
+            JOptionPane.showMessageDialog(null,
+                    "\t\tI can't write this pupil!\nSome data was entered incorrectly", "ERROR",
+                    JOptionPane.ERROR_MESSAGE);
         }
+    }
+
+    private void addSecondParentMethod() {
+        new AddEditParent(parentFrame, parent2,
+                countryField.getText(),
+                provinceField.getText(),
+                townField.getText(),
+                streetField.getText(),
+                houseField.getText().trim(),
+                localField.getText().trim(),
+                postCodeField.getText(),
+                currentStatusField,
+                isNewPupil,
+                styleConstants,
+                actualElements);
+    }
+
+    private void addFirstParentMethod() {
+        Parent temporaryParent = new Parent();
+        new AddEditParent(parentFrame,
+                (parent1 == null) ? temporaryParent : parent1,
+                countryField.getText(),
+                provinceField.getText(),
+                townField.getText(),
+                streetField.getText(),
+                houseField.getText().trim(),
+                localField.getText().trim(),
+                postCodeField.getText(),
+                currentStatusField,
+                isNewPupil,
+                styleConstants,
+                actualElements);
+        if (temporaryParent.getName() != null) {
+            parent1 = temporaryParent;
+        }
+        addFirstParentButton.setBackground((parent1 != null)
+                ? styleConstants.getCOLOR_FOR_RIGHT_FORMAT() : styleConstants.getCOLOR_FOR_WRONG_FORMAT());
+    }
+
+    private void addCancelMethod() {
+        String[] responses = {"Close without saving", "Return to editing"};
+        int answer = JOptionPane.showOptionDialog(parentFrame, "Would you like to exit? \n Changes won't be saved",
+                "Are you sure?", JOptionPane.OK_CANCEL_OPTION, JOptionPane.WARNING_MESSAGE, null,
+                responses, responses[0]);
+        if (answer == 0) {
+            dispose();
+        }
+    }
+
+    private void addMarkMethod() {
+        AddEditMarks addEditMarks;
+        addEditMarks = new AddEditMarks(parentFrame, marks, awardBar,
+                promotionToNextGrade, gradeComboBox.getSelectedIndex() - 1, currentStatusField, isNewPupil,
+                styleConstants, actualElements);
+        marks = addEditMarks.showDialogAndGetInput();
+        if (marks != null) {
+            promotionToNextGrade = marks.getPromotion(pupil.getGrade());
+            awardBar = marks.isAwardBar(promotionToNextGrade, gradeComboBox.getSelectedIndex() - 1);
+        }
+    }
+
+    private void addAcievementMethod() {
+        AddEditAchievement addEditAchievement = new AddEditAchievement(parentFrame, achievement, currentStatusField,
+                styleConstants, actualElements);
+        achievement = addEditAchievement.showDialogAndGetInput();
     }
 
     private void setListeners() {

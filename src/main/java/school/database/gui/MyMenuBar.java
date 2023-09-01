@@ -1,7 +1,7 @@
 package school.database.gui;
 
 import school.database.exceptiones.OpenSaveFileException;
-import school.database.gui.addEditWindows.EditUsers;
+import school.database.gui.add_edit_windows.EditUsers;
 import school.database.gui.styleStorage.ConstantsOfStyle;
 import school.database.data.Data;
 import school.database.data.WriteReadDataToFile;

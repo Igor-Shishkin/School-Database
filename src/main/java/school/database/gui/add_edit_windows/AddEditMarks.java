@@ -1,4 +1,4 @@
-package school.database.gui.addEditWindows;
+package school.database.gui.add_edit_windows;
 
 import school.database.gui.ActualElements;
 import school.database.gui.styleStorage.ConstantsOfStyle;
@@ -13,27 +13,27 @@ import java.io.IOException;
 
 
 public class AddEditMarks extends JDialog implements ActionListener {
-    int QUANTITY_OF_MARK_COMBOBOX;
-    Marks marks;
-    boolean awardBar, promotionToNextGrade;
+    private int QUANTITY_OF_MARK_COMBOBOX;
+    private transient Marks marks;
+    private final boolean awardBar;
+    private final boolean promotionToNextGrade;
     int grade;
-    JLabel mathLabel, polishLabel, englishLabel, informationLabel, peLabel, musicLabel, religionLabel, natureLabel,
-            biologyLabel, physicsLabel, geographyLabel, behaviorLabel, averageLabel, flagLabel, promotionLabel;
-    JComboBox[] markComboBox = new JComboBox[44];
-    JPanel panelForComboBox, panelForLabels,  centralPanel;
-    JLayeredPane promotionLayeredPane;
-    JLabel[] averageScoreLabel = new JLabel[4];
-    Font font, fontForAverage;
-    JButton addButton, cancelButton;
-    JTextField currentStatusField;
-    boolean isNewPupil;
-    ConstantsOfStyle styleConstants;
-    ActualElements actualElements;
+    private JLabel flagLabel;
+    private JLabel promotionLabel;
+    private final JComboBox[] markComboBox = new JComboBox[44];
+    private JPanel panelForComboBox, panelForLabels,  centralPanel;
+    private JLayeredPane promotionLayeredPane;
+    private final JLabel[] averageScoreLabel = new JLabel[4];
+    private final Font fontForAverage;
+    private JButton addButton, cancelButton;
+    private final JTextField currentStatusField;
+    private final boolean isNewPupil;
+    private final transient ConstantsOfStyle styleConstants;
+    private final transient ActualElements actualElements;
 
     public AddEditMarks(JFrame parentFrame, Marks marks, Boolean awardBar, Boolean promotion, int grade,
                         JTextField currentStatusField, boolean isNewPupil, ConstantsOfStyle styleConstants,
-                        ActualElements actualElements)
-                        throws IOException {
+                        ActualElements actualElements) {
         super(parentFrame, "Marks", true);
         this.marks = marks;
         this.grade = grade;
@@ -46,11 +46,7 @@ public class AddEditMarks extends JDialog implements ActionListener {
 
         this.setLayout(new BorderLayout());
 
-        if (marks==null) {
-            marks = new Marks();
-        }
-
-        font = styleConstants.getTHE_MAIN_FONT().deriveFont(Font.PLAIN, 19);
+        Font font = styleConstants.getTHE_MAIN_FONT().deriveFont(Font.PLAIN, 19);
         fontForAverage = styleConstants.getTHE_MAIN_FONT().deriveFont(Font.BOLD, 20);
 
         setWindowCloseListener();
@@ -69,11 +65,10 @@ public class AddEditMarks extends JDialog implements ActionListener {
         setStyleForWindow(this);
 
         this.setResizable(false);
-        this.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
+        this.setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
         this.pack();
         this.setLocationRelativeTo(null);
         this.setTitle("Enter marks");
-//        this.setVisible(true);
     }
 
     private void setPanels() {
@@ -140,28 +135,8 @@ public class AddEditMarks extends JDialog implements ActionListener {
                 }
             }
             setEnabledForYearMarks();
-            for (int i = 0; i < 4; i++) {
-                boolean isAllMarksInColumn = true;
-                double sum = 0;
-                int quantityEntered = 0;
-                for (int j = i; j < QUANTITY_OF_MARK_COMBOBOX-4; j+=4) {
-                    markComboBox[j].setBackground(
-                            (markComboBox[j].getSelectedItem()!=null)? styleConstants.getCOLOR_FOR_RIGHT_FORMAT():
-                            this.getBackground());
-                    if (markComboBox[j].getSelectedItem()==null || !markComboBox[j].isEnabled()) {
-                        isAllMarksInColumn = false;
-                    } else {
-                        sum += markComboBox[j].getSelectedIndex();
-                        quantityEntered++;
-                    }
-                    averageScoreLabel[i].setText(String.format("%02.1f",
-                            (quantityEntered!=0&&sum!=0)?sum/quantityEntered:0f));
-                    averageScoreLabel[i].setBackground((isAllMarksInColumn &&
-                            markComboBox[QUANTITY_OF_MARK_COMBOBOX-4+(i)].getSelectedIndex()!=-1)
-                            ? styleConstants.getCOLOR_FOR_RIGHT_FORMAT() : this.getBackground());
-                }
+            setAvarageLabels();
 
-            }
             for (int j = QUANTITY_OF_MARK_COMBOBOX-4; j < QUANTITY_OF_MARK_COMBOBOX; j++) {
                 markComboBox[j].setBackground(
                         (markComboBox[j].getSelectedItem()!=null)? styleConstants.getCOLOR_FOR_RIGHT_FORMAT()
@@ -170,6 +145,30 @@ public class AddEditMarks extends JDialog implements ActionListener {
         }
 
 
+    }
+
+    private void setAvarageLabels() {
+        for (int i = 0; i < 4; i++) {
+            boolean isAllMarksInColumn = true;
+            double sum = 0;
+            int quantityEntered = 0;
+            for (int j = i; j < QUANTITY_OF_MARK_COMBOBOX-4; j+=4) {
+                markComboBox[j].setBackground(
+                        (markComboBox[j].getSelectedItem()!=null)? styleConstants.getCOLOR_FOR_RIGHT_FORMAT():
+                                this.getBackground());
+                if (markComboBox[j].getSelectedItem()==null || !markComboBox[j].isEnabled()) {
+                    isAllMarksInColumn = false;
+                } else {
+                    sum += markComboBox[j].getSelectedIndex();
+                    quantityEntered++;
+                }
+                averageScoreLabel[i].setText(String.format("%02.1f",
+                        (quantityEntered!=0&&sum!=0)?sum/quantityEntered:0f));
+                averageScoreLabel[i].setBackground((isAllMarksInColumn &&
+                        markComboBox[QUANTITY_OF_MARK_COMBOBOX-4+(i)].getSelectedIndex()!=-1)
+                        ? styleConstants.getCOLOR_FOR_RIGHT_FORMAT() : this.getBackground());
+            }
+        }
     }
 
     private void setHorizontalAlignment(Container container) {
@@ -213,62 +212,60 @@ public class AddEditMarks extends JDialog implements ActionListener {
     }
 
     private void addComponentsOfPanels() {
+
         if (grade > 3 && grade < 7) {
             QUANTITY_OF_MARK_COMBOBOX = 36;
             panelForComboBox = new JPanel(new GridLayout(10, 4, 10, 10));
             panelForLabels = new JPanel(new GridLayout(10, 1, 10, 10));
 
-            panelForLabels.add(mathLabel = new JLabel("Math"));
-            panelForLabels.add(polishLabel = new JLabel("Polish"));
-            panelForLabels.add(englishLabel = new JLabel("English"));
-            panelForLabels.add(informationLabel = new JLabel("Information"));
-            panelForLabels.add(peLabel = new JLabel("PE"));
-            panelForLabels.add(musicLabel = new JLabel("Music"));
-            panelForLabels.add(religionLabel = new JLabel("Religion"));
-            panelForLabels.add(natureLabel = new JLabel("Nature"));
-            panelForLabels.add(behaviorLabel = new JLabel("Behavior"));
-            panelForLabels.add(averageLabel = new JLabel("AVERAGE"));
+            panelForLabels.add(new JLabel("Math"));
+            panelForLabels.add(new JLabel("Polish"));
+            panelForLabels.add(new JLabel("English"));
+            panelForLabels.add(new JLabel("Information"));
+            panelForLabels.add(new JLabel("PE"));
+            panelForLabels.add(new JLabel("Music"));
+            panelForLabels.add(new JLabel("Religion"));
+            panelForLabels.add(new JLabel("Nature"));
+            panelForLabels.add(new JLabel("Behavior"));
+            panelForLabels.add(new JLabel("AVERAGE"));
 
             for (int i = 0; i < QUANTITY_OF_MARK_COMBOBOX; i++) {
-                panelForComboBox.add(markComboBox[i] = new JComboBox<>(new String[]{null, "1", "2", "3", "4", "5", "6"}));
+                markComboBox[i] = new JComboBox<>(new String[]{null, "1", "2", "3", "4", "5", "6"});
+                panelForComboBox.add(markComboBox[i]);
             }
             for (int i = 0; i < 4; i++) {
                 averageScoreLabel[i] = new JLabel();
                 panelForComboBox.add(averageScoreLabel[i]);
                 averageScoreLabel[i].setOpaque(true);
-
-//                averageScoreLabel[i].setEnabled(false);
                 averageScoreLabel[i].setFont(fontForAverage);
-//                averageScoreLabel[i].setForeground(new Color(0x7B0000));
             }
         } else {
             QUANTITY_OF_MARK_COMBOBOX = 44;
             panelForComboBox = new JPanel(new GridLayout(12, 4, 10, 10));
             panelForLabels = new JPanel(new GridLayout(12, 1, 10, 10));
-            panelForLabels.add(mathLabel = new JLabel("Math"));
-            panelForLabels.add(polishLabel = new JLabel("Polish"));
-            panelForLabels.add(englishLabel = new JLabel("English"));
-            panelForLabels.add(informationLabel = new JLabel("Information"));
-            panelForLabels.add(peLabel = new JLabel("PE"));
-            panelForLabels.add(musicLabel = new JLabel("Music"));
-            panelForLabels.add(religionLabel = new JLabel("Religion"));
-            panelForLabels.add(biologyLabel = new JLabel("Biology"));
-            panelForLabels.add(physicsLabel = new JLabel("Physics"));
-            panelForLabels.add(geographyLabel = new JLabel("Geography"));
-            panelForLabels.add(behaviorLabel = new JLabel("Behavior"));
-            panelForLabels.add(averageLabel = new JLabel("AVERAGE"));
+            panelForLabels.add(new JLabel("Math"));
+            panelForLabels.add(new JLabel("Polish"));
+            panelForLabels.add(new JLabel("English"));
+            panelForLabels.add(new JLabel("Information"));
+            panelForLabels.add(new JLabel("PE"));
+            panelForLabels.add(new JLabel("Music"));
+            panelForLabels.add(new JLabel("Religion"));
+            panelForLabels.add(new JLabel("Biology"));
+            panelForLabels.add(new JLabel("Physics"));
+            panelForLabels.add(new JLabel("Geography"));
+            panelForLabels.add(new JLabel("Behavior"));
+            panelForLabels.add(new JLabel("AVERAGE"));
 
             for (int i = 0; i < QUANTITY_OF_MARK_COMBOBOX; i++) {
-                panelForComboBox.add(markComboBox[i] = new JComboBox<>(new String[]{null, "1", "2", "3", "4", "5", "6"}));
+                markComboBox[i] = new JComboBox<>(new String[]{null, "1", "2", "3", "4", "5", "6"});
+                panelForComboBox.add(markComboBox[i]);
             }
 
             for (int i = 0; i < 4; i++) {
                 averageScoreLabel[i] = new JLabel();
                 panelForComboBox.add(averageScoreLabel[i]);
                 averageScoreLabel[i].setOpaque(true);
-//                averageScoreLabel[i].setEnabled(false);
                 averageScoreLabel[i].setFont(fontForAverage);
-//                averageScoreLabel[i].setForeground(new Color(0x7B0000));
             }
         }
     }

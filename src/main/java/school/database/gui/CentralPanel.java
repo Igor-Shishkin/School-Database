@@ -1,10 +1,8 @@
 package school.database.gui;
 
-import school.database.exceptiones.addPupilException;
-import school.database.exceptiones.editMarkException;
-import school.database.gui.addEditWindows.AddEditAchievement;
-import school.database.gui.addEditWindows.AddEditMarks;
-import school.database.gui.addEditWindows.AddEditPupil;
+import school.database.gui.add_edit_windows.AddEditAchievement;
+import school.database.gui.add_edit_windows.AddEditMarks;
+import school.database.gui.add_edit_windows.AddEditPupil;
 import school.database.gui.listeners.GradesTreeNodeMouseListener;
 import school.database.gui.listeners.HandCursorForMouseMotionAdapter;
 import school.database.gui.styleStorage.ConstantsOfStyle;
@@ -384,12 +382,8 @@ public class CentralPanel extends JPanel implements ActionListener{
 
     private void editDataMethod() {
         Pupil chosenPupil = actualElements.getCurrentPupil();
-        try {
-            new AddEditPupil(parentFrame, chosenPupil, currentStatusField, false, dataList,
-                    styleConstants, actualElements);
-        } catch (IOException | FontFormatException ex) {
-            throw new addPupilException();
-        }
+        new AddEditPupil(parentFrame, chosenPupil, currentStatusField, false, dataList,
+                styleConstants, actualElements);
         assert chosenPupil != null;
         pupilInformationLabel.setText(chosenPupil.getPupilInformation());
         refreshPupilsTree();
@@ -424,14 +418,10 @@ public class CentralPanel extends JPanel implements ActionListener{
     private void showEditMarkMethod() {
         AddEditMarks addEditMarks = null;
         Pupil chosenPupil = dataList.getPupilWithCertainID(actualElements.getCurrentID());
-        try {
-            assert chosenPupil != null;
-            addEditMarks = new AddEditMarks(parentFrame, chosenPupil.getMarks(), chosenPupil.isAwardBar(),
-                    chosenPupil.isPromotionToNextGrade(), chosenPupil.getGrade(), currentStatusField, false,
-                    styleConstants, actualElements);
-        } catch (IOException ex) {
-            throw new editMarkException();
-        }
+        assert chosenPupil != null;
+        addEditMarks = new AddEditMarks(parentFrame, chosenPupil.getMarks(), chosenPupil.isAwardBar(),
+                chosenPupil.isPromotionToNextGrade(), chosenPupil.getGrade(), currentStatusField, false,
+                styleConstants, actualElements);
         chosenPupil.setMarks(addEditMarks.showDialogAndGetInput());
         chosenPupil.setPromotionToNextGrade(chosenPupil.getMarks().getPromotion(chosenPupil.getGrade()));
         chosenPupil.setAwardBar(chosenPupil.getMarks().isAwardBar(chosenPupil.isPromotionToNextGrade(),
@@ -439,31 +429,27 @@ public class CentralPanel extends JPanel implements ActionListener{
     }
 
     private void addPupilMethod() {
-        try {
-            Pupil tempPupil = new Pupil();
-            tempPupil.setGrade(actualElements.getCurrentGrade());
-            new AddEditPupil(parentFrame, tempPupil, currentStatusField, true, dataList, styleConstants,
-                    actualElements);
-            if (tempPupil.getSurname() != null) {
-                dataList.addPupilToList(tempPupil);
-                actualElements.setCurrentPupil(tempPupil);
-                actualElements.setCurrentGrade(tempPupil.getGrade());
-                actualElements.setCurrentID(tempPupil.getId());
-                getAllPupilsRadioButton.setSelected(true);
-                currentStatusField.setText(String.format("Pupil '%s' if added",
-                        actualElements.getCurrentPupil().getNamesAndSurname()));
-                pupilInformationLabel.setText(actualElements.getCurrentPupil().getPupilInformation());
-                informationLabelForPupilPanel.setText(getTextForPupilsPanelLabel(tempPupil.getGrade()));
-                refreshPupilsTree();
-                TreePath path = treeForGradePanel.getSelectionPath();
-                assert path != null;
-                DefaultMutableTreeNode gradeNode = (DefaultMutableTreeNode) path.getLastPathComponent();
-                informationLabelForPupilPanel.setText(gradeNode.toString());
-            }
-
-        } catch (IOException | FontFormatException ex) {
-            throw new addPupilException();
+        Pupil tempPupil = new Pupil();
+        tempPupil.setGrade(actualElements.getCurrentGrade());
+        new AddEditPupil(parentFrame, tempPupil, currentStatusField, true, dataList, styleConstants,
+                actualElements);
+        if (tempPupil.getSurname() != null) {
+            dataList.addPupilToList(tempPupil);
+            actualElements.setCurrentPupil(tempPupil);
+            actualElements.setCurrentGrade(tempPupil.getGrade());
+            actualElements.setCurrentID(tempPupil.getId());
+            getAllPupilsRadioButton.setSelected(true);
+            currentStatusField.setText(String.format("Pupil '%s' if added",
+                    actualElements.getCurrentPupil().getNamesAndSurname()));
+            pupilInformationLabel.setText(actualElements.getCurrentPupil().getPupilInformation());
+            informationLabelForPupilPanel.setText(getTextForPupilsPanelLabel(tempPupil.getGrade()));
+            refreshPupilsTree();
+            TreePath path = treeForGradePanel.getSelectionPath();
+            assert path != null;
+            DefaultMutableTreeNode gradeNode = (DefaultMutableTreeNode) path.getLastPathComponent();
+            informationLabelForPupilPanel.setText(gradeNode.toString());
         }
+
     }
 
     private void refreshPupilsTree() {

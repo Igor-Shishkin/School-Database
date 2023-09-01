@@ -1,4 +1,4 @@
-package school.database.gui.addEditWindows;
+package school.database.gui.add_edit_windows;
 
 import school.database.gui.ActualElements;
 import school.database.gui.styleStorage.ConstantsOfStyle;
@@ -15,17 +15,17 @@ import java.util.Map;
 
 public class EditUsers extends JDialog implements ActionListener {
     private final Data dataList;
-    JTextField currentStatusField;
-    JPanel mainPanel, usersPanel;
-    ArrayList<JRadioButton> listOfUsers;
-    JButton addButton, removeButton, cancelButton;
-    JLabel capitalLabel;
-    HashMap<String, User> loginInfo;
-    JFrame parentFrame;
-    GridBagConstraints c;
-    ButtonGroup buttonGroup;
-    ConstantsOfStyle styleConstants;
-    ActualElements actualElements;
+    private final JTextField currentStatusField;
+    private JPanel mainPanel, usersPanel;
+    private ArrayList<JRadioButton> listOfUsers;
+    private JButton addButton, removeButton, cancelButton;
+
+    private Map<String, User> loginInfo;
+    private final JFrame parentFrame;
+    private GridBagConstraints c;
+    private ButtonGroup buttonGroup;
+    private final transient ConstantsOfStyle styleConstants;
+    private final transient ActualElements actualElements;
 
     public EditUsers(JFrame parentFrame, Data dataList, JTextField currentStatusField,
                      ConstantsOfStyle styleConstants, ActualElements actualElements) {
@@ -38,7 +38,7 @@ public class EditUsers extends JDialog implements ActionListener {
 
         setComponentsToGeneralPanel();
 
-        this.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
+        this.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
         this.setLayout(new GridLayout(1, 1, 0, 10));
         this.add(mainPanel);
         setStyleForWindow(this);
@@ -50,10 +50,11 @@ public class EditUsers extends JDialog implements ActionListener {
     }
 
     private void setComponentsToGeneralPanel() {
+        JLabel capitalLabel;
         capitalLabel = new JLabel("User : PERMISSIONS");
         capitalLabel.setFont(styleConstants.getTHE_MAIN_FONT().deriveFont(Font.BOLD, 30));
 
-        loginInfo = (HashMap<String, User>) dataList.getLoginInfo();
+        loginInfo = dataList.getLoginInfo();
         listOfUsers = new ArrayList<>();
         for (Map.Entry<String, User> entry : loginInfo.entrySet()) {
             listOfUsers.add(new JRadioButton
@@ -116,60 +117,69 @@ public class EditUsers extends JDialog implements ActionListener {
             dispose();
         }
         if (e.getSource() == addButton) {
-            AddUser addUser = new AddUser(parentFrame, loginInfo, currentStatusField, styleConstants);
-            String newID = addUser.showDialogAndGetResult();
-            if (newID != null) {
-                mainPanel.remove(usersPanel);
-                listOfUsers.add(new JRadioButton(newID
-                        .concat(" : ")
-                        .concat(loginInfo.get(newID).getPermissions().toString())));
-                usersPanel = new JPanel(new GridLayout(listOfUsers.size(), 1, 7, 7));
-                for (JRadioButton rb : listOfUsers) {
-                    rb.setFont(styleConstants.getTHE_MAIN_FONT().deriveFont(Font.PLAIN, 23));
-                    usersPanel.add(rb);
-                    buttonGroup.add(rb);
-                    if (rb.getText().substring(0, rb.getText().indexOf(" : ")).equals(actualElements.getUserName())) {
-                        rb.setEnabled(false);
-                    }
-
-                }
-                c.gridx = 0;
-                c.gridy = 1;
-                c.gridheight = loginInfo.size();
-                mainPanel.add(usersPanel, c);
-
-                mainPanel.repaint();
-                this.pack();
-            }
+            addUserMethod();
         }
         if (e.getSource() == removeButton) {
-            for (JRadioButton radioButton : listOfUsers) {
-                if (radioButton.isSelected()) {
-                    String id = radioButton.getText().substring(0, radioButton.getText().indexOf(" : "));
-                    loginInfo.remove(id);
-                    listOfUsers.remove(radioButton);
-                }
-                mainPanel.remove(usersPanel);
-
-                usersPanel = new JPanel(new GridLayout(listOfUsers.size(), 1, 7, 7));
-                for (JRadioButton rb : listOfUsers) {
-                    rb.setFont(styleConstants.getTHE_MAIN_FONT().deriveFont(Font.PLAIN, 23));
-                    usersPanel.add(rb);
-                    buttonGroup.add(rb);
-                    if (rb.getText().substring(0, rb.getText().indexOf(" : ")).equals(actualElements.getUserName())) {
-                        rb.setEnabled(false);
-                    }
-                }
-                c.gridx = 0;
-                c.gridy = 1;
-                c.gridheight = loginInfo.size();
-                mainPanel.add(usersPanel, c);
-
-                mainPanel.repaint();
-                this.pack();
-            }
+            removeUserMethod();
         }
     }
+
+    private void removeUserMethod() {
+        for (JRadioButton radioButton : listOfUsers) {
+            if (radioButton.isSelected()) {
+                String id = radioButton.getText().substring(0, radioButton.getText().indexOf(" : "));
+                loginInfo.remove(id);
+                listOfUsers.remove(radioButton);
+            }
+            mainPanel.remove(usersPanel);
+
+            usersPanel = new JPanel(new GridLayout(listOfUsers.size(), 1, 7, 7));
+            for (JRadioButton rb : listOfUsers) {
+                rb.setFont(styleConstants.getTHE_MAIN_FONT().deriveFont(Font.PLAIN, 23));
+                usersPanel.add(rb);
+                buttonGroup.add(rb);
+                if (rb.getText().substring(0, rb.getText().indexOf(" : ")).equals(actualElements.getUserName())) {
+                    rb.setEnabled(false);
+                }
+            }
+            c.gridx = 0;
+            c.gridy = 1;
+            c.gridheight = loginInfo.size();
+            mainPanel.add(usersPanel, c);
+
+            mainPanel.repaint();
+            this.pack();
+        }
+    }
+
+    private void addUserMethod() {
+        AddUser addUser = new AddUser(parentFrame, loginInfo, currentStatusField, styleConstants);
+        String newID = addUser.showDialogAndGetResult();
+        if (newID != null) {
+            mainPanel.remove(usersPanel);
+            listOfUsers.add(new JRadioButton(newID
+                    .concat(" : ")
+                    .concat(loginInfo.get(newID).getPermissions().toString())));
+            usersPanel = new JPanel(new GridLayout(listOfUsers.size(), 1, 7, 7));
+            for (JRadioButton rb : listOfUsers) {
+                rb.setFont(styleConstants.getTHE_MAIN_FONT().deriveFont(Font.PLAIN, 23));
+                usersPanel.add(rb);
+                buttonGroup.add(rb);
+                if (rb.getText().substring(0, rb.getText().indexOf(" : ")).equals(actualElements.getUserName())) {
+                    rb.setEnabled(false);
+                }
+
+            }
+            c.gridx = 0;
+            c.gridy = 1;
+            c.gridheight = loginInfo.size();
+            mainPanel.add(usersPanel, c);
+
+            mainPanel.repaint();
+            this.pack();
+        }
+    }
+
     private void setStyleForWindow(Container container) {
         for (Component component : container.getComponents()) {
             if (component instanceof JButton) {

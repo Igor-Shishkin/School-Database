@@ -1,8 +1,7 @@
-package school.database.gui.addEditWindows;
+package school.database.gui.add_edit_windows;
 
 import school.database.gui.ActualElements;
 import school.database.gui.listeners.*;
-//import school.database.GUI.listeners.*;
 import school.database.gui.styleStorage.ConstantsOfStyle;
 import school.database.data.objects.Address;
 import school.database.data.objects.Parent;
@@ -11,37 +10,33 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.IOException;
 import java.util.Objects;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class AddEditParent extends JDialog implements ActionListener {
-    JFrame parentFrame;
-    JLabel nameLabel, surnameLabel, secondNameLabel, eMailLabel, telephoneLabel, genderLabel, contactsLabel,
-            addressLabel, countryLabel, provinceLabel, townLabel,
-            streetLabel, houseLabel, localLabel, postCodeLabel, peselJLabel;
-    JTextField nameField, surnameField, secondNameField, eMailField, telephoneField, genderField,
+    private final JFrame parentFrame;
+    private JTextField nameField, surnameField, secondNameField, eMailField, telephoneField,
             countryField, provinceField, townField, streetField, houseField, peselField,
-            localField, postCodeField, currentStatusField;
-    JComboBox<String> genderComboBox;
-    JButton addDataButton, cancelButton;
-    Font font;
+            localField, postCodeField;
+    private final JTextField currentStatusField;
+    private JComboBox<String> genderComboBox;
+    private JButton addDataButton, cancelButton;
 
-    String country, province, town, street, postCode, house, local;
-    JCheckBox setAddressCheckBox;
-    Parent parent;
-    boolean newParent = false, isNewPupil;
-    ConstantsOfStyle styleConstants;
-    ActualElements actualElements;
+    private final String country, province, town, street, postCode, house, local;
+    private JCheckBox setAddressCheckBox;
+    private transient Parent parent;
+    private boolean newParent = false;
+    private final boolean isNewPupil;
+    private final transient ConstantsOfStyle styleConstants;
+    private final transient ActualElements actualElements;
 
 
     public AddEditParent(JFrame parentFrame, Parent parent, String country, String province, String town, String street,
                          String house, String local, String postCode, JTextField currentStatusField, boolean isNewPupil,
-                         ConstantsOfStyle styleConstants, ActualElements actualElements)
-            throws IOException, FontFormatException {
+                         ConstantsOfStyle styleConstants, ActualElements actualElements) {
         super(parentFrame, "Parent's data", true); // Make it modal
-        setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
+        setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
         this.parent = parent;
         this.country = country;
         this.province = province;
@@ -60,13 +55,13 @@ public class AddEditParent extends JDialog implements ActionListener {
             newParent = true;
             this.parent = new Parent();
         }
-        font = styleConstants.getTHE_MAIN_FONT().deriveFont(Font.PLAIN, 19);
+        Font fontForWindow = styleConstants.getTHE_MAIN_FONT().deriveFont(Font.PLAIN, 19);
 
         this.setLayout(new GridBagLayout());
-        this.setFont(font);
+        this.setFont(fontForWindow);
 
         setItemsToFrame();
-        setFontForComponents(this, font);
+        setFontForComponents(this, fontForWindow);
 
         setDateToJFields();
         setBackgroundForItems();
@@ -74,7 +69,6 @@ public class AddEditParent extends JDialog implements ActionListener {
         setListener();
 
         setStyleForWindow(this);
-//        this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         this.setBackground(Color.red);
         this.pack();
         this.setLocationRelativeTo(null);
@@ -104,11 +98,11 @@ public class AddEditParent extends JDialog implements ActionListener {
             genderComboBox.setBackground((genderComboBox.getSelectedIndex() < 1)
                     ? styleConstants.getCOLOR_FOR_WRONG_FORMAT() : styleConstants.getCOLOR_FOR_RIGHT_FORMAT());
 
-            String regex = "";
+            String regex;
             if (genderComboBox.getSelectedIndex() == 1) {
-                regex = "^[0-9]{2}(2[1-9]|3[012]|0[1-9]|1[012])(0[1-9]|1[0-9]|2[0-9]|3[01])[0-9]{3}[13579]{1}[0-9]{1}$";
+                regex = "^[0-9]{2}(2[1-9]|3[012]|0[1-9]|1[012])(0[1-9]|1[0-9]|2[0-9]|3[01])[0-9]{3}[13579][0-9]$";
             } else {
-                regex = "^[0-9]{2}(2[1-9]|3[012]|0[1-9]|1[012])(0[1-9]|1[0-9]|2[0-9]|3[01])[0-9]{3}[24680]{1}[0-9]{1}$";
+                regex = "^[0-9]{2}(2[1-9]|3[012]|0[1-9]|1[012])(0[1-9]|1[0-9]|2[0-9]|3[01])[0-9]{3}[24680][0-9]$";
             }
             Pattern peselPattern = Pattern.compile(regex);
             Matcher matcher = peselPattern.matcher(peselField.getText().trim());
@@ -125,7 +119,10 @@ public class AddEditParent extends JDialog implements ActionListener {
             eMailField.setText((parent.geteMail() != null) ? parent.geteMail() : "");
             telephoneField.setText((parent.getTelephone() != null) ? parent.getTelephone() : "");
             peselField.setText((parent.getPesel() != null) ? parent.getPesel() : "");
-            genderComboBox.setSelectedIndex((parent.getGender() == 'M') ? 1 : (parent.getGender() == 'F') ? 2 : 0);
+            genderComboBox.setSelectedIndex(
+                    (parent.getGender() == 'M')
+                    ? 1
+                    : (parent.getGender() == 'F') ? 2 : 0);
             if (parent.getAddress() != null) {
                 countryField.setText((parent.getAddress().getCountry() != null) ? parent.getAddress().getCountry() : "");
                 provinceField.setText((parent.getAddress().getProvince() != null) ? parent.getAddress().getProvince() : "");
@@ -160,32 +157,31 @@ public class AddEditParent extends JDialog implements ActionListener {
 
 
     private void setItemsToFrame() {
-        nameLabel = new JLabel("*Name: ");
+        JLabel nameLabel = new JLabel("*Name: ");
         nameField = new JTextField();
-        secondNameLabel = new JLabel("SecondName: ");
+        JLabel secondNameLabel = new JLabel("SecondName: ");
         secondNameField = new JTextField();
-        surnameLabel = new JLabel("*Surname: ");
+        JLabel surnameLabel = new JLabel("*Surname: ");
         surnameField = new JTextField();
 
-        eMailLabel = new JLabel("*eMail: ");
-        telephoneLabel = new JLabel("*Telephone: ");
-        genderLabel = new JLabel("*Gender: ");
-        countryLabel = new JLabel("Country: ");
-        provinceLabel = new JLabel("Province: ");
-        townLabel = new JLabel("Town: ");
-        streetLabel = new JLabel("Street: ");
-        houseLabel = new JLabel("House: ");
-        localLabel = new JLabel("Local: ");
-        postCodeLabel = new JLabel("Postcode: ");
-        contactsLabel = new JLabel("Contacts: ");
-        addressLabel = new JLabel("Address: ");
-        peselJLabel = new JLabel("*Pesel: ");
+        JLabel eMailLabel = new JLabel("*eMail: ");
+        JLabel telephoneLabel = new JLabel("*Telephone: ");
+        JLabel genderLabel = new JLabel("*Gender: ");
+        JLabel countryLabel = new JLabel("Country: ");
+        JLabel provinceLabel = new JLabel("Province: ");
+        JLabel townLabel = new JLabel("Town: ");
+        JLabel streetLabel = new JLabel("Street: ");
+        JLabel houseLabel = new JLabel("House: ");
+        JLabel localLabel = new JLabel("Local: ");
+        JLabel postCodeLabel = new JLabel("Postcode: ");
+        JLabel contactsLabel = new JLabel("Contacts: ");
+        JLabel addressLabel = new JLabel("Address: ");
+        JLabel peselJLabel = new JLabel("*Pesel: ");
 
         peselJLabel.setHorizontalAlignment(SwingConstants.RIGHT);
 
         eMailField = new JTextField(13);
         telephoneField = new JTextField(13);
-        genderField = new JTextField(13);
         countryField = new JTextField(13);
         provinceField = new JTextField(13);
         townField = new JTextField(13);
@@ -199,7 +195,6 @@ public class AddEditParent extends JDialog implements ActionListener {
 
         setAddressCheckBox = new JCheckBox("Make an address like the pupil's");
         addDataButton = new JButton("Save");
-//        addDataButton.setFont(remRegular.deriveFont(Font.BOLD, 19));
         addDataButton.setForeground(new Color(0x043100));
         cancelButton = new JButton("Cancel");
 
@@ -341,7 +336,6 @@ public class AddEditParent extends JDialog implements ActionListener {
         c.gridy = 7;
         this.add(postCodeField, c);
 
-//        c.insets = new Insets(2, 3, 2, 3);
         c.gridwidth = 1;
         c.gridx = 3;
         c.gridy = 0;
@@ -375,80 +369,90 @@ public class AddEditParent extends JDialog implements ActionListener {
     @Override
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() == addDataButton) {
-            if (nameField.getBackground() == styleConstants.getCOLOR_FOR_RIGHT_FORMAT() &&
-                    surnameField.getBackground() == styleConstants.getCOLOR_FOR_RIGHT_FORMAT() &&
-                    telephoneField.getBackground() == styleConstants.getCOLOR_FOR_RIGHT_FORMAT() &&
-                    eMailField.getBackground() == styleConstants.getCOLOR_FOR_RIGHT_FORMAT() &&
-                    genderComboBox.getBackground() == styleConstants.getCOLOR_FOR_RIGHT_FORMAT() &&
-                    peselField.getBackground() == styleConstants.getCOLOR_FOR_RIGHT_FORMAT() &&
-                    nameField.getBackground() == styleConstants.getCOLOR_FOR_RIGHT_FORMAT() &&
-                    localField.getBackground() != styleConstants.getCOLOR_FOR_WRONG_FORMAT() &&
-                    houseField.getBackground() != styleConstants.getCOLOR_FOR_WRONG_FORMAT()
-            ) {
-                String secondName = (secondNameField.getText().trim().equals("")) ? null : secondNameField.getText().trim();
-                char gender = (Objects.equals(genderComboBox.getSelectedItem(), "Male")) ? 'M' : 'F';
-                parent.setName(nameField.getText().trim());
-                parent.setSecondName(secondName);
-                parent.setSurname(surnameField.getText().trim());
-                parent.setGender(gender);
-                parent.setPesel(peselField.getText().trim());
-                parent.setTelephone(telephoneField.getText().trim());
-                parent.seteMail(eMailField.getText().trim());
-                parent.setAddress(new Address(
-                        countryField.getText().trim(),
-                        provinceField.getText().trim(),
-                        townField.getText().trim(),
-                        streetField.getText().trim(),
-                        houseField.getText().trim(),
-                        localField.getText().trim(),
-                        postCodeField.getText().trim()));
-                if (!isNewPupil) {
-                    currentStatusField.setText(String.format("Changes are saved (%s: PARENT)",
-                            actualElements.getCurrentPupil().getNamesAndSurname()));
-                }
-                dispose();
-            } else {
-                JOptionPane.showMessageDialog(parentFrame, "Some data are wrong.", "ERROR",
-                        JOptionPane.INFORMATION_MESSAGE);
-            }
-
+            addDataMethod();
         }
         if (e.getSource() == cancelButton) {
-            String[] responses = {"Close without saving", "Return to editing"};
-            int answer = JOptionPane.showOptionDialog(parentFrame,
-                    "Would you like to exit? \n Changes won't be saved",
-                    "Are you sure?", JOptionPane.OK_CANCEL_OPTION, JOptionPane.WARNING_MESSAGE, null,
-                    responses, responses[0]);
-            if (answer == 0) {
-                dispose();
-            }
+            cancelButtonMethod();
         }
         if (e.getSource() == setAddressCheckBox) {
-            if (setAddressCheckBox.isSelected()) {
-                countryField.setText(country);
-                provinceField.setText(province);
-                townField.setText(town);
-                streetField.setText(street);
-                houseField.setText(house);
-                localField.setText(local);
-                postCodeField.setText(postCode);
+            setAddressMethod();
+        }
+    }
 
-                countryField.setEnabled(false);
-                provinceField.setEnabled(false);
-                townField.setEnabled(false);
-                streetField.setEnabled(false);
-                houseField.setEnabled(false);
-                localField.setEnabled(false);
-                postCodeField.setEnabled(false);
-            } else {
-                countryField.setEnabled(true);
-                provinceField.setEnabled(true);
-                townField.setEnabled(true);
-                streetField.setEnabled(true);
-                houseField.setEnabled(true);
-                localField.setEnabled(true);
-                postCodeField.setEnabled(true);
+    private void setAddressMethod() {
+        if (setAddressCheckBox.isSelected()) {
+            countryField.setText(country);
+            provinceField.setText(province);
+            townField.setText(town);
+            streetField.setText(street);
+            houseField.setText(house);
+            localField.setText(local);
+            postCodeField.setText(postCode);
+
+            countryField.setEnabled(false);
+            provinceField.setEnabled(false);
+            townField.setEnabled(false);
+            streetField.setEnabled(false);
+            houseField.setEnabled(false);
+            localField.setEnabled(false);
+            postCodeField.setEnabled(false);
+        } else {
+            countryField.setEnabled(true);
+            provinceField.setEnabled(true);
+            townField.setEnabled(true);
+            streetField.setEnabled(true);
+            houseField.setEnabled(true);
+            localField.setEnabled(true);
+            postCodeField.setEnabled(true);
+        }
+    }
+
+    private void cancelButtonMethod() {
+        String[] responses = {"Close without saving", "Return to editing"};
+        int answer = JOptionPane.showOptionDialog(parentFrame,
+                "Would you like to exit? \n Changes won't be saved",
+                "Are you sure?", JOptionPane.OK_CANCEL_OPTION, JOptionPane.WARNING_MESSAGE, null,
+                responses, responses[0]);
+        if (answer == 0) {
+            dispose();
+        }
+    }
+
+    private void addDataMethod() {
+        if (nameField.getBackground() == styleConstants.getCOLOR_FOR_RIGHT_FORMAT() &&
+                surnameField.getBackground() == styleConstants.getCOLOR_FOR_RIGHT_FORMAT() &&
+                telephoneField.getBackground() == styleConstants.getCOLOR_FOR_RIGHT_FORMAT() &&
+                eMailField.getBackground() == styleConstants.getCOLOR_FOR_RIGHT_FORMAT() &&
+                genderComboBox.getBackground() == styleConstants.getCOLOR_FOR_RIGHT_FORMAT() &&
+                peselField.getBackground() == styleConstants.getCOLOR_FOR_RIGHT_FORMAT() &&
+                localField.getBackground() != styleConstants.getCOLOR_FOR_WRONG_FORMAT() &&
+                houseField.getBackground() != styleConstants.getCOLOR_FOR_WRONG_FORMAT()
+        ) {
+            String secondName = (secondNameField.getText().trim().equals("")) ? null : secondNameField.getText().trim();
+            char gender = (Objects.equals(genderComboBox.getSelectedItem(), "Male")) ? 'M' : 'F';
+            parent.setName(nameField.getText().trim());
+            parent.setSecondName(secondName);
+            parent.setSurname(surnameField.getText().trim());
+            parent.setGender(gender);
+            parent.setPesel(peselField.getText().trim());
+            parent.setTelephone(telephoneField.getText().trim());
+            parent.seteMail(eMailField.getText().trim());
+            parent.setAddress(new Address(
+                    countryField.getText().trim(),
+                    provinceField.getText().trim(),
+                    townField.getText().trim(),
+                    streetField.getText().trim(),
+                    houseField.getText().trim(),
+                    localField.getText().trim(),
+                    postCodeField.getText().trim()));
+            if (!isNewPupil) {
+                currentStatusField.setText(String.format("Changes are saved (%s: PARENT)",
+                        actualElements.getCurrentPupil().getNamesAndSurname()));
             }
+            dispose();
+        } else {
+            JOptionPane.showMessageDialog(parentFrame, "Some data are wrong.", "ERROR",
+                    JOptionPane.INFORMATION_MESSAGE);
         }
     }
 

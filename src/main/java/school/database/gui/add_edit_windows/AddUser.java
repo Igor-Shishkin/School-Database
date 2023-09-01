@@ -1,4 +1,4 @@
-package school.database.gui.addEditWindows;
+package school.database.gui.add_edit_windows;
 
 import school.database.gui.styleStorage.ConstantsOfStyle;
 import school.database.data.objects.Permissions;
@@ -8,21 +8,21 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.HashMap;
+import java.util.Map;
 
 public class AddUser extends JDialog implements ActionListener {
-    JTextField currentStatusField;
-    JPanel mainPanel;
-    JButton addButton, cancelButton;
-    JTextField nameField;
-    JPasswordField passwordField, repeatPasswordField;
-    JComboBox<String> permissionComboBox;
-    JLabel capitalLabel;
-    HashMap<String, User> loginInfo;
-    String addedID = null;
-    ConstantsOfStyle styleConstants;
+    private final JTextField currentStatusField;
+    private JPanel mainPanel;
+    private JButton addButton, cancelButton;
+    private JTextField nameField;
+    private JPasswordField passwordField, repeatPasswordField;
+    private JComboBox<String> permissionComboBox;
+    private JLabel capitalLabel;
+    private final Map<String, User> loginInfo;
+    private String addedID = null;
+    private final transient ConstantsOfStyle styleConstants;
 
-    public AddUser (JFrame parentFrame, HashMap<String, User> loginInfo, JTextField currentStatusField,
+    public AddUser (JFrame parentFrame, Map<String, User> loginInfo, JTextField currentStatusField,
                     ConstantsOfStyle styleConstants){
         super(parentFrame,"Achievement",true);
         this.currentStatusField =currentStatusField;
@@ -31,7 +31,7 @@ public class AddUser extends JDialog implements ActionListener {
 
         setComponentsToMainPanel();
 
-        this.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
+        this.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
         this.setLayout(new GridLayout(1,1,20,20));
         this.add(mainPanel);
         setStyleForWindow(this);
@@ -118,7 +118,6 @@ public class AddUser extends JDialog implements ActionListener {
                             : (permissionComboBox.getSelectedIndex()==9) ? Permissions.CLASS_TEACHER_6
                             : (permissionComboBox.getSelectedIndex()==10) ? Permissions.CLASS_TEACHER_7
                             : Permissions.CLASS_TEACHER_8;
-                    System.out.println(permissionComboBox.getSelectedIndex());
                     loginInfo.put(nameField.getText().trim(),
                             new User(String.valueOf(passwordField.getPassword()), permissions));
                     addedID  = nameField.getText().trim();
