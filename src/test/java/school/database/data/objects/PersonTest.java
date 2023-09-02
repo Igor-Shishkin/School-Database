@@ -17,14 +17,14 @@ class PersonTest {
 
     @ParameterizedTest
     @MethodSource("getCorrectDataForNameAndSurname")
-    void testCorrectSetName(final String name) {
+    void testSetCorrectName(final String name) {
         final Pupil pupil = new Pupil();
         pupil.setName(name);
         assertThat(pupil.getName()).isEqualTo(name);
     }
     @ParameterizedTest
     @MethodSource("getIncorrectDataForNameAndSurname")
-    void testIncorrectSetName(final String name) {
+    void testSetIncorrectName(final String name) {
         final Pupil pupil = new Pupil();
         final ThrowableAssert.ThrowingCallable callable = () -> pupil.setName(name);
 
@@ -35,14 +35,14 @@ class PersonTest {
 
     @ParameterizedTest
     @MethodSource("getCorrectDataForNameAndSurname")
-    void testCorrectSetSurname(final String name) {
+    void testSetCorrectSurname(final String name) {
         final Pupil pupil = new Pupil();
         pupil.setSurname(name);
         assertThat(pupil.getSurname()).isEqualTo(name);
     }
     @ParameterizedTest
     @MethodSource("getIncorrectDataForNameAndSurname")
-    void testIncorrectSetSurname(final String name) {
+    void testSetIncorrectSurname(final String name) {
         final Pupil pupil = new Pupil();
         final ThrowableAssert.ThrowingCallable callable = () -> pupil.setSurname(name);
 
@@ -53,7 +53,7 @@ class PersonTest {
 
     @ParameterizedTest
     @MethodSource("getIncorrectDataForPesel")
-    void testIncorrectSetPesel(String peselNumber) {
+    void testSetIncorrectPesel(String peselNumber) {
         final Pupil pupil = new Pupil();
         final ThrowableAssert.ThrowingCallable callable = () -> pupil.setPesel(peselNumber);
         assertThatThrownBy(callable)
@@ -70,7 +70,7 @@ class PersonTest {
     }
     @ParameterizedTest
     @MethodSource("getCorrectDataForPesel")
-    void testCorrectSetPesel(String peselNumber) {
+    void testSetCorrectPesel(String peselNumber) {
         final Pupil pupil = new Pupil();
         pupil.setPesel(peselNumber);
         assertThat(pupil.getPesel()).isEqualTo(peselNumber);

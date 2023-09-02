@@ -66,25 +66,6 @@ public class Data{
                 .collect(Collectors.toList());
     }
 
-    public String getIdNamesSurname(Pupil pupil) {
-        if (pupil.getSecondName() == null) {
-            return String.format("%s %s.    ID: %d", pupil.getName(), pupil.getSurname(), pupil.getId());
-        } else {
-            return String.format("%s %s %s.    ID: %d", pupil.getName(), pupil.getSecondName()
-                    , pupil.getSurname(), pupil.getId());
-        }
-    }
-
-    public String getGradeIdNamesSurname(Pupil pupil) {
-        if (pupil.getSecondName() == null) {
-            return String.format("%d grade.    %s %s.   ID: %d", pupil.getGrade(), pupil.getName(), pupil.getSurname(),
-                    pupil.getId());
-        } else {
-            return String.format("%d grade.    %s %s %s.   ID: %d", pupil.getGrade(),  pupil.getName(),
-                    pupil.getSecondName(), pupil.getSurname(), pupil.getId());
-        }
-    }
-
     public Pupil getPupilWithCertainID(int id) {
         for (Pupil pupil : pupilsDataList) {
             if (pupil.getId() == id) {

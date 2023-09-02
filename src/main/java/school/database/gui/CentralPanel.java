@@ -471,7 +471,7 @@ public class CentralPanel extends JPanel implements ActionListener{
         int pupilNumberInTheList = 0;
 
         for (int i = 0; i < list.size(); i++) {
-            String nameNode = String.format("%d. %s", i + 1, dataList.getIdNamesSurname(list.get(i)));
+            String nameNode = String.format("%d. %s", i + 1, list.get(i).getIdNamesSurname());
             nodesForPupilsPanel.add(i, new DefaultMutableTreeNode(nameNode));
             rootForPupilsTree.add(nodesForPupilsPanel.get(i));
 
@@ -492,8 +492,8 @@ public class CentralPanel extends JPanel implements ActionListener{
         if (!list.isEmpty()) {
             for (int i = 0; i < list.size(); i++) {
                 String nameNode = (actualElements.getCurrentGrade() > -1)
-                        ? String.format("%d. %s", i + 1, dataList.getIdNamesSurname(list.get(i)))
-                        : dataList.getGradeIdNamesSurname(list.get(i));
+                        ? String.format("%d. %s", i + 1, list.get(i).getIdNamesSurname())
+                        : list.get(i).getGradeIdNamesSurname();
                 nodesForPupilsPanel.add(i, new DefaultMutableTreeNode(nameNode));
                 rootForPupilsTree.add(nodesForPupilsPanel.get(i));
             }

@@ -72,7 +72,7 @@ public class GradesTreeNodeMouseListener extends MouseAdapter {
                 list =  dataList.getListOfPupilsOfCertainGrade(grade);
                 if (list.size() != 0) {
                     for (int i = 0; i < list.size(); i++) {
-                        String nameNode = String.format("%d. %s", i + 1, dataList.getIdNamesSurname(list.get(i)));
+                        String nameNode = String.format("%d. %s", i + 1, list.get(i).getIdNamesSurname());
                         nodesForPupilsPanel.add(i, new DefaultMutableTreeNode(nameNode));
                         rootForPupilsTree.add(nodesForPupilsPanel.get(i));
                     }

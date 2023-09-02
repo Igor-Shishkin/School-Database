@@ -140,7 +140,15 @@ public class Pupil extends Person {
                     this.getSecondName(), this.getSurname(), this.getId());
         }
     }
-
+    @JsonIgnore
+    public String getIdNamesSurname() {
+        if (this.getSecondName() == null) {
+            return String.format("%s %s.    ID: %d", this.getName(), this.getSurname(), this.getId());
+        } else {
+            return String.format("%s %s %s.    ID: %d", this.getName(), this.getSecondName()
+                    , this.getSurname(), this.getId());
+        }
+    }
     @JsonIgnore
     public String getNamesAndSurname() {
         return String.format("%s %s: ", this.getName(), this.getSurname());
@@ -148,16 +156,14 @@ public class Pupil extends Person {
 
     @JsonIgnore
     public String getPupilInformation() {
-        String dateFormat = "Date of birth: %02d.%02d.%d  <br>";
-        String gradeFormat = "Grade: %d<br>";
-        String parentFormat = "Parents:<br>%s %s. <br>Telephone: %s<br>eMail: %s <br>";
+        String informationFormat = "<html>%s %s<br>Date of birth: %02d.%02d.%d<br>Grade: %d<br>"
+                .concat("Parents:<br>%s %s. <br>Telephone: %s<br>eMail: %s <br>");
+        String informationFormatWithSecondName = "<html>%s %s %s<br>Date of birth: %02d.%02d.%d<br>Grade: %d<br>"
+                .concat("Parents:<br>%s %s. <br>Telephone: %s<br>eMail: %s <br>");
         if (this.getParent2() != null) {
             if (this.getSecondName() == null) {
-                return String.format("<html>%s %s<br>"
-                                .concat(dateFormat)
-                                .concat(gradeFormat)
-                                .concat(parentFormat)
-                                .concat("    %s %s. <br>    Telephone: %s<br>eMail: %s <br><br></html>"),
+                return String.format(informationFormat
+                                .concat("%s %s. <br>Telephone: %s<br>eMail: %s <br></html>"),
                         this.getName(), this.getSurname(),
                         this.getDateOfBirth().getDayOfMonth(), this.getDateOfBirth().getMonthValue(),
                         this.getDateOfBirth().getYear(),
@@ -168,11 +174,8 @@ public class Pupil extends Person {
                         this.getParent2().geteMail()
                 );
             }
-            return String.format("<html>%s %s %s<br>"
-                            .concat(dateFormat)
-                            .concat(gradeFormat)
-                            .concat(parentFormat)
-                            .concat("    %s %s. <br>    Telephone: %s<br>eMail: %s <br><br></html>"),
+            return String.format(informationFormatWithSecondName
+                            .concat("%s %s. <br>Telephone: %s<br>eMail: %s <br></html>"),
                     this.getName(), this.getSecondName(), this.getSurname(),
                     this.getDateOfBirth().getDayOfMonth(), this.getDateOfBirth().getMonthValue(),
                     this.getDateOfBirth().getYear(),
@@ -184,10 +187,7 @@ public class Pupil extends Person {
             );
         }
         if (this.getSecondName() == null) {
-            return String.format("<html>%s %s<br>"
-                            .concat(dateFormat)
-                            .concat(gradeFormat)
-                            .concat(parentFormat)
+            return String.format(informationFormat
                             .concat("</html>"),
                     this.getName(), this.getSurname(),
                     this.getDateOfBirth().getDayOfMonth(), this.getDateOfBirth().getMonthValue(),
@@ -197,10 +197,8 @@ public class Pupil extends Person {
                     this.getParent1().geteMail()
             );
         }
-        return String.format("<html>%s %s %s<br>"
-                        .concat(dateFormat)
-                        .concat(gradeFormat)
-                        .concat(parentFormat)
+
+        return String.format(informationFormatWithSecondName
                         .concat("</html>"),
                 this.getName(), this.getSecondName(), this.getSurname(),
                 this.getDateOfBirth().getDayOfMonth(), this.getDateOfBirth().getMonthValue(), this.getDateOfBirth().getYear(),
