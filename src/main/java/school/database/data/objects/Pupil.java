@@ -141,6 +141,18 @@ public class Pupil extends Person {
         }
     }
     @JsonIgnore
+    public String getGradeBirthdayDayIdNamesSurname() {
+        if (this.getSecondName() == null) {
+            return String.format("%d grade. %s %s. %d/%d/%d ID: %d", this.getGrade(), this.getName(), this.getSurname(),
+                    this.getDateOfBirth().getDayOfMonth(), this.getDateOfBirth().getMonthValue(),
+                    this.getDateOfBirth().getYear(), this.getId());
+        } else {
+            return String.format("%d grade. %s %s %s. %d/%d/%d ID: %d", this.getGrade(), this.getName(),
+                    this.getSecondName(), this.getSurname(), this.getDateOfBirth().getDayOfMonth(),
+                    this.getDateOfBirth().getMonthValue(), this.getDateOfBirth().getYear(), this.getId());
+        }
+    }
+    @JsonIgnore
     public String getIdNamesSurname() {
         if (this.getSecondName() == null) {
             return String.format("%s %s.    ID: %d", this.getName(), this.getSurname(), this.getId());

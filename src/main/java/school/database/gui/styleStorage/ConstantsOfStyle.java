@@ -38,17 +38,27 @@ public class ConstantsOfStyle {
     private final ImageIcon INFO_ICON = new ImageIcon(iconsPath.resolve("info.png").toString());
     private final ImageIcon USER_ICON = new ImageIcon(iconsPath.resolve("user.png").toString());
     private final ImageIcon STYLE_ICON = new ImageIcon(iconsPath.resolve("style.png").toString());
-    BufferedImage FLAG_IMAGE;
-
+    BufferedImage HORIZONTAL_FLAG_IMAGE;
     {
                 try {
-                    FLAG_IMAGE = ImageIO.read
+                    HORIZONTAL_FLAG_IMAGE = ImageIO.read
                             (new File(Paths.get("src", "main", "resources", "Images", "FLAG_POLAND_HORIZONTAL.png")
                                     .toUri()));
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
             };
+
+    BufferedImage VERTICAL_FLAG_IMAGE;
+    {
+        try {
+            VERTICAL_FLAG_IMAGE = ImageIO.read
+                    (new File(Paths.get("src", "main", "resources", "Images", "FLAG_POLAND_VERTICAL.png")
+                            .toUri()));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    };
     private final List<Color> ACTUAL_SET_OF_COLORS = new ArrayList<>(15);
     private final List<Color> SET_OF_COLORS_OCEAN = new ArrayList<>(15);
     private final List<Color> SET_OF_COLORS_NIGHTFALL = new ArrayList<>(15);
@@ -149,8 +159,8 @@ public class ConstantsOfStyle {
         return THE_MAIN_FONT;
     }
 
-    public BufferedImage getFLAG_IMAGE() {
-        return FLAG_IMAGE;
+    public BufferedImage getHORIZONTAL_FLAG_IMAGE() {
+        return HORIZONTAL_FLAG_IMAGE;
     }
 
     public void setCOLOR_FOR_RIGHT_FORMAT(Color COLOR_FOR_RIGHT_FORMAT) {
@@ -163,5 +173,8 @@ public class ConstantsOfStyle {
 
     public void setCOLOR_NEUTRAL_FORMAT(Color COLOR_NEUTRAL_FORMAT) {
         this.COLOR_NEUTRAL_FORMAT = COLOR_NEUTRAL_FORMAT;
+    }
+    public BufferedImage getVERTICAL_FLAG_IMAGE() {
+        return VERTICAL_FLAG_IMAGE;
     }
 }

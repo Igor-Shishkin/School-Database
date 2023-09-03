@@ -29,7 +29,7 @@ public class CentralPanel extends JPanel implements ActionListener{
     private final List<DefaultMutableTreeNode> nodesForPupilsPanel;
     private final JTree treeForGradePanel, treeForPupilsPanel;
     private final DefaultTreeModel pupilsTreeModel, gradesTreeModel;
-    private JLabel informationLabelForPupilPanel, pupilInformationLabel, gradesCapitalLabel;
+    private JLabel informationLabelForPupilPanel, pupilInformationLabel, gradesCapitalLabel, awardBarLabel;
     private final JTextField currentStatusField;
     private JRadioButton getAllPupilsRadioButton, getPupilsWithBirthdayInThisMonthRadioButton, getPupilsWithAwardBarRadioButton,
             getNoPromotedPupilsRadioButton, getPupilsWithAchievementRadioButton;
@@ -147,13 +147,30 @@ public class CentralPanel extends JPanel implements ActionListener{
         buttonInformationPanel.add(showEditMarksButton);
         buttonInformationPanel.add(deletePupilButton);
 
+        buttonInformationPanel.setOpaque(false);
+        pupilInformationLabel.setOpaque(false);
+
+        JLayeredPane layeredPane = new JLayeredPane();
+        JPanel bottomPanel = new JPanel();
+        bottomPanel.setBackground(styleConstants.getACTUAL_SET_OF_COLORS().get(2));
         informationPanel = new JPanel();
         informationPanel.setLayout(new BorderLayout());
         informationPanel.add(pupilInformationLabel, BorderLayout.NORTH);
         informationPanel.add(buttonInformationPanel, BorderLayout.SOUTH);
-        informationPanel.setBackground(styleConstants.getACTUAL_SET_OF_COLORS().get(2));
+//        informationPanel.setBackground(styleConstants.getACTUAL_SET_OF_COLORS().get(2));
         informationPanel.setBorder(BorderFactory.createLoweredBevelBorder());
-        informationPanel.setPreferredSize(new Dimension(10, 568));
+        informationPanel.setBounds(0,0,370, 568);
+//        informationPanel.setPreferredSize(new Dimension(10, 568));
+        informationPanel.setOpaque(false);
+        awardBarLabel = new JLabel(new ImageIcon(styleConstants.getVERTICAL_FLAG_IMAGE()));
+        awardBarLabel.setBounds(280,0,35,600);
+        awardBarLabel.setFont(new Font(null, Font.BOLD, 40));
+
+        layeredPane.setPreferredSize(new Dimension(10, 568));
+        layeredPane.add(bottomPanel, JLayeredPane.DEFAULT_LAYER);
+        layeredPane.add(informationPanel, Integer.valueOf(2));
+        layeredPane.add(awardBarLabel, Integer.valueOf(1));
+
 
         JLabel informationCapitalLabel = new JLabel("Pupil");
         informationCapitalLabel.setFont(styleConstants.getTHE_MAIN_FONT().deriveFont(Font.BOLD, 19));
@@ -163,7 +180,7 @@ public class CentralPanel extends JPanel implements ActionListener{
         basisForInformationPanel.setBorder(BorderFactory.createLoweredBevelBorder());
         basisForInformationPanel.add(informationCapitalLabel, BorderLayout.NORTH);
         basisForInformationPanel.setBackground(styleConstants.getACTUAL_SET_OF_COLORS().get(2));
-        basisForInformationPanel.add(informationPanel, BorderLayout.SOUTH);
+        basisForInformationPanel.add(layeredPane, BorderLayout.SOUTH);
 
 
     }
@@ -351,7 +368,7 @@ public class CentralPanel extends JPanel implements ActionListener{
     private void getPupilsWithBirthdayInThisMonthMethod() {
 
         List<Pupil> list = dataList.getPupilsWithBirthdayInThisMonth(actualElements.getCurrentGrade());
-        buildPupilsTree(list);
+        buildPupilsTree(list, true);
     }
 
     private void getNoPromotedPupilsMethod() {
@@ -507,6 +524,38 @@ public class CentralPanel extends JPanel implements ActionListener{
         pupilsTreeModel.nodeStructureChanged(rootForPupilsTree);
         pupilsPanel.repaint();
     }
+    public void buildPupilsTree(List<Pupil> list, boolean withDateOfBirthday) {
+        rootForPupilsTree.removeAllChildren();
+        if (!list.isEmpty()) {
+            for (int i = 0; i < list.size(); i++) {
+                String nameNode;
+                if (withDateOfBirthday) {
+                    nameNode = (actualElements.getCurrentGrade() > -1)
+                            ? String.format("%d. %d/%d/%d. %s", i + 1, list.get(i).getDateOfBirth().getDayOfMonth(),
+                            list.get(i).getDateOfBirth().getMonthValue(),
+                            list.get(i).getDateOfBirth().getYear(), list.get(i).getIdNamesSurname())
+                            : list.get(i).getGradeBirthdayDayIdNamesSurname();
+                    nodesForPupilsPanel.add(i, new DefaultMutableTreeNode(nameNode));
+                    rootForPupilsTree.add(nodesForPupilsPanel.get(i));
+                } else {
+                    nameNode = (actualElements.getCurrentGrade() > -1)
+                            ? String.format("%d. %s", i + 1, list.get(i).getIdNamesSurname())
+                            : list.get(i).getGradeIdNamesSurname();
+                    nodesForPupilsPanel.add(i, new DefaultMutableTreeNode(nameNode));
+                    rootForPupilsTree.add(nodesForPupilsPanel.get(i));
+                }
+            }
+
+        } else {
+            String textForLabel = String.format
+                    ("<html>Class %d<br>there are no pupils with chosen parameters in this class</html>",
+                            actualElements.getCurrentGrade());
+            informationLabelForPupilPanel.setText(textForLabel);
+        }
+        pupilsTreeModel.nodeStructureChanged(rootForPupilsTree);
+        pupilsPanel.repaint();
+    }
+
 
     private void setStyleForComponentsFilterPane(Container container, Font font) {
         for (Component component : container.getComponents()) {

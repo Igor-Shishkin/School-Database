@@ -70,7 +70,7 @@ public class MainWindow extends JFrame{
 
     }
     public void setCurrentStatusPanel () {
-        currentStatusField = new JTextField("Logged in. No data has been loaded at the moment.");
+        currentStatusField = new JTextField("No data has been loaded at the moment.");
         currentStatusField.setPreferredSize(new Dimension(982, 25));
         currentStatusField.setEditable(false);
         downPanel.setPreferredSize(new Dimension(10, 35));

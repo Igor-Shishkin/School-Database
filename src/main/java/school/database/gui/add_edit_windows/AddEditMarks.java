@@ -9,7 +9,6 @@ import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import java.awt.*;
 import java.awt.event.*;
-import java.io.IOException;
 
 
 public class AddEditMarks extends JDialog implements ActionListener {
@@ -75,7 +74,7 @@ public class AddEditMarks extends JDialog implements ActionListener {
         promotionLayeredPane = new JLayeredPane();
         promotionLayeredPane.setBorder(BorderFactory.createSoftBevelBorder(0, Color.GRAY, Color.DARK_GRAY));
         flagLabel = new JLabel();
-        flagLabel.setIcon(new ImageIcon(styleConstants.getFLAG_IMAGE()));
+        flagLabel.setIcon(new ImageIcon(styleConstants.getHORIZONTAL_FLAG_IMAGE()));
         flagLabel.setBounds(0,0,500,60);
         flagLabel.setVisible(awardBar);
         flagLabel.setBorder(BorderFactory.createSoftBevelBorder(0, Color.GRAY, Color.DARK_GRAY));

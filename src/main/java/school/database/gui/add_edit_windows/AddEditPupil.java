@@ -620,6 +620,8 @@ public class AddEditPupil extends JDialog implements ActionListener {
                 genderComboBox.getBackground() == styleConstants.getCOLOR_FOR_RIGHT_FORMAT() &&
                 gradeComboBox.getBackground() == styleConstants.getCOLOR_FOR_RIGHT_FORMAT() &&
                 addFirstParentButton.getBackground() == styleConstants.getCOLOR_FOR_RIGHT_FORMAT() &&
+                houseField.getBackground() != styleConstants.getCOLOR_FOR_WRONG_FORMAT() &&
+                localField.getBackground() != styleConstants.getCOLOR_FOR_WRONG_FORMAT() &&
                 (idField.getBackground() == styleConstants.getCOLOR_FOR_RIGHT_FORMAT() ||
                         !idField.isEnabled())) {
 

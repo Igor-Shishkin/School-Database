@@ -27,12 +27,6 @@ public class Main {
         UIManager.put("Menu.font", menuFont);
         UIManager.put("MenuItem.font", menuFont);
 
-        UIManager.put("MenuItem.background", new Color (0x53802C));
-        UIManager.put("MenuItem.foreground", Color.black);
-        UIManager.put("MenuBar.background", new Color(0xac92a6));
-        UIManager.put("Menu.foreground", Color.green);
-        UIManager.put("MenuItem.opaque", true);
-
         new MainWindow(dataList, styleConstants, actualElements);
 
     }
