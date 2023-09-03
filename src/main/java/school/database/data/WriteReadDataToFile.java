@@ -18,7 +18,7 @@ import org.jasypt.exceptions.EncryptionOperationNotPossibleException;
 
 
 public class WriteReadDataToFile {
-    Properties properties;
+    private Properties properties;
 
 
     public WriteReadDataToFile() throws IOException {
@@ -40,19 +40,19 @@ public class WriteReadDataToFile {
         String decryptedData = decryptData(textFromFile, properties.getProperty("jdbc.encryptPassword"));
         return deserializeDataFromJSON(decryptedData);
     }
-    private String serializeToJSON(DataToFile data) throws JsonProcessingException {
+    public String serializeToJSON(DataToFile data) throws JsonProcessingException {
         ObjectMapper mapper = new ObjectMapper();
         mapper.configure(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS, false);
         mapper.registerModule(new JavaTimeModule());
         return mapper.writeValueAsString(data);
     }
-    private String encryptData(String text, String password) {
+    public String encryptData(String text, String password) {
         StandardPBEStringEncryptor encryptor = new StandardPBEStringEncryptor();
         encryptor.setPassword(password);
         encryptor.setAlgorithm("PBEWithMD5AndDES");
         return encryptor.encrypt(text);
     }
-    private void writeToFile(String data, Path path) {
+    public void writeToFile(String data, Path path) {
         try {
             Files.write(path, data.getBytes());
         } catch (IOException e) {
@@ -60,10 +60,10 @@ public class WriteReadDataToFile {
         }
     }
 
-    private String readFromFile(File file) throws IOException {
+    public String readFromFile(File file) throws IOException {
         return new String(Files.readAllBytes(file.toPath()));
     }
-    private String decryptData(String encryptedData, String password) {
+    public String decryptData(String encryptedData, String password) {
         try {
             StandardPBEStringEncryptor encryptor = new StandardPBEStringEncryptor();
             encryptor.setPassword(password);
@@ -74,7 +74,7 @@ public class WriteReadDataToFile {
             return "Decryption failed: " + e.getMessage();
         }
     }
-    private DataToFile deserializeDataFromJSON(String jsonData) throws JsonProcessingException {
+    public DataToFile deserializeDataFromJSON(String jsonData) throws JsonProcessingException {
         ObjectMapper mapper = new ObjectMapper();
         mapper.configure(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS, false);
         mapper.registerModule(new JavaTimeModule());

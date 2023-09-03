@@ -3,10 +3,7 @@ package school.database.data;
 import school.database.data.objects.Pupil;
 import school.database.data.objects.User;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class DataToFile {
     private ArrayList<Pupil> listOfPupils;
@@ -31,5 +28,18 @@ public class DataToFile {
 
     public void setLoginInfo(Map<String, User> loginInfo) {
         this.loginInfo = (HashMap<String, User>) loginInfo;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        DataToFile that = (DataToFile) o;
+        return Objects.equals(listOfPupils, that.listOfPupils) && Objects.equals(loginInfo, that.loginInfo);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(listOfPupils, loginInfo);
     }
 }
