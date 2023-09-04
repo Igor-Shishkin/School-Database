@@ -18,7 +18,6 @@ import javax.swing.tree.TreeSelectionModel;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.IOException;
 import java.util.List;
 
 public class CentralPanel extends JPanel implements ActionListener{
@@ -50,7 +49,8 @@ public class CentralPanel extends JPanel implements ActionListener{
                         JScrollPane paneForGradesTree, Data dataList,
                         DefaultTreeModel pupilsTreeModel, List<DefaultMutableTreeNode> nodesForPupilsPanel,
                         DefaultMutableTreeNode rootForPupilsTree,
-                        ConstantsOfStyle styleConstants, JTree treeForPupilsPanel, ActualElements actualElements) {
+                        ConstantsOfStyle styleConstants, JTree treeForPupilsPanel, ActualElements actualElements,
+                        JLabel awardBarLabel) {
         this.currentStatusField = currentStatusField;
         this.parentFrame = parentFrame;
         this.treeForGradePanel = treeForGradePanel;
@@ -66,6 +66,7 @@ public class CentralPanel extends JPanel implements ActionListener{
         this.styleConstants = styleConstants;
         this.treeForPupilsPanel = treeForPupilsPanel;
         this.actualElements = actualElements;
+        this.awardBarLabel = awardBarLabel;
 
         this.setLayout(new BorderLayout());
 
@@ -88,7 +89,7 @@ public class CentralPanel extends JPanel implements ActionListener{
         treeForPupilsPanel.addMouseMotionListener(new HandCursorForMouseMotionAdapter(treeForPupilsPanel));
         treeForPupilsPanel.addMouseListener(new PupilsTreeNodeMouseListener(treeForPupilsPanel, pupilInformationLabel,
                 informationPanel, showEditAchievementButton, showEditMarksButton, editDataButton, deletePupilButton,
-                dataList, actualElements));
+                dataList, actualElements, awardBarLabel));
     }
 
     private void setComponentsForGradePanel() {
@@ -157,32 +158,26 @@ public class CentralPanel extends JPanel implements ActionListener{
         informationPanel.setLayout(new BorderLayout());
         informationPanel.add(pupilInformationLabel, BorderLayout.NORTH);
         informationPanel.add(buttonInformationPanel, BorderLayout.SOUTH);
-//        informationPanel.setBackground(styleConstants.getACTUAL_SET_OF_COLORS().get(2));
         informationPanel.setBorder(BorderFactory.createLoweredBevelBorder());
         informationPanel.setBounds(0,0,370, 568);
-//        informationPanel.setPreferredSize(new Dimension(10, 568));
         informationPanel.setOpaque(false);
-        awardBarLabel = new JLabel(new ImageIcon(styleConstants.getVERTICAL_FLAG_IMAGE()));
         awardBarLabel.setBounds(280,0,35,600);
         awardBarLabel.setFont(new Font(null, Font.BOLD, 40));
+        awardBarLabel.setVisible(false);
 
         layeredPane.setPreferredSize(new Dimension(10, 568));
         layeredPane.add(bottomPanel, JLayeredPane.DEFAULT_LAYER);
         layeredPane.add(informationPanel, Integer.valueOf(2));
         layeredPane.add(awardBarLabel, Integer.valueOf(1));
 
-
         JLabel informationCapitalLabel = new JLabel("Pupil");
         informationCapitalLabel.setFont(styleConstants.getTHE_MAIN_FONT().deriveFont(Font.BOLD, 19));
-
 
         basisForInformationPanel = new JPanel(new BorderLayout(5, 5));
         basisForInformationPanel.setBorder(BorderFactory.createLoweredBevelBorder());
         basisForInformationPanel.add(informationCapitalLabel, BorderLayout.NORTH);
         basisForInformationPanel.setBackground(styleConstants.getACTUAL_SET_OF_COLORS().get(2));
         basisForInformationPanel.add(layeredPane, BorderLayout.SOUTH);
-
-
     }
 
     private void setPupilPanel() {
@@ -403,6 +398,7 @@ public class CentralPanel extends JPanel implements ActionListener{
                 styleConstants, actualElements);
         assert chosenPupil != null;
         pupilInformationLabel.setText(chosenPupil.getPupilInformation());
+        awardBarLabel.setVisible(actualElements.getCurrentPupil().isAwardBar());
         refreshPupilsTree();
     }
 

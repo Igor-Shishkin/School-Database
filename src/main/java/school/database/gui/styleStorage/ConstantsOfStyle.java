@@ -33,32 +33,27 @@ public class ConstantsOfStyle {
 
 
     private final Path iconsPath = Paths.get("src", "main", "resources", "icons");
+    private final Path imagesPath = Paths.get("src", "main", "resources", "images");
     private final URL imageURL = MainWindow.class.getResource("/src/main/resources/icons/goals.png");
     private final ImageIcon FILE_ICON = new ImageIcon(iconsPath.resolve("file.png").toString());
     private final ImageIcon INFO_ICON = new ImageIcon(iconsPath.resolve("info.png").toString());
     private final ImageIcon USER_ICON = new ImageIcon(iconsPath.resolve("user.png").toString());
     private final ImageIcon STYLE_ICON = new ImageIcon(iconsPath.resolve("style.png").toString());
+    private final ImageIcon VERTICAL_FLAG_ICON_BRIGHT = new ImageIcon
+            (imagesPath.resolve("FLAG_POLAND_VERTICAL.png").toString());
+    private final ImageIcon VERTICAL_FLAG_ICON_DARK = new ImageIcon
+            (imagesPath.resolve("FLAG_POLAND_VERTICAL_DARK.png").toString());
     BufferedImage HORIZONTAL_FLAG_IMAGE;
     {
-                try {
-                    HORIZONTAL_FLAG_IMAGE = ImageIO.read
-                            (new File(Paths.get("src", "main", "resources", "Images", "FLAG_POLAND_HORIZONTAL.png")
-                                    .toUri()));
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            };
-
-    BufferedImage VERTICAL_FLAG_IMAGE;
-    {
         try {
-            VERTICAL_FLAG_IMAGE = ImageIO.read
-                    (new File(Paths.get("src", "main", "resources", "Images", "FLAG_POLAND_VERTICAL.png")
+            HORIZONTAL_FLAG_IMAGE = ImageIO.read
+                    (new File(Paths.get("src", "main", "resources", "Images", "FLAG_POLAND_HORIZONTAL.png")
                             .toUri()));
         } catch (Exception e) {
             e.printStackTrace();
         }
     };
+
     private final List<Color> ACTUAL_SET_OF_COLORS = new ArrayList<>(15);
     private final List<Color> SET_OF_COLORS_OCEAN = new ArrayList<>(15);
     private final List<Color> SET_OF_COLORS_NIGHTFALL = new ArrayList<>(15);
@@ -174,7 +169,15 @@ public class ConstantsOfStyle {
     public void setCOLOR_NEUTRAL_FORMAT(Color COLOR_NEUTRAL_FORMAT) {
         this.COLOR_NEUTRAL_FORMAT = COLOR_NEUTRAL_FORMAT;
     }
-    public BufferedImage getVERTICAL_FLAG_IMAGE() {
-        return VERTICAL_FLAG_IMAGE;
+//    public BufferedImage getVERTICAL_FLAG_IMAGE_BRIGHT() {
+//        return VERTICAL_FLAG_IMAGE_BRIGHT;
+//    }
+
+    public ImageIcon getVERTICAL_FLAG_ICON_BRIGHT() {
+        return VERTICAL_FLAG_ICON_BRIGHT;
+    }
+
+    public ImageIcon getVERTICAL_FLAG_ICON_DARK() {
+        return VERTICAL_FLAG_ICON_DARK;
     }
 }

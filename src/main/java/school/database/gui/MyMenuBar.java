@@ -1,13 +1,13 @@
 package school.database.gui;
 
-import school.database.exceptiones.OpenSaveFileException;
-import school.database.gui.add_edit_windows.EditUsers;
-import school.database.gui.styleStorage.ConstantsOfStyle;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import school.database.data.Data;
 import school.database.data.WriteReadDataToFile;
 import school.database.data.objects.Permissions;
 import school.database.data.objects.User;
-import com.fasterxml.jackson.core.JsonProcessingException;
+import school.database.exceptiones.OpenSaveFileException;
+import school.database.gui.add_edit_windows.EditUsers;
+import school.database.gui.styleStorage.ConstantsOfStyle;
 
 import javax.swing.*;
 import javax.swing.tree.DefaultMutableTreeNode;
@@ -41,13 +41,14 @@ public class MyMenuBar implements ActionListener {
     private final DefaultTreeModel pupilsTreeModel;
     private final ConstantsOfStyle styleConstants;
     private final ActualElements actualElements;
+    private final JLabel awardBarLabel;
 
 
     MyMenuBar(JFrame parentFrame, JTextField currentStatusField, JTree treeForGradePanel,
               JPanel panelForFilterRadioButtons, JButton addPupilButton,
               JPanel centralPanel, JScrollPane paneForGradesTree, Data dataList,
               DefaultMutableTreeNode rootForPupilsTree, DefaultTreeModel pupilsTreeModel,
-              ConstantsOfStyle styleConstants, ActualElements actualElements)
+              ConstantsOfStyle styleConstants, ActualElements actualElements, JLabel awardBarLabel)
                 throws IOException {
         this.parentFrame = parentFrame;
         this.currentStatusField = currentStatusField;
@@ -61,6 +62,7 @@ public class MyMenuBar implements ActionListener {
         this.pupilsTreeModel = pupilsTreeModel;
         this.styleConstants = styleConstants;
         this.actualElements = actualElements;
+        this.awardBarLabel = awardBarLabel;
 
         menuBar = new JMenuBar();
         writeReadDataToFile = new WriteReadDataToFile();
@@ -197,6 +199,9 @@ public class MyMenuBar implements ActionListener {
         }
         if (e.getSource() == usersItem) {
             new EditUsers(parentFrame, dataList, currentStatusField, styleConstants, actualElements);
+        }
+        if (e.getSource()==informationItem) {
+
         }
     }
 
@@ -545,6 +550,8 @@ public class MyMenuBar implements ActionListener {
         styleConstants.setCOLOR_FOR_RIGHT_FORMAT(new Color(0x003B00));
         styleConstants.setCOLOR_FOR_WRONG_FORMAT(new Color(0x482734));
         styleConstants.setCOLOR_NEUTRAL_FORMAT(new Color(0xBB463900, true));
+
+        awardBarLabel.setIcon(styleConstants.getVERTICAL_FLAG_ICON_DARK());
     }
 
     private void setOceanMode() {
@@ -558,6 +565,8 @@ public class MyMenuBar implements ActionListener {
         styleConstants.setCOLOR_FOR_RIGHT_FORMAT(new Color(0xD2FFD2));
         styleConstants.setCOLOR_FOR_WRONG_FORMAT(new Color(0xEAD1DC));
         styleConstants.setCOLOR_NEUTRAL_FORMAT(new Color(0xBBF8E690, true));
+
+        awardBarLabel.setIcon(styleConstants.getVERTICAL_FLAG_ICON_BRIGHT());
     }
 
     private void changeAdmissionItemMethod() {

@@ -17,7 +17,6 @@ public class Main {
 
         Data dataList = new Data();
         ConstantsOfStyle styleConstants = new ConstantsOfStyle();
-        styleConstants.setActualSetOfColors(styleConstants.getSET_OF_COLORS_OCEAN());
         ActualElements actualElements = new ActualElements();
 
         Path workDir = Paths.get("src", "main", "resources");

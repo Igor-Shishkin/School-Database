@@ -46,13 +46,14 @@ public class MainWindow extends JFrame{
 
         ArrayList<DefaultMutableTreeNode> nodesForPupilsPanel = new ArrayList<>();
 
+        JLabel awardBarLabel = new JLabel(styleConstants.getVERTICAL_FLAG_ICON_BRIGHT());
 
         JPanel centerPanel = new CentralPanel(this, currentStatusField, treeForGradePanel, rootForGradePanel,
                 gradesTreeModel, panelForFilterRadioButtons, addPupilButton, paneForGradesTree, dataList, pupilsTreeModel,
-                nodesForPupilsPanel, rootForPupilsTree, styleConstants, treeForPupilsPanel, actualElements);
+                nodesForPupilsPanel, rootForPupilsTree, styleConstants, treeForPupilsPanel, actualElements, awardBarLabel);
         myMenuBar = new MyMenuBar(this, currentStatusField, treeForGradePanel,
                 panelForFilterRadioButtons, addPupilButton, centerPanel, paneForGradesTree, dataList,
-                rootForPupilsTree, pupilsTreeModel,  styleConstants,  actualElements);
+                rootForPupilsTree, pupilsTreeModel,  styleConstants,  actualElements, awardBarLabel);
 
         refreshPanels(centerPanel);
 
