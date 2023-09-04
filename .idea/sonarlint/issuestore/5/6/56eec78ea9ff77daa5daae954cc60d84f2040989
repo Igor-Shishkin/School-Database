@@ -1,0 +1,17 @@
+
+n	java:S127‚"XRefactor the code in order to not assign to this loop counter from within the loop body.(…Î¬ 
+s	java:S127„"XRefactor the code in order to not assign to this loop counter from within the loop body.(ãµÑ‰øÿÿÿÿ
+n	java:S127½"XRefactor the code in order to not assign to this loop counter from within the loop body.(‡Ä—ƒ
+s	java:S127²"XRefactor the code in order to not assign to this loop counter from within the loop body.(­–„úÿÿÿÿ
+~	java:S116"dRename this field "QUANTITY_OF_MARK_COMBOBOX" to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(ÛÎ˜Íşÿÿÿÿ
+a
+java:S1659"KDeclare "panelForLabels" and all following declarations on a separate line.(Ñ¼äÃ
+@
+java:S1659"*Declare "cancelButton" on a separate line.(ßÙ—ç
+[	java:S107!"AConstructor has 9 parameters, which is greater than 7 authorized.(Ê‘Ş‘ùÿÿÿÿ
+h
+java:S3776z"RRefactor this method to reduce its Cognitive Complexity from 18 to the 15 allowed.(‹ÖÙ‹
+n
+java:S3776•"RRefactor this method to reduce its Cognitive Complexity from 19 to the 15 allowed.(å ¶ğøÿÿÿÿ
+=
+java:S1659§"!Declare "max" on a separate line.(£ŠÖ¼ıÿÿÿÿ

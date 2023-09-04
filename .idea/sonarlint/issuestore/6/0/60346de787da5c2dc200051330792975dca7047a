@@ -1,0 +1,26 @@
+
+r
+java:S1659"PDeclare "showEditMarksButton" and all following declarations on a separate line.(À›ıúÿÿÿÿ8ÍœÃ¥1
+c	java:S107"BConstructor has 13 parameters, which is greater than 7 authorized.(£šÁšûÿÿÿÿ8ĞœÃ¥1
+t
+java:S37762"RRefactor this method to reduce its Cognitive Complexity from 74 to the 15 allowed.(Ä Ïúüÿÿÿÿ8ÔœÃ¥1
+f
+java:S3358:"DExtract this nested ternary operation into an independent statement.(¨ÊıÃıÿÿÿÿ8×œÃ¥1
+a
+java:S3358;"DExtract this nested ternary operation into an independent statement.(«œçì8×œÃ¥1
+a
+java:S3358<"DExtract this nested ternary operation into an independent statement.(ºÿƒ8ØœÃ¥1
+a
+java:S3358="DExtract this nested ternary operation into an independent statement.(ôâ ç8ØœÃ¥1
+a
+java:S3358>"DExtract this nested ternary operation into an independent statement.(«¥ê²8ØœÃ¥1
+a
+java:S3358?"DExtract this nested ternary operation into an independent statement.(œÃ²ç8ÙœÃ¥1
+f
+java:S3358@"DExtract this nested ternary operation into an independent statement.(ñó¦•úÿÿÿÿ8ÙœÃ¥1
+f
+java:S3358A"DExtract this nested ternary operation into an independent statement.(£Ó„Ùşÿÿÿÿ8ÜœÃ¥1
+[
+java:S1155I">Use isEmpty() to check whether the collection is empty or not.(Å„‡•8İœÃ¥1
+[
+java:S1155V">Use isEmpty() to check whether the collection is empty or not.(Å„‡•8æœÃ¥1

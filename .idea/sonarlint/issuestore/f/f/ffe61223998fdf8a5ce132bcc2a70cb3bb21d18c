@@ -1,0 +1,16 @@
+
+J
+java:S2387"/"parent" is the name of a field in "Component".(‚³Ò©þÿÿÿÿ
+^
+java:S1659"IDeclare "surnameField" and all following declarations on a separate line.(ê¾®C
+E
+java:S1659"*Declare "cancelButton" on a separate line.(Ü‹²ôþÿÿÿÿ
+[
+java:S1659"EDeclare "province" and all following declarations on a separate line.(¦ò—š
+W	java:S107#"BConstructor has 13 parameters, which is greater than 7 authorized.(¹ÇÀÌ
+m
+java:S3776P"RRefactor this method to reduce its Cognitive Complexity from 17 to the 15 allowed.(ßÏ×Ñüÿÿÿÿ
+m
+java:S3776r"RRefactor this method to reduce its Cognitive Complexity from 35 to the 15 allowed.(àŒ‡™úÿÿÿÿ
+Y
+java:S3358}"DExtract this nested ternary operation into an independent statement.(•Ê­%

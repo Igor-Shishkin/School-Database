@@ -28,7 +28,10 @@ public class CentralPanel extends JPanel implements ActionListener{
     private final List<DefaultMutableTreeNode> nodesForPupilsPanel;
     private final JTree treeForGradePanel, treeForPupilsPanel;
     private final DefaultTreeModel pupilsTreeModel, gradesTreeModel;
-    private JLabel informationLabelForPupilPanel, pupilInformationLabel, gradesCapitalLabel, awardBarLabel;
+    private JLabel informationLabelForPupilPanel;
+    private JLabel pupilInformationLabel;
+    private JLabel gradesCapitalLabel;
+    private final JLabel awardBarLabel;
     private final JTextField currentStatusField;
     private JRadioButton getAllPupilsRadioButton, getPupilsWithBirthdayInThisMonthRadioButton, getPupilsWithAwardBarRadioButton,
             getNoPromotedPupilsRadioButton, getPupilsWithAchievementRadioButton;
@@ -163,6 +166,7 @@ public class CentralPanel extends JPanel implements ActionListener{
         informationPanel.setOpaque(false);
         awardBarLabel.setBounds(280,0,35,600);
         awardBarLabel.setFont(new Font(null, Font.BOLD, 40));
+        awardBarLabel.setBorder(BorderFactory.createLineBorder(Color.darkGray, 1));
         awardBarLabel.setVisible(false);
 
         layeredPane.setPreferredSize(new Dimension(10, 568));

@@ -165,7 +165,7 @@ public class MyMenuBar implements ActionListener {
 
         }
         if (e.getSource() == saveFileItem) {
-            savaFaleMethod();
+            savaFileMethod();
 
         }
         if (e.getSource() == newDatabaseItem) {
@@ -439,7 +439,7 @@ public class MyMenuBar implements ActionListener {
         }
     }
 
-    private void savaFaleMethod() {
+    private void savaFileMethod() {
         if (!dataList.getPupilsDataList().isEmpty() && file != null) {
             try {
                 writeReadDataToFile.writeDataToFile(dataList.getDataToFile(), file);
