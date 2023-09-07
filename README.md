@@ -2,6 +2,8 @@
 
 The program is designed to work with pupil data, a graphic interface is involved.
 
+--------------------------------------------------
+
 Key options:
 loggin
 create a new database
@@ -10,6 +12,8 @@ view a list of pupils
 add and remove pupils
 view and add users
 edit pupil data
+
+--------------------------------------------------
 
 Details:
 teacher's access
@@ -26,6 +30,8 @@ Director:
 the possibility to view and edit the data of all pupils, add and delete pupils 
 (the program automatically checks that all the required fields are filled in) 
 view, add and delete users
+
+--------------------------------------------------
 
 ProjectScheme.pdf - project scheme
 
