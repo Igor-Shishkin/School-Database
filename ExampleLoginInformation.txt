@@ -1,0 +1,8 @@
+
+
+
+        "Director", "director1967", Permissions.DIRECTOR
+        "teacher", "5643S", Permissions.TEACHER
+        "mr Richardson", "1234", Permissions.CLASS_TEACHER_6
+        "Pani Iwona", "5j569", Permissions.CLASS_TEACHER_7
+        "1", "1", Permissions.DIRECTOR

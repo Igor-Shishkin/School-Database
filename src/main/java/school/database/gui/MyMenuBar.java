@@ -205,12 +205,12 @@ public class MyMenuBar implements ActionListener {
                     " view it and edit it.<br>Details and the entire project can be seen on the github repository:<br>" +
                     "https://github.com/Igor-Shishkin/School-Database<br><br>" +
                     "For me, this program is an exercise in using the knowledge" +
-                    "<br>that was passed on to us in the Java course.<br>" +
-                    "And the opportunity in a few years to see with<br>" +
-                    "an experienced eye how my level in programming has changed.<br><br>" +
-                    "Icons for the menu are taken from the site:<br>\n" +
+                    "<br>that we acquired in the Java course, <br>" +
+                    "as well as the opportunity to observe with<br>" +
+                    "my programming progress over years.<br><br>" +
+                    "Icons for the menu were taken from the site:<br>\n" +
                     "https://www.flaticon.com/free-icons/info title=info icons.<br>" +
-                    "Info icons created by Freepik - Flaticon<br><br>" +
+                    "Menu icons created by Freepik - Flaticon<br><br>" +
                     "Author: Igor Shishkin</html>";
             JLabel informationLabel = new JLabel(informationText);
             informationLabel.setFont(new Font(null, Font.PLAIN, 25));
