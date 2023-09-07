@@ -1,4 +1,4 @@
-# School-Database
+# School Database
 
 The program is designed to work with pupil data, a graphic interface is involved.
 
