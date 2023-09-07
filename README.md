@@ -26,3 +26,8 @@ Director:
 the possibility to view and edit the data of all pupils, add and delete pupils 
 (the program automatically checks that all the required fields are filled in) 
 view, add and delete users
+
+ProjectScheme.pdf - project scheme
+
+Data_of_pupils_school_WINGS.txt - a file with generated students data for testing the program
+ExampleLoginInformation.txt - login data for 'Data_of_pupils_school_WINGS.txt' database
