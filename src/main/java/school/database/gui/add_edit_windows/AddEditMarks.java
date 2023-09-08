@@ -214,9 +214,10 @@ public class AddEditMarks extends JDialog implements ActionListener {
 
         if (grade > 3 && grade < 7) {
             QUANTITY_OF_MARK_COMBOBOX = 36;
-            panelForComboBox = new JPanel(new GridLayout(10, 4, 10, 10));
-            panelForLabels = new JPanel(new GridLayout(10, 1, 10, 10));
+            panelForComboBox = new JPanel(new GridLayout(11, 4, 10, 10));
+            panelForLabels = new JPanel(new GridLayout(11, 1, 10, 10));
 
+            panelForLabels.add(new JLabel(""));
             panelForLabels.add(new JLabel("Math"));
             panelForLabels.add(new JLabel("Polish"));
             panelForLabels.add(new JLabel("English"));
@@ -227,6 +228,11 @@ public class AddEditMarks extends JDialog implements ActionListener {
             panelForLabels.add(new JLabel("Nature"));
             panelForLabels.add(new JLabel("Behavior"));
             panelForLabels.add(new JLabel("AVERAGE"));
+
+            panelForComboBox.add(new JLabel("I"));
+            panelForComboBox.add(new JLabel("II"));
+            panelForComboBox.add(new JLabel("III"));
+            panelForComboBox.add(new JLabel("Year"));
 
             for (int i = 0; i < QUANTITY_OF_MARK_COMBOBOX; i++) {
                 markComboBox[i] = new JComboBox<>(new String[]{null, "1", "2", "3", "4", "5", "6"});
@@ -240,8 +246,10 @@ public class AddEditMarks extends JDialog implements ActionListener {
             }
         } else {
             QUANTITY_OF_MARK_COMBOBOX = 44;
-            panelForComboBox = new JPanel(new GridLayout(12, 4, 10, 10));
-            panelForLabels = new JPanel(new GridLayout(12, 1, 10, 10));
+            panelForComboBox = new JPanel(new GridLayout(13, 4, 10, 10));
+            panelForLabels = new JPanel(new GridLayout(13, 1, 10, 10));
+
+            panelForLabels.add(new JLabel(""));
             panelForLabels.add(new JLabel("Math"));
             panelForLabels.add(new JLabel("Polish"));
             panelForLabels.add(new JLabel("English"));
@@ -254,6 +262,11 @@ public class AddEditMarks extends JDialog implements ActionListener {
             panelForLabels.add(new JLabel("Geography"));
             panelForLabels.add(new JLabel("Behavior"));
             panelForLabels.add(new JLabel("AVERAGE"));
+
+            panelForComboBox.add(new JLabel("I"));
+            panelForComboBox.add(new JLabel("II"));
+            panelForComboBox.add(new JLabel("III"));
+            panelForComboBox.add(new JLabel("Year"));
 
             for (int i = 0; i < QUANTITY_OF_MARK_COMBOBOX; i++) {
                 markComboBox[i] = new JComboBox<>(new String[]{null, "1", "2", "3", "4", "5", "6"});

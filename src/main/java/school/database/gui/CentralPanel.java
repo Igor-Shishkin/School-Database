@@ -447,7 +447,8 @@ public class CentralPanel extends JPanel implements ActionListener{
 
     private void addPupilMethod() {
         Pupil tempPupil = new Pupil();
-        tempPupil.setGrade(actualElements.getCurrentGrade());
+        int gradeNumber = (actualElements.getCurrentGrade()!=-1) ? actualElements.getCurrentGrade() : 0;
+        tempPupil.setGrade(gradeNumber);
         new AddEditPupil(parentFrame, tempPupil, currentStatusField, true, dataList, styleConstants,
                 actualElements);
         if (tempPupil.getSurname() != null) {
