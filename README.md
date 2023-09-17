@@ -37,3 +37,8 @@ ProjectScheme.pdf - project scheme
 
 Data_of_pupils_school_WINGS.txt - a file with generated students data for testing the program
 ExampleLoginInformation.txt - login data for 'Data_of_pupils_school_WINGS.txt' database
+
+---------------------------------------------------
+
+link do youTube: https://youtu.be/N9rjd5wYiek
+
